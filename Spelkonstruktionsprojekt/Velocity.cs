@@ -8,7 +8,7 @@ using ZEngine.Components;
 
 namespace ZombieGame
 {
-    class Velocity : Component
+    class Velocity : IComponent
     {
         public Vector2 velocity { get; set; }
         public string GetComponentName => "Velocity";

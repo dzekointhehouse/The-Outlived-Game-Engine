@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZEngine.Components
 {
-    class PositionComponent : Component
+    class PositionComponent : IComponent
     {
         public static string SystemName = "Position";
 

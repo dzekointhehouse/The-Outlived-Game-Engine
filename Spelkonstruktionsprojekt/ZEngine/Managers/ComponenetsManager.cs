@@ -7,7 +7,7 @@ namespace ZEngine.Managers
 {
     public class ComponenetsManager
     {
-        private readonly Dictionary<string, Component> _components = new Dictionary<string, Component>()
+        private readonly Dictionary<string, IComponent> _components = new Dictionary<string, IComponent>()
         {
             { "Position", new PositionComponent() }
         };
