@@ -33,7 +33,7 @@ namespace Systems
             }
             else
             {
-                throw new Exception("No such system exist.");
+                throw new Exception("No such component exist.");
             }
         }
 
