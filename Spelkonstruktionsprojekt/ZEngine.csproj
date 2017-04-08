@@ -41,7 +41,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ZEngine\Components\Component.cs" />
+    <Compile Include="ZEngine\Components\DimensionsComponent.cs" />
+    <Compile Include="ZEngine\Components\IComponent.cs" />
+    <Compile Include="ZEngine\Components\RenderComponent.cs" />
+    <Compile Include="ZEngine\EventBus\EventBus.cs" />
+    <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
@@ -49,6 +53,7 @@
     <Compile Include="ZEngine\Components\Velocity.cs" />
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
     <Compile Include="ZEngine\Components\PositionComponent.cs" />
+    <Compile Include="ZEngine\Wrappers\RenderDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
   </ItemGroup>

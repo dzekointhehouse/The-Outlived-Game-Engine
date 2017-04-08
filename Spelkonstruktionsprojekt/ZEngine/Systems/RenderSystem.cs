@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Spelkonstruktionsprojekt;
+using System.Linq;
 using ZEngine.Components;
 using ZEngine.Managers;
+using ZEngine.EventBus;
+using ZEngine.Wrappers;
+using IComponent = ZEngine.Components.IComponent;
 
 namespace ZEngine.Systems
 {
@@ -17,12 +20,35 @@ namespace ZEngine.Systems
 
         public void Start()
         {
-            
+            EventBus.EventBus._.Subscribe<RenderDependencies>("Render", Render);
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            EventBus.EventBus._.Unsubscribe<RenderDependencies>("Render", Render);
+        }
+
+        public void Render(RenderDependencies renderDependencies)
+        {
+            var renderableEntities = EntityManager.GetEntities().Where(entry => IsRenderable(entry.Value));
+            foreach (var entity in renderableEntities)
+            {
+
+            }
+        }
+
+        public bool IsRenderable(Dictionary<string, IComponent> entityComponents)
+        {
+            if (entityComponents.ContainsKey("Render"))
+            {
+                RenderComponent renderComponent = (RenderComponent) entityComponents["Render"];
+                return renderComponent.PositionComponent != null &&
+                       (renderComponent.DimensionsComponent != null || renderComponent.Radius > 0);
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

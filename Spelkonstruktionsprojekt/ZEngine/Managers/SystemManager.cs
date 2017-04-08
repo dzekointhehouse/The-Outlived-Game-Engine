@@ -7,6 +7,9 @@ namespace ZEngine.Managers
 {
     public class SystemManager
     {
+        public static SystemManager Instance => LazyInitializer.Value;
+        private static readonly Lazy<SystemManager> LazyInitializer = new Lazy<SystemManager>(() => new SystemManager());
+
         private readonly Dictionary<string, ISystem> _systems = new Dictionary<string, ISystem>()
         {
             { "Render", new RenderSystem(EntityManager.GetEntityManager()) }
