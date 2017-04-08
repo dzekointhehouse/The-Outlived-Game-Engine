@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using ZEngine.Components;
@@ -13,12 +14,13 @@ namespace ZEngine.Managers
 
         // The idea here is to have the entity 
         // entityId as a key here and add 
-        public Dictionary<int, Dictionary<string, Component>> ExistingEntities { get; set; }
+        private Dictionary<int, Dictionary<string, Component>> ExistingEntities;
 
 
         private EntityManager()
         {
             _nextEntityId = 0;
+            ExistingEntities = new Dictionary<int, Dictionary<string, Component>>();
         }
 
         public static EntityManager GetEntityManager()
@@ -86,6 +88,15 @@ namespace ZEngine.Managers
         {
             return ExistingEntities[entityId];
         }
+
+        /* To my dear friend fucking August.
+         */
+        Dictionary<int, Dictionary<string, Component>>.Enumerator GetEntityEnumerator()
+        {
+            return ExistingEntities.GetEnumerator();
+        }
+
+    
     }
 
 
