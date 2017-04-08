@@ -41,16 +41,16 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ZEngine\Components\IComponent.cs" />
-    <Compile Include="Managers\EntityManager.cs" />
+    <Compile Include="ZEngine\Components\Component.cs" />
+    <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Velocity.cs" />
-    <Compile Include="ZEngine\ComponenetsManager.cs" />
+    <Compile Include="ZEngine\Managers\ComponenetsManager.cs" />
     <Compile Include="ZEngine\Components\PositionComponent.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
-    <Compile Include="ZEngine\SystemManager.cs" />
+    <Compile Include="ZEngine\Managers\SystemManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

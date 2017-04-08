@@ -1,7 +1,7 @@
 ﻿
 namespace ZEngine.Components
 {
-    public interface IComponent
+    public interface Component
     {
         // All implementing classes must have a component name,
         // for accessability.

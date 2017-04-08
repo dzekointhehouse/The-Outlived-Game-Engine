@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZEngine.Components
 {
-    class PositionComponent : IComponent
+    class PositionComponent : Component
     {
         public static string SystemName = "Position";
 
@@ -15,6 +15,6 @@ namespace ZEngine.Components
 
         }
 
-        public string GetComponentName { get { return "PositionComponent"; } }
+        public string GetComponentName => "PositionComponent";
     }
 }

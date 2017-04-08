@@ -8,7 +8,7 @@ namespace Systems
 {
     public class ComponenetsManager
     {
-        private readonly Dictionary<string, IComponent> _components = new Dictionary<string, IComponent>()
+        private readonly Dictionary<string, Component> _components = new Dictionary<string, Component>()
         {
             { "Position", new PositionComponent() }
         };
