@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Systems;
-using Spelkonstruktionsprojekt.ZEngine.Systems;
 
 namespace Spelkonstruktionsprojekt.ZEngine
 {
@@ -46,5 +45,12 @@ namespace Spelkonstruktionsprojekt.ZEngine
         {
             return _systems.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
         }
+    }
+
+    public interface ISystem
+    {
+        void Start();
+
+        void Stop();
     }
 }

@@ -1,5 +1,5 @@
-﻿using Spelkonstruktionsprojekt.ZEngine.Systems;
-using System;
+﻿using System;
+using Spelkonstruktionsprojekt.ZEngine;
 
 namespace Systems
 {
