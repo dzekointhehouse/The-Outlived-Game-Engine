@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Spelkonstruktionsprojekt;
+using ZEngine.Components;
 using ZEngine.Managers;
 
 namespace ZEngine.Systems
@@ -15,6 +17,7 @@ namespace ZEngine.Systems
 
         public void Start()
         {
+            
         }
 
         public void Stop()

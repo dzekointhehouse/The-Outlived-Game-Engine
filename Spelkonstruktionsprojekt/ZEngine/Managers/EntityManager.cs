@@ -13,7 +13,7 @@ namespace ZEngine.Managers
 
         // The idea here is to have the entity 
         // entityId as a key here and add 
-        public Dictionary<int, Dictionary<string, Component>> ExistingEntities { get; set; }
+        public Dictionary<int, Dictionary<string, Component>> ExistingEntities { get;}
 
 
         private EntityManager()
