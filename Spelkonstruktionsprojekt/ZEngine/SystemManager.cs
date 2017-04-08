@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Systems;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 
-namespace Systems
+namespace Spelkonstruktionsprojekt.ZEngine
 {
     public class SystemManager
     {
-        private readonly Dictionary<string, Type> _systems = new Dictionary<string, Type>()
+        private readonly Dictionary<string, ISystem> _systems = new Dictionary<string, ISystem>()
         {
-            { "Render", typeof(RenderSystem) }
+            { "Render", new RenderSystem() }
         };
 
-        public Type GetSystem(string systemName)
+        public ISystem GetSystem(string systemName)
         {
             if (!_systems.ContainsKey(systemName))
             {
@@ -19,21 +21,30 @@ namespace Systems
             }
             else
             {
-                return _systems[systemName];
+                return NewSystem(systemName);
             }
         }
             
         public T GetSystem<T>() where T : new()
         {
-            if (this._systems.ContainsValue(typeof(T)))
+            if (ContainsSystem<T>())
             {
-                Type type = this._systems.First(entry => entry.Value == typeof(T)).Value;
-                return (T) Activator.CreateInstance(type);
+                return new T();
             }
             else
             {
                 throw new Exception("No such system exist.");
             }
+        }
+
+        private ISystem NewSystem(string name)
+        {
+            return (ISystem) Activator.CreateInstance(_systems[name].GetType());
+        }
+
+        private Boolean ContainsSystem<T>()
+        {
+            return _systems.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
         }
     }
 }
