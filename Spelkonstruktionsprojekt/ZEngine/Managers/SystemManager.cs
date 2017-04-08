@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Systems;
+using ZEngine.Systems;
 
-namespace Spelkonstruktionsprojekt.ZEngine
+namespace ZEngine.Managers
 {
     public class SystemManager
     {
         private readonly Dictionary<string, ISystem> _systems = new Dictionary<string, ISystem>()
         {
-            { "Render", new RenderSystem() }
+            { "Render", new RenderSystem(EntityManager.GetEntityManager()) }
         };
 
         public ISystem GetSystem(string systemName)

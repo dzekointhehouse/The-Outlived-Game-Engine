@@ -4,7 +4,7 @@ using System.Linq;
 using Spelkonstruktionsprojekt.ZEngine;
 using ZEngine.Components;
 
-namespace Systems
+namespace ZEngine.Managers
 {
     public class ComponenetsManager
     {

@@ -1,19 +1,20 @@
 ﻿using System;
-using Spelkonstruktionsprojekt.ZEngine;
+using Spelkonstruktionsprojekt;
+using ZEngine.Managers;
 
-namespace Systems
+namespace ZEngine.Systems
 {
     public class RenderSystem : ISystem
     {
         public static string SystemName = "Render";
-        public RenderSystem()
+        private EntityManager EntityManager { get; set; }
+        public RenderSystem(EntityManager entityManager)
         {
-
+            EntityManager = entityManager;
         }
 
         public void Start()
         {
-            throw new NotImplementedException();
         }
 
         public void Stop()

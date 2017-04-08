@@ -4,9 +4,9 @@ using System.Xml;
 using ZEngine.Components;
 using ZombieGame;
 
-namespace Spelkonstruktionsprojekt
+namespace ZEngine.Managers
 {
-    class EntityManager
+    public class EntityManager
     {
         private static EntityManager _entityManager;
         private int _nextEntityId;
