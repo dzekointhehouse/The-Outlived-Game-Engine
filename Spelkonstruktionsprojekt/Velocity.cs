@@ -7,12 +7,9 @@ using Microsoft.Xna.Framework;
 
 namespace ZombieGame
 {
-    class Velocity
+    class Velocity : IComponent
     {
-        static string ComponentName = "Velocity";
-
         public Vector2 velocity { get; set; }
-
-
+        public string GetComponentName => "Velocity";
     }
 }

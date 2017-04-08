@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using ZombieGame;
 
 namespace Spelkonstruktionsprojekt
@@ -7,8 +9,10 @@ namespace Spelkonstruktionsprojekt
     {
         private static EntityManager _entityManager;
         private int _nextEntityId;
-        private Dictionary<int, Velocity> ExistingEntities;
-        public Dictionary<int, Velocity> Type { get; set; }
+
+        // The idea here is to have the entity 
+        // entityId as a key here and add 
+        public Dictionary<int, Dictionary<string, IComponent>> ExistingEntities { get; set; }
 
 
         private EntityManager()
@@ -28,10 +32,39 @@ namespace Spelkonstruktionsprojekt
                 return _entityManager;
             }
         }
+
+        // This method generates a unique entity that can be used
+        // to build a gameobject with components.
         public int GetNewEntity()
         {
             return _nextEntityId++;
         }
+
+        public void AddComponent(int entityId, IComponent component)
+        {
+
+            var innerDictionary = ExistingEntities[entityId];
+            innerDictionary.Add(component.GetComponentName, component);
+
+        }
+
+        public void RemoveComponent(int entityId, IComponent component)
+        {
+            var innerDictionary = ExistingEntities[entityId];
+            innerDictionary.Remove(component.GetComponentName);
+        }
+        public void RemoveComponent(int entityId, string component)
+        {
+            var innerDictionary = ExistingEntities[entityId];
+            innerDictionary.Remove(component);
+        }
+
+        public IComponent GetEntityComponent(int entityId, string componentName)
+        {
+            var innerDictionary = ExistingEntities[entityId];
+            return innerDictionary[componentName];
+        }
+
 
 
     }
