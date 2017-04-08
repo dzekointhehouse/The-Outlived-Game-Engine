@@ -1,4 +1,5 @@
-﻿namespace ZombieGame
+﻿
+namespace ZEngine.Components
 {
     public interface IComponent
     {

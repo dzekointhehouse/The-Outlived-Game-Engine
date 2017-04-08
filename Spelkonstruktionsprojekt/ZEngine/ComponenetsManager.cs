@@ -1,25 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Spelkonstruktionsprojekt.ZEngine;
+using ZEngine.Components;
 
 namespace Systems
 {
     public class ComponenetsManager
     {
-        private readonly Dictionary<string, Type> components = new Dictionary<string, Type>()
+        private readonly Dictionary<string, IComponent> _components = new Dictionary<string, IComponent>()
         {
-            { "Position", typeof(PositionComponent) }
+            { "Position", new PositionComponent() }
         };
 
-        public Type GetComponent(string componentName)
+        public ISystem GetComponent(string componentName)
         {
-            if (!components.ContainsKey(componentName))
+            if (!_components.ContainsKey(componentName))
             {
                 throw new Exception("No such component.");
             }
             else
             {
-                return components[componentName];
+                return NewComponent(componentName);
             }
+        }
+
+        public T GetComponent<T>() where T : new()
+        {
+            if (ContainsComponent<T>())
+            {
+                return new T();
+            }
+            else
+            {
+                throw new Exception("No such system exist.");
+            }
+        }
+
+        private ISystem NewComponent(string name)
+        {
+            return (ISystem)Activator.CreateInstance(_components[name].GetType());
+        }
+
+        private Boolean ContainsComponent<T>()
+        {
+            return _components.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
         }
     }
 }

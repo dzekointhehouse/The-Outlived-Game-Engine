@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Systems
+namespace ZEngine.Components
 {
-    class PositionComponent
+    class PositionComponent : IComponent
     {
         public static string SystemName = "Position";
 
@@ -14,5 +14,7 @@ namespace Systems
         {
 
         }
+
+        public string GetComponentName { get { return "PositionComponent"; } }
     }
 }
