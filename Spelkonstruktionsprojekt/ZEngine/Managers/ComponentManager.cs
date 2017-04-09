@@ -40,7 +40,7 @@ namespace ZEngine.Managers
         // Overloaded method that is a generic method. It takes a type parameter
         // and returns a dictionary with all the entities that are associated 
         // with an instance of that component that was given as type parameter.
-        public Dictionary<int, T> GetEntitiesWithComponent<T>()
+        public Dictionary<int, T> GetEntitiesWithComponent<T>() where T : IComponent    
         {
             if (!_components.ContainsKey(typeof(T)))
             {
@@ -48,17 +48,20 @@ namespace ZEngine.Managers
             }
             else
             {
-                return _components[typeof(T)] as Dictionary<int, T>;
+                return _components[typeof(T)].ToDictionary(
+                    entry => entry.Key,
+                    entry => (T) entry.Value
+                );
             }
         }
 
-        public bool EntityHasComponent<ComponentType>(int entityId)
+        public bool EntityHasComponent<ComponentType>(int entityId) where ComponentType : IComponent
         {
             var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
             return entityComponents.ContainsKey(entityId);
         }
 
-        public ComponentType GetEntityComponent<ComponentType>(int entityId)
+        public ComponentType GetEntityComponent<ComponentType>(int entityId) where ComponentType : IComponent
         {
             var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
             return entityComponents[entityId];

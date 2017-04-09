@@ -41,19 +41,15 @@ namespace ZEngine.Systems
         {
             var graphics = renderDependencies.GraphicsDeviceManager.GraphicsDevice;
             var spriteBatch = renderDependencies.SpriteBatch;
+
             graphics.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            RenderEntities(spriteBatch);
+            spriteBatch.End();
+        }
 
-            renderDependencies.SpriteBatch.Begin();
-            //Texture2D texture = new Texture2D(graphics, 100, 90);
-            //Color[] data = new Color[100*90];
-            //for (var i = 0; i < data.Length; i++)
-            //{
-            //    data[i] = Color.Tomato;
-            //}
-            //texture.SetData(data);
-            //Vector2 coor = new Vector2(100, 100);
-            //renderDependencies.SpriteBatch.Draw(texture, coor, Color.Chocolate);
-
+        private void RenderEntities(SpriteBatch spriteBatch)
+        {
             var renderableEntities = ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>();
             foreach (var entity in renderableEntities)
             {
@@ -61,11 +57,9 @@ namespace ZEngine.Systems
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
                     var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
-                    spriteBatch.Draw(sprite.Sprite, new Vector2(position.X, position.Y), Color.Transparent);
+                    spriteBatch.Draw(sprite.Sprite, new Vector2(position.X, position.Y), Color.White);
                 }
             }
-
-            renderDependencies.SpriteBatch.End();
         }
 
         public bool IsRenderable(Dictionary<string, IComponent> entityComponents)
