@@ -48,11 +48,10 @@ namespace ZEngine.Managers
         // Completely deletes the entity and all components
         // that are associated with it, thats why it needs to
         // use the component manager instance.
-        public void DeleteEntity(int entityId, ComponentManager cm)
+        public void DeleteEntity(int entityId)
         {
             _existingEntities.Remove(entityId);
-            cm.DeleteEntity(entityId);
-            
+            ComponentManager.Instance.DeleteEntity(entityId);
         }
 
         // Returns the complete list with all of the existing 
