@@ -11,6 +11,7 @@ namespace ZEngine.Systems
 {
     public class RenderSystem : ISystem
     {
+        private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         public static string SystemName = "Render";
         private EntityManager EntityManager { get; set; }
         public RenderSystem(EntityManager entityManager)
@@ -20,12 +21,12 @@ namespace ZEngine.Systems
 
         public void Start()
         {
-            EventBus.EventBus._.Subscribe<RenderDependencies>("Render", Render);
+            EventBus.Subscribe<RenderDependencies>("Render", Render);
         }
 
         public void Stop()
         {
-            EventBus.EventBus._.Unsubscribe<RenderDependencies>("Render", Render);
+            EventBus.Unsubscribe<RenderDependencies>("Render", Render);
         }
 
         public void Render(RenderDependencies renderDependencies)

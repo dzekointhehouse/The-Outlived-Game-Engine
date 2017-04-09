@@ -9,7 +9,7 @@ namespace ZEngine.EventBus
 {
     public class EventBus
     {
-        public static EventBus _ => LazyInitializer.Value;
+        public static EventBus Instance => LazyInitializer.Value;
         private static readonly Lazy<EventBus> LazyInitializer = new Lazy<EventBus>(() => new EventBus());
 
         private readonly Dictionary<Type, Dictionary<string, ICollection<Action<object>>>> _actions = new Dictionary<Type, Dictionary<string, ICollection<Action<object>>>>();

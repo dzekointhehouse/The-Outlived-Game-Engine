@@ -18,6 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     /// </summary>
     public class TestGame : Game
     {
+        private EventBus EventBus = EventBus.Instance;
         private RenderDependencies RenderDependencies = new RenderDependencies();
         private ISystem _renderSystem;
 
@@ -26,6 +27,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             RenderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             _renderSystem = SystemManager.Instance.GetSystem("Render");
+            _renderSystem.Start();
         }
 
         /// <summary>
@@ -84,7 +86,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             // TODO: Add your drawing code here
-            EventBus._.Publish("Render", RenderDependencies);
+            EventBus.Publish("Render", RenderDependencies);
+            EventBus.Publish("RenderOverlay", RenderDependencies);
 
             base.Draw(gameTime);
         }
