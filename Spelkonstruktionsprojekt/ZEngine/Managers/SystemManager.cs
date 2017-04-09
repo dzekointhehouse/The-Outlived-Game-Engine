@@ -49,11 +49,4 @@ namespace ZEngine.Managers
             return _systems.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
         }
     }
-
-    public interface ISystem
-    {
-        void Start();
-
-        void Stop();
-    }
 }
