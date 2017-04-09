@@ -9,16 +9,29 @@ namespace ZEngine.Managers
 {
     public class EntityManager
     {
+        // _____________________________________________________________________________________________________________________ //
+
+        // An instance of this singleton EntityManager.
+        // The next unique entity id that will be generated.
+        // List with all the unique entities.
         private static EntityManager _entityManager;
         private int _nextEntityId;
         private List<int> _existingEntities;
-   
+
+        // _____________________________________________________________________________________________________________________ //
+
+        // This constructor initializes the first unique entity id to 0, so when
+        // the client calls NewEntity: the first entity id will be 0. The other thing
+        // the construktor does is that it initializes the list that will contain
+        // all the entities that will be used.
         private EntityManager()
         {
             _nextEntityId = 0;
             _existingEntities = new List<int>();
 
         }
+
+        // _____________________________________________________________________________________________________________________ //
 
         // Singelton pattern, we will only have one instance
         // of our entity manager.
