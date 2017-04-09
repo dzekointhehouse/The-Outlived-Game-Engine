@@ -46,8 +46,8 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Velocity.cs" />
-    <Compile Include="ZEngine\Managers\ComponenetsManager.cs" />
+    <Compile Include="ZEngine\Components\Velocity.cs" />
+    <Compile Include="ZEngine\Managers\ComponentManager.cs" />
     <Compile Include="ZEngine\Components\PositionComponent.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />

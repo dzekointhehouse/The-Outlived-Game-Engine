@@ -5,7 +5,7 @@ using ZEngine.Components;
 
 namespace ZEngine.Managers
 {
-    public class ComponenetsManager
+    public class ComponentManager
     {
         private readonly Dictionary<string, Component> _components = new Dictionary<string, Component>()
         {
@@ -40,6 +40,7 @@ namespace ZEngine.Managers
         {
             return (ISystem)Activator.CreateInstance(_components[name].GetType());
         }
+
 
         private Boolean ContainsComponent<T>()
         {

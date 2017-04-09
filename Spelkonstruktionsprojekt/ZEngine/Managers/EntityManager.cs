@@ -12,15 +12,15 @@ namespace ZEngine.Managers
         private static EntityManager _entityManager;
         private int _nextEntityId;
 
-        // The idea here is to have the entity 
-        // entityId as a key here and add 
-        private Dictionary<int, Dictionary<string, Component>> ExistingEntities;
+        // The idea here is to have the entityId as key and its value
+        // is another dictionary containing its components
+        private Dictionary<int, Dictionary<string, Component>> _existingEntities;
 
 
         private EntityManager()
         {
             _nextEntityId = 0;
-            ExistingEntities = new Dictionary<int, Dictionary<string, Component>>();
+            _existingEntities = new Dictionary<int, Dictionary<string, Component>>();
         }
 
         public static EntityManager GetEntityManager()
@@ -42,14 +42,13 @@ namespace ZEngine.Managers
         {
             return _nextEntityId++;
         }
-        /*
-         * This method takes an id and a component, and adds the component
+        /* This method takes an id and a component, and adds the component
          * to the entity of that id.
          */
         public void AddComponent(int entityId, Component component)
         {
 
-            var entityComponents = ExistingEntities[entityId];
+            var entityComponents = _existingEntities[entityId];
             entityComponents.Add(component.GetComponentName, component);
 
         }
@@ -68,7 +67,7 @@ namespace ZEngine.Managers
          */
         public void RemoveComponent(int entityId, string component)
         {
-            var entityComponents = ExistingEntities[entityId];
+            var entityComponents = _existingEntities[entityId];
             entityComponents.Remove(component);
         }
 
@@ -78,7 +77,7 @@ namespace ZEngine.Managers
          */
         public Component GetEntityComponent(int entityId, string componentName)
         {
-            var entityComponents = ExistingEntities[entityId];
+            var entityComponents = _existingEntities[entityId];
             return entityComponents[componentName];
         }
 
@@ -86,14 +85,14 @@ namespace ZEngine.Managers
          */
         public Dictionary<string,Component> GetEntityComponents(int entityId)
         {
-            return ExistingEntities[entityId];
+            return _existingEntities[entityId];
         }
 
         /* To my dear friend fucking August.
          */
         Dictionary<int, Dictionary<string, Component>>.Enumerator GetEntityEnumerator()
         {
-            return ExistingEntities.GetEnumerator();
+            return _existingEntities.GetEnumerator();
         }
 
     
