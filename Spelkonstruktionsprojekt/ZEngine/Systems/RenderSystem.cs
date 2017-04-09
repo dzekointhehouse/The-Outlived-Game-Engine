@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.EventBus;
@@ -31,6 +33,10 @@ namespace ZEngine.Systems
 
         public void Render(RenderDependencies renderDependencies)
         {
+            var graphics = renderDependencies.GraphicsDeviceManager.GraphicsDevice;
+
+            graphics.Clear(Color.CornflowerBlue);
+
             var renderableEntities = EntityManager.GetEntities().Where(entry => IsRenderable(entry.Value));
             foreach (var entity in renderableEntities)
             {
@@ -46,10 +52,7 @@ namespace ZEngine.Systems
                 return renderComponent.PositionComponent != null &&
                        (renderComponent.DimensionsComponent != null || renderComponent.Radius > 0);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 

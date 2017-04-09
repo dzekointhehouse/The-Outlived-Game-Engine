@@ -16,7 +16,6 @@ namespace ZEngine.Managers
         // entityId as a key here and add 
         private Dictionary<int, Dictionary<string, IComponent>> ExistingEntities;
 
-
         private EntityManager()
         {
             _nextEntityId = 0;

@@ -25,6 +25,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public TestGame()
         {
             RenderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this);
+            RenderDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 500;
+            RenderDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
             Content.RootDirectory = "Content";
             _renderSystem = SystemManager.Instance.GetSystem("Render");
             _renderSystem.Start();
@@ -51,6 +53,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             RenderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            EventBus.Publish("LoadContent");
             // TODO: use this.Content to load your game content here
         }
 
@@ -84,10 +87,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            // TODO: Add your drawing code here
             EventBus.Publish("Render", RenderDependencies);
-            EventBus.Publish("RenderOverlay", RenderDependencies);
 
             base.Draw(gameTime);
         }

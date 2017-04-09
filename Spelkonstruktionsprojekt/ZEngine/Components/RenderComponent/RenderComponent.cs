@@ -8,16 +8,12 @@ namespace ZEngine.Components
 {
     class RenderComponent : IComponent
     {
-        public static string GetComponentName => "Render";
-        
         public PositionComponent PositionComponent { get; set; }
 
         public DimensionsComponent DimensionsComponent { get; set; }
 
         public double Radius { get; set; }
-        string IComponent.GetComponentName
-        {
-            get { return GetComponentName; }
-        }
+        
+        public bool IsVisible { get; set; }
     }
 }
