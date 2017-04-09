@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using ZEngine.Components;
 
 namespace ZEngine.Managers
@@ -28,7 +29,7 @@ namespace ZEngine.Managers
         {
             if (!_components.ContainsKey(componentType))
             {
-                throw new Exception("No such component.");
+                return new Dictionary<int, IComponent>();
             }
             else
             {
@@ -51,6 +52,17 @@ namespace ZEngine.Managers
             }
         }
 
+        public bool EntityHasComponent<ComponentType>(int entityId)
+        {
+            var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
+            return entityComponents.ContainsKey(entityId);
+        }
+
+        public ComponentType GetEntityComponent<ComponentType>(int entityId)
+        {
+            var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
+            return entityComponents[entityId];
+        }
 
         public T CreateComponent<T>() where T : new()
         {
@@ -75,13 +87,23 @@ namespace ZEngine.Managers
             return _components.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
         }
 
+        public void AddComponentToEntity<T>(int entityId) where T : new()
+        {
+            AddComponentKeyIfNotPresent(typeof(T));
+
+            var entityComponents = _components[typeof(T)];
+            entityComponents.Add(entityId, (IComponent) new T());
+        }
+
         /* This method is used to associate an instance of a component to a specified
          * entity. it takes the instance of the component and the key: entityId.
          */
-        public void AddComponentToEntity(IComponent component, int entityId)
+        public void AddComponentToEntity(IComponent componentInstance, int entityId)
         {
-            var entityComponents = _components[component.GetType()];
-            entityComponents.Add(entityId, component);
+            AddComponentKeyIfNotPresent(componentInstance.GetType());
+
+            var entityComponents = _components[componentInstance.GetType()];
+            entityComponents.Add(entityId, componentInstance);
         }
 
         // Completely deletes the entity from all components.
@@ -99,6 +121,14 @@ namespace ZEngine.Managers
             var entityComponents = _components[component];
             entityComponents.Remove(entityId);
 
+        }
+
+        public void AddComponentKeyIfNotPresent(Type componentType)
+        {
+            if (!_components.ContainsKey(componentType))
+            {
+                _components[componentType] = new Dictionary<int, IComponent>();
+            }
         }
     }
 }

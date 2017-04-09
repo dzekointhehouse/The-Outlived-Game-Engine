@@ -12,10 +12,11 @@ namespace ZEngine.Managers
 
         private readonly Dictionary<string, ISystem> _systems = new Dictionary<string, ISystem>()
         {
-            { "Render", new RenderSystem() }
+            { "Render", new RenderSystem() },
+            { "LoadContent", new LoadContentSystem() }
         };
 
-        public ISystem GetSystem(string systemName)
+        public ISystem CreateSystem(string systemName)
         {
             if (!_systems.ContainsKey(systemName))
             {
@@ -27,7 +28,7 @@ namespace ZEngine.Managers
             }
         }
             
-        public T GetSystem<T>() where T : new()
+        public T CreateSystem<T>() where T : new()
         {
             if (ContainsSystem<T>())
             {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.EventBus;
@@ -20,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     {
         private EventBus EventBus = EventBus.Instance;
         private RenderDependencies RenderDependencies = new RenderDependencies();
-        private ISystem _renderSystem;
+        private List<ISystem> systems = new List<ISystem>();
 
         public TestGame()
         {
@@ -28,8 +29,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             RenderDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 900;
             RenderDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
             Content.RootDirectory = "Content";
-            _renderSystem = SystemManager.Instance.GetSystem("Render");
-            _renderSystem.Start();
+            systems.Add(SystemManager.Instance.CreateSystem("Render").Start());
+            systems.Add(SystemManager.Instance.CreateSystem("LoadContent").Start());
+
+            var entity = EntityManager.GetEntityManager().NewEntity();
+            var renderComponent = new RenderComponent()
+            {
+                DimensionsComponent = new DimensionsComponent() { Width = 100, Height = 100 },
+                PositionComponent = new PositionComponent() { X = 100, Y = 100 }
+            };
+            ComponentManager.Instance.AddComponentToEntity(renderComponent, entity);
+
+            var spriteComponent = new SpriteComponent()
+            {
+                SpriteName = "java"
+            };
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entity);
         }
 
         /// <summary>
@@ -53,7 +68,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             RenderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            EventBus.Publish("LoadContent");
+            EventBus.Publish("LoadContent", this.Content);
             // TODO: use this.Content to load your game content here
         }
 

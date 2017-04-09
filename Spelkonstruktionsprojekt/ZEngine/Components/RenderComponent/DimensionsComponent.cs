@@ -8,7 +8,7 @@ namespace ZEngine.Components
 {
     class DimensionsComponent : IComponent
     {
-        public string GetComponentName => "DimensionsComponent";
-
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
 }

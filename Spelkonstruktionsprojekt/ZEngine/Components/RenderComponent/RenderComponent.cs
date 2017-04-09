@@ -12,8 +12,8 @@ namespace ZEngine.Components
 
         public DimensionsComponent DimensionsComponent { get; set; }
 
-        public double Radius { get; set; }
-        
-        public bool IsVisible { get; set; }
+        public double Radius { get; set; } = 0;
+
+        public bool IsVisible { get; set; } = true;
     }
 }

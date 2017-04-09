@@ -2,8 +2,8 @@
 {
     public interface ISystem
     {
-        void Start();
+        ISystem Start();
 
-        void Stop();
+        ISystem Stop();
     }
 }

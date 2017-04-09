@@ -8,13 +8,7 @@ namespace ZEngine.Components
 {
     class PositionComponent : IComponent
     {
-        public static string SystemName = "Position";
-
-        public PositionComponent()
-        {
-
-        }
-
-        public string GetComponentName => "PositionComponent";
+        public int X { get; set; }
+        public int Y { get; set; }
     }
 }
