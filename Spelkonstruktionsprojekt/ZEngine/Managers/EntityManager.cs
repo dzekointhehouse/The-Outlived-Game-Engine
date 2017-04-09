@@ -11,17 +11,17 @@ namespace ZEngine.Managers
     {
         private static EntityManager _entityManager;
         private int _nextEntityId;
-
-        // The idea here is to have the entity 
-        // entityId as a key here and add 
-        private Dictionary<int, Dictionary<string, IComponent>> ExistingEntities;
-
+        private List<int> _existingEntities;
+   
         private EntityManager()
         {
             _nextEntityId = 0;
-            ExistingEntities = new Dictionary<int, Dictionary<string, IComponent>>();
+            _existingEntities = new List<int>();
+
         }
 
+        // Singelton pattern, we will only have one instance
+        // of our entity manager.
         public static EntityManager GetEntityManager()
         {
             if (_entityManager != null)
@@ -37,65 +37,32 @@ namespace ZEngine.Managers
 
         // This method generates a unique entity that can be used
         // to build a gameobject with components.
+        // Add new entity id to the list of entites and return it
+        // while generating a new id for the next call.
         public int NewEntity()
         {
+            _existingEntities.Add(_nextEntityId);
             return _nextEntityId++;
         }
-        /*
-         * This method takes an id and a component, and adds the component
-         * to the entity of that id.
-         */
-        public void AddComponent(int entityId, IComponent component)
+
+        // Completely deletes the entity and all components
+        // that are associated with it, thats why it needs to
+        // use the component manager instance.
+        public void DeleteEntity(int entityId, ComponentManager cm)
         {
-
-            var entityComponents = ExistingEntities[entityId];
-            entityComponents.Add(component.GetComponentName, component);
-
+            _existingEntities.Remove(entityId);
+            cm.DeleteEntity(entityId);
+            
         }
-        /*
-         * This method takes a component and deletes it from 
-         * the entity with the corresponding id.
-         */
-        public void RemoveComponent(int entityId, IComponent component)
+
+        // Returns the complete list with all of the existing 
+        // Entities, that have been created.
+        public List<int> GetListWithEntities()
         {
-            RemoveComponent(entityId, component.GetComponentName);
+            return _existingEntities;
         }
 
 
-        /* Overloaded RemoveComponent where you only need to know the component
-         * name you want to remove, to remove it.
-         */
-        public void RemoveComponent(int entityId, string component)
-        {
-            var entityComponents = ExistingEntities[entityId];
-            entityComponents.Remove(component);
-        }
-
-
-        /* This method Returns one specific component
-         * that is specified by component name.
-         */
-        public IComponent GetEntityComponent(int entityId, string componentName)
-        {
-            var entityComponents = ExistingEntities[entityId];
-            return entityComponents[componentName];
-        }
-
-        /* Returns a dictionary with all the components for the entity.
-         */
-        public Dictionary<string,IComponent> GetEntityComponents(int entityId)
-        {
-            return ExistingEntities[entityId];
-        }
-
-        /* To my dear friend fucking August.
-         */
-        public Dictionary<int, Dictionary<string, IComponent>> GetEntities()
-        {
-            return ExistingEntities;
-        }
-
-    
     }
 
 
