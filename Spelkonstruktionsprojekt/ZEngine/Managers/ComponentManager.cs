@@ -7,13 +7,15 @@ namespace ZEngine.Managers
 {
     public class ComponentManager
     {
-        private Dictionary<Type, Dictionary<int, IComponent>> _components = new Dictionary<Type, Dictionary<int, IComponent>>();
+        public static ComponentManager Instance => LazyInitializer.Value;
+        private static readonly Lazy<ComponentManager> LazyInitializer = new Lazy<ComponentManager>(() => new ComponentManager());
 
+        private Dictionary<Type, Dictionary<int, IComponent>> _components = new Dictionary<Type, Dictionary<int, IComponent>>();
 
         /*
          * Returns a dictionary with all the entities that has an instance of the given component type
          */
-        public Dictionary<int, IComponent> GetEntitiesWithThisComponent(Type componentType)
+        public Dictionary<int, IComponent> GetEntitiesWithComponent(Type componentType)
         {
             if (!_components.ContainsKey(componentType))
             {
@@ -24,6 +26,19 @@ namespace ZEngine.Managers
                 return _components[componentType];
             }
         }
+
+        public Dictionary<int, T> GetEntitiesWithComponent<T>()
+        {
+            if (!_components.ContainsKey(typeof(T)))
+            {
+                throw new Exception("No such component.");
+            }
+            else
+            {
+                return _components[typeof(T)] as Dictionary<int, T>;
+            }
+        }
+
 
         public T CreateComponent<T>() where T : new()
         {

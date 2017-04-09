@@ -12,7 +12,7 @@ namespace ZEngine.Managers
 
         private readonly Dictionary<string, ISystem> _systems = new Dictionary<string, ISystem>()
         {
-            { "Render", new RenderSystem(EntityManager.GetEntityManager()) }
+            { "Render", new RenderSystem() }
         };
 
         public ISystem GetSystem(string systemName)

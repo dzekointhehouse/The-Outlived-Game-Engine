@@ -15,15 +15,12 @@ namespace ZEngine.Systems
     {
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         public static string SystemName = "Render";
-        private EntityManager EntityManager { get; set; }
-        public RenderSystem(EntityManager entityManager)
-        {
-            EntityManager = entityManager;
-        }
+        private EntityManager EntityManager = EntityManager.GetEntityManager();
 
         public void Start()
         {
             EventBus.Subscribe<RenderDependencies>("Render", Render);
+            System.Diagnostics.Debug.WriteLine("Subscribed in RenderSystem");
         }
 
         public void Stop()
@@ -33,14 +30,15 @@ namespace ZEngine.Systems
 
         public void Render(RenderDependencies renderDependencies)
         {
+            System.Diagnostics.Debug.Write("  hello  ");
             var graphics = renderDependencies.GraphicsDeviceManager.GraphicsDevice;
 
             graphics.Clear(Color.CornflowerBlue);
 
-            var renderableEntities = EntityManager.GetEntities().Where(entry => IsRenderable(entry.Value));
+            var renderableEntities = ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>();
             foreach (var entity in renderableEntities)
             {
-
+                
             }
         }
 

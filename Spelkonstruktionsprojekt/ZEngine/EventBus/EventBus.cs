@@ -17,11 +17,13 @@ namespace ZEngine.EventBus
 
         public void Publish<T>(string message, T value)
         {
+            //System.Diagnostics.Debug.WriteLine("Event: " + message);
             LocalTypedEventBus.Publish<T>(message, value);
         }
 
         public void Subscribe(string message, Action callback)
         {
+            System.Diagnostics.Debug.WriteLine("Subscribe event: " + message);
             LocalEventBus.Subscribe(message, callback);
         }
 

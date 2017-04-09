@@ -25,7 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public TestGame()
         {
             RenderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this);
-            RenderDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 500;
+            RenderDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 900;
             RenderDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
             Content.RootDirectory = "Content";
             _renderSystem = SystemManager.Instance.GetSystem("Render");

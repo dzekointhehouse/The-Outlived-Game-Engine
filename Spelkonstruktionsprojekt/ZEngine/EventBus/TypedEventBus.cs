@@ -36,6 +36,11 @@ namespace ZEngine.EventBus
         {
             if (NoCallbacksForMessage<T>(message))
             {
+                if (NoMessageArraysForType<T>())
+                {
+                    _actions[typeof(T)] = new Dictionary<string, ICollection<Action<object>>>();
+                }
+
                 _actions[typeof(T)][message] = new Collection<Action<object>>() {callback as Action<object>};
             }
             else
@@ -53,7 +58,12 @@ namespace ZEngine.EventBus
 
         private bool NoCallbacksForMessage<T>(string message)
         {
-            return !_actions.ContainsKey(typeof(T)) && !_actions[typeof(T)].ContainsKey(message);
+            return !_actions.ContainsKey(typeof(T)) || !_actions[typeof(T)].ContainsKey(message);
+        }
+
+        private bool NoMessageArraysForType<T>()
+        {
+            return !_actions.ContainsKey(typeof(T));
         }
     }
 }
