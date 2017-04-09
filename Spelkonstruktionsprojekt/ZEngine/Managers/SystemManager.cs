@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Systems;
 
 namespace ZEngine.Managers
@@ -13,7 +14,8 @@ namespace ZEngine.Managers
         private readonly Dictionary<string, ISystem> _systems = new Dictionary<string, ISystem>()
         {
             { "Render", new RenderSystem() },
-            { "LoadContent", new LoadContentSystem() }
+            { "LoadContent", new LoadContentSystem() },
+            { "HandleInput", new InputHandler() }
         };
 
         public ISystem CreateSystem(string systemName)

@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.EventBus;
 using ZEngine.Wrappers;
+using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -22,6 +24,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private EventBus EventBus = EventBus.Instance;
         private RenderDependencies RenderDependencies = new RenderDependencies();
         private List<ISystem> systems = new List<ISystem>();
+        private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
         public TestGame()
         {
@@ -29,10 +32,29 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             RenderDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 900;
             RenderDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
             Content.RootDirectory = "Content";
+        }
+
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
+        /// </summary>
+        protected override void Initialize()
+        {
             systems.Add(SystemManager.Instance.CreateSystem("Render").Start());
             systems.Add(SystemManager.Instance.CreateSystem("LoadContent").Start());
+            systems.Add(SystemManager.Instance.CreateSystem("HandleInput").Start());
 
+            CreatePlayer();
+
+            base.Initialize();
+        }
+
+        private void CreatePlayer()
+        {
             var entity = EntityManager.GetEntityManager().NewEntity();
+
             var renderComponent = new RenderComponent()
             {
                 DimensionsComponent = new DimensionsComponent() { Width = 100, Height = 100 },
@@ -45,19 +67,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "java"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entity);
-        }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
-        protected override void Initialize()
-        {
-            // TODO: Add your initialization logic here
-
-            base.Initialize();
+            var actionBindings = new ActionBindingsBuilder()
+                .SetAction(Keys.W, KeyEvent.KeyPressed, "entityAccelerate")
+                .SetAction(Keys.S, KeyEvent.KeyPressed, "entityDeccelerate")
+                .SetAction(Keys.A, KeyEvent.KeyPressed, "entityTurnLeft")
+                .SetAction(Keys.D, KeyEvent.KeyPressed, "entityTurnRight")
+                .Build();
+            ComponentManager.Instance.AddComponentToEntity(actionBindings, entity);
         }
 
         /// <summary>
@@ -91,7 +108,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            EventBus.Publish("HandleInput", _oldKeyboardState);
+            _oldKeyboardState = Keyboard.GetState();
 
             base.Update(gameTime);
         }
