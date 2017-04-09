@@ -9,7 +9,7 @@ namespace ZEngine.EventBus
 {
     public class TypedEventBus
     {
-        private readonly Dictionary<Type, Dictionary<string, ICollection<Action<object>>>> _actions = new Dictionary<Type, Dictionary<string, ICollection<Action<object>>>>();
+        private readonly Dictionary<Type, Dictionary<string, ICollection<object>>> _actions = new Dictionary<Type, Dictionary<string, ICollection<object>>>();
 
         /**
          *  When publishing a message and a value of certain type
@@ -38,22 +38,23 @@ namespace ZEngine.EventBus
             {
                 if (NoMessageArraysForType<T>())
                 {
-                    _actions[typeof(T)] = new Dictionary<string, ICollection<Action<object>>>();
+                    _actions[typeof(T)] = new Dictionary<string, ICollection<object>>();
                 }
 
-                _actions[typeof(T)][message] = new Collection<Action<object>>() {callback as Action<object>};
+                _actions[typeof(T)][message] = new Collection<object>() {callback};
             }
             else
             {
-                _actions[typeof(T)][message].Add(callback as Action<object>);
+                _actions[typeof(T)][message].Add(callback);
             }
+
         }
 
         public void Unsubscribe<T>(string message, Action<T> callback)
         {
             if (NoCallbacksForMessage<T>(message)) throw new Exception("Nothing to unsubscribe.");
 
-            _actions[typeof(T)][message].Remove(callback as Action<object>);
+            _actions[typeof(T)][message].Remove(callback);
         }
 
         private bool NoCallbacksForMessage<T>(string message)

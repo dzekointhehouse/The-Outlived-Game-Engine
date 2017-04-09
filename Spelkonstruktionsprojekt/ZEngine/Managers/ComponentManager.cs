@@ -31,7 +31,7 @@ namespace ZEngine.Managers
         {
             if (!_components.ContainsKey(typeof(T)))
             {
-                throw new Exception("No such component.");
+                return new Dictionary<int, T>();
             }
             else
             {
