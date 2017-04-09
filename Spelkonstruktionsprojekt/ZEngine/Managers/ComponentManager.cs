@@ -7,13 +7,13 @@ namespace ZEngine.Managers
 {
     public class ComponentManager
     {
-        private Dictionary<Type, Dictionary<int, Component>> _components = new Dictionary<Type, Dictionary<int, Component>>();
+        private Dictionary<Type, Dictionary<int, IComponent>> _components = new Dictionary<Type, Dictionary<int, IComponent>>();
 
 
         /*
          * Returns a dictionary with all the entities that has an instance of the given component type
          */
-        public Dictionary<int, Component> GetEntitiesWithThisComponent(Type componentType)
+        public Dictionary<int, IComponent> GetEntitiesWithThisComponent(Type componentType)
         {
             if (!_components.ContainsKey(componentType))
             {
@@ -51,7 +51,7 @@ namespace ZEngine.Managers
         /* This method is used to associate an instance of a component to a specified
          * entity. it takes the instance of the component and the key: entityId.
          */
-        public void AddComponentToEntity(Component component, int entityId)
+        public void AddComponentToEntity(IComponent component, int entityId)
         {
             var entityComponents = _components[component.GetType()];
             entityComponents.Add(entityId, component);
