@@ -55,6 +55,9 @@ namespace ZEngine.Managers
             }
         }
 
+        // This method returns true if the entity has an association
+        // with the specified component. The component type is given as type parameter
+        // and that type has to implement the IComponent interface.
         public bool EntityHasComponent<ComponentType>(int entityId) where ComponentType : IComponent
         {
             var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
@@ -67,7 +70,11 @@ namespace ZEngine.Managers
             return entityComponents[entityId];
         }
 
-        public T CreateComponent<T>() where T : new()
+        // Creates an returns an instance of an empty component
+        // that is specified in the type parameter. This metod also checks
+        // if the dictionary contains that metod, otherwise we cannot create it.
+        // The component type you want to create also needs to implement IComponent.
+        public T CreateComponent<T>() where T : IComponent, new()
         {
             if (ContainsComponent<T>())
             {
@@ -79,12 +86,15 @@ namespace ZEngine.Managers
             }
         }
 
+        // I don't know what this does, this shit wasn't me.
         private ISystem NewComponent(Type name)
         {
             return (ISystem)Activator.CreateInstance(_components[name].GetType());
         }
 
-
+        // The only thing done here is that this method checks
+        // if the dictionary contains the componenttype specified
+        // in the type parameter.
         private Boolean ContainsComponent<T>()
         {
             return _components.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
@@ -98,9 +108,8 @@ namespace ZEngine.Managers
             entityComponents.Add(entityId, (IComponent) new T());
         }
 
-        /* This method is used to associate an instance of a component to a specified
-         * entity. it takes the instance of the component and the key: entityId.
-         */
+        // This method is used to associate an instance of a component to a specified
+        // entity. it takes the instance of the component and the key: entityId.
         public void AddComponentToEntity(IComponent componentInstance, int entityId)
         {
             AddComponentKeyIfNotPresent(componentInstance.GetType());
@@ -109,7 +118,10 @@ namespace ZEngine.Managers
             entityComponents.Add(entityId, componentInstance);
         }
 
-        // Completely deletes the entity from all components.
+        // Completely deletes the entity key and all the usages of it
+        // in other places (componentManager) where it is associated with
+        // instances of other components. We loop through all component types,
+        // in the component manager dictionary.
         public void DeleteEntity(int entityId)
         {
             foreach (var component in _components.Keys)
@@ -126,6 +138,9 @@ namespace ZEngine.Managers
 
         }
 
+        // This method adds the component type as the key to the dictionary that 
+        // consists of those componenttype keys, and an inner dictionary that contains
+        // the entityId as the key and the instance of the component as value.
         public void AddComponentKeyIfNotPresent(Type componentType)
         {
             if (!_components.ContainsKey(componentType))
