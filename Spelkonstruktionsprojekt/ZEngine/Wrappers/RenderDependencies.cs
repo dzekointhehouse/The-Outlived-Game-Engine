@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ZEngine.Wrappers
 {
-    public class GameDependencies
+    public class RenderDependencies
     { 
         // These are som of the dependencies that we will need for our
         // fine monogame engine.

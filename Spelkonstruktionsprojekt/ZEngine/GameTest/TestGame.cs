@@ -7,10 +7,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
-using ZEngine.EventBus;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
 
@@ -21,83 +21,79 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     /// </summary>
     public class TestGame : Game
     {
-        private EventBus EventBus = EventBus.Instance;
-        private GameDependencies gameDependencies = new GameDependencies();
+        private readonly RenderDependencies _renderDependencies = new RenderDependencies();
         private List<ISystem> _systems = new List<ISystem>();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
+        private RenderSystem RenderSystem;
+        private LoadContentSystem LoadContentSystem;
+        private InputHandler InputHandlerSystem;
         public TestGame()
         {
-            //We add gameDepencencies that the systems will need
-            gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this);
-            gameDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 900;
-            gameDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
-            // We add the spritebatch and the game content we get from the content 
-            // pipeline to our gameDependencies, so we can use them in our systems.
-
-
             Content.RootDirectory = "Content";
         }
 
         protected override void Initialize()
         {
+            RenderSystem = SystemManager.Instance.GetSystem<RenderSystem>();
+            LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
+            InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
 
 
-            // We call the method that creates a player.
-            CreatePlayer();
+            _renderDependencies.GameContent = this.Content;
+            _renderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            _renderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 900,
+                PreferredBackBufferHeight = 500
+            };
+
+            CreateTestEntities();
 
             base.Initialize();
         }
 
-        // This is just to test to create entities
-        private void CreatePlayer()
+        private void CreateTestEntities()
         {
+            //Initializing first, movable, entity
             var entityId1 = EntityManager.GetEntityManager().NewEntity();
-            var entityId2 = EntityManager.GetEntityManager().NewEntity();
-
-            // Creates Render component
             var renderComponent = new RenderComponent()
             {
                 DimensionsComponent = new DimensionsComponent() { Width = 100, Height = 100 },
                 Position = new Vector2(100, 100)
             };
-            var renderComponent2 = new RenderComponent()
-            {
-                DimensionsComponent = new DimensionsComponent() { Width = 200, Height = 200 },
-                Position = new Vector2(100, 100)
-            };
-            // Adds the component to the entity
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
-            ComponentManager.Instance.AddComponentToEntity(renderComponent2, entityId2);
-
-            // Creates Sprite component
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "java"
             };
-
-            var spriteComponent2 = new SpriteComponent()
-            {
-                SpriteName = "Atlantis Nebula UHD"
-            };
-            // Adds it to the entity
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent2, entityId2);
-
             var actionBindings = new ActionBindingsBuilder()
                 .SetAction(Keys.W, KeyEvent.KeyPressed, "entityAccelerate")
                 .SetAction(Keys.S, KeyEvent.KeyPressed, "entityDeccelerate")
                 .SetAction(Keys.A, KeyEvent.KeyPressed, "entityTurnLeft")
                 .SetAction(Keys.D, KeyEvent.KeyPressed, "entityTurnRight")
                 .Build();
+            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
+
+            //Initializing a second, imovable, entity
+            var entityId2 = EntityManager.GetEntityManager().NewEntity();
+            var renderComponent2 = new RenderComponent()
+            {
+                DimensionsComponent = new DimensionsComponent() { Width = 200, Height = 200 },
+                Position = new Vector2(100, 100)
+            };
+            ComponentManager.Instance.AddComponentToEntity(renderComponent2, entityId2);
+            var spriteComponent2 = new SpriteComponent()
+            {
+                SpriteName = "Atlantis Nebula UHD"
+            };
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent2, entityId2);
         }
 
         protected override void LoadContent()
         {
-            gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            gameDependencies.GameContent = this.Content;
-            // TODO: use this.Content to load your game content here
+            LoadContentSystem.LoadContent(this.Content);
         }
 
 
@@ -109,13 +105,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // here we create and start loadcontentsystem
-            SystemManager.Instance.CreateSystem<LoadContentSystem>().StartSystem(gameDependencies);
-
-            // EventBus.Publish("HandleInput", _oldKeyboardState);
+            InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
 
             base.Update(gameTime);
@@ -123,9 +113,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Draw(GameTime gameTime)
         {
-            // here we create and use Rendersystem
-            SystemManager.Instance.CreateSystem<RenderSystem>().StartSystem(gameDependencies);
-
+            RenderSystem.Render(_renderDependencies);
             base.Draw(gameTime);
         }
     }

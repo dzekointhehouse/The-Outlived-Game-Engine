@@ -17,50 +17,29 @@ namespace ZEngine.Managers
 
         // And of course as August likes it, we have an dictionary with
         // the dictionary name as the key, and the system instance as value.
-        private readonly Dictionary<string, ISystem> _systems = new Dictionary<string, ISystem>()
+        private readonly Dictionary<Type, ISystem> _systems = new Dictionary<Type, ISystem>()
         {
-            { "Render", new RenderSystem() },
-            { "LoadContent", new LoadContentSystem() },
-            { "HandleInput", new InputHandler() }
+            { typeof(RenderSystem), new RenderSystem() },
+            { typeof(LoadContentSystem), new LoadContentSystem() },
+            { typeof(InputHandler), new InputHandler() }
         };
 
         // _____________________________________________________________________________________________________________________ //
 
-        // This is the same as the CreateSystem method below,
-        // except it uses oldschool syntax.
-        public ISystem CreateSystem(string systemName)
-        {
-            if (!_systems.ContainsKey(systemName))
-            {
-                throw new Exception("No such system.");
-            }
-            else
-            {
-                return NewSystem(systemName);
-            }
-        }
-
-        // Creates an instance of a new system that is specified
+        // Gets the instance of system that is specified
         // as a type parameter. The method checks by using ContainsSystem
-        // if the systemtype is a valid system and then returns an 
-        // instance. https://msdn.microsoft.com/en-us/library/d5x73970.aspx  
-        public T CreateSystem<T>() where T : new()
+        // if the systemtype is a valid system and then returns the 
+        // instance from the dictionary above. https://msdn.microsoft.com/en-us/library/d5x73970.aspx  
+        public T GetSystem<T>() where T : class, ISystem
         {
             if (ContainsSystem<T>())
             {
-                return new T();
+                return _systems[typeof(T)] as T;
             }
             else
             {
                 throw new Exception("No such system exist.");
             }
-        }
-
-        // Creates an instance of the specified type 
-        // using that type's default constructor.
-        private ISystem NewSystem(string name)
-        {
-            return (ISystem) Activator.CreateInstance(_systems[name].GetType());
         }
 
         // Checks the systems dictionary if it contains the 

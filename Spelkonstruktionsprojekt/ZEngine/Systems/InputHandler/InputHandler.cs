@@ -90,8 +90,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             return newState.IsKeyUp(key) && oldState.IsKeyDown(key);
         }
 
-        public void StartSystem(GameDependencies gd)
-        {
-        }
     }
 }

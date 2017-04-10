@@ -19,7 +19,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         }
 
 
-        public void StartSystem(GameDependencies gd)
+        public void StartSystem(RenderDependencies gd)
         {
 
         }

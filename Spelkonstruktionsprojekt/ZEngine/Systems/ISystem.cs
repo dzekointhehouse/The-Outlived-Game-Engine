@@ -5,6 +5,5 @@ namespace ZEngine.Managers
 {
     public interface ISystem
     {
-        void StartSystem(GameDependencies gd);
     }
 }

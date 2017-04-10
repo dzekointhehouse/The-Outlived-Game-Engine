@@ -23,7 +23,7 @@ namespace ZEngine.Systems
         public static string SystemName = "Render";
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private readonly Action<GameDependencies> _systemAction;
+        private readonly Action<RenderDependencies> _systemAction;
 
         // _____________________________________________________________________________________________________________________ //
 
@@ -38,7 +38,7 @@ namespace ZEngine.Systems
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
-        public void Render(GameDependencies gm)
+        public void Render(RenderDependencies gm)
         {
             var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
             var spriteBatch = gm.SpriteBatch;
@@ -64,9 +64,6 @@ namespace ZEngine.Systems
 
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
-
-        
-
                     var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
                     
                     spriteBatch.Draw(
@@ -81,11 +78,6 @@ namespace ZEngine.Systems
                         1);                                                 // layerdepth
                 }
             }
-        }
-
-        public void StartSystem(GameDependencies gd)
-        {
-            Render(gd);
         }
     }
 }

@@ -15,16 +15,6 @@ namespace ZEngine.Systems
 {
     class LoadContentSystem : ISystem
     {
-        private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
-
-        private readonly Action<ContentManager> _systemAction;
-
-        public LoadContentSystem()
-        {
-            _systemAction = LoadContent;
-        }
-
-
         public void LoadContent(ContentManager contentManager)
         {
             var entities2 = ComponentManager.Instance
@@ -40,11 +30,6 @@ namespace ZEngine.Systems
                 entity.Value.Width = entity.Value.Sprite.Width;
                 entity.Value.Height = entity.Value.Sprite.Height;
             }
-        }
-
-        public void StartSystem(GameDependencies gd)
-        {
-            LoadContent(gd.GameContent as ContentManager);
         }
     }
 }
