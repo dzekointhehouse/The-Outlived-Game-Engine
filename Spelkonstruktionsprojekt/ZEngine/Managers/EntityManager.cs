@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using ZEngine.Components;
-using ZombieGame;
 
 namespace ZEngine.Managers
 {

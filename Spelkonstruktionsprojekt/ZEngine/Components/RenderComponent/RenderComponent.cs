@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ZEngine.Wrappers;
 
 namespace ZEngine.Components
 {
     class RenderComponent : IComponent
     {
-        public PositionComponent PositionComponent { get; set; }
+        public Vector2Component Position { get; set; }
 
         public DimensionsComponent DimensionsComponent { get; set; }
 

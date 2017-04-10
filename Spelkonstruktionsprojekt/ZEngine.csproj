@@ -42,8 +42,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
+    <Compile Include="ZEngine\Components\MoveComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\DimensionsComponent.cs" />
     <Compile Include="ZEngine\Components\IComponent.cs" />
+    <Compile Include="ZEngine\Components\RenderComponent\PositionComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteComponent.cs" />
     <Compile Include="ZEngine\EventBus\IEventBus.cs" />
@@ -55,15 +57,15 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZEngine\Components\Velocity.cs" />
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
-    <Compile Include="ZEngine\Components\RenderComponent\PositionComponent.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
+    <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
     <Compile Include="ZEngine\Wrappers\RenderDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
+    <Compile Include="ZEngine\Wrappers\Vector2Component.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

@@ -58,7 +58,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var renderComponent = new RenderComponent()
             {
                 DimensionsComponent = new DimensionsComponent() { Width = 100, Height = 100 },
-                PositionComponent = new PositionComponent() { X = 100, Y = 100 }
+                Position = new Vector2Component(100, 100)
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entity);
 

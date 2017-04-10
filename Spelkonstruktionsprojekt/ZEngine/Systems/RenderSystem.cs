@@ -53,7 +53,7 @@ namespace ZEngine.Systems
             var renderableEntities = ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>();
             foreach (var entity in renderableEntities)
             {
-                var position = entity.Value.PositionComponent;
+                var position = entity.Value.Position.Vectors;
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
                     var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
@@ -67,7 +67,7 @@ namespace ZEngine.Systems
             if (entityComponents.ContainsKey("Render"))
             {
                 RenderComponent renderComponent = (RenderComponent) entityComponents["Render"];
-                return renderComponent.PositionComponent != null &&
+                return renderComponent.Position != null &&
                        (renderComponent.DimensionsComponent != null || renderComponent.Radius > 0);
             }
             return false;
