@@ -22,7 +22,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     public class TestGame : Game
     {
         private readonly RenderDependencies _renderDependencies = new RenderDependencies();
-        private List<ISystem> _systems = new List<ISystem>();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
         private RenderSystem RenderSystem;
@@ -30,6 +29,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private InputHandler InputHandlerSystem;
         public TestGame()
         {
+            _renderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 900,
+                PreferredBackBufferHeight = 500
+            };
             Content.RootDirectory = "Content";
         }
 
@@ -39,14 +43,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
 
-
             _renderDependencies.GameContent = this.Content;
             _renderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            _renderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
-            {
-                PreferredBackBufferWidth = 900,
-                PreferredBackBufferHeight = 500
-            };
 
             CreateTestEntities();
 
@@ -57,11 +55,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             //Initializing first, movable, entity
             var entityId1 = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent = new RenderComponent()
-            {
-                DimensionsComponent = new DimensionsComponent() { Width = 100, Height = 100 },
-                Position = new Vector2(100, 100)
-            };
+            var renderComponent = new RenderComponentBuilder()
+                .Position(150, 150, 2)
+                .Dimensions(100, 100).Build();
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "java"
@@ -78,11 +74,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             //Initializing a second, imovable, entity
             var entityId2 = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent2 = new RenderComponent()
-            {
-                DimensionsComponent = new DimensionsComponent() { Width = 200, Height = 200 },
-                Position = new Vector2(100, 100)
-            };
+            var renderComponent2 = new RenderComponentBuilder()
+                .Position(0, 0, 1)
+                .Dimensions(900, 500).Build();
             ComponentManager.Instance.AddComponentToEntity(renderComponent2, entityId2);
             var spriteComponent2 = new SpriteComponent()
             {

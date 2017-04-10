@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZEngine.Components
 {
-    class DimensionsComponent : IComponent
+    public class DimensionsComponent : IComponent
     {
         public int Width { get; set; }
         public int Height { get; set; }

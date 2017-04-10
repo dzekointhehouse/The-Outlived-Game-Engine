@@ -9,14 +9,56 @@ using ZEngine.Wrappers;
 
 namespace ZEngine.Components
 {
-    class RenderComponent : IComponent
+    public class RenderComponent : IComponent
     {
-        public Nullable<Vector2> Position { get; set; } = null;
+        public PositionComponent PositionComponent { get; set; } = null;
 
         public DimensionsComponent DimensionsComponent { get; set; }
 
         public double Radius { get; set; } = 0;
 
         public bool IsVisible { get; set; } = true;
+    }
+
+    public class RenderComponentBuilder
+    {
+        private readonly RenderComponent _renderComponent = new RenderComponent();
+
+        public RenderComponent Build()
+        {
+            return _renderComponent;
+        }
+
+        public RenderComponentBuilder Position(int x, int y, int zIndex)
+        {
+            _renderComponent.PositionComponent = new PositionComponent()
+            {
+                Position = new Vector2(x, y),
+                ZIndex = zIndex
+            };
+            return this;
+        }
+
+        public RenderComponentBuilder Dimensions(int width, int height)
+        {
+            _renderComponent.DimensionsComponent = new DimensionsComponent()
+            {
+                Width = width,
+                Height = height
+            };
+            return this;
+        }
+
+        public RenderComponentBuilder Radius(int radius)
+        {
+            _renderComponent.Radius = radius;
+            return this;
+        }
+
+        public RenderComponentBuilder IsVisivle(bool isVisible)
+        {
+            _renderComponent.IsVisible = isVisible;
+            return this;
+        }
     }
 }

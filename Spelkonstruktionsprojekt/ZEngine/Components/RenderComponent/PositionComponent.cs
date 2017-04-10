@@ -9,7 +9,8 @@ namespace ZEngine.Components
 {
     public class PositionComponent
     {
-        public Vector3 Position { get; set; }
+        public Vector2 Position { get; set; }
 
+        public int ZIndex { get; set; }
     }
 }

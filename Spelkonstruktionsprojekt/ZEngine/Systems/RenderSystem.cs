@@ -44,7 +44,7 @@ namespace ZEngine.Systems
             var spriteBatch = gm.SpriteBatch;
 
             graphics.Clear(Color.CornflowerBlue); // Maybe done outside
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.FrontToBack);
             DrawEntities(spriteBatch);
             spriteBatch.End();
         }
@@ -60,22 +60,33 @@ namespace ZEngine.Systems
 
             foreach (var entity in renderableEntities)
             {
-                var position = entity.Value.Position.Value;
+                var position = entity.Value.PositionComponent.Position;
+                var zIndex = entity.Value.PositionComponent.ZIndex;
 
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
                     var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
-                    
+                    sprite.Scale = 1;
+                    var destinationRectangle = new Rectangle(
+                        new Point((int) position.X, (int) position.Y),
+                        new Point((int) (entity.Value.DimensionsComponent.Width * sprite.Scale), (int) (entity.Value.DimensionsComponent.Height * sprite.Scale))  
+                    );
+                    var spriteCrop = new Rectangle(
+                        sprite.Position,
+                        new Point(sprite.Width, sprite.Height)
+                    );
+
+                    var zIndexMaxLimit = 1000;
                     spriteBatch.Draw(
-                        sprite.Sprite,                                      // texture
-                        new Vector2(position.X, position.Y),                // position
-                        null,                                               // Source rectangle
-                        Color.White,                                        // color
-                        sprite.Angle,                                       // rotation
-                        new Vector2(x: sprite.Width/2, y: sprite.Height/2), // origin for rotation
-                        sprite.Scale,                                       // Scale
-                        SpriteEffects.None,                                 // effects
-                        1);                                                 // layerdepth
+                        texture: sprite.Sprite,  
+                        destinationRectangle:  destinationRectangle,                     
+                        sourceRectangle: spriteCrop,                                               
+                        color: Color.White,                                        
+                        rotation: sprite.Angle,                                       
+                        origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2), 
+                        effects: SpriteEffects.None,                                 
+                        layerDepth: (float) zIndex / zIndexMaxLimit //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
+                    );                                                 
                 }
             }
         }
