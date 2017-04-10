@@ -31,7 +31,6 @@ namespace ZEngine.EventBus
          * will execute callback when some value of that same
          * type and with that same message is pusblished to the EventBus.
          */
-
         public void Subscribe<T>(string message, Action<T> callback)
         {
             if (NoCallbacksForMessage<T>(message))
