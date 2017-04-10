@@ -28,6 +28,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public TestGame()
         {
+            //We add gameDepencencies that the systems will need
             gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this);
             gameDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 900;
             gameDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
@@ -48,6 +49,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             base.Initialize();
         }
 
+        // This is just to test to create entities
         private void CreatePlayer()
         {
             var entityId1 = EntityManager.GetEntityManager().NewEntity();
@@ -91,10 +93,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
             gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -114,6 +112,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // here we create and start loadcontentsystem
             SystemManager.Instance.CreateSystem<LoadContentSystem>().StartSystem(gameDependencies);
 
             // EventBus.Publish("HandleInput", _oldKeyboardState);
@@ -124,8 +123,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Draw(GameTime gameTime)
         {
+            // here we create and use Rendersystem
             SystemManager.Instance.CreateSystem<RenderSystem>().StartSystem(gameDependencies);
-            //EventBus.Publish("Render", gameDependencies);
 
             base.Draw(gameTime);
         }
