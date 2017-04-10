@@ -8,6 +8,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class Weapon : IComponent
     {
-
+        string Name { get; set; }
+        int Damage { get; set; }
+        float Range { get; set; }
+        int RateOfFire{get; set;}
     }
 }

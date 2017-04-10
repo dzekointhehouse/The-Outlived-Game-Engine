@@ -66,7 +66,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var renderComponent2 = new RenderComponent()
             {
                 DimensionsComponent = new DimensionsComponent() { Width = 200, Height = 200 },
-                Position = new Vector2Component(100, 100)
+                Position = new Vector2(100, 100)
             };
             // Adds the component to the entity
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
@@ -78,7 +78,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "java"
             };
 
-            var spriteComponent2 = new SpriteComponent()
+            var spriteComponent2 = new SpriteSheetComponent()
             {
                 SpriteName = "Atlantis Nebula UHD"
             };
