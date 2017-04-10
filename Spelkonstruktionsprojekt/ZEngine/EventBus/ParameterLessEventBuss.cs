@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace ZEngine.EventBus
 {
-    public class ParameterLessEventBus
+    public class ParameterlessEventBus
     {
         private readonly Dictionary<string, ICollection<Action>> _actions = new Dictionary<string, ICollection<Action>>();
         

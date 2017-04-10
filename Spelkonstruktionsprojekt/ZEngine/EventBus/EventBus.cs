@@ -7,7 +7,7 @@ namespace ZEngine.EventBus
         public static EventBus Instance => LazyInitializer.Value;
         private static readonly Lazy<EventBus> LazyInitializer = new Lazy<EventBus>(() => new EventBus());
 
-        private static ParameterLessEventBus LocalEventBus = new ParameterLessEventBus();
+        private static ParameterlessEventBus LocalEventBus = new ParameterlessEventBus();
         private static TypedEventBus LocalTypedEventBus = new TypedEventBus();
         
         public void Publish(string message)
