@@ -61,9 +61,9 @@ namespace ZEngine.Systems
             {
                 var position = entity.Value.Position;
 
-                if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
+                if (ComponentManager.EntityHasComponent<SpriteSheetComponent>(entity.Key))
                 {
-                    var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
+                    var sprite = ComponentManager.GetEntityComponent<SpriteSheetComponent>(entity.Key);
                     spriteBatch.Draw(sprite.Sprite, new Vector2(position.X, position.Y), Color.White);
                 }
             }

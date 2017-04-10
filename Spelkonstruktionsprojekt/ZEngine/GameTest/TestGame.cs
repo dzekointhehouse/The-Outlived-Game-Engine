@@ -65,7 +65,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entity);
 
             // Creates Sprite component
-            var spriteComponent = new SpriteComponent()
+            var spriteComponent = new SpriteSheetComponent()
             {
                 SpriteName = "java"
             };

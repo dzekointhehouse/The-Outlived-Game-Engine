@@ -50,7 +50,7 @@
     <Compile Include="ZEngine\Components\RenderComponent\PositionComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderComponent.cs" />
     <Compile Include="ZEngine\Components\SoundComponent.cs" />
-    <Compile Include="ZEngine\Components\SpriteComponent.cs" />
+    <Compile Include="ZEngine\Components\SpriteSheetComponent.cs" />
     <Compile Include="ZEngine\Components\Weapon.cs" />
     <Compile Include="ZEngine\EventBus\IEventBus.cs" />
     <Compile Include="ZEngine\EventBus\TypedEventBus.cs" />
