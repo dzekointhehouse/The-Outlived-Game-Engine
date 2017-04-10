@@ -8,6 +8,6 @@ namespace ZEngine.Managers
 
         ISystem Stop();
 
-        //void SystemProcess();
+        void SystemProcess();
     }
 }

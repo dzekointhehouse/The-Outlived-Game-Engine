@@ -11,7 +11,7 @@ namespace ZEngine.Components
 {
     class RenderComponent : IComponent
     {
-        public Vector2 Position { get; set; }
+        public Nullable<Vector2> Position { get; set; } = null;
 
         public DimensionsComponent DimensionsComponent { get; set; }
 
