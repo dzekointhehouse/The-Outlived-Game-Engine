@@ -10,13 +10,13 @@ namespace ZEngine.Components.MoveComponent
 {
     public class MoveComponent : IComponent
     {
-        public Vector2Component Velocity;
-        public Vector2Component MinVelocity;
-        public Vector2Component MaxVelocity;
+        public Vector2 Velocity;
+        public Vector2 MinVelocity;
+        public Vector2 MaxVelocity;
 
-        public Vector2Component Acceleration;
-        public Vector2Component MinAcceleration;
-        public Vector2Component MaxAcceleration;
+        public Vector2 Acceleration;
+        public Vector2 MinAcceleration;
+        public Vector2 MaxAcceleration;
 
         public double RotationSpeed = 0;
     }
