@@ -9,7 +9,7 @@ namespace ZEngine.EventBus
         private readonly Dictionary<string, ICollection<Action>> _actions = new Dictionary<string, ICollection<Action>>();
         
         /**
-         *  When publishing a message and a value of certain type
+         *  When publishing a message and a value of certain type it
          *  will initiate an Action stored in "_actions" that corresponds
          *  to the value type and the message.
          */
