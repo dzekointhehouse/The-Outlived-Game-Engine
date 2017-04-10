@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ZEngine.Components;
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class Weapon : IComponent
+    class WeaponComponent : IComponent
     {
         string Name { get; set; }
         int Damage { get; set; }
