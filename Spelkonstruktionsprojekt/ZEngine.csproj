@@ -67,7 +67,7 @@
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
-    <Compile Include="ZEngine\Wrappers\RenderDependencies.cs" />
+    <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
   </ItemGroup>

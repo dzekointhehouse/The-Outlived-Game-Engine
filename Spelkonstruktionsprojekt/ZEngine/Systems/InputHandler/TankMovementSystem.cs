@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZEngine.EventBus;
 using ZEngine.Managers;
+using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -15,6 +16,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public ISystem Start()
         {
             return this;
+        }
+
+
+        public void StartSystem(GameDependencies gd)
+        {
+
         }
 
         public ISystem Stop()

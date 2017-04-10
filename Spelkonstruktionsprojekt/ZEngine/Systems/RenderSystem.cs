@@ -23,7 +23,7 @@ namespace ZEngine.Systems
         public static string SystemName = "Render";
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private readonly Action<RenderDependencies> _systemAction;
+        private readonly Action<GameDependencies> _systemAction;
 
         // _____________________________________________________________________________________________________________________ //
 
@@ -34,18 +34,19 @@ namespace ZEngine.Systems
 
         // _____________________________________________________________________________________________________________________ //
 
-        // Start the system will subscribe it to the eventbus.
-        public ISystem Start()
-        {
-            EventBus.Subscribe<RenderDependencies>("Render", _systemAction);
-            return this;
-        }
 
-        // will stop it.
-        public ISystem Stop()
+        // Render just gets the graphicsdevice and the spritebatch
+        // so we can render the entities that are drawn in RenderEntities
+        // method.
+        public void Render(GameDependencies gm)
         {
-            EventBus.Unsubscribe<RenderDependencies>("Render", _systemAction);
-            return this;
+            var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
+            var spriteBatch = gm.SpriteBatch;
+
+            graphics.Clear(Color.CornflowerBlue); // Maybe done outside
+            spriteBatch.Begin();
+            DrawEntities(spriteBatch);
+            spriteBatch.End();
         }
 
 
@@ -53,13 +54,13 @@ namespace ZEngine.Systems
         // with the render component. 1. we use our Component manager instance
         // to get all the entities with RenderComponent and then we render them.
         // we use the spritebach to draw all the entities.
-        private void RenderEntities(SpriteBatch spriteBatch)
+        private void DrawEntities(SpriteBatch spriteBatch)
         {
             var renderableEntities = ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>();
 
             foreach (var entity in renderableEntities)
             {
-                var position = entity.Value.Position;
+                var position = entity.Value.Position.Value;
 
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
@@ -82,18 +83,9 @@ namespace ZEngine.Systems
             }
         }
 
-        // Render just gets the graphicsdevice and the spritebatch
-        // so we can render the entities that are drawn in RenderEntities
-        // method.
-        public void Render(RenderDependencies renderDependencies)
+        public void StartSystem(GameDependencies gd)
         {
-            var graphics = renderDependencies.GraphicsDeviceManager.GraphicsDevice;
-            var spriteBatch = renderDependencies.SpriteBatch;
-
-            graphics.Clear(Color.CornflowerBlue); // Maybe done outside
-            spriteBatch.Begin();
-            RenderEntities(spriteBatch);
-            spriteBatch.End();
+            Render(gd);
         }
     }
 }

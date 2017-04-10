@@ -22,15 +22,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     public class TestGame : Game
     {
         private EventBus EventBus = EventBus.Instance;
-        private RenderDependencies RenderDependencies = new RenderDependencies();
+        private GameDependencies gameDependencies = new GameDependencies();
         private List<ISystem> _systems = new List<ISystem>();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
         public TestGame()
         {
-            RenderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this);
-            RenderDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 900;
-            RenderDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
+            gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this);
+            gameDependencies.GraphicsDeviceManager.PreferredBackBufferWidth = 900;
+            gameDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
+            // We add the spritebatch and the game content we get from the content 
+            // pipeline to our gameDependencies, so we can use them in our systems.
+            gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            gameDependencies.GameContent = this.Content;
+
             Content.RootDirectory = "Content";
         }
 
@@ -43,9 +48,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         protected override void Initialize()
         {
             // We add and activate the systems
-            _systems.Add(SystemManager.Instance.CreateSystem("Render").Start());
-            _systems.Add(SystemManager.Instance.CreateSystem("LoadContent").Start());
-            _systems.Add(SystemManager.Instance.CreateSystem("HandleInput").Start());
+            //_systems.Add(SystemManager.Instance.CreateSystem("Render").Start());
+            //_systems.Add(SystemManager.Instance.CreateSystem("LoadContent").Start());
+            //_systems.Add(SystemManager.Instance.CreateSystem("HandleInput").Start());
+
             // We call the method that creates a player.
             CreatePlayer();
 
@@ -101,9 +107,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            RenderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            EventBus.Publish("LoadContent", this.Content);
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -126,7 +130,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            EventBus.Publish("HandleInput", _oldKeyboardState);
+            SystemManager.Instance.CreateSystem<LoadContentSystem>().StartSystem(gameDependencies);
+
+            // EventBus.Publish("HandleInput", _oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
 
             base.Update(gameTime);
@@ -138,7 +144,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            EventBus.Publish("Render", RenderDependencies);
+            SystemManager.Instance.CreateSystem<RenderSystem>().StartSystem(gameDependencies);
+            //EventBus.Publish("Render", gameDependencies);
 
             base.Draw(gameTime);
         }

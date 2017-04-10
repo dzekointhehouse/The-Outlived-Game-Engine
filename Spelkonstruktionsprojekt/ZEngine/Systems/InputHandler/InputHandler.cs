@@ -7,6 +7,7 @@ using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
+using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 {
@@ -87,6 +88,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         private bool IsKeyRelease(Keys key, KeyboardState newState, KeyboardState oldState)
         {
             return newState.IsKeyUp(key) && oldState.IsKeyDown(key);
+        }
+
+        public void StartSystem(GameDependencies gd)
+        {
         }
     }
 }

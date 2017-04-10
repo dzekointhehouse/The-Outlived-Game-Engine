@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.EventBus;
+using ZEngine.Wrappers;
 
 namespace ZEngine.Systems
 {
@@ -23,17 +24,6 @@ namespace ZEngine.Systems
             _systemAction = LoadContent;
         }
 
-        public ISystem Start()
-        {
-            EventBus.Subscribe("LoadContent", _systemAction);
-            return this;
-        }
-
-        public ISystem Stop()
-        {
-            EventBus.Unsubscribe("LoadContent", _systemAction);
-            return this;
-        }
 
         public void LoadContent(ContentManager contentManager)
         {
@@ -50,6 +40,11 @@ namespace ZEngine.Systems
                 entity.Value.Width = entity.Value.Sprite.Width;
                 entity.Value.Height = entity.Value.Sprite.Height;
             }
+        }
+
+        public void StartSystem(GameDependencies gd)
+        {
+            LoadContent(gd.GameContent as ContentManager);
         }
     }
 }
