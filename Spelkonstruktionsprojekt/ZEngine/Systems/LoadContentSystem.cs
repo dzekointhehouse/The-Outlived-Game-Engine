@@ -20,18 +20,18 @@ namespace ZEngine.Systems
 
         public LoadContentSystem()
         {
-            _systemAction = new Action<ContentManager>(LoadContent);
+            _systemAction = LoadContent;
         }
 
         public ISystem Start()
         {
-            EventBus.Subscribe<ContentManager>("LoadContent", _systemAction);
+            EventBus.Subscribe("LoadContent", _systemAction);
             return this;
         }
 
         public ISystem Stop()
         {
-            EventBus.Unsubscribe<ContentManager>("LoadContent", _systemAction);
+            EventBus.Unsubscribe("LoadContent", _systemAction);
             return this;
         }
 

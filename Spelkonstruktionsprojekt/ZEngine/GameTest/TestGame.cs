@@ -55,17 +55,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             var entity = EntityManager.GetEntityManager().NewEntity();
 
+            // Creates Render component
             var renderComponent = new RenderComponent()
             {
                 DimensionsComponent = new DimensionsComponent() { Width = 100, Height = 100 },
                 Position = new Vector2Component(100, 100)
             };
+            // Adds the component to the entity
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entity);
 
+            // Creates Sprite component
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "java"
             };
+            // Adds it to the entity
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entity);
 
             var actionBindings = new ActionBindingsBuilder()

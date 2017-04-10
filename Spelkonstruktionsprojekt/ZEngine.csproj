@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
     <Compile Include="ZEngine\Components\HealthComponent.cs" />
+    <Compile Include="ZEngine\Components\AmmoComponent.cs" />
     <Compile Include="ZEngine\Components\MoveComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\DimensionsComponent.cs" />
     <Compile Include="ZEngine\Components\IComponent.cs" />
