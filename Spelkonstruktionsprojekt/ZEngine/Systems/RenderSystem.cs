@@ -59,7 +59,7 @@ namespace ZEngine.Systems
 
             foreach (var entity in renderableEntities)
             {
-                var position = entity.Value.Position.Vectors;
+                var position = entity.Value.Position;
 
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {

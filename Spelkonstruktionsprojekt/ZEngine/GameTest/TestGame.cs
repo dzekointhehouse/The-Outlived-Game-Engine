@@ -61,7 +61,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var renderComponent = new RenderComponent()
             {
                 DimensionsComponent = new DimensionsComponent() { Width = 100, Height = 100 },
-                Position = new Vector2Component(100, 100)
+                Position = new Vector2(100, 100)
             };
             var renderComponent2 = new RenderComponent()
             {

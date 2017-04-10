@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using ZEngine.Components;
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class AmmoComponent : IComponent
+    class Weapon : IComponent
     {
-        public int Amount { get; set; }
+
     }
 }
