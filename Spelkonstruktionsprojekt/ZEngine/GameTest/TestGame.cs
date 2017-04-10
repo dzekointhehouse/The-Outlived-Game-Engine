@@ -73,12 +73,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(renderComponent2, entityId2);
 
             // Creates Sprite component
-            var spriteComponent = new SpriteSheetComponent()
+            var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "java"
             };
 
-            var spriteComponent2 = new SpriteSheetComponent()
+            var spriteComponent2 = new SpriteComponent()
             {
                 SpriteName = "Atlantis Nebula UHD"
             };

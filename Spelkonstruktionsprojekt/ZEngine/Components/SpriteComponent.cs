@@ -8,7 +8,7 @@ using ZEngine.Components;
 
 namespace ZEngine.Components
 {
-    class SpriteSheetComponent : IComponent
+    class SpriteComponent : IComponent
     {
         public int Width { get; set; } = 0;
         public int Height { get; set; } = 0;

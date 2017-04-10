@@ -38,7 +38,7 @@ namespace ZEngine.Systems
         public void LoadContent(ContentManager contentManager)
         {
             var entities2 = ComponentManager.Instance
-                .GetEntitiesWithComponent<SpriteSheetComponent>();
+                .GetEntitiesWithComponent<SpriteComponent>();
 
             var entities = entities2
                 .Where(entity => !entity.Value.SpriteIsLoaded);
