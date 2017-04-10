@@ -22,7 +22,7 @@ namespace ZEngine.Systems
 
         public RenderSystem()
         {
-            _systemAction = new Action<RenderDependencies>(Render);
+            _systemAction = Render;
         }
 
         public ISystem Start()
@@ -42,12 +42,16 @@ namespace ZEngine.Systems
             var graphics = renderDependencies.GraphicsDeviceManager.GraphicsDevice;
             var spriteBatch = renderDependencies.SpriteBatch;
 
-            graphics.Clear(Color.CornflowerBlue);
+            graphics.Clear(Color.CornflowerBlue); // Maybe done outside
             spriteBatch.Begin();
             RenderEntities(spriteBatch);
             spriteBatch.End();
         }
 
+        // This method will render all the entities that are associated 
+        // with the render component. 1. we use our Component manager instance
+        // to get all the entities with RenderComponent and then we render them.
+        // we use the spritebach to draw all the entities.
         private void RenderEntities(SpriteBatch spriteBatch)
         {
             var renderableEntities = ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>();
@@ -60,17 +64,6 @@ namespace ZEngine.Systems
                     spriteBatch.Draw(sprite.Sprite, new Vector2(position.X, position.Y), Color.White);
                 }
             }
-        }
-
-        public bool IsRenderable(Dictionary<string, IComponent> entityComponents)
-        {
-            if (entityComponents.ContainsKey("Render"))
-            {
-                RenderComponent renderComponent = (RenderComponent) entityComponents["Render"];
-                return renderComponent.Position != null &&
-                       (renderComponent.DimensionsComponent != null || renderComponent.Radius > 0);
-            }
-            return false;
         }
     }
 }
