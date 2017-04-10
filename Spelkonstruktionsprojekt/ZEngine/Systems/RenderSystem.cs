@@ -63,8 +63,21 @@ namespace ZEngine.Systems
 
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
+
+        
+
                     var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
-                    spriteBatch.Draw(sprite.Sprite, new Vector2(position.X, position.Y), Color.White);
+                    
+                    spriteBatch.Draw(
+                        sprite.Sprite,                                      // texture
+                        new Vector2(position.X, position.Y),                // position
+                        null,                                               // Source rectangle
+                        Color.White,                                        // color
+                        sprite.Angle,                                       // rotation
+                        new Vector2(x: sprite.Width/2, y: sprite.Height/2), // origin for rotation
+                        sprite.Scale,                                       // Scale
+                        SpriteEffects.None,                                 // effects
+                        1);                                                 // layerdepth
                 }
             }
         }
