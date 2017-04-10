@@ -33,24 +33,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             gameDependencies.GraphicsDeviceManager.PreferredBackBufferHeight = 500;
             // We add the spritebatch and the game content we get from the content 
             // pipeline to our gameDependencies, so we can use them in our systems.
-            gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            gameDependencies.GameContent = this.Content;
+
 
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // We add and activate the systems
-            //_systems.Add(SystemManager.Instance.CreateSystem("Render").Start());
-            //_systems.Add(SystemManager.Instance.CreateSystem("LoadContent").Start());
-            //_systems.Add(SystemManager.Instance.CreateSystem("HandleInput").Start());
+
 
             // We call the method that creates a player.
             CreatePlayer();
@@ -107,24 +97,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         /// </summary>
         protected override void LoadContent()
         {
-
+            gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            gameDependencies.GameContent = this.Content;
             // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
+
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -138,10 +122,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             SystemManager.Instance.CreateSystem<RenderSystem>().StartSystem(gameDependencies);
