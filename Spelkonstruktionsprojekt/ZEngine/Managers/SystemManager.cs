@@ -41,7 +41,7 @@ namespace ZEngine.Managers
         }
 
         // Creates an instance of a new system that is specified
-        // as a type parameter. The method check by using ContainsSystem
+        // as a type parameter. The method checks by using ContainsSystem
         // if the systemtype is a valid system and then returns an 
         // instance. https://msdn.microsoft.com/en-us/library/d5x73970.aspx  
         public T CreateSystem<T>() where T : new()
@@ -56,13 +56,16 @@ namespace ZEngine.Managers
             }
         }
 
+        // Creates an instance of the specified type 
+        // using that type's default constructor.
         private ISystem NewSystem(string name)
         {
             return (ISystem) Activator.CreateInstance(_systems[name].GetType());
         }
 
         // Checks the systems dictionary if it contains the 
-        // system specified as type parameter. No big deal.
+        // system that is specified as (T) type parameter when
+        // this method is called, No big deal.
         private Boolean ContainsSystem<T>()
         {
             return _systems.Count(entry => entry.Value.GetType() == typeof(T)) == 1;

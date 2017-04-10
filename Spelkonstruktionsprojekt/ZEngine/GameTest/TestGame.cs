@@ -23,7 +23,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     {
         private EventBus EventBus = EventBus.Instance;
         private RenderDependencies RenderDependencies = new RenderDependencies();
-        private List<ISystem> systems = new List<ISystem>();
+        private List<ISystem> _systems = new List<ISystem>();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
         public TestGame()
@@ -42,10 +42,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         /// </summary>
         protected override void Initialize()
         {
-            systems.Add(SystemManager.Instance.CreateSystem("Render").Start());
-            systems.Add(SystemManager.Instance.CreateSystem("LoadContent").Start());
-            systems.Add(SystemManager.Instance.CreateSystem("HandleInput").Start());
-
+            // We add and activate the systems
+            _systems.Add(SystemManager.Instance.CreateSystem("Render").Start());
+            _systems.Add(SystemManager.Instance.CreateSystem("LoadContent").Start());
+            _systems.Add(SystemManager.Instance.CreateSystem("HandleInput").Start());
+            // We call the method that creates a player.
             CreatePlayer();
 
             base.Initialize();
@@ -53,7 +54,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreatePlayer()
         {
-            var entity = EntityManager.GetEntityManager().NewEntity();
+            var entityId1 = EntityManager.GetEntityManager().NewEntity();
+            var entityId2 = EntityManager.GetEntityManager().NewEntity();
 
             // Creates Render component
             var renderComponent = new RenderComponent()
@@ -61,16 +63,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 DimensionsComponent = new DimensionsComponent() { Width = 100, Height = 100 },
                 Position = new Vector2Component(100, 100)
             };
+            var renderComponent2 = new RenderComponent()
+            {
+                DimensionsComponent = new DimensionsComponent() { Width = 200, Height = 200 },
+                Position = new Vector2Component(100, 100)
+            };
             // Adds the component to the entity
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entity);
+            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
+            ComponentManager.Instance.AddComponentToEntity(renderComponent2, entityId2);
 
             // Creates Sprite component
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "java"
             };
+
+            var spriteComponent2 = new SpriteComponent()
+            {
+                SpriteName = "Atlantis Nebula UHD"
+            };
             // Adds it to the entity
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entity);
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent2, entityId2);
 
             var actionBindings = new ActionBindingsBuilder()
                 .SetAction(Keys.W, KeyEvent.KeyPressed, "entityAccelerate")
@@ -78,7 +92,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, KeyEvent.KeyPressed, "entityTurnLeft")
                 .SetAction(Keys.D, KeyEvent.KeyPressed, "entityTurnRight")
                 .Build();
-            ComponentManager.Instance.AddComponentToEntity(actionBindings, entity);
+            ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
         }
 
         /// <summary>
