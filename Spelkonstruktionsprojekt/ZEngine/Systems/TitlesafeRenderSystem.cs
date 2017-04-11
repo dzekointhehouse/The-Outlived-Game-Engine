@@ -15,34 +15,49 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     class TitlesafeRenderSystem : ISystem
     {
         public static string SystemName = "TitlesafeRender";
-        private ComponentManager ComponentManager = ComponentManager.Instance;
+        private ComponentManager _componentManager = ComponentManager.Instance;
         private RenderDependencies gm;
+        private SpriteBatch spriteBatch;
         
 
 
-        public void Render(RenderDependencies gm)
+        public void Render(RenderDependencies renderDependencies)
         {
-            this.gm = gm;
-            var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
-            var spriteBatch = gm.SpriteBatch;
+            this.gm = renderDependencies;
+            this.spriteBatch = renderDependencies.SpriteBatch;
+
             spriteBatch.Begin(SpriteSortMode.FrontToBack);
-            DrawAll(spriteBatch,graphics);
+            DrawSpriteFonts();
             spriteBatch.End();
         }
 
-        private void DrawAll(SpriteBatch spriteBatch, GraphicsDevice graphics)
+        private void DrawSpriteFonts()
         {
-            var renderable = ComponentManager.GetEntitiesWithComponent<HealthComponent>();
+            var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
             var titlesafearea = graphics.Viewport.TitleSafeArea;
+
+            // Loading necessary components
+            var renderable = _componentManager.GetEntitiesWithComponent<HealthComponent>();
+
+            // We save the previous text height so we can stack
+            // them on top of eachother.
+            var previousHeight = 0f;
 
             foreach (var instance in renderable)
             {
-                //instance.Value.CurrentHealth + "/" + instance.Value.MaxHealth;
+
                 var g = gm.GameContent as ContentManager;
                 var spriteFont = g.Load<SpriteFont>("Healthfont");
+
                 string text = instance.Value.CurrentHealth + " / " + instance.Value.MaxHealth;
-               
-                var position = new Vector2(titlesafearea.Width - spriteFont.MeasureString(text).X, titlesafearea.Height - spriteFont.MeasureString(text).Y);
+
+                var textHeight = spriteFont.MeasureString(text).Y;
+
+                var xPosition = titlesafearea.Width - spriteFont.MeasureString(text).X - 10;
+                var yPosition = titlesafearea.Height - textHeight - previousHeight;
+                previousHeight = textHeight;
+
+                var position = new Vector2(xPosition, yPosition);
                 spriteBatch.DrawString(spriteFont, text, position, Color.White);
             }
         }
