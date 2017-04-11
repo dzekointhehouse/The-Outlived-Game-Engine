@@ -17,6 +17,7 @@ namespace ZEngine.EventBus
 
         public void Publish<T>(string message, T value)
         {
+            System.Diagnostics.Debug.WriteLine(message);
             LocalTypedEventBus.Publish<T>(message, value);
         }
 

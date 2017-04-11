@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
@@ -76,7 +77,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "java"
             };
 
-
             var healthComponent = new HealthComponent()
             {
                 CurrentHealth = 70,
@@ -85,11 +85,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var moveComponent = new MoveComponent()
             {
-                Velocity = new Vector2(0,0)
+                Velocity = Vector2D.Create(0,0),
+                Acceleration = Vector2D.Create(0,0)
             };
             var actionBindings = new ActionBindingsBuilder()
-                .SetAction(Keys.W, KeyEvent.KeyPressed, "entityAccelerate")
-                .SetAction(Keys.S, KeyEvent.KeyPressed, "entityDeccelerate")
+                .SetAction(Keys.W, KeyEvent.KeyDown, "entityAccelerate")
+                .SetAction(Keys.S, KeyEvent.KeyDown, "entityDeccelerate")
                 .SetAction(Keys.A, KeyEvent.KeyPressed, "entityTurnLeft")
                 .SetAction(Keys.D, KeyEvent.KeyPressed, "entityTurnRight")
                 .Build();

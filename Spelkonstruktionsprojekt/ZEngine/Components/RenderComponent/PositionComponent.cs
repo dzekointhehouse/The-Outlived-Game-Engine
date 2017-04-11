@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 
 namespace ZEngine.Components
 {
     public class PositionComponent
     {
-        public Vector2 Position { get; set; }
+        public Vector2D Position { get; set; }
 
         public int ZIndex { get; set; }
     }

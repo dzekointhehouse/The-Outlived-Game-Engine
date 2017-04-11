@@ -72,6 +72,7 @@
     <Compile Include="ZEngine\Wrappers\RenderDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
+    <Compile Include="ZEngine\Wrappers\Vector2D.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

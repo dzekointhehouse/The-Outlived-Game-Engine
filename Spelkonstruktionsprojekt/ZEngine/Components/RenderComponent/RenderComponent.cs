@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Wrappers;
 
 namespace ZEngine.Components
@@ -33,7 +34,7 @@ namespace ZEngine.Components
         {
             _renderComponent.PositionComponent = new PositionComponent()
             {
-                Position = new Vector2(x, y),
+                Position = Vector2D.Create(x, y),
                 ZIndex = zIndex
             };
             return this;

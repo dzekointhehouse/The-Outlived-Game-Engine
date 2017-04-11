@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
@@ -22,18 +23,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (moveEntities.ContainsKey(entity.Key))
                 {
                     var moveComponent = moveEntities[entity.Key];
-                    entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent);
+                    moveComponent.Velocity = MoveVector(moveComponent.Velocity, moveComponent.Acceleration);
+                    if (MoveComponentHelper.SomeAxisBelowMovingThreshold(moveComponent.Velocity))
+                    {
+                        MoveComponentHelper.SetVelocityToRest(moveComponent);
+                    }
+                    entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity);
                 }
             }
         }
 
-        public Vector2 MoveVector(Vector2 oldVector, MoveComponent moveComponent)
+        public Vector2D MoveVector(Vector2D oldVector, Vector2D deltaVector)
         {
-            if (moveComponent.Velocity == null) return oldVector;
-
-            var x = moveComponent.Velocity.Value.X;
-            var y = moveComponent.Velocity.Value.Y;
-            return new Vector2(oldVector.X += x, oldVector.Y += y);
+            var x = deltaVector.X;
+            var y = deltaVector.Y;
+            return Vector2D.Create(oldVector.X + x, oldVector.Y + y);
         }
     }
 }
