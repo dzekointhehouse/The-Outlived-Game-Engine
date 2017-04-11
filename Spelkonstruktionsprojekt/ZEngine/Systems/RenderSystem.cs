@@ -78,15 +78,15 @@ namespace ZEngine.Systems
 
                     var zIndexMaxLimit = 1000;
                     spriteBatch.Draw(
-                        texture: sprite.Sprite,  
-                        destinationRectangle:  destinationRectangle,                     
-                        sourceRectangle: spriteCrop,                                               
-                        color: Color.White,                                        
-                        rotation: sprite.Angle,                                       
-                        origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2), 
-                        effects: SpriteEffects.None,                                 
-                        layerDepth: (float) zIndex / zIndexMaxLimit //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
-                    );                                                 
+                        texture: sprite.Sprite,
+                        destinationRectangle: destinationRectangle,
+                        sourceRectangle: spriteCrop,
+                        color: Color.White,
+                        rotation: sprite.Angle,
+                        origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2),
+                        effects: SpriteEffects.None,
+                        layerDepth: (float)zIndex / zIndexMaxLimit //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
+                    );                                              
                 }
             }
         }

@@ -76,7 +76,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var entityId2 = EntityManager.GetEntityManager().NewEntity();
             var renderComponent2 = new RenderComponentBuilder()
                 .Position(0, 0, 1)
-                .Dimensions(900, 500).Build();
+                .Dimensions(1800, 1000).Build();
             ComponentManager.Instance.AddComponentToEntity(renderComponent2, entityId2);
             var spriteComponent2 = new SpriteComponent()
             {
