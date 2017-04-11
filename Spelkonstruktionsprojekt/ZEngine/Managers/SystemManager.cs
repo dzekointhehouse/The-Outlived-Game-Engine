@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Systems;
 
@@ -21,7 +22,9 @@ namespace ZEngine.Managers
         {
             { typeof(RenderSystem), new RenderSystem() },
             { typeof(LoadContentSystem), new LoadContentSystem() },
-            { typeof(InputHandler), new InputHandler() }
+            { typeof(InputHandler), new InputHandler() },
+            { typeof(MoveSystem), new MoveSystem() },
+            { typeof(TankMovementSystem), new TankMovementSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

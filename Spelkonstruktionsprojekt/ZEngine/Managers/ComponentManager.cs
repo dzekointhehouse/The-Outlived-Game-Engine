@@ -67,6 +67,7 @@ namespace ZEngine.Managers
         public ComponentType GetEntityComponent<ComponentType>(int entityId) where ComponentType : IComponent
         {
             var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
+            if (!entityComponents.ContainsKey(entityId)) throw new Exception("No such Entity has component.");
             return entityComponents[entityId];
         }
 

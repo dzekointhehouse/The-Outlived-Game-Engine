@@ -7,8 +7,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Components;
+using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Wrappers;
@@ -27,6 +29,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private RenderSystem RenderSystem;
         private LoadContentSystem LoadContentSystem;
         private InputHandler InputHandlerSystem;
+        private MoveSystem MoveSystem;
+        private TankMovementSystem TankMovementSystem;
         public TestGame()
         {
             _renderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -42,6 +46,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             RenderSystem = SystemManager.Instance.GetSystem<RenderSystem>();
             LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
+            TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
+            TankMovementSystem.Start();
+            MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
 
             _renderDependencies.GameContent = this.Content;
             _renderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -62,6 +69,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 SpriteName = "java"
             };
+            var moveComponent = new MoveComponent()
+            {
+                Velocity = new Vector2(0,0)
+            };
             var actionBindings = new ActionBindingsBuilder()
                 .SetAction(Keys.W, KeyEvent.KeyPressed, "entityAccelerate")
                 .SetAction(Keys.S, KeyEvent.KeyPressed, "entityDeccelerate")
@@ -70,6 +81,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Build();
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
+            ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
 
             //Initializing a second, imovable, entity
@@ -101,7 +113,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
-
+            MoveSystem.Move();
             base.Update(gameTime);
         }
 

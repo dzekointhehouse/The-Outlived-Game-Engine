@@ -22,18 +22,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             _systemAction = new Action<KeyboardState>(HandleInput);
         }
 
-        public ISystem Start()
-        {
-            EventBus.Subscribe<KeyboardState>("HandleInput", _systemAction);
-            return this;
-        }
-
-        public ISystem Stop()
-        {
-            EventBus.Unsubscribe<KeyboardState>("HandleInput", _systemAction);
-            return this;
-        }
-
         public void HandleInput(KeyboardState oldKeyboardState)
         {
             var keyboardState = Keyboard.GetState();
