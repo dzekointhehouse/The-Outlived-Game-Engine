@@ -17,6 +17,7 @@ namespace ZEngine.Wrappers
         public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
         public GameTime GameTime { get; set; }
         public SpriteBatch SpriteBatch { get; set; }
+        public SpriteFont SpritFont { get; set; }
         public Object GameContent { get; set; }
     }
 }   

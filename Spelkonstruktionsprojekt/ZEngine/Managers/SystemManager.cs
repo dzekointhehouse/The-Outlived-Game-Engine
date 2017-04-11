@@ -24,7 +24,8 @@ namespace ZEngine.Managers
             { typeof(LoadContentSystem), new LoadContentSystem() },
             { typeof(InputHandler), new InputHandler() },
             { typeof(MoveSystem), new MoveSystem() },
-            { typeof(TankMovementSystem), new TankMovementSystem() }
+            { typeof(TankMovementSystem), new TankMovementSystem() },
+            { typeof(TitlesafeRenderSystem), new TitlesafeRenderSystem()}
         };
 
         // _____________________________________________________________________________________________________________________ //
