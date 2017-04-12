@@ -29,6 +29,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             EventBus.Subscribe<int>("entityAccelerate", _entityAccelerate);
             EventBus.Subscribe<int>("entityDeccelerate", _entityDeccelerate);
+            EventBus.Subscribe<int>("entityTurnLeft", TurnLeft);
+            EventBus.Subscribe<int>("entityTurnRight", TurnRight);
             return this;
         }
 
@@ -42,11 +44,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             UpdateMoveComponentIfApplicable(entityId, moveComponent =>
             {
                 System.Diagnostics.Debug.WriteLine("Entity Accelerate");
-                if (moveComponent.Velocity != null)
+                moveComponent.Acceleration = Move(moveComponent.Acceleration, moveComponent.Direction, moveComponent.AccelerationSpeed);
+                MoveComponent.StopMotionOnAxesBelowMovingThreshold(moveComponent.Acceleration);
+                if (moveComponent.MaxAcceleration != null)
                 {
-                    var angle = moveComponent.Direction;
-                    moveComponent.Acceleration = Move(moveComponent.Acceleration, angle, 0.001);
-                    MoveComponentHelper.StopMotionOnAxesBelowMovingThreshold(moveComponent.Acceleration);
+                    MoveComponent.StopAxesAtSpeedLimit(moveComponent.Acceleration, moveComponent.MaxAcceleration);
                 }
             });
         }
@@ -55,12 +57,30 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             UpdateMoveComponentIfApplicable(entityId, moveComponent =>
             {
                 System.Diagnostics.Debug.WriteLine("Entity Deccelerate");
-                if (moveComponent.Velocity != null)
+                moveComponent.Acceleration = Move(moveComponent.Acceleration, moveComponent.Direction, -moveComponent.AccelerationSpeed);
+                MoveComponent.StopMotionOnAxesBelowMovingThreshold(moveComponent.Acceleration);
+                if (moveComponent.MaxAcceleration != null)
                 {
-                    var angle = moveComponent.Direction;
-                    moveComponent.Acceleration = Move(moveComponent.Acceleration, angle, -0.001);
-                    MoveComponentHelper.StopMotionOnAxesBelowMovingThreshold(moveComponent.Acceleration);
+                    MoveComponent.StopAxesAtSpeedLimit(moveComponent.Acceleration, moveComponent.MaxAcceleration);
                 }
+            });
+        }
+
+        public void TurnRight(int entityId)
+        {
+            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            {
+                System.Diagnostics.Debug.WriteLine("Entity Turn Right");
+                moveComponent.RotationMomentum = -moveComponent.RotationSpeed;
+            });
+        }
+
+        public void TurnLeft(int entityId)
+        {
+            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            {
+                System.Diagnostics.Debug.WriteLine("Entity Turn Left");
+                moveComponent.RotationMomentum = moveComponent.RotationSpeed;
             });
         }
 
@@ -69,7 +89,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {
                 var component = ComponentManager.GetEntityComponent<MoveComponent>(entityId);
-                updateAction(component);
+                if (component.Velocity != null && component.Acceleration != null)
+                {
+                    updateAction(component);
+                }
             }
         }
 

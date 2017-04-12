@@ -13,19 +13,30 @@ namespace ZEngine.Components.MoveComponent
     public class MoveComponent : IComponent
     {
         public double Direction { get; set; } = 0;
+
         public Vector2D Velocity { get; set; } = null;
-        public Vector2D MinVelocity { get; set; } = null;
         public Vector2D MaxVelocity { get; set; } = null;
 
         public Vector2D Acceleration { get; set; } = null;
-        public Vector2D MinAcceleration { get; set; } = null;
         public Vector2D MaxAcceleration { get; set; } = null;
+        public double AccelerationSpeed = 10;
 
+        public double RotationMomentum = 0;
         public double RotationSpeed = 0;
-    }
 
-    public static class MoveComponentHelper
-    {
+        public static void StopAxesAtSpeedLimit(Vector2D originVector, Vector2D maxLimimt)
+        {
+            if (originVector.X > maxLimimt.X) originVector.X = maxLimimt.X;
+            if (originVector.Y > maxLimimt.Y) originVector.Y = maxLimimt.Y;
+            if (originVector.X < -maxLimimt.X) originVector.X = -maxLimimt.X;
+            if (originVector.Y < -maxLimimt.Y) originVector.Y = -maxLimimt.Y;
+        }
+
+        public static bool SomeAxisBelowMovingThreshold(Vector2D originVector)
+        {
+            return AxisBelowMovingThreshold(originVector.X) || AxisBelowMovingThreshold(originVector.Y);
+        }
+
         /**
          *  The originVector is the current vector and the deltaVector is the change you want
          *  to impose on the originVector. The returned vector is the new translated vector.
@@ -37,11 +48,6 @@ namespace ZEngine.Components.MoveComponent
                 originVector.X + deltaVector.X,
                 originVector.Y + deltaVector.Y
             );
-        }
-
-        public static bool SomeAxisBelowMovingThreshold(Vector2D originVector)
-        {
-            return AxisBelowMovingThreshold(originVector.X) || AxisBelowMovingThreshold(originVector.Y);
         }
 
         public static bool AxisBelowMovingThreshold(double axis)
@@ -85,7 +91,7 @@ namespace ZEngine.Components.MoveComponent
             double TOLERANCE = 0.000001;
             double NEG_TOLERANCE = 0.000001;
             return Math.Abs(vector.X) < TOLERANCE || Math.Abs(vector.X) > NEG_TOLERANCE 
-                && Math.Abs(vector.Y) < TOLERANCE || Math.Abs(vector.Y) > NEG_TOLERANCE;
+                   && Math.Abs(vector.Y) < TOLERANCE || Math.Abs(vector.Y) > NEG_TOLERANCE;
         }
     }
 }

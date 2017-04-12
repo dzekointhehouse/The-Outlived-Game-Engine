@@ -86,7 +86,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var moveComponent = new MoveComponent()
             {
                 Velocity = Vector2D.Create(0,0),
-                Acceleration = Vector2D.Create(0,0)
+                MaxVelocity = Vector2D.Create(100,100),
+                Acceleration = Vector2D.Create(0,0),
+                MaxAcceleration = Vector2D.Create(80, 80),
+                RotationSpeed = 0.1
             };
             var actionBindings = new ActionBindingsBuilder()
                 .SetAction(Keys.W, KeyEvent.KeyDown, "entityAccelerate")
@@ -129,10 +132,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
-            MoveSystem.Move();
+            MoveSystem.Move(gameTime);
             base.Update(gameTime);
         }
-
+        
         protected override void Draw(GameTime gameTime)
         {
             RenderSystem.Render(_renderDependencies);
