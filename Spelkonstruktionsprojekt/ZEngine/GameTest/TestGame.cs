@@ -54,8 +54,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
 
-
-
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
             

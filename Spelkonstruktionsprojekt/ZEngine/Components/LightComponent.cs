@@ -10,6 +10,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     public class LightComponent : IComponent
     {
-        public Light Light { get; set; } = new PointLight();
+        public Light Light { get; set; }
     }
 }

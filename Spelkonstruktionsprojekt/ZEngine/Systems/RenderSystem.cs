@@ -19,18 +19,8 @@ namespace ZEngine.Systems
         // The name of the system.
         // The component manager singleton instance.
 
-        private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         public static string SystemName = "Render";
         private ComponentManager ComponentManager = ComponentManager.Instance;
-
-        private readonly Action<GameDependencies> _systemAction;
-
-        // _____________________________________________________________________________________________________________________ //
-
-        public RenderSystem()
-        {
-            _systemAction = Render;
-        }
 
         // _____________________________________________________________________________________________________________________ //
 

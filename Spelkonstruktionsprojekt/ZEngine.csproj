@@ -59,6 +59,7 @@
     <Compile Include="ZEngine\EventBus\EventBus.cs" />
     <Compile Include="ZEngine\EventBus\ParameterlessEventBuss.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
+    <Compile Include="ZEngine\GameTest\TestGame2.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />

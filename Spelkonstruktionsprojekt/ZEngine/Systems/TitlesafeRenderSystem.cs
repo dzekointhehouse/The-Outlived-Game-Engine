@@ -16,14 +16,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public static string SystemName = "TitlesafeRender";
         private ComponentManager _componentManager = ComponentManager.Instance;
-        private GameDependencies gm;
+        private GameDependencies _gameDependencies;
         private SpriteBatch _spriteBatch;
         
 
 
         public void Render(GameDependencies gameDependencies)
         {
-            this.gm = gameDependencies;
+            this._gameDependencies = gameDependencies;
             this._spriteBatch = gameDependencies.SpriteBatch;
 
             _spriteBatch.Begin(SpriteSortMode.FrontToBack);
@@ -33,7 +33,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         private void DrawSpriteFonts()
         {
-            var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
+            var graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             var titlesafearea = graphics.Viewport.TitleSafeArea;
 
             // Loading necessary components
@@ -46,7 +46,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             foreach (var instance in renderable)
             {
 
-                var g = gm.GameContent as ContentManager;
+                var g = _gameDependencies.GameContent as ContentManager;
                 var spriteFont = g.Load<SpriteFont>("Healthfont");
 
                 string text = instance.Value.CurrentHealth + " / " + instance.Value.MaxHealth;

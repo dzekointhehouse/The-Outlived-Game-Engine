@@ -19,7 +19,6 @@ namespace ZEngine.Managers
         // an nested dictionary with all the entities associated with
         // that component as the key, and component instance as value.
         private Dictionary<Type, Dictionary<int, IComponent>> _components = new Dictionary<Type, Dictionary<int, IComponent>>();
-
         // _____________________________________________________________________________________________________________________ //
 
 
@@ -86,7 +85,6 @@ namespace ZEngine.Managers
                 throw new Exception("No such component exist.");
             }
         }
-
 
 
         // The only thing done here is that this method checks
