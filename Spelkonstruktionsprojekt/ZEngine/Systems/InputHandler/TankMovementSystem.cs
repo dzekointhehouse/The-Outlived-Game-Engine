@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components.MoveComponent;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -28,6 +29,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             EventBus.Subscribe<int>("entityAccelerate", _entityAccelerate);
             EventBus.Subscribe<int>("entityDeccelerate", _entityDeccelerate);
+            EventBus.Subscribe<int>("entityTurnLeft", TurnLeft);
+            EventBus.Subscribe<int>("entityTurnRight", TurnRight);
             return this;
         }
 
@@ -38,57 +41,69 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void EntityAccelerate(int entityId)
         {
-            System.Diagnostics.Debug.WriteLine("Entity Accelerate");
-            System.Diagnostics.Debug.WriteLine(entityId);
-            if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
+            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
             {
-                System.Diagnostics.Debug.WriteLine("Entity has component");
-                var component = ComponentManager.GetEntityComponent<MoveComponent>(entityId);
-                if (component.Velocity != null)
+                System.Diagnostics.Debug.WriteLine("Entity Accelerate");
+                moveComponent.Acceleration = Move(moveComponent.Acceleration, moveComponent.Direction, moveComponent.AccelerationSpeed);
+                MoveComponent.StopMotionOnAxesBelowMovingThreshold(moveComponent.Acceleration);
+                if (moveComponent.MaxAcceleration != null)
                 {
-                    var angle = GetAngleFromMoveComponent(component);
-                    component.Velocity = Move(component.Velocity.Value, angle, 1);
+                    MoveComponent.StopAxesAtSpeedLimit(moveComponent.Acceleration, moveComponent.MaxAcceleration);
                 }
-            }
+            });
         }
         public void EntityDeccelerate(int entityId)
         {
-            System.Diagnostics.Debug.WriteLine("Entity Deccelerate");
+            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            {
+                System.Diagnostics.Debug.WriteLine("Entity Deccelerate");
+                moveComponent.Acceleration = Move(moveComponent.Acceleration, moveComponent.Direction, -moveComponent.AccelerationSpeed);
+                MoveComponent.StopMotionOnAxesBelowMovingThreshold(moveComponent.Acceleration);
+                if (moveComponent.MaxAcceleration != null)
+                {
+                    MoveComponent.StopAxesAtSpeedLimit(moveComponent.Acceleration, moveComponent.MaxAcceleration);
+                }
+            });
+        }
+
+        public void TurnRight(int entityId)
+        {
+            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            {
+                System.Diagnostics.Debug.WriteLine("Entity Turn Right");
+                moveComponent.RotationMomentum = -moveComponent.RotationSpeed;
+            });
+        }
+
+        public void TurnLeft(int entityId)
+        {
+            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            {
+                System.Diagnostics.Debug.WriteLine("Entity Turn Left");
+                moveComponent.RotationMomentum = moveComponent.RotationSpeed;
+            });
+        }
+
+        public void UpdateMoveComponentIfApplicable(int entityId, Action<MoveComponent> updateAction)
+        {
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {
                 var component = ComponentManager.GetEntityComponent<MoveComponent>(entityId);
-                if (component.Velocity != null)
+                if (component.Velocity != null && component.Acceleration != null)
                 {
-                    var angle = GetAngleFromMoveComponent(component);
-                    component.Velocity = Move(component.Velocity.Value, angle, -1);
+                    updateAction(component);
                 }
             }
         }
 
-        public double GetAngleFromMoveComponent(MoveComponent moveComponent)
+        public Vector2D Move(Vector2D oldVector, double direction, double acceleration)
         {
-            if (moveComponent.Velocity != null && NotMoving(moveComponent.Velocity.Value))
-            {
-                return moveComponent.RestingDirection;
-            }
-            return GetAngleFromVector(moveComponent.Velocity.Value);
-        }
-        public bool NotMoving(Vector2 velocityVector)
-        {
-            var TOLERANCE = 0.001;
-            return Math.Abs(velocityVector.X) < TOLERANCE && Math.Abs(velocityVector.Y) < TOLERANCE;
-        }
-
-        public double GetAngleFromVector(Vector2 velocityVector)
-        {
-            return Math.Atan2(velocityVector.Y, velocityVector.X);
-        }
-
-        public Vector2 Move(Vector2 oldVector, double direction, int acceleration)
-        {
-            var x = (float)(oldVector.X + acceleration * Math.Cos(direction));
-            var y = (float)(oldVector.Y + acceleration * Math.Sin(direction));
-            return new Vector2(oldVector.X += x, oldVector.Y += y);
+            var x1 = acceleration * Math.Cos(direction);
+            var y1 = acceleration * Math.Sin(direction);
+            var x = (oldVector.X + x1);
+            var y = (oldVector.Y + y1);
+            System.Diagnostics.Debug.WriteLine("x:" + x + " xc:" + x1 + ", y:" + y + " ys:" + y1 + " acc:" + acceleration + ", angle:" + direction);
+            return Vector2D.Create(x, y);
         }
 
         /*

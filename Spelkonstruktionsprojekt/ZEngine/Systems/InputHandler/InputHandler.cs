@@ -29,11 +29,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             foreach (var entity in entities)
             {
                 var keyBindings = entity.Value.Actions;
+
                 foreach (var binding in keyBindings)
                 {
                     Keys key = binding.Key;
                     var currentKeyEvent = GetKeyEvent(key, keyboardState, oldKeyboardState);
-                    if (CurrentKeyEventNotRelevant(currentKeyEvent, binding)) return;
+                    if (CurrentKeyEventNotRelevant(currentKeyEvent, binding)) continue;
+                    System.Diagnostics.Debug.WriteLine("key:" + key);
 
                     Dictionary<KeyEvent, string> eventActions = binding.Value;
                     EventBus.Publish(eventActions[currentKeyEvent], entity.Key);
@@ -43,7 +45,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 
         private static bool CurrentKeyEventNotRelevant(KeyEvent currentKeyEvent, KeyValuePair<Keys, Dictionary<KeyEvent, string>> entry)
         {
-            return currentKeyEvent == KeyEvent.KeySustain || !entry.Value.ContainsKey(currentKeyEvent);
+            return !entry.Value.ContainsKey(currentKeyEvent);
         }
 
         public KeyEvent GetKeyEvent(Keys key, KeyboardState newState, KeyboardState oldState)

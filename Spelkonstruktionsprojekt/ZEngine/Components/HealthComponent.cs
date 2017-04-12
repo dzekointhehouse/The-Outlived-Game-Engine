@@ -14,7 +14,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         *  CurrentHealth is the health for a character that could have been damaged.
         */
         public int MaxHealth { get; set; } = 100;
-        public int CurrentHealth { get; set; }
+        public int CurrentHealth { get; set; } = 100;
 
     }
 }

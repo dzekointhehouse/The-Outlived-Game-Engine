@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
@@ -31,6 +32,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private InputHandler InputHandlerSystem;
         private MoveSystem MoveSystem;
         private TankMovementSystem TankMovementSystem;
+        private TitlesafeRenderSystem TitlesafeRenderSystem;
         public TestGame()
         {
             _renderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -47,11 +49,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
+            TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
+
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
 
+
+
             _renderDependencies.GameContent = this.Content;
             _renderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            
 
             CreateTestEntities();
 
@@ -69,13 +76,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 SpriteName = "java"
             };
+
+            var healthComponent = new HealthComponent()
+            {
+                CurrentHealth = 70,
+                MaxHealth = 100
+            };
+
             var moveComponent = new MoveComponent()
             {
-                Velocity = new Vector2(0,0)
+                Velocity = Vector2D.Create(0,0),
+                MaxVelocity = Vector2D.Create(100,100),
+                Acceleration = Vector2D.Create(0,0),
+                MaxAcceleration = Vector2D.Create(80, 80),
+                RotationSpeed = 0.1
             };
             var actionBindings = new ActionBindingsBuilder()
-                .SetAction(Keys.W, KeyEvent.KeyPressed, "entityAccelerate")
-                .SetAction(Keys.S, KeyEvent.KeyPressed, "entityDeccelerate")
+                .SetAction(Keys.W, KeyEvent.KeyDown, "entityAccelerate")
+                .SetAction(Keys.S, KeyEvent.KeyDown, "entityDeccelerate")
                 .SetAction(Keys.A, KeyEvent.KeyPressed, "entityTurnLeft")
                 .SetAction(Keys.D, KeyEvent.KeyPressed, "entityTurnRight")
                 .Build();
@@ -83,6 +101,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
+            ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId1);
 
             //Initializing a second, imovable, entity
             var entityId2 = EntityManager.GetEntityManager().NewEntity();
@@ -125,13 +144,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
-            MoveSystem.Move();
+            MoveSystem.Move(gameTime);
             base.Update(gameTime);
         }
-
+        
         protected override void Draw(GameTime gameTime)
         {
             RenderSystem.Render(_renderDependencies);
+            TitlesafeRenderSystem.Render(_renderDependencies);
             base.Draw(gameTime);
         }
     }
