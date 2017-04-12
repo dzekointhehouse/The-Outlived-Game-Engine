@@ -28,6 +28,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private readonly RenderDependencies _renderDependencies = new RenderDependencies();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
+        private SpriteComponent spriteTest;
+
         private RenderSystem RenderSystem;
         private LoadContentSystem LoadContentSystem;
         private InputHandler InputHandlerSystem;
@@ -58,8 +60,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
 
-
-
             _renderDependencies.GameContent = this.Content;
             _renderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
             
@@ -76,10 +76,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var renderComponent = new RenderComponentBuilder()
                 .Position(150, 150, 2)
                 .Dimensions(100, 100).Build();
+
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "java"
             };
+
+            spriteTest = spriteComponent;
 
             var healthComponent = new HealthComponent()
             {
@@ -155,21 +158,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            var javas = Content.Load<Texture2D>(@"Images/java");
+            //var javas = Content.Load<Texture2D>(@"Images/java");
 
-            ComponentManager instance = ComponentManager.Instance;
-            var entityList = instance.GetEntitiesWithComponent<CollisionComponent>();
-            var entity = entityList.First();
-            foreach(var key in entityList.Keys)
-            {
-                var component = entityList[key];
-            }
-                     
+            //ComponentManager instance = ComponentManager.Instance;
+            //var entityList = instance.GetEntitiesWithComponent<CollisionComponent>();
+            //var entity = entityList.First();
+            //foreach(var key in entityList.Keys)
+            //{
+            //    var component = entityList[key];
+            //}                     
 
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
-            Collision.Boundering(, _renderDependencies.GraphicsDeviceManager);
+            Collision.Boundering(spriteTest, _renderDependencies.GraphicsDeviceManager);
             base.Update(gameTime);
         }
         
