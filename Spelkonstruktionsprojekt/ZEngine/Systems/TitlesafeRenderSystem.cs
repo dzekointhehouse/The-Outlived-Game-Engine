@@ -17,18 +17,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public static string SystemName = "TitlesafeRender";
         private ComponentManager _componentManager = ComponentManager.Instance;
         private RenderDependencies gm;
-        private SpriteBatch spriteBatch;
+        private SpriteBatch _spriteBatch;
         
 
 
         public void Render(RenderDependencies renderDependencies)
         {
             this.gm = renderDependencies;
-            this.spriteBatch = renderDependencies.SpriteBatch;
+            this._spriteBatch = renderDependencies.SpriteBatch;
 
-            spriteBatch.Begin(SpriteSortMode.FrontToBack);
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack);
             DrawSpriteFonts();
-            spriteBatch.End();
+            _spriteBatch.End();
         }
 
         private void DrawSpriteFonts()
@@ -58,7 +58,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 previousHeight = textHeight;
 
                 var position = new Vector2(xPosition, yPosition);
-                spriteBatch.DrawString(spriteFont, text, position, Color.White);
+                _spriteBatch.DrawString(spriteFont, text, position, Color.White);
             }
         }
     }
