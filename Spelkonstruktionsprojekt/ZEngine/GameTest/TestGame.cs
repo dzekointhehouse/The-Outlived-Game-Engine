@@ -112,6 +112,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "Atlantis Nebula UHD"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent2, entityId2);
+
+            // Aeroplane sprite
+            var entityId3 = EntityManager.GetEntityManager().NewEntity();
+            var renderComponent3 = new RenderComponentBuilder()
+                .Position(750, 200, 3)
+                .Dimensions(400, 400).Build();
+            ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
+            var spriteComponent3 = new SpriteComponent()
+            {
+                SpriteName = "bmpPlaneUpRight"
+            };
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
         }
 
         protected override void LoadContent()
