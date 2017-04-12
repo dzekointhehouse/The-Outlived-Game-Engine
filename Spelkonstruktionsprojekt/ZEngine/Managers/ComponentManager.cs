@@ -19,10 +19,23 @@ namespace ZEngine.Managers
         // an nested dictionary with all the entities associated with
         // that component as the key, and component instance as value.
         private Dictionary<Type, Dictionary<int, IComponent>> _components = new Dictionary<Type, Dictionary<int, IComponent>>();
-
+        //second dictionary to get all components in one entity
+        private Dictionary<int, Dictionary<Type, IComponent>> _entity = new Dictionary<int, Dictionary<Type, IComponent>>();
         // _____________________________________________________________________________________________________________________ //
 
+         //returns a dictionary with components instance in a entity
+        public Dictionary<Type, IComponent> GetComponentsWithEntity(int entity) {
+            if (!_entity.ContainsKey(entity))
+            {
+                return new Dictionary<Type, IComponent>();
+            }
+            else
+            {
+                return _entity[entity];
+            }
 
+        }
+        
         // Returns a dictionary with all the entities that have an instance 
         // of the component type that is given as a parameter.        
         public Dictionary<int, IComponent> GetEntitiesWithComponent(Type componentType)
