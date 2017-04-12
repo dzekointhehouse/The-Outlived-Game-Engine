@@ -16,15 +16,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public static string SystemName = "TitlesafeRender";
         private ComponentManager _componentManager = ComponentManager.Instance;
-        private RenderDependencies gm;
+        private GameDependencies gm;
         private SpriteBatch _spriteBatch;
         
 
 
-        public void Render(RenderDependencies renderDependencies)
+        public void Render(GameDependencies gameDependencies)
         {
-            this.gm = renderDependencies;
-            this._spriteBatch = renderDependencies.SpriteBatch;
+            this.gm = gameDependencies;
+            this._spriteBatch = gameDependencies.SpriteBatch;
 
             _spriteBatch.Begin(SpriteSortMode.FrontToBack);
             DrawSpriteFonts();

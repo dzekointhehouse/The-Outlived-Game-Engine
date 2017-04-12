@@ -23,7 +23,7 @@ namespace ZEngine.Systems
         public static string SystemName = "Render";
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private readonly Action<RenderDependencies> _systemAction;
+        private readonly Action<GameDependencies> _systemAction;
 
         // _____________________________________________________________________________________________________________________ //
 
@@ -38,7 +38,7 @@ namespace ZEngine.Systems
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
-        public void Render(RenderDependencies gm)
+        public void Render(GameDependencies gm)
         {
             var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
             var spriteBatch = gm.SpriteBatch;

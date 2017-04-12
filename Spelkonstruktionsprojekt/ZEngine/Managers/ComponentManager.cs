@@ -87,11 +87,7 @@ namespace ZEngine.Managers
             }
         }
 
-        // I don't know what this does, this shit wasn't me.
-        private ISystem NewComponent(Type name)
-        {
-            return (ISystem)Activator.CreateInstance(_components[name].GetType());
-        }
+
 
         // The only thing done here is that this method checks
         // if the dictionary contains the componenttype specified
