@@ -24,7 +24,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     /// </summary>
     public class TestGame : Game
     {
-        private readonly RenderDependencies _renderDependencies = new RenderDependencies();
+        private readonly GameDependencies _gameDependencies = new GameDependencies();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
         private RenderSystem RenderSystem;
@@ -35,7 +35,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private TitlesafeRenderSystem TitlesafeRenderSystem;
         public TestGame()
         {
-            _renderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 900,
                 PreferredBackBufferHeight = 500
@@ -54,10 +54,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
 
-
-
-            _renderDependencies.GameContent = this.Content;
-            _renderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            _gameDependencies.GameContent = this.Content;
+            _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
             
 
             CreateTestEntities();
@@ -150,8 +148,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         
         protected override void Draw(GameTime gameTime)
         {
-            RenderSystem.Render(_renderDependencies);
-            TitlesafeRenderSystem.Render(_renderDependencies);
+            RenderSystem.Render(_gameDependencies);
+            TitlesafeRenderSystem.Render(_gameDependencies);
             base.Draw(gameTime);
         }
     }

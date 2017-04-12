@@ -16,24 +16,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public static string SystemName = "TitlesafeRender";
         private ComponentManager _componentManager = ComponentManager.Instance;
-        private RenderDependencies gm;
-        private SpriteBatch spriteBatch;
+        private GameDependencies _gameDependencies;
+        private SpriteBatch _spriteBatch;
         
 
 
-        public void Render(RenderDependencies renderDependencies)
+        public void Render(GameDependencies gameDependencies)
         {
-            this.gm = renderDependencies;
-            this.spriteBatch = renderDependencies.SpriteBatch;
+            this._gameDependencies = gameDependencies;
+            this._spriteBatch = gameDependencies.SpriteBatch;
 
-            spriteBatch.Begin(SpriteSortMode.FrontToBack);
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack);
             DrawSpriteFonts();
-            spriteBatch.End();
+            _spriteBatch.End();
         }
 
         private void DrawSpriteFonts()
         {
-            var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
+            var graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             var titlesafearea = graphics.Viewport.TitleSafeArea;
 
             // Loading necessary components
@@ -46,7 +46,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             foreach (var instance in renderable)
             {
 
-                var g = gm.GameContent as ContentManager;
+                var g = _gameDependencies.GameContent as ContentManager;
                 var spriteFont = g.Load<SpriteFont>("Healthfont");
 
                 string text = instance.Value.CurrentHealth + " / " + instance.Value.MaxHealth;
@@ -58,7 +58,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 previousHeight = textHeight;
 
                 var position = new Vector2(xPosition, yPosition);
-                spriteBatch.DrawString(spriteFont, text, position, Color.White);
+                _spriteBatch.DrawString(spriteFont, text, position, Color.White);
             }
         }
     }
