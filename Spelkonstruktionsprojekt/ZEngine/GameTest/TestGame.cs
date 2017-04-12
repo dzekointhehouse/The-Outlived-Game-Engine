@@ -16,7 +16,6 @@ using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
-using ZEngine.Components.CollisionComponent;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -25,10 +24,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     /// </summary>
     public class TestGame : Game
     {
-        private readonly RenderDependencies _renderDependencies = new RenderDependencies();
+        private readonly GameDependencies _gameDependencies = new GameDependencies();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
-
-        private SpriteComponent spriteTest;
 
         private RenderSystem RenderSystem;
         private LoadContentSystem LoadContentSystem;
@@ -36,11 +33,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private MoveSystem MoveSystem;
         private TankMovementSystem TankMovementSystem;
         private TitlesafeRenderSystem TitlesafeRenderSystem;
-        private CollisionSystem Collision;
-
         public TestGame()
         {
-            _renderDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 900,
                 PreferredBackBufferHeight = 500
@@ -55,13 +50,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
-            Collision = SystemManager.Instance.GetSystem<CollisionSystem>();
 
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
 
-            _renderDependencies.GameContent = this.Content;
-            _renderDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            _gameDependencies.GameContent = this.Content;
+            _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
             
 
             CreateTestEntities();
@@ -76,13 +70,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var renderComponent = new RenderComponentBuilder()
                 .Position(150, 150, 2)
                 .Dimensions(100, 100).Build();
-
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "java"
             };
-
-            spriteTest = spriteComponent;
 
             var healthComponent = new HealthComponent()
             {
@@ -104,20 +95,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, KeyEvent.KeyPressed, "entityTurnLeft")
                 .SetAction(Keys.D, KeyEvent.KeyPressed, "entityTurnRight")
                 .Build();
-
-
-            var collisionComponent = new CollisionComponent()
-            {
-                spriteBoundingRectangle = new Rectangle(0, 0, 5, 5)
-            };
-
-
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
             ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId1);
-            ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId1);
 
             //Initializing a second, imovable, entity
             var entityId2 = EntityManager.GetEntityManager().NewEntity();
@@ -158,27 +140,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            //var javas = Content.Load<Texture2D>(@"Images/java");
-
-            //ComponentManager instance = ComponentManager.Instance;
-            //var entityList = instance.GetEntitiesWithComponent<CollisionComponent>();
-            //var entity = entityList.First();
-            //foreach(var key in entityList.Keys)
-            //{
-            //    var component = entityList[key];
-            //}                     
-
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
-            Collision.Boundering(spriteTest, _renderDependencies.GraphicsDeviceManager);
             base.Update(gameTime);
         }
         
         protected override void Draw(GameTime gameTime)
         {
-            RenderSystem.Render(_renderDependencies);
-            TitlesafeRenderSystem.Render(_renderDependencies);
+            RenderSystem.Render(_gameDependencies);
+            TitlesafeRenderSystem.Render(_gameDependencies);
             base.Draw(gameTime);
         }
     }

@@ -16,7 +16,7 @@ namespace ZEngine.Managers
         public static SystemManager Instance => LazyInitializer.Value;
         private static readonly Lazy<SystemManager> LazyInitializer = new Lazy<SystemManager>(() => new SystemManager());
 
-        // And of course as August likes it, we have an dictionary with
+        // We have an dictionary with
         // the dictionary name as the key, and the system instance as value.
         private readonly Dictionary<Type, ISystem> _systems = new Dictionary<Type, ISystem>()
         {
@@ -25,8 +25,8 @@ namespace ZEngine.Managers
             { typeof(InputHandler), new InputHandler() },
             { typeof(MoveSystem), new MoveSystem() },
             { typeof(TankMovementSystem), new TankMovementSystem() },
-            { typeof(CollisionSystem), new CollisionSystem() },
-            { typeof(TitlesafeRenderSystem), new TitlesafeRenderSystem()}
+            { typeof(TitlesafeRenderSystem), new TitlesafeRenderSystem()},
+            { typeof(LightSystem), new LightSystem()}
         };
 
         // _____________________________________________________________________________________________________________________ //
