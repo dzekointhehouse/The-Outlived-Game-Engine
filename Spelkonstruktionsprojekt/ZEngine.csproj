@@ -66,6 +66,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
+    <Compile Include="ZEngine\Systems\CollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\LightSystem.cs" />
