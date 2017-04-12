@@ -27,6 +27,8 @@ namespace ZEngine.Managers
         public Dictionary<Type, IComponent> GetComponentsWithEntity(int entity) {
             if (!_entity.ContainsKey(entity))
             {
+                // lägga in allt från andra dictionary om det finns
+ 
                 return new Dictionary<Type, IComponent>();
             }
             else
@@ -35,7 +37,13 @@ namespace ZEngine.Managers
             }
 
         }
-        
+        public void AddToEntity(int entityId,Type test,IComponent componentType)
+        {
+            AddEntityKeyIfNotPresent(entityId);
+
+            var entityComponents = _entity[entityId];
+            entityComponents.Add(test, componentType);
+        }
         // Returns a dictionary with all the entities that have an instance 
         // of the component type that is given as a parameter.        
         public Dictionary<int, IComponent> GetEntitiesWithComponent(Type componentType)
@@ -77,6 +85,7 @@ namespace ZEngine.Managers
             return entityComponents.ContainsKey(entityId);
         }
 
+        
         public ComponentType GetEntityComponent<ComponentType>(int entityId) where ComponentType : IComponent
         {
             var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
@@ -127,7 +136,7 @@ namespace ZEngine.Managers
         public void AddComponentToEntity(IComponent componentInstance, int entityId)
         {
             AddComponentKeyIfNotPresent(componentInstance.GetType());
-
+           
             var entityComponents = _components[componentInstance.GetType()];
             entityComponents.Add(entityId, componentInstance);
         }
@@ -160,6 +169,13 @@ namespace ZEngine.Managers
             if (!_components.ContainsKey(componentType))
             {
                 _components[componentType] = new Dictionary<int, IComponent>();
+            }
+        }
+        public void AddEntityKeyIfNotPresent(int componentType)
+        {
+            if (!_entity.ContainsKey(componentType))
+            {
+                _entity[componentType] = new Dictionary<Type, IComponent>();
             }
         }
     }

@@ -102,7 +102,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
             ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId1);
-
+         //   ComponentManager.Instance.AddToEntity(entityId1,typeof(HealthComponent), healthComponent);
+        //    ComponentManager.Instance.AddToEntity(entityId1, typeof(RenderComponent), renderComponent);
+       //     ComponentManager.Instance.AddToEntity(entityId1, typeof(MoveComponent), moveComponent);
+            ComponentManager.Instance.GetComponentsWithEntity(entityId1);
             //Initializing a second, imovable, entity
             var entityId2 = EntityManager.GetEntityManager().NewEntity();
             var renderComponent2 = new RenderComponentBuilder()
