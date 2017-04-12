@@ -49,3 +49,10 @@
 /processorParam:TextureFormat=Color
 /build:bmpPlaneUpRight.bmp
 
+#begin Healthfont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Healthfont.spritefont
+
