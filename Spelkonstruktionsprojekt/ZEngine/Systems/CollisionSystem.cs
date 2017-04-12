@@ -8,25 +8,58 @@ using System.Threading.Tasks;
 using ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Components.CollisionComponent;
+using Spelkonstruktionsprojekt.ZEngine.Components;
+using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class CollisionSystem : ISystem
     {
-        private readonly ComponentManager ComponentManager = ComponentManager.Instance;        
+        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        //public void BindRectangleSprite()
-        //{
+        
+        public void checkforCollision(GameDependencies rd)
+        {
 
-        //}
+            var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
+            foreach(int key in collisionEntities.Keys)
+            {
+                var componentList = ComponentManager.GetComponentsWithEntity(key);
+                if (ComponentManager.EntityHasComponent<PositionComponent>(key)) { }
+                PositionComponent position = (PositionComponent) componentList[typeof(PositionComponent)];
+                CollisionComponent collisionComponent = (CollisionComponent) componentList[typeof(CollisionComponent)];
+                collisionComponent.spriteBoundingRectangle = new Rectangle((int)position.Position.X, (int)position.Position.Y, 50,50);
 
-        //public void getCollisions()
-        //{
-        //    var entitylist = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
-            
-        //}
+                foreach(int key2 in collisionEntities.Keys)
+                {
+                    var componentList2 = ComponentManager.GetComponentsWithEntity(key2);
+                    PositionComponent position2 = (PositionComponent)componentList[typeof(PositionComponent)];
+                    CollisionComponent collisionComponent2 = (CollisionComponent)componentList[typeof(CollisionComponent)];
+                    collisionComponent2.spriteBoundingRectangle = new Rectangle((int)position.Position.X, (int)position.Position.Y, 50, 50);
+
+                    if(collisionComponent.spriteBoundingRectangle.Intersects(collisionComponent2.spriteBoundingRectangle) && !collisionComponent2.Equals(collisionComponent))
+                    {
+                        rd.GraphicsDeviceManager.GraphicsDevice.Clear(Color.Red);
+                    }
+
+                        
+                }
 
 
+
+                
+
+            }
+
+            //ComponentManager.GetComponentsWithEntity();
+        }
+
+
+
+
+
+
+        
         // stops the sprite from going off the screen
         public void Boundering(SpriteComponent sprite, GraphicsDeviceManager graphics)
         {                          
@@ -36,11 +69,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             sprite.Position = new Point(x, y);
             
         }
-
-        // calculate bounding rectangle of the sprite
-        //public void CalculateBoundingRectangle()
-        //{
-
-        //}
     }
 }

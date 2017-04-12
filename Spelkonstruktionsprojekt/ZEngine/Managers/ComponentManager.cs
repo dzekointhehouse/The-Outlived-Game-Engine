@@ -71,9 +71,9 @@ namespace ZEngine.Managers
         // This method returns true if the entity has an association
         // with the specified component. The component type is given as type parameter
         // and that type has to implement the IComponent interface.
-        public bool EntityHasComponent<ComponentType>(int entityId) where ComponentType : IComponent
+        public bool EntityHasComponent<T>(int entityId) where T : IComponent
         {
-            var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
+            var entityComponents = this.GetEntitiesWithComponent<T>();
             return entityComponents.ContainsKey(entityId);
         }
 

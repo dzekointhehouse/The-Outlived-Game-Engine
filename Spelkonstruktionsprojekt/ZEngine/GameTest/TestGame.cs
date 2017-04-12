@@ -16,6 +16,7 @@ using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
+using ZEngine.Components.CollisionComponent;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -33,6 +34,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private MoveSystem MoveSystem;
         private TankMovementSystem TankMovementSystem;
         private TitlesafeRenderSystem TitlesafeRenderSystem;
+        private CollisionSystem CollisionSystem;
         public TestGame()
         {
             _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -50,6 +52,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
+            CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
+            
+
 
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
@@ -67,6 +72,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             //Initializing first, movable, entity
             var entityId1 = EntityManager.GetEntityManager().NewEntity();
+
             var renderComponent = new RenderComponentBuilder()
                 .Position(150, 150, 2)
                 .Dimensions(100, 100).Build();
@@ -95,11 +101,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, KeyEvent.KeyPressed, "entityTurnLeft")
                 .SetAction(Keys.D, KeyEvent.KeyPressed, "entityTurnRight")
                 .Build();
+
+            var collisionComponent = new CollisionComponent();
+            var collisionComponent2 = new CollisionComponent();
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
             ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId1);
+            ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId1);
+            
+
+            
 
             //Initializing a second, imovable, entity
             var entityId2 = EntityManager.GetEntityManager().NewEntity();
@@ -124,6 +137,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "bmpPlaneUpRight"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
+            ComponentManager.Instance.AddComponentToEntity(collisionComponent2, entityId2);
         }
 
         protected override void LoadContent()
@@ -143,6 +157,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
+            CollisionSystem.checkforCollision(_gameDependencies);
             base.Update(gameTime);
         }
         
