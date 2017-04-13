@@ -34,15 +34,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         var multiplier = moveComponent.VelocitySpeed > 0 ? 1 : (-1 * moveComponent.BackwardsPenaltyFactor);
                         moveComponent.VelocitySpeed += multiplier * moveComponent.AccelerationSpeed * delta; //Accelerate
                     }
-                    if (moveComponent.VelocitySpeed > moveComponent.MaxVelocitySpeed)
-                    {
-                        moveComponent.VelocitySpeed = moveComponent.MaxVelocitySpeed;
-                    }
-                    else if (moveComponent.VelocitySpeed < -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor)
-                    {
-                        moveComponent.VelocitySpeed = -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor;
-                    }
-                    VectorHelper.ApplyVelocitySpeedToLimit(moveComponent, moveComponent.MaxVelocitySpeed);
+                    ApplyVelocityLimits(moveComponent);
                     moveComponent.Velocity = MoveDirectly(new Vector2(0,0), moveComponent.Direction, moveComponent.VelocitySpeed);
                     
                     entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity, delta);
@@ -56,6 +48,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         + "  velocitySpeed " + moveComponent.VelocitySpeed
                     );
                 }
+            }
+        }
+
+        public void ApplyVelocityLimits(MoveComponent moveComponent)
+        {
+            if (moveComponent.VelocitySpeed > moveComponent.MaxVelocitySpeed)
+            {
+                moveComponent.VelocitySpeed = moveComponent.MaxVelocitySpeed;
+            }
+            else if (moveComponent.VelocitySpeed < -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor)
+            {
+                moveComponent.VelocitySpeed = -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor;
             }
         }
 
