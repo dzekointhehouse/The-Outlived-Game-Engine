@@ -26,7 +26,8 @@ namespace ZEngine.Managers
             { typeof(MoveSystem), new MoveSystem() },
             { typeof(TankMovementSystem), new TankMovementSystem() },
             { typeof(TitlesafeRenderSystem), new TitlesafeRenderSystem()},
-            { typeof(LightSystem), new LightSystem()}
+            { typeof(LightSystem), new LightSystem()},
+            { typeof(CollisionSystem), new CollisionSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

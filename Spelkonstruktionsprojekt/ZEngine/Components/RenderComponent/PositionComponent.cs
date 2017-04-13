@@ -8,7 +8,7 @@ using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 
 namespace ZEngine.Components
 {
-    public class PositionComponent
+    public class PositionComponent : IComponent
     {
         public Vector2D Position { get; set; }
 

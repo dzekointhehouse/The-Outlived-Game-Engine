@@ -54,6 +54,7 @@ namespace ZEngine.Managers
         public int NewEntity()
         {
             _existingEntities.Add(_nextEntityId);
+            ComponentManager.Instance.addEntity(_nextEntityId);
             return _nextEntityId++;
         }
 
