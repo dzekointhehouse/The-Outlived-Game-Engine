@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZEngine.Components;
+using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
 using ZEngine.EventBus;
 using ZEngine.Wrappers;
@@ -56,6 +57,11 @@ namespace ZEngine.Systems
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
                     var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
+                    MoveComponent moveComponent = null;
+                    if (ComponentManager.EntityHasComponent<MoveComponent>(entity.Key))
+                    {
+                        moveComponent = ComponentManager.GetEntityComponent<MoveComponent>(entity.Key);
+                    }
                     sprite.Scale = 1;
                     var destinationRectangle = new Rectangle(
                         new Point((int) position.X, (int) position.Y),
@@ -67,12 +73,17 @@ namespace ZEngine.Systems
                     );
 
                     var zIndexMaxLimit = 1000;
+                    double angle = sprite.Angle;
+                    if (moveComponent != null)
+                    {
+                        angle = moveComponent.Direction;
+                    }
                     spriteBatch.Draw(
                         texture: sprite.Sprite,
                         destinationRectangle: destinationRectangle,
                         sourceRectangle: spriteCrop,
                         color: Color.White,
-                        rotation: sprite.Angle,
+                        rotation: (float)angle,
                         origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2),
                         effects: SpriteEffects.None,
                         layerDepth: (float)zIndex / zIndexMaxLimit //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)

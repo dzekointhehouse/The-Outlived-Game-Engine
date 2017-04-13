@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,18 +25,36 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (moveEntities.ContainsKey(entity.Key))
                 {
                     var moveComponent = moveEntities[entity.Key];
-                    moveComponent.Velocity = Move(moveComponent.Velocity, moveComponent.Direction, moveComponent.Acceleration, delta);
 
-                    if (MoveComponent.SomeAxisBelowMovingThreshold(moveComponent.Velocity))
+                    moveComponent.Direction = (moveComponent.Direction + moveComponent.RotationMomentum * delta) % MathHelper.TwoPi;
+
+                    var entityIsMoving = moveComponent.VelocitySpeed < -0.01 || moveComponent.VelocitySpeed > 0.01;
+                    if (entityIsMoving)
                     {
-                        MoveComponent.SetVelocityToRest(moveComponent);
+                        var multiplier = moveComponent.VelocitySpeed > 0 ? 1 : (-1 * moveComponent.BackwardsPenaltyFactor);
+                        moveComponent.VelocitySpeed += multiplier * moveComponent.AccelerationSpeed * delta; //Accelerate
                     }
-                    MoveComponent.StopAxesAtSpeedLimit(moveComponent.Velocity, moveComponent.MaxVelocity);
+                    if (moveComponent.VelocitySpeed > moveComponent.MaxVelocitySpeed)
+                    {
+                        moveComponent.VelocitySpeed = moveComponent.MaxVelocitySpeed;
+                    }
+                    else if (moveComponent.VelocitySpeed < -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor)
+                    {
+                        moveComponent.VelocitySpeed = -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor;
+                    }
+                    VectorHelper.ApplyVelocitySpeedToLimit(moveComponent, moveComponent.MaxVelocitySpeed);
+                    moveComponent.Velocity = MoveDirectly(new Vector2(0,0), moveComponent.Direction, moveComponent.VelocitySpeed);
+                    
                     entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity, delta);
-                    //entity.Value.PositionComponent.Position = Move(entity.Value.PositionComponent.Position, moveComponent.Direction, moveComponent.Velocity, delta);
-                    moveComponent.Direction += moveComponent.RotationMomentum * delta;
-                    System.Diagnostics.Debug.WriteLine("moment " + moveComponent.RotationMomentum);
-                    System.Diagnostics.Debug.WriteLine("direction" + moveComponent.Direction);
+
+                    System.Diagnostics.Debug.WriteLine(
+                        "moment " + moveComponent.RotationMomentum
+                        + " direction " + moveComponent.Direction
+                        + " velocity " + moveComponent.Velocity.ToString()
+                        + " delta " + delta
+                        + "  maxVelocity " + moveComponent.MaxVelocity.ToString()
+                        + "  velocitySpeed " + moveComponent.VelocitySpeed
+                    );
                 }
             }
         }
@@ -50,6 +69,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             var x1 = acceleration.X * Math.Cos(direction) * deltaTime;
             var y1 = acceleration.Y * Math.Sin(direction) * deltaTime;
+            var x = (oldVector.X + x1);
+            var y = (oldVector.Y + y1);
+            return Vector2D.Create(x, y);
+        }
+        public Vector2D MoveDirectly(Vector2D oldVector, double direction, double acceleration)
+        {
+            var x1 = acceleration * Math.Cos(direction);
+            var y1 = acceleration * Math.Sin(direction);
             var x = (oldVector.X + x1);
             var y = (oldVector.Y + y1);
             return Vector2D.Create(x, y);

@@ -85,7 +85,6 @@ namespace ZEngine.Managers
             return entityComponents.ContainsKey(entityId);
         }
 
-        
         public ComponentType GetEntityComponent<ComponentType>(int entityId) where ComponentType : IComponent
         {
             var entityComponents = this.GetEntitiesWithComponent<ComponentType>();

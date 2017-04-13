@@ -5,32 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components.MoveComponent;
-using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 
-namespace Spelkonstruktionsprojekt.ZEngine.Systems
+namespace ZEngine.Systems
 {
     class TankMovementSystem : ISystem
     {
-        private EventBus EventBus = EventBus.Instance;
+        private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        private Action<int> _entityAccelerate;
-        private Action<int> _entityDeccelerate;
+        private Action<MoveEvent> _entityAccelerate;
+        private Action<MoveEvent> _entityDeccelerate;
 
         public TankMovementSystem()
         {
-            _entityAccelerate = new Action<int>(EntityAccelerate);
-            _entityDeccelerate = new Action<int>(EntityDeccelerate);
+            _entityAccelerate = new Action<MoveEvent>(WalkForwards);
+            _entityDeccelerate = new Action<MoveEvent>(WalkBackwards);
         }
+
         public ISystem Start()
         {
-            EventBus.Subscribe<int>("entityAccelerate", _entityAccelerate);
-            EventBus.Subscribe<int>("entityDeccelerate", _entityDeccelerate);
-            EventBus.Subscribe<int>("entityTurnLeft", TurnLeft);
-            EventBus.Subscribe<int>("entityTurnRight", TurnRight);
+            EventBus.Subscribe<MoveEvent>("entityWalkForwards", _entityAccelerate);
+            EventBus.Subscribe<MoveEvent>("entityWalkBackwards", _entityDeccelerate);
+            EventBus.Subscribe<MoveEvent>("entityTurnLeft", TurnLeft);
+            EventBus.Subscribe<MoveEvent>("entityTurnRight", TurnRight);
             return this;
         }
 
@@ -38,49 +39,63 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             return this;
         }
-
-        public void EntityAccelerate(int entityId)
+        
+        public void WalkForwards(MoveEvent moveEvent)
         {
-            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
             {
-                System.Diagnostics.Debug.WriteLine("Entity Accelerate");
-                moveComponent.Acceleration = Move(moveComponent.Acceleration, moveComponent.Direction, moveComponent.AccelerationSpeed);
-                MoveComponent.StopMotionOnAxesBelowMovingThreshold(moveComponent.Acceleration);
-                if (moveComponent.MaxAcceleration != null)
+                if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    MoveComponent.StopAxesAtSpeedLimit(moveComponent.Acceleration, moveComponent.MaxAcceleration);
+                    moveComponent.VelocitySpeed = 1;
+                }
+                else if(moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
+                {
+                    moveComponent.VelocitySpeed = 0;
                 }
             });
         }
-        public void EntityDeccelerate(int entityId)
+        public void WalkBackwards(MoveEvent moveEvent)
         {
-            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
             {
-                System.Diagnostics.Debug.WriteLine("Entity Deccelerate");
-                moveComponent.Acceleration = Move(moveComponent.Acceleration, moveComponent.Direction, -moveComponent.AccelerationSpeed);
-                MoveComponent.StopMotionOnAxesBelowMovingThreshold(moveComponent.Acceleration);
-                if (moveComponent.MaxAcceleration != null)
+                if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    MoveComponent.StopAxesAtSpeedLimit(moveComponent.Acceleration, moveComponent.MaxAcceleration);
+                    moveComponent.VelocitySpeed = -1;
+                }
+                else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
+                {
+                    moveComponent.VelocitySpeed = 0;
                 }
             });
         }
 
-        public void TurnRight(int entityId)
+        public void TurnRight(MoveEvent moveEvent)
         {
-            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
             {
-                System.Diagnostics.Debug.WriteLine("Entity Turn Right");
-                moveComponent.RotationMomentum = -moveComponent.RotationSpeed;
+                if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyDown)
+                {
+                    moveComponent.RotationMomentum = moveComponent.RotationSpeed;
+                }
+                else if(moveComponent.RotationMomentum > 0)
+                {
+                    moveComponent.RotationMomentum = 0;
+                }
             });
         }
 
-        public void TurnLeft(int entityId)
+        public void TurnLeft(MoveEvent moveEvent)
         {
-            UpdateMoveComponentIfApplicable(entityId, moveComponent =>
+            UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
             {
-                System.Diagnostics.Debug.WriteLine("Entity Turn Left");
-                moveComponent.RotationMomentum = moveComponent.RotationSpeed;
+                if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyDown)
+                {
+                    moveComponent.RotationMomentum = -moveComponent.RotationSpeed;
+                }
+                else if(moveComponent.RotationMomentum < 0)
+                {
+                    moveComponent.RotationMomentum = 0;
+                }
             });
         }
 
@@ -95,22 +110,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 }
             }
         }
-
-        public Vector2D Move(Vector2D oldVector, double direction, double acceleration)
-        {
-            var x1 = acceleration * Math.Cos(direction);
-            var y1 = acceleration * Math.Sin(direction);
-            var x = (oldVector.X + x1);
-            var y = (oldVector.Y + y1);
-            System.Diagnostics.Debug.WriteLine("x:" + x + " xc:" + x1 + ", y:" + y + " ys:" + y1 + " acc:" + acceleration + ", angle:" + direction);
-            return Vector2D.Create(x, y);
-        }
-
-        /*
-         *  x = cx + r * cos(a)
-         *  y = cy + r * sin(a)
-         * 
-         */
     }
 
+    public class MoveEvent
+    {
+        public int EntityId { get; set; }
+        public ActionBindings.KeyEvent KeyEvent { get; set; }
+
+        public MoveEvent(int entityId, ActionBindings.KeyEvent keyEvent)
+        {
+            EntityId = entityId;
+            KeyEvent = keyEvent;
+        }
+    }
 }

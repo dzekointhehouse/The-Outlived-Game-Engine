@@ -10,7 +10,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         /**
          *  Actions is a dictionary where the Key of a Keyboard is connected to an event string and a KeyEvent enum.
          */
-        public Dictionary<Keys, Dictionary<KeyEvent, string>> Actions = new Dictionary<Keys, Dictionary<KeyEvent, string>>();
+        public Dictionary<Keys, string> Actions = new Dictionary<Keys, string>();
 
         public enum KeyEvent
         {
@@ -27,24 +27,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         private readonly ActionBindings _actionBindings = new ActionBindings();
 
-        public ActionBindingsBuilder SetAction(Keys key, ActionBindings.KeyEvent keyEvent, string eventName)
+        public ActionBindingsBuilder SetAction(Keys key, string eventName)
         {
-            AddKeyIfNotThere(key);
-            _actionBindings.Actions[key][keyEvent] = eventName;
+            _actionBindings.Actions[key] = eventName;
             return this;
         }
 
         public ActionBindings Build()
         {
             return _actionBindings;
-        }
-
-        private void AddKeyIfNotThere(Keys key)
-        {
-            if (!_actionBindings.Actions.ContainsKey(key))
-            {
-                _actionBindings.Actions[key] = new Dictionary<ActionBindings.KeyEvent, string>();
-            }
         }
     }
 }

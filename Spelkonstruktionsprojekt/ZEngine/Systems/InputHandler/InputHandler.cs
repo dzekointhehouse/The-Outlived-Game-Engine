@@ -6,6 +6,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
+using ZEngine.Systems;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
 using ZEngine.Wrappers;
 
@@ -25,8 +26,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         public void HandleInput(KeyboardState oldKeyboardState)
         {
             var keyboardState = Keyboard.GetState();
-            var entities = ComponentManager.GetEntitiesWithComponent<ActionBindings>();
-            foreach (var entity in entities)
+            var entitiesWithActionBindings = ComponentManager.GetEntitiesWithComponent<ActionBindings>();
+            foreach (var entity in entitiesWithActionBindings)
             {
                 var keyBindings = entity.Value.Actions;
 
@@ -34,18 +35,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 {
                     Keys key = binding.Key;
                     var currentKeyEvent = GetKeyEvent(key, keyboardState, oldKeyboardState);
-                    if (CurrentKeyEventNotRelevant(currentKeyEvent, binding)) continue;
-                    System.Diagnostics.Debug.WriteLine("key:" + key);
-
-                    Dictionary<KeyEvent, string> eventActions = binding.Value;
-                    EventBus.Publish(eventActions[currentKeyEvent], entity.Key);
+                    EventBus.Publish(binding.Value, new MoveEvent(entity.Key, currentKeyEvent));
                 }
             }
-        }
-
-        private static bool CurrentKeyEventNotRelevant(KeyEvent currentKeyEvent, KeyValuePair<Keys, Dictionary<KeyEvent, string>> entry)
-        {
-            return !entry.Value.ContainsKey(currentKeyEvent);
         }
 
         public KeyEvent GetKeyEvent(Keys key, KeyboardState newState, KeyboardState oldState)

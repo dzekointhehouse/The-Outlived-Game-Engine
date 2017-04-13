@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -15,14 +16,31 @@ namespace ZEngine.Components.MoveComponent
         public double Direction { get; set; } = 0;
 
         public Vector2D Velocity { get; set; } = null;
-        public Vector2D MaxVelocity { get; set; } = null;
+        public Vector2D MaxVelocity { get; set; } = Vector2D.Create(0,0);
 
         public Vector2D Acceleration { get; set; } = null;
         public Vector2D MaxAcceleration { get; set; } = null;
+        public double BackwardsPenaltyFactor = 0.5;
+        public double VelocitySpeed = 0;
+        public double MaxVelocitySpeed = 10;
         public double AccelerationSpeed = 10;
-
         public double RotationMomentum = 0;
         public double RotationSpeed = 0;
+    }
+
+    public class VectorHelper
+    {
+        public static void ApplyVelocitySpeedToLimit(MoveComponent moveComponent, double speedLimit)
+        {
+            if (moveComponent.VelocitySpeed > speedLimit)
+            {
+                moveComponent.VelocitySpeed = speedLimit;
+            }
+            else if (moveComponent.VelocitySpeed < -speedLimit)
+            {
+                moveComponent.VelocitySpeed = -speedLimit;
+            }
+        }
 
         public static void StopAxesAtSpeedLimit(Vector2D originVector, Vector2D maxLimimt)
         {
@@ -37,11 +55,6 @@ namespace ZEngine.Components.MoveComponent
             return AxisBelowMovingThreshold(originVector.X) || AxisBelowMovingThreshold(originVector.Y);
         }
 
-        /**
-         *  The originVector is the current vector and the deltaVector is the change you want
-         *  to impose on the originVector. The returned vector is the new translated vector.
-         *  It is returned since a Vector2 cannot be changed (it is readonly).
-         */
         public static Vector2D Translate(Vector2D originVector, Vector2D deltaVector)
         {
             return Vector2D.Create(

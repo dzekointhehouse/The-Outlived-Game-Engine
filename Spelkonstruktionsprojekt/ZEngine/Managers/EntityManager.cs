@@ -72,9 +72,5 @@ namespace ZEngine.Managers
         {
             return _existingEntities;
         }
-
-
     }
-
-
 }

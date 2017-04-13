@@ -72,7 +72,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Dimensions(100, 100).Build();
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "java"
+                SpriteName = "topDownSoldier"
             };
 
             var healthComponent = new HealthComponent()
@@ -84,16 +84,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var moveComponent = new MoveComponent()
             {
                 Velocity = Vector2D.Create(0,0),
-                MaxVelocity = Vector2D.Create(100,100),
                 Acceleration = Vector2D.Create(0,0),
                 MaxAcceleration = Vector2D.Create(80, 80),
-                RotationSpeed = 0.1
+                MaxVelocitySpeed = 200,
+                AccelerationSpeed = 380,
+                RotationSpeed = 4
             };
             var actionBindings = new ActionBindingsBuilder()
-                .SetAction(Keys.W, KeyEvent.KeyDown, "entityAccelerate")
-                .SetAction(Keys.S, KeyEvent.KeyDown, "entityDeccelerate")
-                .SetAction(Keys.A, KeyEvent.KeyPressed, "entityTurnLeft")
-                .SetAction(Keys.D, KeyEvent.KeyPressed, "entityTurnRight")
+                .SetAction(Keys.W, "entityWalkForwards")
+                .SetAction(Keys.S, "entityWalkBackwards")
+                .SetAction(Keys.A, "entityTurnLeft")
+                .SetAction(Keys.D, "entityTurnRight")
                 .Build();
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
@@ -115,18 +116,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "Atlantis Nebula UHD"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent2, entityId2);
-
-            // Aeroplane sprite
-            var entityId3 = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent3 = new RenderComponentBuilder()
-                .Position(750, 200, 3)
-                .Dimensions(400, 400).Build();
-            ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
-            var spriteComponent3 = new SpriteComponent()
-            {
-                SpriteName = "bmpPlaneUpRight"
-            };
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
         }
 
         protected override void LoadContent()
@@ -134,12 +123,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             LoadContentSystem.LoadContent(this.Content);
         }
 
-
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
-
 
         protected override void Update(GameTime gameTime)
         {
@@ -152,7 +139,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         protected override void Draw(GameTime gameTime)
         {
             RenderSystem.Render(_gameDependencies);
-            TitlesafeRenderSystem.Render(_gameDependencies);
+            //TitlesafeRenderSystem.Render(_gameDependencies);
             base.Draw(gameTime);
         }
     }
