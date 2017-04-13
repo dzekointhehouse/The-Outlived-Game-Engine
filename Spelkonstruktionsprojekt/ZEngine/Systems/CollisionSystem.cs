@@ -17,45 +17,44 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        
-        public void checkforCollision(GameDependencies rd)
-        {
 
+
+        public void addBoxes()
+        {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
-            foreach(int key in collisionEntities.Keys)
+            foreach (int key in collisionEntities.Keys)
             {
                 var componentList = ComponentManager.GetComponentsWithEntity(key);
-                if (ComponentManager.EntityHasComponent<PositionComponent>(key)) { }
-                PositionComponent position = (PositionComponent) componentList[typeof(PositionComponent)];
-                CollisionComponent collisionComponent = (CollisionComponent) componentList[typeof(CollisionComponent)];
-                collisionComponent.spriteBoundingRectangle = new Rectangle((int)position.Position.X, (int)position.Position.Y, 50,50);
 
-                foreach(int key2 in collisionEntities.Keys)
-                {
-                    var componentList2 = ComponentManager.GetComponentsWithEntity(key2);
-                    PositionComponent position2 = (PositionComponent)componentList[typeof(PositionComponent)];
-                    CollisionComponent collisionComponent2 = (CollisionComponent)componentList[typeof(CollisionComponent)];
-                    collisionComponent2.spriteBoundingRectangle = new Rectangle((int)position.Position.X, (int)position.Position.Y, 50, 50);
+                RenderComponent position = (RenderComponent)componentList[typeof(RenderComponent)];
+                CollisionComponent collisionComponent = (CollisionComponent)componentList[typeof(CollisionComponent)];
 
-                    if(collisionComponent.spriteBoundingRectangle.Intersects(collisionComponent2.spriteBoundingRectangle) && !collisionComponent2.Equals(collisionComponent))
-                    {
-                        rd.GraphicsDeviceManager.GraphicsDevice.Clear(Color.Red);
-                    }
-
-                        
-                }
-
-
-
-                
-
+                collisionComponent.spriteBoundingRectangle = new Rectangle((int)position.PositionComponent.Position.X, (int)position.PositionComponent.Position.Y, position.DimensionsComponent.Width, position.DimensionsComponent.Height);
             }
-
-            //ComponentManager.GetComponentsWithEntity();
         }
 
+        public void checkCol()
+        {
+            var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
+            foreach (int key in collisionEntities.Keys)
+            {
+                var componentList = ComponentManager.GetComponentsWithEntity(key);
+                CollisionComponent collisionComponent = (CollisionComponent)componentList[typeof(CollisionComponent)];
 
+                foreach (int key2 in collisionEntities.Keys)
+                {
+                    var secondComponentList = ComponentManager.GetComponentsWithEntity(key2);
+                    CollisionComponent secondCollisionComponent = (CollisionComponent)secondComponentList[typeof(CollisionComponent)];
 
+                    if ((collisionComponent.spriteBoundingRectangle.Intersects(secondCollisionComponent.spriteBoundingRectangle)) && (key != key2))
+                    {
+                        Console.Write("Collision was detected. Go do something about it.");
+                    }
+
+                }
+            }
+
+        }
 
 
 

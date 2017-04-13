@@ -35,6 +35,11 @@ namespace ZEngine.Managers
             }
 
         }
+
+        public void addEntity(int id)
+        {
+            _entity.Add(id, new Dictionary<Type, IComponent>());
+        }
         
         // Returns a dictionary with all the entities that have an instance 
         // of the component type that is given as a parameter.        
@@ -120,6 +125,10 @@ namespace ZEngine.Managers
 
             var entityComponents = _components[typeof(T)];
             entityComponents.Add(entityId, (IComponent) new T());
+
+            var entityComponents2 = _entity[entityId];
+            entityComponents2.Add(typeof(T), (IComponent)new T());
+            
         }
 
         // This method is used to associate an instance of a component to a specified
@@ -130,6 +139,14 @@ namespace ZEngine.Managers
 
             var entityComponents = _components[componentInstance.GetType()];
             entityComponents.Add(entityId, componentInstance);
+
+            var entityComponents2 = _entity[entityId];
+            if(entityComponents2 == null)
+            {
+                entityComponents2 = new Dictionary<Type, IComponent>();
+            }
+            entityComponents2.Add(componentInstance.GetType(), componentInstance);
+
         }
 
         // Completely deletes the entity key and all the usages of it
