@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
 using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
@@ -29,22 +30,17 @@ namespace ZEngine.Systems
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
-        public void Render(GameDependencies gm, Rectangle subsetView = default(Rectangle))
+        public void Render(GameDependencies gm)
         {
             var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
             var spriteBatch = gm.SpriteBatch;
 
             graphics.Clear(Color.CornflowerBlue); // Maybe done outside
             spriteBatch.Begin(SpriteSortMode.FrontToBack);
-            if (subsetView.Width == 0)
-            {
-                subsetView.Width = graphics.Viewport.Width;
-            }
-            if (subsetView.Height == 0)
-            {
-                subsetView.Height = graphics.Viewport.Height;
-            }
-            DrawEntities(spriteBatch, subsetView);
+
+
+            var cameraEntities = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>();
+            DrawEntities(spriteBatch, cameraEntities.First().Value.View);
             spriteBatch.End();
         }
 
@@ -55,6 +51,7 @@ namespace ZEngine.Systems
         // we use the spritebach to draw all the entities.
         private void DrawEntities(SpriteBatch spriteBatch, Rectangle subsetView)
         {
+
             var renderableEntities = 
                 ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>()
                     .Where(e => InsideView(e.Value, subsetView));

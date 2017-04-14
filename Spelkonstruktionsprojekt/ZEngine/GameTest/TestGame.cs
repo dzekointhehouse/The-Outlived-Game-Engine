@@ -35,13 +35,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private TankMovementSystem TankMovementSystem;
         private TitlesafeRenderSystem TitlesafeRenderSystem;
         private CollisionSystem CollisionSystem;
+        private Vector2 viewportDimensions = new Vector2(900, 500);
 
         public TestGame()
         {
             _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = 900,
-                PreferredBackBufferHeight = 500
+                PreferredBackBufferWidth = (int) viewportDimensions.X,
+                PreferredBackBufferHeight = (int) viewportDimensions.Y
             };
             Content.RootDirectory = "Content";
         }
@@ -82,6 +83,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "Atlantis Nebula UHD"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
+
+            var cameraEntity = EntityManager.GetEntityManager().NewEntity();
+            var cameraViewComponent = new CameraViewComponent()
+            {
+                View = new Rectangle(0,0, (int) viewportDimensions.X, (int) viewportDimensions.Y)
+            };
+            ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
+
         }
 
         public void InitPlayers()
