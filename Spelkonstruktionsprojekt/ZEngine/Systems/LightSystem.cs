@@ -16,12 +16,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public static string SystemName = "LightSystem";
         private GameDependencies _gameDependencies;
-        private PenumbraComponent _penumbra;
 
-        public void Initialize(GameDependencies gameDependencies)
+        public PenumbraComponent Initialize(GameDependencies gameDependencies)
         {
             this._gameDependencies = gameDependencies;
-            _penumbra = new PenumbraComponent(gameDependencies.Game);
+            var _penumbra = new PenumbraComponent(gameDependencies.Game);
 
             var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
 
@@ -31,16 +30,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
 
             _penumbra.Initialize();
+            return _penumbra;
         }
 
-        public void DrawLights()
+        public void DrawLights(PenumbraComponent penumbraComponent)
         {
-            _penumbra.BeginDraw();
+            penumbraComponent.BeginDraw();
         }
 
-        public void EndDraw()
+        public void EndDraw(PenumbraComponent penumbraComponent)
         {
-            _penumbra.Draw(_gameDependencies.GameTime);
+            penumbraComponent.Draw(_gameDependencies.GameTime);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         SpriteBatch spriteBatch;
         readonly GameDependencies gameDependencies = new GameDependencies();
         private LightSystem lightSystems;
+        private PenumbraComponent penumbraComponent;
 
         public TestGame2()
         {
@@ -52,7 +53,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             CreateObjects();
 
-            lightSystems.Initialize(gameDependencies);
+            penumbraComponent = lightSystems.Initialize(gameDependencies);
         }
 
         protected override void UnloadContent()
@@ -76,9 +77,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
 
 
-            lightSystems.DrawLights();
+            lightSystems.DrawLights(penumbraComponent);
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            lightSystems.EndDraw();
+            lightSystems.EndDraw(penumbraComponent);
 
             base.Draw(gameTime);
         }
