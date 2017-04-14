@@ -64,7 +64,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-
             CreateTestEntities();
 
             base.Initialize();
@@ -72,7 +71,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
-            InitPlayers();
+            var cameraCage = EntityManager.GetEntityManager().NewEntity();
+            var renderComponentCage = new RenderComponentBuilder()
+                .Position(0, 0, 999)
+                .Dimensions((int)viewportDimensions.X, (int)viewportDimensions.Y).Build();
+            var collisionComponentCage = new CollisionComponent()
+            {
+                CageMode = true
+            };
+            ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
+            ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
+
+            InitPlayers(cameraCage);
 
             //Initializing a second, imovable, entity
             var entityId3 = EntityManager.GetEntityManager().NewEntity();
@@ -103,7 +113,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(cameraSprite, cameraEntity);
         }
 
-        public void InitPlayers()
+        public void InitPlayers(int cageId)
         {
             var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
@@ -113,30 +123,35 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.D, "entityTurnRight")
                 .Build();
             var cameraFollow1 = new CameraFollowComponent();
+            var cageComponent = new CageComponent()
+            {
+                CageId = cageId
+            };
             ComponentManager.Instance.AddComponentToEntity(cameraFollow1, player1);
+            ComponentManager.Instance.AddComponentToEntity(cageComponent, player1);
 
 
-            var player2 = EntityManager.GetEntityManager().NewEntity();
-            var actionBindings2 = new ActionBindingsBuilder()
-                .SetAction(Keys.I, "entityWalkForwards")
-                .SetAction(Keys.K, "entityWalkBackwards")
-                .SetAction(Keys.J, "entityTurnLeft")
-                .SetAction(Keys.L, "entityTurnRight")
-                .Build();
+            //var player2 = EntityManager.GetEntityManager().NewEntity();
+            //var actionBindings2 = new ActionBindingsBuilder()
+            //    .SetAction(Keys.I, "entityWalkForwards")
+            //    .SetAction(Keys.K, "entityWalkBackwards")
+            //    .SetAction(Keys.J, "entityTurnLeft")
+            //    .SetAction(Keys.L, "entityTurnRight")
+            //    .Build();
 
-            var player3 = EntityManager.GetEntityManager().NewEntity();
-            var actionBindings3 = new ActionBindingsBuilder()
-                .SetAction(Keys.Up, "entityWalkForwards")
-                .SetAction(Keys.Down, "entityWalkBackwards")
-                .SetAction(Keys.Left, "entityTurnLeft")
-                .SetAction(Keys.Right, "entityTurnRight")
-                .Build();
-            var cameraFollow2 = new CameraFollowComponent();
-            ComponentManager.Instance.AddComponentToEntity(cameraFollow2, player2);
+            //var player3 = EntityManager.GetEntityManager().NewEntity();
+            //var actionBindings3 = new ActionBindingsBuilder()
+            //    .SetAction(Keys.Up, "entityWalkForwards")
+            //    .SetAction(Keys.Down, "entityWalkBackwards")
+            //    .SetAction(Keys.Left, "entityTurnLeft")
+            //    .SetAction(Keys.Right, "entityTurnRight")
+            //    .Build();
+            //var cameraFollow2 = new CameraFollowComponent();
+            //ComponentManager.Instance.AddComponentToEntity(cameraFollow2, player2);
 
             CreatePlayer(player1, actionBindings1);
-            CreatePlayer(player2, actionBindings2);
-            CreatePlayer(player3, actionBindings3);
+            //CreatePlayer(player2, actionBindings2);
+            //CreatePlayer(player3, actionBindings3);
         }
 
         public void CreatePlayer(int entityId, ActionBindings actionBindings)
@@ -185,8 +200,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
-            CollisionSystem.AddBoxes();
-            CollisionSystem.CheckCollision();
+            CollisionSystem.CheckInsideAndOutsideCollision();
             CameraFollowSystem.FollowCamera(gameTime);
             base.Update(gameTime);
         }

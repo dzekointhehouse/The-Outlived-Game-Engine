@@ -19,22 +19,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-
-        public void AddBoxes()
-        {
-            var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
-            foreach (int key in collisionEntities.Keys)
-            {
-                var componentList = ComponentManager.GetComponentsWithEntity(key);
-
-                RenderComponent position = (RenderComponent)componentList[typeof(RenderComponent)];
-                CollisionComponent collisionComponent = (CollisionComponent)componentList[typeof(CollisionComponent)];
-
-                collisionComponent.spriteBoundingRectangle = new Rectangle((int)position.PositionComponent.Position.X, (int)position.PositionComponent.Position.Y, position.DimensionsComponent.Width, position.DimensionsComponent.Height);
-                Boundering(position.PositionComponent.Position, position.DimensionsComponent.Width, position.DimensionsComponent.Height);
-            }
-        }
-
         public void CheckOutsideCollision()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
@@ -98,43 +82,92 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public void CheckInsideAndOutsideCollision()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
-            foreach (int key in collisionEntities.Keys)
+            foreach (var firstEntity in collisionEntities)
             {
-                var componentList = ComponentManager.GetComponentsWithEntity(key);
-                CollisionComponent collisionComponent = (CollisionComponent)componentList[typeof(CollisionComponent)];
+                var firstEntityKey = firstEntity.Key;
+                CollisionComponent collisionComponent = firstEntity.Value;
 
-                foreach (int key2 in collisionEntities.Keys)
+                foreach (var secondEntity in collisionEntities)
                 {
-                    if (key != key2)
+                    var secondEntityKey = secondEntity.Key;
+                    if (firstEntityKey != secondEntityKey)
                     {
-                        var secondComponentList = ComponentManager.GetComponentsWithEntity(key2);
-                        CollisionComponent secondCollisionComponent = (CollisionComponent)secondComponentList[typeof(CollisionComponent)];
+                        CollisionComponent secondCollisionComponent = secondEntity.Value;
 
                         //insert stuff
-                        if((collisionComponent.spriteBoundingRectangle.Intersects(secondCollisionComponent.spriteBoundingRectangle) || collisionComponent.spriteBoundingRectangle.Contains(secondCollisionComponent.spriteBoundingRectangle)))
+                        var renderComponent = ComponentManager.GetEntityComponent<RenderComponent>(firstEntityKey);
+                        var secondRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(secondEntityKey);
+                        var boundingBox = GetSpriteBoundingRectangle(renderComponent, collisionComponent.spriteBoundingRectangle);
+                        var secondBoundingBox = GetSpriteBoundingRectangle(secondRenderComponent, secondCollisionComponent.spriteBoundingRectangle);
+                        if (collisionComponent.CageMode)
                         {
-                            if (!collisionComponent.collisions.Contains(key2))
+                            if (IsCagedBy(secondEntityKey, firstEntityKey))
                             {
-                                collisionComponent.collisions.Add(key2);
+                                System.Diagnostics.Debug.WriteLine("IS CAGED!!!!!! CLAMPED OR WHATEVER");
+                                System.Diagnostics.Debug.WriteLine(boundingBox.X + ", " + boundingBox.Y + ", " + boundingBox.Width + ", " + boundingBox.Height);
+                                if (!boundingBox.Contains(secondBoundingBox))
+                                {
+                                    System.Diagnostics.Debug.WriteLine("COLLISION!!!!!! CLAMPED OR WHATEVER");
+
+                                    if (!collisionComponent.collisions.Contains(secondEntityKey))
+                                    {
+                                        collisionComponent.collisions.Add(secondEntityKey);
+                                    }
+                                    if (!secondCollisionComponent.collisions.Contains(firstEntityKey))
+                                    {
+                                        secondCollisionComponent.collisions.Add(firstEntityKey);
+                                    }
+                                }
                             }
-                            if (!secondCollisionComponent.collisions.Contains(key))
+                            else
                             {
-                                secondCollisionComponent.collisions.Add(key);
+                                System.Diagnostics.Debug.WriteLine("IS NOT!!!!!! CLAMPED OR WHATEVER");
                             }
                         }
+                        else
+                        {
+                            if (boundingBox.Intersects(secondCollisionComponent.spriteBoundingRectangle))
+                            {
+                                if (!collisionComponent.collisions.Contains(secondEntityKey))
+                                {
+                                    collisionComponent.collisions.Add(secondEntityKey);
+                                }
+                                if (!secondCollisionComponent.collisions.Contains(firstEntityKey))
+                                {
+                                    secondCollisionComponent.collisions.Add(firstEntityKey);
+                                }
+                            }
+                        }
+                        
                     }
                 }
             }
         }
-
-
-    
 
         // stops the sprite from going off the screen
         public void Boundering(Vector2D spritePosition, int width, int height)
         {
             spritePosition.X = MathHelper.Clamp((float) spritePosition.X, (0 + (width/2)), (900 -(width/2)));
             spritePosition.Y = MathHelper.Clamp((float) spritePosition.Y, (0 + (height/2)), (500-(height/2)));
+        }
+
+        public Rectangle GetSpriteBoundingRectangle(RenderComponent renderComponent, Rectangle spriteBoundingBox)
+        {
+            var x = renderComponent.PositionComponent.Position.X;
+            var y = renderComponent.PositionComponent.Position.Y;
+            var width = renderComponent.DimensionsComponent.Width;
+            var height = renderComponent.DimensionsComponent.Height;
+            return new Rectangle((int) (x + spriteBoundingBox.X), (int) (y + spriteBoundingBox.Y), (int) (width + spriteBoundingBox.Width), (int) (height + spriteBoundingBox.Height));
+        }
+
+        public bool IsCagedBy(int entityId, int potentialCageId)
+        {
+            if (ComponentManager.EntityHasComponent<CageComponent>(entityId))
+            {
+                var cageComponent = ComponentManager.GetEntityComponent<CageComponent>(entityId);
+                return cageComponent.CageId == potentialCageId;
+            }
+            return false;
         }
     }
 }

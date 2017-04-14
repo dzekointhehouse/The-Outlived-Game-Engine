@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
+using ZEngine.Components.CollisionComponent;
 using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
 
@@ -35,9 +36,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         moveComponent.VelocitySpeed += multiplier * moveComponent.AccelerationSpeed * delta; //Accelerate
                     }
                     ApplyVelocityLimits(moveComponent);
-                    moveComponent.Velocity = MoveDirectly(new Vector2(0,0), moveComponent.Direction, moveComponent.VelocitySpeed);
-                    
-                    entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity, delta);
+                    moveComponent.Velocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction, moveComponent.VelocitySpeed);
+
+                    if (HasCollided(entity.Key))
+                    {
+                        entity.Value.PositionComponent.Position = moveComponent.PreviousPosition;
+                    }
+                    else
+                    {
+                        moveComponent.PreviousPosition = entity.Value.PositionComponent.Position;
+                        entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity, delta);
+                    }
 
                     System.Diagnostics.Debug.WriteLine(
                         "moment " + moveComponent.RotationMomentum
@@ -84,6 +93,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var x = (oldVector.X + x1);
             var y = (oldVector.Y + y1);
             return Vector2D.Create(x, y);
+        }
+
+        public bool HasCollided(int entityId)
+        {
+            if (ComponentManager.EntityHasComponent<CollisionComponent>(entityId))
+            {
+                var collisionComponent = ComponentManager.GetEntityComponent<CollisionComponent>(entityId);
+                return collisionComponent.collisions.Count > 0;
+            }
+            return false;
         }
 
     }

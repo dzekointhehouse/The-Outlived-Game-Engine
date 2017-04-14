@@ -13,6 +13,7 @@ namespace ZEngine.Components.MoveComponent
 {
     public class MoveComponent : IComponent
     {
+        public Vector2 PreviousPosition { get; set; }
         public double Direction { get; set; } = 0;
 
         public Vector2D Velocity { get; set; } = null;
