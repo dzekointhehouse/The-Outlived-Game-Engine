@@ -11,11 +11,11 @@ using ZEngine.Managers;
 
 namespace ZEngine.Systems
 {
-    class CameraFollowSystem : ISystem
+    class CameraSceneSystem : ISystem
     {
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void FollowCamera(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
             var followEntities = ComponentManager.GetEntitiesWithComponent<CameraFollowComponent>();

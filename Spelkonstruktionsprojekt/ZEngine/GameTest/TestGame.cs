@@ -35,7 +35,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private TankMovementSystem TankMovementSystem;
         private TitlesafeRenderSystem TitlesafeRenderSystem;
         private CollisionSystem CollisionSystem;
-        private CameraFollowSystem CameraFollowSystem;
+        private CameraSceneSystem CameraFollowSystem;
         private Vector2 viewportDimensions = new Vector2(900, 500);
 
         public TestGame()
@@ -56,7 +56,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
             CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
-            CameraFollowSystem = SystemManager.Instance.GetSystem<CameraFollowSystem>();
+            CameraFollowSystem = SystemManager.Instance.GetSystem<CameraSceneSystem>();
 
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
@@ -201,7 +201,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
             CollisionSystem.CheckInsideAndOutsideCollision();
-            CameraFollowSystem.FollowCamera(gameTime);
+            CameraFollowSystem.Update(gameTime);
             base.Update(gameTime);
         }
 

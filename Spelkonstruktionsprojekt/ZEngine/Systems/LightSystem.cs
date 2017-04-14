@@ -12,11 +12,13 @@ using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    public class LightSystem : ISystem
+    public class FlashlightSystem : ISystem
     {
         public static string SystemName = "LightSystem";
         private GameDependencies _gameDependencies;
 
+        // This method is used to initialize the penumbra instance, and add
+        // all the entities that have an associated instance of light component.
         public PenumbraComponent Initialize(GameDependencies gameDependencies)
         {
             this._gameDependencies = gameDependencies;
@@ -33,11 +35,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             return _penumbra;
         }
 
-        public void DrawLights(PenumbraComponent penumbraComponent)
+        // We use begin draw to start drawing the lights that have
+        // ben added to the penumbra instance. All the items that
+        // are rendered betweend this BeginDraw and EndDraw will be affected.
+        public void BeginDraw(PenumbraComponent penumbraComponent)
         {
             penumbraComponent.BeginDraw();
         }
 
+        // Used to finish the penumbra instance drawing process,
+        // all the items drawn after this call won't be affected.
         public void EndDraw(PenumbraComponent penumbraComponent)
         {
             penumbraComponent.Draw(_gameDependencies.GameTime);

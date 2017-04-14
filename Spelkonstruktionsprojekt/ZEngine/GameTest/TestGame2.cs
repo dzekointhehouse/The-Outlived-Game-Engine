@@ -19,7 +19,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         readonly GameDependencies gameDependencies = new GameDependencies();
-        private LightSystem lightSystems;
+        private FlashlightSystem lightSystems;
         private PenumbraComponent penumbraComponent;
 
         public TestGame2()
@@ -34,7 +34,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
 
             // TODO: Add your initialization logic here
-            lightSystems = SystemManager.Instance.GetSystem<LightSystem>();
+            lightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
 
 
             base.Initialize();
@@ -77,7 +77,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
 
 
-            lightSystems.DrawLights(penumbraComponent);
+            lightSystems.BeginDraw(penumbraComponent);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             lightSystems.EndDraw(penumbraComponent);
 
