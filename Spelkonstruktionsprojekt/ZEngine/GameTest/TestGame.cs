@@ -16,6 +16,7 @@ using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
+using ZEngine.Components.CollisionComponent;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -33,6 +34,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private MoveSystem MoveSystem;
         private TankMovementSystem TankMovementSystem;
         private TitlesafeRenderSystem TitlesafeRenderSystem;
+        private CollisionSystem CollisionSystem;
         public TestGame()
         {
             _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -50,6 +52,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
+            CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
+
 
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
@@ -96,11 +100,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
                 .Build();
+
+            var collisionComponent = new CollisionComponent();
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId1);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
             ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId1);
+            ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId1);
+
             //   ComponentManager.Instance.AddToEntity(entityId1,typeof(HealthComponent), healthComponent);
             //    ComponentManager.Instance.AddToEntity(entityId1, typeof(RenderComponent), renderComponent);
             //     ComponentManager.Instance.AddToEntity(entityId1, typeof(MoveComponent), moveComponent);
@@ -133,6 +141,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
+            CollisionSystem.addBoxes();
+            CollisionSystem.checkCol();
             base.Update(gameTime);
         }
 

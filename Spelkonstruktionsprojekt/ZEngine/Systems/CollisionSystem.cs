@@ -10,6 +10,7 @@ using ZEngine.Components;
 using ZEngine.Components.CollisionComponent;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Wrappers;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -30,6 +31,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 CollisionComponent collisionComponent = (CollisionComponent)componentList[typeof(CollisionComponent)];
 
                 collisionComponent.spriteBoundingRectangle = new Rectangle((int)position.PositionComponent.Position.X, (int)position.PositionComponent.Position.Y, position.DimensionsComponent.Width, position.DimensionsComponent.Height);
+                Boundering(position.PositionComponent.Position, position.DimensionsComponent.Width, position.DimensionsComponent.Height);
             }
         }
 
@@ -55,18 +57,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
 
         }
-
-
-
         
         // stops the sprite from going off the screen
-        public void Boundering(SpriteComponent sprite, GraphicsDeviceManager graphics)
-        {                          
-            int x = MathHelper.Clamp(sprite.Position.X, graphics.GraphicsDevice.Viewport.X, graphics.GraphicsDevice.Viewport.Width - sprite.Width);
-            int y= MathHelper.Clamp(sprite.Position.Y, graphics.GraphicsDevice.Viewport.Y, graphics.GraphicsDevice.Viewport.Height - sprite.Height);
-
-            sprite.Position = new Point(x, y);
-            
+        public void Boundering(Vector2D spritePosition, int width, int height)
+        {
+            spritePosition.X = MathHelper.Clamp((float) spritePosition.X, (0 + (width/2)), (900 -(width/2)));
+            spritePosition.Y = MathHelper.Clamp((float) spritePosition.Y, (0 + (height/2)), (500-(height/2)));
         }
     }
 }
