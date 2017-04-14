@@ -159,8 +159,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
-            CollisionSystem.addBoxes();
-            CollisionSystem.checkCol();
+            CollisionSystem.AddBoxes();
+            CollisionSystem.CheckCollision();
             base.Update(gameTime);
         }
 
