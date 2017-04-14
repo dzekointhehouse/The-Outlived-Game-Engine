@@ -52,8 +52,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                         if (collisionComponent.spriteBoundingRectangle.Intersects(secondCollisionComponent.spriteBoundingRectangle))
                         {
-                            collisionComponent.collisions.Add(key2);
-                            secondCollisionComponent.collisions.Add(key);
+                            if (!collisionComponent.collisions.Contains(key2))
+                            {
+                                collisionComponent.collisions.Add(key2);
+                            }
+                            if (!secondCollisionComponent.collisions.Contains(key))
+                            {
+                                secondCollisionComponent.collisions.Add(key);
+                            }
                         }
                     }
                 }
