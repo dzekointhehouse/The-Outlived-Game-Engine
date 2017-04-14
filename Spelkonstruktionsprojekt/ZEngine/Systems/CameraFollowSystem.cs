@@ -21,7 +21,7 @@ namespace ZEngine.Systems
             var followEntities = ComponentManager.GetEntitiesWithComponent<CameraFollowComponent>();
             var cameras = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>();
 
-            Vector2 averagePosition = new Vector2(0,0);
+            Vector2 averagePosition = new Vector2(0, 0);
 
             foreach (var entity in followEntities)
             {
@@ -48,14 +48,29 @@ namespace ZEngine.Systems
                 var centerVector = new Vector2(screenCenter.X, screenCenter.Y);
 
                 var direction = averagePosition - centerVector;
-                float cameraSpeed = (float) (5 * delta);
+                float cameraSpeed = (float)(5 * delta);
                 var ratioY = (float)camera.View.Width / (float)camera.View.Height;
                 var ratioX = (float)camera.View.Height / (float)camera.View.Width;
                 Vector2 speed = new Vector2(cameraSpeed * ratioX, cameraSpeed * ratioY);
                 var oldPosition = new Vector2(camera.View.X, camera.View.Y);
                 var newPosition = oldPosition + direction * speed;
                 var newPosition2 = oldPosition + direction * speed;
-                camera.View = new Rectangle((int) Math.Ceiling(newPosition.X), (int) Math.Ceiling(newPosition.Y), camera.View.Width, camera.View.Height);
+                camera.View = new Rectangle((int)Math.Ceiling(newPosition.X), (int)Math.Ceiling(newPosition.Y), camera.View.Width, camera.View.Height);
+
+
+                camera.Origin = new Vector2(camera.View.Width / 2, camera.View.Height / 2);
+
+                // Using a matrix makes it easier for us to move the camera
+                // independently of all the sprites, which means that we easily can
+                // rotate, scale, etc. without much effort. plus its recommended.
+
+                camera.Transform = Matrix.Identity *
+                    Matrix.CreateTranslation((float)-cameraRenderComponent.PositionComponent.Position.X, (float)-cameraRenderComponent.PositionComponent.Position.Y, 0) *
+                    Matrix.CreateRotationZ(0) * // rotation
+                    Matrix.CreateTranslation(camera.Origin.X, camera.Origin.Y, 0) *
+                    // Our zoom effect will be doing its jobb here.
+                    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
+                
             }
         }
     }
