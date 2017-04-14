@@ -29,14 +29,22 @@ namespace ZEngine.Systems
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
-        public void Render(GameDependencies gm)
+        public void Render(GameDependencies gm, Rectangle subsetView = default(Rectangle))
         {
             var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
             var spriteBatch = gm.SpriteBatch;
 
             graphics.Clear(Color.CornflowerBlue); // Maybe done outside
             spriteBatch.Begin(SpriteSortMode.FrontToBack);
-            DrawEntities(spriteBatch);
+            if (subsetView.Width == 0)
+            {
+                subsetView.Width = graphics.Viewport.Width;
+            }
+            if (subsetView.Height == 0)
+            {
+                subsetView.Height = graphics.Viewport.Height;
+            }
+            DrawEntities(spriteBatch, subsetView);
             spriteBatch.End();
         }
 
@@ -45,27 +53,32 @@ namespace ZEngine.Systems
         // with the render component. 1. we use our Component manager instance
         // to get all the entities with RenderComponent and then we render them.
         // we use the spritebach to draw all the entities.
-        private void DrawEntities(SpriteBatch spriteBatch)
+        private void DrawEntities(SpriteBatch spriteBatch, Rectangle subsetView)
         {
-            var renderableEntities = ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>();
+            var renderableEntities = 
+                ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>()
+                    .Where(e => InsideView(e.Value, subsetView));
 
             foreach (var entity in renderableEntities)
             {
-                var position = entity.Value.PositionComponent.Position;
                 var zIndex = entity.Value.PositionComponent.ZIndex;
+                var renderBox = new Rectangle((int) entity.Value.PositionComponent.Position.X, (int) entity.Value.PositionComponent.Position.Y, entity.Value.DimensionsComponent.Width, entity.Value.DimensionsComponent.Height);
 
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
                     var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
-                    MoveComponent moveComponent = null;
+
+                    double angle = sprite.Angle;
                     if (ComponentManager.EntityHasComponent<MoveComponent>(entity.Key))
                     {
-                        moveComponent = ComponentManager.GetEntityComponent<MoveComponent>(entity.Key);
+                        var moveComponent = ComponentManager.GetEntityComponent<MoveComponent>(entity.Key);
+                        angle = moveComponent.Direction;
                     }
-                    sprite.Scale = 1;
+
+                    sprite.Scale = 1; // For testing, will be removed once feature is actually implemented
                     var destinationRectangle = new Rectangle(
-                        new Point((int) position.X, (int) position.Y),
-                        new Point((int) (entity.Value.DimensionsComponent.Width * sprite.Scale), (int) (entity.Value.DimensionsComponent.Height * sprite.Scale))  
+                        new Point(renderBox.X - subsetView.X, renderBox.Y - subsetView.Y),
+                        new Point((int) (renderBox.Width * sprite.Scale), (int) (renderBox.Height * sprite.Scale))  
                     );
                     var spriteCrop = new Rectangle(
                         sprite.Position,
@@ -73,11 +86,6 @@ namespace ZEngine.Systems
                     );
 
                     var zIndexMaxLimit = 1000;
-                    double angle = sprite.Angle;
-                    if (moveComponent != null)
-                    {
-                        angle = moveComponent.Direction;
-                    }
                     spriteBatch.Draw(
                         texture: sprite.Sprite,
                         destinationRectangle: destinationRectangle,
@@ -90,6 +98,12 @@ namespace ZEngine.Systems
                     );                                              
                 }
             }
+        }
+
+        private bool InsideView(RenderComponent entity, Rectangle view)
+        {
+            var renderBox = new Rectangle((int) entity.PositionComponent.Position.X, (int) entity.PositionComponent.Position.Y, entity.DimensionsComponent.Width, entity.DimensionsComponent.Height);
+            return view.Intersects(renderBox);
         }
     }
 }
