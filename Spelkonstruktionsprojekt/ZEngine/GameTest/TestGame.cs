@@ -35,14 +35,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private TankMovementSystem TankMovementSystem;
         private TitlesafeRenderSystem TitlesafeRenderSystem;
         private CollisionSystem CollisionSystem;
+        private CameraFollowSystem CameraFollowSystem;
         private Vector2 viewportDimensions = new Vector2(900, 500);
 
         public TestGame()
         {
             _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = (int) viewportDimensions.X,
-                PreferredBackBufferHeight = (int) viewportDimensions.Y
+                PreferredBackBufferWidth = (int)viewportDimensions.X,
+                PreferredBackBufferHeight = (int)viewportDimensions.Y
             };
             Content.RootDirectory = "Content";
         }
@@ -55,6 +56,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
             CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
+            CameraFollowSystem = SystemManager.Instance.GetSystem<CameraFollowSystem>();
 
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
@@ -87,10 +89,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
             var cameraViewComponent = new CameraViewComponent()
             {
-                View = new Rectangle(0,0, (int) viewportDimensions.X, (int) viewportDimensions.Y)
+                View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y)
             };
             ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
-
+            var cameraRenderable = new RenderComponentBuilder()
+                .Position(0, 0, 500)
+                .Dimensions(10, 10).Build();
+            var cameraSprite = new SpriteComponent()
+            {
+                SpriteName = "dot"
+            };
+            ComponentManager.Instance.AddComponentToEntity(cameraRenderable, cameraEntity);
+            ComponentManager.Instance.AddComponentToEntity(cameraSprite, cameraEntity);
         }
 
         public void InitPlayers()
@@ -102,6 +112,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
                 .Build();
+            var cameraFollow1 = new CameraFollowComponent();
+            ComponentManager.Instance.AddComponentToEntity(cameraFollow1, player1);
+
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings2 = new ActionBindingsBuilder()
@@ -118,6 +131,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.Left, "entityTurnLeft")
                 .SetAction(Keys.Right, "entityTurnRight")
                 .Build();
+            var cameraFollow2 = new CameraFollowComponent();
+            ComponentManager.Instance.AddComponentToEntity(cameraFollow2, player2);
 
             CreatePlayer(player1, actionBindings1);
             CreatePlayer(player2, actionBindings2);
@@ -151,6 +166,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
             ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
+
+
         }
 
         protected override void LoadContent()
@@ -170,6 +187,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             MoveSystem.Move(gameTime);
             CollisionSystem.AddBoxes();
             CollisionSystem.CheckCollision();
+            CameraFollowSystem.FollowCamera(gameTime);
             base.Update(gameTime);
         }
 

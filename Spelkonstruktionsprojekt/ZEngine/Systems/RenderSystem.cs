@@ -95,10 +95,13 @@ namespace ZEngine.Systems
                     );                                              
                 }
             }
+
+
         }
 
         private bool InsideView(RenderComponent entity, Rectangle view)
         {
+            return true;
             var renderBox = new Rectangle((int) entity.PositionComponent.Position.X, (int) entity.PositionComponent.Position.Y, entity.DimensionsComponent.Width, entity.DimensionsComponent.Height);
             return view.Intersects(renderBox);
         }
