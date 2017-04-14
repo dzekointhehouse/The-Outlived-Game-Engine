@@ -11,6 +11,7 @@ using ZEngine.Components.CollisionComponent;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Wrappers;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
+using System.Collections;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -20,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
 
 
-        public void addBoxes()
+        public void AddBoxes()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
             foreach (int key in collisionEntities.Keys)
@@ -35,7 +36,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        public void checkCol()
+        public void CheckCollision()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
             foreach (int key in collisionEntities.Keys)
@@ -50,12 +51,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                     if ((collisionComponent.spriteBoundingRectangle.Intersects(secondCollisionComponent.spriteBoundingRectangle)) && (key != key2))
                     {
-                        Console.Write("Collision was detected. Go do something about it.");
+                        if (collisionComponent.collisions == null)
+                        {
+                            collisionComponent.collisions = new List<int>();
+                        }
+                        if (secondCollisionComponent.collisions == null)
+                        {
+                            secondCollisionComponent.collisions = new List<int>();
+                        }
+                        collisionComponent.collisions.Add(key2);
+                        secondCollisionComponent.collisions.Add(key);
                     }
-
                 }
             }
-
         }
         
         // stops the sprite from going off the screen

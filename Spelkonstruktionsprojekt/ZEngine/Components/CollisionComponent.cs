@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace ZEngine.Components.CollisionComponent
     {
         public Rectangle spriteBoundingRectangle;
 
+        //each int is an entityId
+        public List<int> collisions;
     }
 }
