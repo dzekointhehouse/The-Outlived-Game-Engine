@@ -65,8 +65,55 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
+            InitPlayers();
+
+            //Initializing a second, imovable, entity
+            var entityId3 = EntityManager.GetEntityManager().NewEntity();
+            var renderComponent3 = new RenderComponentBuilder()
+                .Position(0, 0, 1)
+                .Dimensions(1800, 1000).Build();
+            ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
+            var spriteComponent3 = new SpriteComponent()
+            {
+                SpriteName = "Atlantis Nebula UHD"
+            };
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
+        }
+
+        public void InitPlayers()
+        {
+            var player1 = EntityManager.GetEntityManager().NewEntity();
+            var actionBindings1 = new ActionBindingsBuilder()
+                .SetAction(Keys.W, "entityWalkForwards")
+                .SetAction(Keys.S, "entityWalkBackwards")
+                .SetAction(Keys.A, "entityTurnLeft")
+                .SetAction(Keys.D, "entityTurnRight")
+                .Build();
+
+            var player2 = EntityManager.GetEntityManager().NewEntity();
+            var actionBindings2 = new ActionBindingsBuilder()
+                .SetAction(Keys.I, "entityWalkForwards")
+                .SetAction(Keys.K, "entityWalkBackwards")
+                .SetAction(Keys.J, "entityTurnLeft")
+                .SetAction(Keys.L, "entityTurnRight")
+                .Build();
+
+            var player3 = EntityManager.GetEntityManager().NewEntity();
+            var actionBindings3 = new ActionBindingsBuilder()
+                .SetAction(Keys.Up, "entityWalkForwards")
+                .SetAction(Keys.Down, "entityWalkBackwards")
+                .SetAction(Keys.Left, "entityTurnLeft")
+                .SetAction(Keys.Right, "entityTurnRight")
+                .Build();
+
+            CreatePlayer(player1, actionBindings1);
+            CreatePlayer(player2, actionBindings2);
+            CreatePlayer(player3, actionBindings3);
+        }
+
+        public void CreatePlayer(int entityId, ActionBindings actionBindings)
+        {
             //Initializing first, movable, entity
-            var entityId1 = EntityManager.GetEntityManager().NewEntity();
             var renderComponent = new RenderComponentBuilder()
                 .Position(150, 150, 2)
                 .Dimensions(100, 100).Build();
@@ -74,13 +121,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 SpriteName = "topDownSoldier"
             };
-
-            var healthComponent = new HealthComponent()
-            {
-                CurrentHealth = 70,
-                MaxHealth = 100
-            };
-
             var moveComponent = new MoveComponent()
             {
                 Velocity = Vector2D.Create(0, 0),
@@ -90,32 +130,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 AccelerationSpeed = 380,
                 RotationSpeed = 4
             };
-            var actionBindings = new ActionBindingsBuilder()
-                .SetAction(Keys.W, "entityWalkForwards")
-                .SetAction(Keys.S, "entityWalkBackwards")
-                .SetAction(Keys.A, "entityTurnLeft")
-                .SetAction(Keys.D, "entityTurnRight")
-                .Build();
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId1);
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId1);
-            ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId1);
-            ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId1);
-            ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId1);
-            //   ComponentManager.Instance.AddToEntity(entityId1,typeof(HealthComponent), healthComponent);
-            //    ComponentManager.Instance.AddToEntity(entityId1, typeof(RenderComponent), renderComponent);
-            //     ComponentManager.Instance.AddToEntity(entityId1, typeof(MoveComponent), moveComponent);
-            ComponentManager.Instance.GetComponentsWithEntity(entityId1);
-            //Initializing a second, imovable, entity
-            var entityId2 = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent2 = new RenderComponentBuilder()
-                .Position(0, 0, 1)
-                .Dimensions(1800, 1000).Build();
-            ComponentManager.Instance.AddComponentToEntity(renderComponent2, entityId2);
-            var spriteComponent2 = new SpriteComponent()
-            {
-                SpriteName = "Atlantis Nebula UHD"
-            };
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent2, entityId2);
+            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
+            ComponentManager.Instance.GetComponentsWithEntity(entityId);
         }
 
         protected override void LoadContent()
