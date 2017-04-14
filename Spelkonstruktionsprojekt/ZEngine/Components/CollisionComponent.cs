@@ -13,6 +13,6 @@ namespace ZEngine.Components.CollisionComponent
         public Rectangle spriteBoundingRectangle;
 
         //each int is an entityId
-        public List<int> collisions;
+        public List<int> collisions = new List<int>();
     }
 }
