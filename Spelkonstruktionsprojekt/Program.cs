@@ -15,7 +15,7 @@ namespace Spelkonstruktionsprojekt
         [STAThread]
         static void Main()
         {
-            using (var game = new TestGame2())
+            using (var game = new TestGame())
                 game.Run();
         }
     }
