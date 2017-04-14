@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
+    <Compile Include="ZEngine\Components\CameraFollowComponent.cs" />
     <Compile Include="ZEngine\Components\CollisionComponent.cs" />
     <Compile Include="ZEngine\Components\HealthComponent.cs" />
     <Compile Include="ZEngine\Components\AmmoComponent.cs" />
