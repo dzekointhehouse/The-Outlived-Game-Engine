@@ -16,6 +16,7 @@ using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
+using ZEngine.Components.CollisionComponent;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -33,6 +34,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private MoveSystem MoveSystem;
         private TankMovementSystem TankMovementSystem;
         private TitlesafeRenderSystem TitlesafeRenderSystem;
+        private CollisionSystem CollisionSystem;
+
         public TestGame()
         {
             _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -50,6 +53,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
+            CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
 
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
@@ -130,11 +134,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 AccelerationSpeed = 380,
                 RotationSpeed = 4
             };
+
+            CollisionComponent collisionComponent = new CollisionComponent();
+
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
-            ComponentManager.Instance.GetComponentsWithEntity(entityId);
+            ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
         }
 
         protected override void LoadContent()
@@ -152,6 +159,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
+            CollisionSystem.AddBoxes();
+            CollisionSystem.CheckCollision();
             base.Update(gameTime);
         }
 

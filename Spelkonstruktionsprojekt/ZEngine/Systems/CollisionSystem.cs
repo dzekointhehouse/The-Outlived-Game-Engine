@@ -10,6 +10,8 @@ using ZEngine.Components;
 using ZEngine.Components.CollisionComponent;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Wrappers;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
+using System.Collections;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -19,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
 
 
-        public void addBoxes()
+        public void AddBoxes()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
             foreach (int key in collisionEntities.Keys)
@@ -30,10 +32,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 CollisionComponent collisionComponent = (CollisionComponent)componentList[typeof(CollisionComponent)];
 
                 collisionComponent.spriteBoundingRectangle = new Rectangle((int)position.PositionComponent.Position.X, (int)position.PositionComponent.Position.Y, position.DimensionsComponent.Width, position.DimensionsComponent.Height);
+                Boundering(position.PositionComponent.Position, position.DimensionsComponent.Width, position.DimensionsComponent.Height);
             }
         }
 
-        public void checkCol()
+        public void CheckCollision()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
             foreach (int key in collisionEntities.Keys)
@@ -48,25 +51,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                     if ((collisionComponent.spriteBoundingRectangle.Intersects(secondCollisionComponent.spriteBoundingRectangle)) && (key != key2))
                     {
-                        Console.Write("Collision was detected. Go do something about it.");
+                        if (collisionComponent.collisions == null)
+                        {
+                            collisionComponent.collisions = new List<int>();
+                        }
+                        if (secondCollisionComponent.collisions == null)
+                        {
+                            secondCollisionComponent.collisions = new List<int>();
+                        }
+                        collisionComponent.collisions.Add(key2);
+                        secondCollisionComponent.collisions.Add(key);
                     }
-
                 }
             }
-
         }
-
-
-
         
         // stops the sprite from going off the screen
-        public void Boundering(SpriteComponent sprite, GraphicsDeviceManager graphics)
-        {                          
-            int x = MathHelper.Clamp(sprite.Position.X, graphics.GraphicsDevice.Viewport.X, graphics.GraphicsDevice.Viewport.Width - sprite.Width);
-            int y= MathHelper.Clamp(sprite.Position.Y, graphics.GraphicsDevice.Viewport.Y, graphics.GraphicsDevice.Viewport.Height - sprite.Height);
-
-            sprite.Position = new Point(x, y);
-            
+        public void Boundering(Vector2D spritePosition, int width, int height)
+        {
+            spritePosition.X = MathHelper.Clamp((float) spritePosition.X, (0 + (width/2)), (900 -(width/2)));
+            spritePosition.Y = MathHelper.Clamp((float) spritePosition.Y, (0 + (height/2)), (500-(height/2)));
         }
     }
 }
