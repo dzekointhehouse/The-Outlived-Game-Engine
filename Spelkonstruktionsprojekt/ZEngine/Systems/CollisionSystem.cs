@@ -46,26 +46,27 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 foreach (int key2 in collisionEntities.Keys)
                 {
-                    var secondComponentList = ComponentManager.GetComponentsWithEntity(key2);
-                    CollisionComponent secondCollisionComponent = (CollisionComponent)secondComponentList[typeof(CollisionComponent)];
+                    if(key != key2) { 
+                        var secondComponentList = ComponentManager.GetComponentsWithEntity(key2);
+                        CollisionComponent secondCollisionComponent = (CollisionComponent)secondComponentList[typeof(CollisionComponent)];
 
-                    if ((collisionComponent.spriteBoundingRectangle.Intersects(secondCollisionComponent.spriteBoundingRectangle)) && (key != key2))
-                    {
-                        if (collisionComponent.collisions == null)
+                        if (collisionComponent.spriteBoundingRectangle.Intersects(secondCollisionComponent.spriteBoundingRectangle))
                         {
-                            collisionComponent.collisions = new List<int>();
+                            if (!collisionComponent.collisions.Contains(key2))
+                            {
+                                collisionComponent.collisions.Add(key2);
+                            }
+                            if (!secondCollisionComponent.collisions.Contains(key))
+                            {
+                                secondCollisionComponent.collisions.Add(key);
+                            }
                         }
-                        if (secondCollisionComponent.collisions == null)
-                        {
-                            secondCollisionComponent.collisions = new List<int>();
-                        }
-                        collisionComponent.collisions.Add(key2);
-                        secondCollisionComponent.collisions.Add(key);
                     }
                 }
             }
         }
         
+
         // stops the sprite from going off the screen
         public void Boundering(Vector2D spritePosition, int width, int height)
         {
