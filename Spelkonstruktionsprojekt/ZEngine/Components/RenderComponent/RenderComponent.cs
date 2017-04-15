@@ -5,20 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
+using ZEngine.Managers;
 using ZEngine.Wrappers;
 
 namespace ZEngine.Components
 {
     public class RenderComponent : IComponent
     {
-        public PositionComponent PositionComponent { get; set; } = null;
+        public PositionComponent PositionComponent = null;
 
-        public DimensionsComponent DimensionsComponent { get; set; } = null;
+        public DimensionsComponent DimensionsComponent = null;
 
-        public double Radius { get; set; } = 0;
+        public double Radius = 0;
 
-        public bool IsVisible { get; set; } = true;
+        public bool IsVisible = true;
+
+        public bool Fixed = false;
     }
 
     public class RenderComponentHelper
@@ -30,6 +34,23 @@ namespace ZEngine.Components
                 Width = (int) renderComponent.Radius * 2,
                 Height = (int) renderComponent.Radius * 2
             };
+        }
+
+        public static Vector2 GetPosition(int entityId, RenderComponent renderComponent = null)
+        {
+            if (renderComponent == null && ComponentManager.Instance.EntityHasComponent<RenderComponent>(entityId))
+            {
+                renderComponent = ComponentManager.Instance.GetEntityComponent<RenderComponent>(entityId);
+            }
+            if (ComponentManager.Instance.EntityHasComponent<RenderOffsetComponent>(entityId))
+            {
+                var offsetComponent = ComponentManager.Instance.GetEntityComponent<RenderOffsetComponent>(entityId);
+                return new Vector2(
+                    (float) (renderComponent.PositionComponent.Position.X + offsetComponent.Offset.X),
+                    (float) (renderComponent.PositionComponent.Position.Y + offsetComponent.Offset.Y)
+                );
+            }
+            return default(Vector2);
         }
     }
 
@@ -71,6 +92,12 @@ namespace ZEngine.Components
         public RenderComponentBuilder IsVisivle(bool isVisible)
         {
             _renderComponent.IsVisible = isVisible;
+            return this;
+        }
+
+        public RenderComponentBuilder Fixed(bool isFixed)
+        {
+            _renderComponent.Fixed = isFixed;
             return this;
         }
     }

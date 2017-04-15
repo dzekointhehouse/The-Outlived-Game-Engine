@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using ZEngine.Components;
 using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
@@ -83,13 +86,23 @@ namespace ZEngine.Systems
                     }
 
                     sprite.Scale = 1; // For testing, will be removed once feature is actually implemented
+
+                    var offset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(entity.Key)
+                        ? ComponentManager.GetEntityComponent<RenderOffsetComponent>(entity.Key).Offset
+                        : default(Vector2);
+
                     var destinationRectangle = new Rectangle(
-                        new Point(renderBox.X, renderBox.Y),
+                        new Point((int) (renderBox.X + offset.X), (int) (renderBox.Y + offset.Y)),
                         new Point((int) (renderBox.Width * sprite.Scale), (int) (renderBox.Height * sprite.Scale))  
                     );
                     var spriteCrop = new Rectangle(
                         sprite.Position,
                         new Point(sprite.Width, sprite.Height)
+                    );
+
+                    System.Diagnostics.Debug.WriteLine(
+                        "Position " + new Vector2(destinationRectangle.X, destinationRectangle.Y).ToString()
+                        + " Dimensions  [ W:" + destinationRectangle.Width + ",  H:" + destinationRectangle.Height + " ]"
                     );
 
                     var zIndexMaxLimit = 1000;
@@ -104,6 +117,65 @@ namespace ZEngine.Systems
                         layerDepth: (float)zIndex / zIndexMaxLimit //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
                     );                                              
                 }
+                else if (ComponentManager.EntityHasComponent<RenderPaintComponent>(entity.Key))
+                {
+                    var paint = ComponentManager.GetEntityComponent<RenderPaintComponent>(entity.Key).Paint;
+
+                    double angle = 0;
+
+                    var offset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(entity.Key)
+                        ? ComponentManager.GetEntityComponent<RenderOffsetComponent>(entity.Key).Offset
+                        : default(Vector2);
+
+                    var destinationRectangle = new Rectangle(
+                        new Point((int)(renderBox.X + offset.X), (int)(renderBox.Y + offset.Y)),
+                        new Point((int)(renderBox.Width), (int)(renderBox.Height))
+                    );
+
+                    System.Diagnostics.Debug.WriteLine(
+                        "Position " + new Vector2(destinationRectangle.X, destinationRectangle.Y).ToString()
+                        + " Dimensions  [ W:" + destinationRectangle.Width + ",  H:" + destinationRectangle.Height + " ]"
+                    );
+
+                    Texture2D texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+                    Color[] colorData =
+                    {
+                        paint
+                    };
+                    texture.SetData(colorData);
+                    var zIndexMaxLimit = 1000;
+                    spriteBatch.Draw(
+                        texture: texture,
+                        destinationRectangle: destinationRectangle,
+                        sourceRectangle: null,
+                        color: Color.White,
+                        rotation: (float)angle,
+                        origin: new Vector2(x: 0, y: 0),
+                        effects: SpriteEffects.None,
+                        layerDepth: (float)zIndex / zIndexMaxLimit //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
+                    );
+
+                }
+
+
+                var mouseState = Mouse.GetState();
+                Debug.WriteLine("MOUSE " + mouseState.Position);
+                Texture2D t = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+                Color[] cd =
+                {
+                        Color.BlueViolet
+                };
+                t.SetData(cd);
+                spriteBatch.Draw(
+                    t, 
+                    new Rectangle(mouseState.Position.X, mouseState.Position.Y, 5, 5), 
+                    null,
+                    Color.White,
+                    0,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    0.99f
+                );
             }
 
 

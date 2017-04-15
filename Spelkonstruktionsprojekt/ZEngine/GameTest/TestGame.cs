@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
@@ -78,19 +79,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private void CreateTestEntities()
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
-            //var renderComponentCage = new RenderComponentBuilder()
-            //    .Position(0, 0, 999)
-            //    .Dimensions((int)viewportDimensions.X, (int)viewportDimensions.Y).Build();
-            //var collisionComponentCage = new CollisionComponent()
-            //{
-            //    CageMode = true
-            //};
-            //ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
-            //ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
+            var renderComponentCage = new RenderComponentBuilder()
+                .Position((int) (0), (int) (0), 2)
+                .Dimensions((int)(viewportDimensions.X), (int)(viewportDimensions.Y))
+                .Fixed(true).Build();
+            var cageColor = new RenderPaintComponent()
+            {
+                Paint = Color.DarkRed
+            };
+            var collisionComponentCage = new CollisionComponent()
+            {
+                CageMode = true,
+                spriteBoundingRectangle = new Rectangle((int)(viewportDimensions.X * 0.12), (int)(viewportDimensions.Y * (0.12)), (int)(viewportDimensions.X * 0.9), (int)(viewportDimensions.Y * 0.9))
+            };
+            var offsetComponent = new RenderOffsetComponent();
+            ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
+            ComponentManager.Instance.AddComponentToEntity(cageColor, cameraCage);
+            ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
+            ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
 
             InitPlayers(cameraCage);
-
-
 
             //Initializing a second, imovable, entity
             var entityId3 = EntityManager.GetEntityManager().NewEntity();
@@ -157,9 +165,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.Right, "entityTurnRight")
                 .Build();
             
-            CreatePlayer(player1, actionBindings1, cameraFollow: true, collision: true);
+            CreatePlayer(player1, actionBindings1, cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
             CreatePlayer(player2, actionBindings2, cameraFollow: true, collision: true, disabled: true);
-            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, movable: false);
+            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, movable: true);
         }
 
         public void CreatePlayer(int entityId, ActionBindings actionBindings, bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
@@ -167,7 +175,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (disabled) return;
             //Initializing first, movable, entity
             var renderComponent = new RenderComponentBuilder()
-                .Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 1000), 150, 2)
+                .Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
                 .Radius(50).Build();
             var spriteComponent = new SpriteComponent()
             {
@@ -209,7 +217,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             if (collision)
             {
-                CollisionComponent collisionComponent = new CollisionComponent()
+                var collisionComponent = new CollisionComponent()
                 {
                     spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
                 };

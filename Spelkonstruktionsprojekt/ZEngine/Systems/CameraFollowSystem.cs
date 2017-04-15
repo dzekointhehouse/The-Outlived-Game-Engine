@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
@@ -16,6 +18,33 @@ namespace ZEngine.Systems
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void Update(GameTime gameTime)
+        {
+            UpdateCameraPosition(gameTime);
+            UpdateFixedRenderables();
+        }
+
+        private void UpdateFixedRenderables()
+        {
+            var camera = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>().First();
+
+            var fixedRenderables = 
+                ComponentManager.GetEntitiesWithComponent<RenderComponent>()
+                    .Where(entity => 
+                        entity.Value.Fixed
+                        && ComponentManager.Instance.EntityHasComponent<RenderOffsetComponent>(entity.Key)
+                    );
+
+            foreach (var fixedEntity in fixedRenderables)
+            {
+                var offsetComponent = ComponentManager.GetEntityComponent<RenderOffsetComponent>(fixedEntity.Key);
+                offsetComponent.Offset.X = camera.Value.View.X;
+                offsetComponent.Offset.Y = camera.Value.View.Y;
+
+                Debug.WriteLine("Offset " + offsetComponent.Offset);
+            }
+        }
+
+        private void UpdateCameraPosition(GameTime gameTime)
         {
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
             var followEntities = ComponentManager.GetEntitiesWithComponent<CameraFollowComponent>();
@@ -73,15 +102,15 @@ namespace ZEngine.Systems
                 //    // from one place to another. 
                 //    // X,Y and Z, ofcourse Z will be 0.
                 //    Matrix.CreateTranslation((float)-cameraRenderComponent.PositionComponent.Position.X, (float)-cameraRenderComponent.PositionComponent.Position.Y, 0) *
-                   
+
                 //    // We won't be having any rotation.
                 //    Matrix.CreateRotationZ(0) * 
                 //    Matrix.CreateTranslation(camera.Origin.X, camera.Origin.Y, 0) *
-                    
+
                 //    // Our zoom effect will be doing its jobb here,
                 //    // as this matrix will easily help us achieve it.
                 //    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
-                
+
             }
         }
     }
