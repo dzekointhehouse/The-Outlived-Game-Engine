@@ -171,7 +171,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Dimensions(100, 100).Build();
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "dot"
+                SpriteName = "topDownSoldier"
             };
             var light = new LightComponent()
             {
@@ -209,7 +209,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             if (collision)
             {
-                CollisionComponent collisionComponent = new CollisionComponent();
+                CollisionComponent collisionComponent = new CollisionComponent()
+                {
+                    spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
+                };
                 ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
             }
             if (cameraFollow)

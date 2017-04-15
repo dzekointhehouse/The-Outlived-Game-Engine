@@ -16,6 +16,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     class MoveSystem : ISystem
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
+
         public void Move(GameTime gameTime)
         {
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
@@ -27,24 +28,41 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                     var moveComponent = moveEntities[entity.Key];
 
-                    moveComponent.Direction = (moveComponent.Direction + moveComponent.RotationMomentum * delta) % MathHelper.TwoPi;
+                    //Update direction based on angular momentum
+                    moveComponent.Direction = (moveComponent.Direction + moveComponent.RotationMomentum * delta) %
+                                              MathHelper.TwoPi;
 
+                    //If the entity is moving, calculate new acceleration
+                    //And if moving backwards, apply backwards motion penalty factor
                     var entityIsMoving = moveComponent.VelocitySpeed < -0.01 || moveComponent.VelocitySpeed > 0.01;
                     if (entityIsMoving)
                     {
-                        var multiplier = moveComponent.VelocitySpeed > 0 ? 1 : (-1 * moveComponent.BackwardsPenaltyFactor);
-                        moveComponent.VelocitySpeed += multiplier * moveComponent.AccelerationSpeed * delta; //Accelerate
-                    }
-                    ApplyVelocityLimits(moveComponent);
-                    moveComponent.Velocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction, moveComponent.VelocitySpeed);
+                        //If an object is to accerlerate/deccelerate the VelocitySpeed is set to slightly above or below 0
+                        // this is done by movement systems.
+                        //If the velocity speed is positive than increase acceleration
+                        //Else, decrease (i.e. deccelerate)
+                        var multiplier = moveComponent.VelocitySpeed > 0
+                            ? 1
+                            : (-1 * moveComponent.BackwardsPenaltyFactor);
 
+                        moveComponent.VelocitySpeed += multiplier * moveComponent.AccelerationSpeed * delta;
+                    }
+
+                    //Limit velocity if above max velocity
+                    ApplyVelocityLimits(moveComponent);
+
+                    //Update Velocity based on current direction and acceleration
+                    moveComponent.Velocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction,
+                        moveComponent.VelocitySpeed);
+
+                    //If the object has collided, move back to previous position.
+                    // If NOT then update position with current velocity.
                     if (HasCollided(entity.Key))
                     {
-                        //entity.Value.PositionComponent.Position = moveComponent.PreviousPosition;
+                        entity.Value.PositionComponent.Position = moveComponent.PreviousPosition;
                         var collisonComponent = ComponentManager.GetEntityComponent<CollisionComponent>(entity.Key);
                         collisonComponent.collisions.Clear();
-                        var newVelocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction * Math.PI, moveComponent.VelocitySpeed);
-                        entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, newVelocity, delta);
+                        moveComponent.Velocity = new Vector2(0,0);
                     }
                     else
                     {
@@ -82,6 +100,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var y = deltaVector.Y * deltaTime;
             return Vector2D.Create(oldVector.X + x, oldVector.Y + y);
         }
+
         public Vector2D Move(Vector2D oldVector, double direction, Vector2D acceleration, double deltaTime)
         {
             var x1 = acceleration.X * Math.Cos(direction) * deltaTime;
@@ -90,6 +109,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var y = (oldVector.Y + y1);
             return Vector2D.Create(x, y);
         }
+
         public Vector2D MoveDirectly(Vector2D oldVector, double direction, double acceleration)
         {
             var x1 = acceleration * Math.Cos(direction);
@@ -108,6 +128,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
             return false;
         }
-
     }
 }

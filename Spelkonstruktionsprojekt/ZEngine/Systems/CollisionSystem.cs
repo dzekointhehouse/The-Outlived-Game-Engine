@@ -13,6 +13,7 @@ using ZEngine.Wrappers;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using System.Collections;
 using System.Diagnostics;
+using System.Runtime.Remoting;
 using ZEngine.Components.MoveComponent;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
@@ -119,8 +120,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         //insert stuff
                         var renderComponent = ComponentManager.GetEntityComponent<RenderComponent>(movingEntityId);
                         var secondRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(objectEntityId);
+
                         var boundingBox = GetSpriteBoundingRectangle(renderComponent, movingCollisionComponent.spriteBoundingRectangle);
                         var secondBoundingBox = GetSpriteBoundingRectangle(secondRenderComponent, objectCollisionComponent.spriteBoundingRectangle);
+
+                        var boundingSphere = GetSpriteBoundingSphere(renderComponent, movingCollisionComponent.spriteBoundingRectangle);
+                        var secondBoundingSphere = GetSpriteBoundingSphere(secondRenderComponent, objectCollisionComponent.spriteBoundingRectangle);
                         if (movingCollisionComponent.CageMode)
                         {
                             if (IsCagedBy(objectEntityId, movingEntityId))
@@ -149,9 +154,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         else
                         {
                             System.Diagnostics.Debug.WriteLine("Checking for collision");
-                            if (boundingBox.Intersects(objectCollisionComponent.spriteBoundingRectangle))
+                            System.Diagnostics.Debug.WriteLine("Moving object: " + boundingBox);
+                            System.Diagnostics.Debug.WriteLine("Imovable object: " + secondBoundingBox);
+                            System.Diagnostics.Debug.WriteLine("Imovable object bounding box offset: " + objectCollisionComponent.spriteBoundingRectangle);
+
+                            if (boundingSphere.Intersects(secondBoundingSphere))
                             {
-                                System.Diagnostics.Debug.WriteLine("Collision detected");
                                 if (!movingCollisionComponent.collisions.Contains(objectEntityId))
                                 {
                                     movingCollisionComponent.collisions.Add(objectEntityId);
@@ -177,11 +185,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public Rectangle GetSpriteBoundingRectangle(RenderComponent renderComponent, Rectangle spriteBoundingBox)
         {
-            var x = renderComponent.PositionComponent.Position.X;
-            var y = renderComponent.PositionComponent.Position.Y;
-            var width = renderComponent.DimensionsComponent.Width;
-            var height = renderComponent.DimensionsComponent.Height;
-            return new Rectangle((int) (x + spriteBoundingBox.X), (int) (y + spriteBoundingBox.Y), (int) (width + spriteBoundingBox.Width), (int) (height + spriteBoundingBox.Height));
+            var x = renderComponent.PositionComponent.Position.X + spriteBoundingBox.X;
+            var y = renderComponent.PositionComponent.Position.Y + spriteBoundingBox.Y;
+            var width = spriteBoundingBox.Width;
+            var height = spriteBoundingBox.Height;
+            return new Rectangle((int) x, (int) y, (int) width, (int) height);
+        }
+        public BoundingSphere GetSpriteBoundingSphere(RenderComponent renderComponent, Rectangle spriteBoundingBox)
+        {
+            var x = renderComponent.PositionComponent.Position.X + spriteBoundingBox.X;
+            var y = renderComponent.PositionComponent.Position.Y + spriteBoundingBox.Y;
+            var width = spriteBoundingBox.Width;
+            var height = spriteBoundingBox.Height;
+            var tightBoundFactor = 0.8; //makes for a tighter fit.
+            return new BoundingSphere(new Vector3((float) x, (float) y, 0), (float) ((width / 2) * tightBoundFactor));
         }
 
         public bool IsCagedBy(int entityId, int potentialCageId)
