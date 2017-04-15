@@ -78,15 +78,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private void CreateTestEntities()
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
-            var renderComponentCage = new RenderComponentBuilder()
-                .Position(0, 0, 999)
-                .Dimensions((int)viewportDimensions.X, (int)viewportDimensions.Y).Build();
-            var collisionComponentCage = new CollisionComponent()
-            {
-                CageMode = true
-            };
-            ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
-            ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
+            //var renderComponentCage = new RenderComponentBuilder()
+            //    .Position(0, 0, 999)
+            //    .Dimensions((int)viewportDimensions.X, (int)viewportDimensions.Y).Build();
+            //var collisionComponentCage = new CollisionComponent()
+            //{
+            //    CageMode = true
+            //};
+            //ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
+            //ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
 
             InitPlayers(cameraCage);
 
@@ -141,10 +141,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.D, "entityTurnRight")
                 .Build();
             var cameraFollow1 = new CameraFollowComponent();
-            var cageComponent = new CageComponent()
-            {
-                CageId = cageId
-            };
+            //var cageComponent = new CageComponent()
+            //{
+            //    CageId = cageId
+            //};
             ComponentManager.Instance.AddComponentToEntity(cameraFollow1, player1);
             //ComponentManager.Instance.AddComponentToEntity(cageComponent, player1);
 
@@ -178,7 +178,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             //Initializing first, movable, entity
             var renderComponent = new RenderComponentBuilder()
-                .Position(150, 150, 2)
+                .Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 1000), 150, 2)
                 .Dimensions(100, 100).Build();
             var spriteComponent = new SpriteComponent()
             {
@@ -191,7 +191,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 MaxAcceleration = Vector2D.Create(80, 80),
                 MaxVelocitySpeed = 200,
                 AccelerationSpeed = 380,
-                RotationSpeed = 4
+                RotationSpeed = 4,
+                Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
             };
 
             CollisionComponent collisionComponent = new CollisionComponent();
@@ -231,7 +232,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
-            //CollisionSystem.CheckInsideAndOutsideCollision();
+            //CollisionSystem.DetectCollisions();
+            CollisionSystem.Collisions();
             CameraFollowSystem.Update(gameTime);
             base.Update(gameTime);
         }

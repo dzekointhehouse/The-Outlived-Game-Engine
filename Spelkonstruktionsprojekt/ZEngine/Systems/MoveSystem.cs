@@ -40,7 +40,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                     if (HasCollided(entity.Key))
                     {
-                        entity.Value.PositionComponent.Position = moveComponent.PreviousPosition;
+                        //entity.Value.PositionComponent.Position = moveComponent.PreviousPosition;
+                        var collisonComponent = ComponentManager.GetEntityComponent<CollisionComponent>(entity.Key);
+                        collisonComponent.collisions.Clear();
+                        var newVelocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction * Math.PI, moveComponent.VelocitySpeed);
+                        entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, newVelocity, delta);
                     }
                     else
                     {
@@ -48,14 +52,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity, delta);
                     }
 
-                    System.Diagnostics.Debug.WriteLine(
-                        "moment " + moveComponent.RotationMomentum
-                        + " direction " + moveComponent.Direction
-                        + " velocity " + moveComponent.Velocity.ToString()
-                        + " delta " + delta
-                        + "  maxVelocity " + moveComponent.MaxVelocity.ToString()
-                        + "  velocitySpeed " + moveComponent.VelocitySpeed
-                    );
+                    //System.Diagnostics.Debug.WriteLine(
+                    //    "moment " + moveComponent.RotationMomentum
+                    //    + " direction " + moveComponent.Direction
+                    //    + " velocity " + moveComponent.Velocity.ToString()
+                    //    + " delta " + delta
+                    //    + "  maxVelocity " + moveComponent.MaxVelocity.ToString()
+                    //    + "  velocitySpeed " + moveComponent.VelocitySpeed
+                    //);
                 }
             }
         }

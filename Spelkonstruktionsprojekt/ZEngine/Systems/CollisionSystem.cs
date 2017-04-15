@@ -12,6 +12,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Wrappers;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using System.Collections;
+using ZEngine.Components.MoveComponent;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -19,67 +20,72 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void CheckOutsideCollision()
+        public void Collisions()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
-            foreach (int key in collisionEntities.Keys)
+            foreach (var movingEntity in collisionEntities)
             {
-                var componentList = ComponentManager.GetComponentsWithEntity(key);
-                CollisionComponent collisionComponent = (CollisionComponent)componentList[typeof(CollisionComponent)];
-
-                foreach (int key2 in collisionEntities.Keys)
+                foreach (var collidableObject in collisionEntities)
                 {
-                    if(key != key2) { 
-                        var secondComponentList = ComponentManager.GetComponentsWithEntity(key2);
-                        CollisionComponent secondCollisionComponent = (CollisionComponent)secondComponentList[typeof(CollisionComponent)];
-
-                        if (collisionComponent.spriteBoundingRectangle.Intersects(secondCollisionComponent.spriteBoundingRectangle))
+                    if (movingEntity.Key == collidableObject.Key) continue;
+                    if (
+                        ComponentManager.EntityHasComponent<RenderComponent>(collidableObject.Key) &&
+                        ComponentManager.EntityHasComponent<RenderComponent>(movingEntity.Key) &&
+                        ComponentManager.EntityHasComponent<MoveComponent>(movingEntity.Key))
+                    {
+                        if (WillCollide(movingEntity.Key, collidableObject.Key))
                         {
-                            if (!collisionComponent.collisions.Contains(key2))
+                            System.Diagnostics.Debug.WriteLine("COLLIDED");
+                            var collisionComponent = movingEntity.Value;
+                            var secondCollisionComponent = collidableObject.Value;
+                            if (!collisionComponent.collisions.Contains(collidableObject.Key))
                             {
-                                collisionComponent.collisions.Add(key2);
+                                collisionComponent.collisions.Add(collidableObject.Key);
                             }
-                            if (!secondCollisionComponent.collisions.Contains(key))
+                            if (!secondCollisionComponent.collisions.Contains(movingEntity.Key))
                             {
-                                secondCollisionComponent.collisions.Add(key);
+                                secondCollisionComponent.collisions.Add(movingEntity.Key);
                             }
                         }
                     }
+
                 }
             }
         }
 
-        public void CheckInsideCollision()
+        public bool WillCollide(int movingEntity, int objectEntity)
         {
-            var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
-            foreach (int key in collisionEntities.Keys)
+            var movingRenderable = ComponentManager.GetEntityComponent<RenderComponent>(movingEntity);
+            var movingMovable = ComponentManager.GetEntityComponent<MoveComponent>(movingEntity);
+            var movingPosition = (Vector2)movingRenderable.PositionComponent.Position;
+            var movingVelocity = (Vector2)movingMovable.Velocity;
+            float movingDirection = (float) movingMovable.Direction;
+            var newPosition = movingPosition + movingVelocity;
+
+            var objectRenderable = ComponentManager.GetEntityComponent<RenderComponent>(objectEntity);
+            var objectPosition = objectRenderable.PositionComponent.Position;
+            var objectWidth = objectRenderable.DimensionsComponent.Width;
+            var objectHeight = objectRenderable.DimensionsComponent.Height;
+            var ray = new Ray(new Vector3(movingPosition, 0), new Vector3(movingDirection));
+            var objectBox = new BoundingBox(
+                new Vector3((float) objectPosition.X, (float) objectPosition.Y, 0),
+                new Vector3((float) (objectPosition.X + objectWidth), (float) (objectPosition.Y + objectHeight), 0));
+            float? distance = ray.Intersects(objectBox);
+            System.Diagnostics.Debug.WriteLine("\nDistance " + distance + ", actual distance " + Vector2.Distance(newPosition, objectPosition));
+            System.Diagnostics.Debug.WriteLine("ObjectPosition " + objectPosition + ", MovingPosition " + newPosition);
+            if (distance != null)
             {
-                var componentList = ComponentManager.GetComponentsWithEntity(key);
-                CollisionComponent collisionComponent = (CollisionComponent)componentList[typeof(CollisionComponent)];
-
-                foreach (int key2 in collisionEntities.Keys)
+                if (distance < Vector2.Distance(newPosition, objectPosition))
                 {
-                    if (key != key2){
-                        var secondComponentList = ComponentManager.GetComponentsWithEntity(key2);
-                        CollisionComponent secondCollisionComponent = (CollisionComponent)secondComponentList[typeof(CollisionComponent)];
+                    System.Diagnostics.Debug.WriteLine("COLLISION TRUE");
 
-                        if(collisionComponent.spriteBoundingRectangle.Contains(secondCollisionComponent.spriteBoundingRectangle))
-                        {
-                            if (!collisionComponent.collisions.Contains(key2))
-                            {
-                                collisionComponent.collisions.Add(key2);
-                            }
-                            if (!secondCollisionComponent.collisions.Contains(key))
-                            {
-                                secondCollisionComponent.collisions.Add(key);
-                            }
-                        }
-                    }
+                    return true;
                 }
             }
+            return false;
         }
-
-        public void CheckInsideAndOutsideCollision()
+        
+        public void DetectCollisions()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
             foreach (var firstEntity in collisionEntities)
@@ -121,7 +127,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             }
                             else
                             {
-                                System.Diagnostics.Debug.WriteLine("IS NOT!!!!!! CLAMPED OR WHATEVER");
+                                System.Diagnostics.Debug.WriteLine("IS NOT!!!!!! NOT CLAMPED OR WHATEVER");
                             }
                         }
                         else

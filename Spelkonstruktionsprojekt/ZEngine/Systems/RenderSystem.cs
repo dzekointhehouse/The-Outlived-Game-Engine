@@ -62,7 +62,6 @@ namespace ZEngine.Systems
             // we use the spritebach to draw all the entities.
             private void DrawEntities(SpriteBatch spriteBatch, Rectangle subsetView)
         {
-
             var renderableEntities = 
                 ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>()
                     .Where(e => InsideView(e.Value, subsetView));
