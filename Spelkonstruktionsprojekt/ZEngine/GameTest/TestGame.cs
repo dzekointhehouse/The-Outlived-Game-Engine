@@ -140,24 +140,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
                 .Build();
-            var cameraFollow1 = new CameraFollowComponent();
-            //var cageComponent = new CageComponent()
-            //{
-            //    CageId = cageId
-            //};
-            ComponentManager.Instance.AddComponentToEntity(cameraFollow1, player1);
-            //ComponentManager.Instance.AddComponentToEntity(cageComponent, player1);
 
-
-            //var player2 = EntityManager.GetEntityManager().NewEntity();
-            //var actionBindings2 = new ActionBindingsBuilder()
-            //    .SetAction(Keys.I, "entityWalkForwards")
-            //    .SetAction(Keys.K, "entityWalkBackwards")
-            //    .SetAction(Keys.J, "entityTurnLeft")
-            //    .SetAction(Keys.L, "entityTurnRight")
-            //    .Build();
-            //var cameraFollow3 = new CameraFollowComponent();
-            //ComponentManager.Instance.AddComponentToEntity(cameraFollow3, player2);
+            var player2 = EntityManager.GetEntityManager().NewEntity();
+            var actionBindings2 = new ActionBindingsBuilder()
+                .SetAction(Keys.I, "entityWalkForwards")
+                .SetAction(Keys.K, "entityWalkBackwards")
+                .SetAction(Keys.J, "entityTurnLeft")
+                .SetAction(Keys.L, "entityTurnRight")
+                .Build();
 
             var player3 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings3 = new ActionBindingsBuilder()
@@ -166,43 +156,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.Left, "entityTurnLeft")
                 .SetAction(Keys.Right, "entityTurnRight")
                 .Build();
-            var cameraFollow2 = new CameraFollowComponent();
-            ComponentManager.Instance.AddComponentToEntity(cameraFollow2, player3);
-
-            CreatePlayer(player1, actionBindings1);
-            //CreatePlayer(player2, actionBindings2);
-            CreatePlayer(player3, actionBindings3);
+            
+            CreatePlayer(player1, actionBindings1, cameraFollow: true, collision: true);
+            CreatePlayer(player2, actionBindings2, cameraFollow: true, collision: true, disabled: true);
+            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, movable: false);
         }
 
-        public void CreatePlayer(int entityId, ActionBindings actionBindings)
+        public void CreatePlayer(int entityId, ActionBindings actionBindings, bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
         {
+            if (disabled) return;
             //Initializing first, movable, entity
             var renderComponent = new RenderComponentBuilder()
                 .Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 1000), 150, 2)
                 .Dimensions(100, 100).Build();
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "topDownSoldier"
+                SpriteName = "dot"
             };
-            var moveComponent = new MoveComponent()
-            {
-                Velocity = Vector2D.Create(0, 0),
-                Acceleration = Vector2D.Create(0, 0),
-                MaxAcceleration = Vector2D.Create(80, 80),
-                MaxVelocitySpeed = 200,
-                AccelerationSpeed = 380,
-                RotationSpeed = 4,
-                Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
-            };
-
-            CollisionComponent collisionComponent = new CollisionComponent();
-
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
-            ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
-
             var light = new LightComponent()
             {
                 Light = new Spotlight()
@@ -212,7 +182,51 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     ShadowType = ShadowType.Solid // Will not lit hulls themselves
                 }
             };
+
+            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
             ComponentManager.Instance.AddComponentToEntity(light, entityId);
+
+            if (movable && useDefaultMoveComponent)
+            {
+                var moveComponent = new MoveComponent()
+                {
+                    Velocity = Vector2D.Create(0, 0),
+                    Acceleration = Vector2D.Create(0, 0),
+                    MaxAcceleration = Vector2D.Create(80, 80),
+                    MaxVelocitySpeed = 200,
+                    AccelerationSpeed = 380,
+                    RotationSpeed = 4,
+                    Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
+                };
+                ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
+            }
+            else if (movable && customMoveComponent != null)
+            {
+                ComponentManager.Instance.AddComponentToEntity(customMoveComponent, entityId);
+            }
+
+            if (collision)
+            {
+                CollisionComponent collisionComponent = new CollisionComponent();
+                ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
+            }
+            if (cameraFollow)
+            {
+                var cameraFollowComponent = new CameraFollowComponent();
+                ComponentManager.Instance.AddComponentToEntity(cameraFollowComponent, entityId);
+            }
+
+            if (isCaged)
+            {
+                var cageComponent = new CageComponent()
+                {
+                    CageId = cageId
+                };
+                ComponentManager.Instance.AddComponentToEntity(cageComponent, entityId);
+            }
+           
         }
 
         protected override void LoadContent()
@@ -232,8 +246,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
-            //CollisionSystem.DetectCollisions();
-            CollisionSystem.Collisions();
+            CollisionSystem.DetectCollisions();
+            //CollisionSystem.Collisions();
             CameraFollowSystem.Update(gameTime);
             base.Update(gameTime);
         }

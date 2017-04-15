@@ -12,6 +12,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Wrappers;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using System.Collections;
+using System.Diagnostics;
 using ZEngine.Components.MoveComponent;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
@@ -66,24 +67,31 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var objectPosition = objectRenderable.PositionComponent.Position;
             var objectWidth = objectRenderable.DimensionsComponent.Width;
             var objectHeight = objectRenderable.DimensionsComponent.Height;
+
+            var direction = Vector2.Normalize(objectPosition - movingPosition);
             //Creates a ray heading out from the movingObjects facing direction
-            var ray = new Ray(new Vector3(movingPosition, 0), new Vector3(movingDirection));
+            var ray = new Ray(new Vector3(movingPosition, 0), new Vector3(direction, 0));
+            Debug.WriteLine("\n Ray position" + ray.Position + ", direction" + ray.Direction);
 
             //Creating boundingbox for which to see if the ray has intersected
             var objectBox = new BoundingBox(
                 new Vector3((float) objectPosition.X, (float) objectPosition.Y, 0),
                 new Vector3((float) (objectPosition.X + objectWidth), (float) (objectPosition.Y + objectHeight), 0));
 
+            var objectBox2 = new BoundingSphere(
+                new Vector3((float)(objectPosition.X + objectWidth / 2), (float)(objectPosition.Y + objectHeight / 2), 0),
+                objectWidth);
+            
             float? distance = ray.Intersects(objectBox);
 
-            System.Diagnostics.Debug.WriteLine("\nDistance " + distance + ", actual distance " + Vector2.Distance(newPosition, objectPosition));
+            System.Diagnostics.Debug.WriteLine("Distance " + distance + ", actual distance " + Vector2.Distance(newPosition, objectPosition));
             System.Diagnostics.Debug.WriteLine("ObjectPosition " + objectPosition + ", MovingPosition " + newPosition);
             //Distance will be a number if the ray hits the Objects BoundingBox
             if (distance != null)
             {
                 //The distance of the new position from the objectPosition will be greater than the ray distance to the object
                 // only if there will be a collision on the next frame
-                if (distance < Vector2.Distance(newPosition, objectPosition))
+                if (distance < (Vector2.Distance(newPosition, objectPosition) + movingRenderable.DimensionsComponent.Width))
                 {
                     System.Diagnostics.Debug.WriteLine("COLLISION TRUE");
 
@@ -96,26 +104,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public void DetectCollisions()
         {
             var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
-            foreach (var firstEntity in collisionEntities)
+            foreach (var movingEntity in collisionEntities)
             {
-                var firstEntityKey = firstEntity.Key;
-                CollisionComponent collisionComponent = firstEntity.Value;
+                var movingEntityId = movingEntity.Key;
+                CollisionComponent movingCollisionComponent = movingEntity.Value;
 
-                foreach (var secondEntity in collisionEntities)
+                foreach (var objectEntity in collisionEntities)
                 {
-                    var secondEntityKey = secondEntity.Key;
-                    if (firstEntityKey != secondEntityKey)
+                    var objectEntityId = objectEntity.Key;
+                    if (movingEntityId != objectEntityId)
                     {
-                        CollisionComponent secondCollisionComponent = secondEntity.Value;
+                        CollisionComponent objectCollisionComponent = objectEntity.Value;
 
                         //insert stuff
-                        var renderComponent = ComponentManager.GetEntityComponent<RenderComponent>(firstEntityKey);
-                        var secondRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(secondEntityKey);
-                        var boundingBox = GetSpriteBoundingRectangle(renderComponent, collisionComponent.spriteBoundingRectangle);
-                        var secondBoundingBox = GetSpriteBoundingRectangle(secondRenderComponent, secondCollisionComponent.spriteBoundingRectangle);
-                        if (collisionComponent.CageMode)
+                        var renderComponent = ComponentManager.GetEntityComponent<RenderComponent>(movingEntityId);
+                        var secondRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(objectEntityId);
+                        var boundingBox = GetSpriteBoundingRectangle(renderComponent, movingCollisionComponent.spriteBoundingRectangle);
+                        var secondBoundingBox = GetSpriteBoundingRectangle(secondRenderComponent, objectCollisionComponent.spriteBoundingRectangle);
+                        if (movingCollisionComponent.CageMode)
                         {
-                            if (IsCagedBy(secondEntityKey, firstEntityKey))
+                            if (IsCagedBy(objectEntityId, movingEntityId))
                             {
                                 System.Diagnostics.Debug.WriteLine("IS CAGED!!!!!! CLAMPED OR WHATEVER");
                                 System.Diagnostics.Debug.WriteLine(boundingBox.X + ", " + boundingBox.Y + ", " + boundingBox.Width + ", " + boundingBox.Height);
@@ -123,13 +131,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                                 {
                                     System.Diagnostics.Debug.WriteLine("COLLISION!!!!!! CLAMPED OR WHATEVER");
 
-                                    if (!collisionComponent.collisions.Contains(secondEntityKey))
+                                    if (!movingCollisionComponent.collisions.Contains(objectEntityId))
                                     {
-                                        collisionComponent.collisions.Add(secondEntityKey);
+                                        movingCollisionComponent.collisions.Add(objectEntityId);
                                     }
-                                    if (!secondCollisionComponent.collisions.Contains(firstEntityKey))
+                                    if (!objectCollisionComponent.collisions.Contains(movingEntityId))
                                     {
-                                        secondCollisionComponent.collisions.Add(firstEntityKey);
+                                        objectCollisionComponent.collisions.Add(movingEntityId);
                                     }
                                 }
                             }
@@ -140,15 +148,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         }
                         else
                         {
-                            if (boundingBox.Intersects(secondCollisionComponent.spriteBoundingRectangle))
+                            System.Diagnostics.Debug.WriteLine("Checking for collision");
+                            if (boundingBox.Intersects(objectCollisionComponent.spriteBoundingRectangle))
                             {
-                                if (!collisionComponent.collisions.Contains(secondEntityKey))
+                                System.Diagnostics.Debug.WriteLine("Collision detected");
+                                if (!movingCollisionComponent.collisions.Contains(objectEntityId))
                                 {
-                                    collisionComponent.collisions.Add(secondEntityKey);
+                                    movingCollisionComponent.collisions.Add(objectEntityId);
                                 }
-                                if (!secondCollisionComponent.collisions.Contains(firstEntityKey))
+                                if (!objectCollisionComponent.collisions.Contains(movingEntityId))
                                 {
-                                    secondCollisionComponent.collisions.Add(firstEntityKey);
+                                    objectCollisionComponent.collisions.Add(movingEntityId);
                                 }
                             }
                         }
