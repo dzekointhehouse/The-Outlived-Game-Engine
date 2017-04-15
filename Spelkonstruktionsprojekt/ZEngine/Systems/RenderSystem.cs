@@ -35,12 +35,19 @@ namespace ZEngine.Systems
             var graphics = gm.GraphicsDeviceManager.GraphicsDevice;
             var spriteBatch = gm.SpriteBatch;
 
+            var cameraEntities = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>().First().Value;
+
             graphics.Clear(Color.CornflowerBlue); // Maybe done outside
-            spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
+            var cameraView = cameraEntities.View;
+            var transform = Matrix.Identity *
+                            Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
+                            Matrix.CreateRotationZ(0) *
+                            Matrix.CreateScale(1) *
+                            Matrix.CreateTranslation(new Vector3(cameraView.Width * 0.5f, cameraView.Height * 0.5f, 0));
 
-            var cameraEntities = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>();
-            DrawEntities(spriteBatch, cameraEntities.First().Value.View);
+spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: transform);
+            DrawEntities(spriteBatch, cameraEntities.View);
             spriteBatch.End();
         }
 
@@ -74,7 +81,7 @@ namespace ZEngine.Systems
 
                     sprite.Scale = 1; // For testing, will be removed once feature is actually implemented
                     var destinationRectangle = new Rectangle(
-                        new Point(renderBox.X - subsetView.X, renderBox.Y - subsetView.Y),
+                        new Point(renderBox.X, renderBox.Y),
                         new Point((int) (renderBox.Width * sprite.Scale), (int) (renderBox.Height * sprite.Scale))  
                     );
                     var spriteCrop = new Rectangle(

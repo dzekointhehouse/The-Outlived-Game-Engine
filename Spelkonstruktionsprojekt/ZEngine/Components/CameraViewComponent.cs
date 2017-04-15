@@ -12,10 +12,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     {
         public Rectangle View { get; set; }
 
-        public Matrix Transform { get; set; }
-
-        public Vector2 Origin { get; set; }
-
         public float Scale { get; set; } = 1f;
 
         public float MaxScale { get; set; } = 1f;

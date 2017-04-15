@@ -128,7 +128,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 CageId = cageId
             };
             ComponentManager.Instance.AddComponentToEntity(cameraFollow1, player1);
-            ComponentManager.Instance.AddComponentToEntity(cageComponent, player1);
+            //ComponentManager.Instance.AddComponentToEntity(cageComponent, player1);
 
 
             //var player2 = EntityManager.GetEntityManager().NewEntity();

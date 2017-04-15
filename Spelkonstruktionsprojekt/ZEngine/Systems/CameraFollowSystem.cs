@@ -54,34 +54,33 @@ namespace ZEngine.Systems
                 Vector2 speed = new Vector2(cameraSpeed * ratioX, cameraSpeed * ratioY);
                 var oldPosition = new Vector2(camera.View.X, camera.View.Y);
                 var newPosition = oldPosition + direction * speed;
-                var newPosition2 = oldPosition + direction * speed;
                 camera.View = new Rectangle((int)Math.Ceiling(newPosition.X), (int)Math.Ceiling(newPosition.Y), camera.View.Width, camera.View.Height);
 
 
-                camera.Origin = new Vector2(camera.View.Width / 2, camera.View.Height / 2);
+                //camera.Origin = new Vector2(camera.View.Width / 2, camera.View.Height / 2);
 
-                // Using a matrix makes it easier for us to move the camera
-                // independently of all the sprites, which means that we easily can
-                // rotate, scale, etc. without much effort. plus its recommended.
+                //// Using a matrix makes it easier for us to move the camera
+                //// independently of all the sprites, which means that we easily can
+                //// rotate, scale, etc. without much effort. plus its recommended.
 
-                // What we do when are multiplying matrices is that we combine them
-                // so the result will be a matrix that does the combination of it's 
-                // products. Now when we use this transform in the begindraw, it will
-                // affect all the stuff that is drawn after it.
-                camera.Transform = Matrix.Identity *
+                //// What we do when are multiplying matrices is that we combine them
+                //// so the result will be a matrix that does the combination of it's 
+                //// products. Now when we use this transform in the begindraw, it will
+                //// affect all the stuff that is drawn after it.
+                //camera.Transform = Matrix.Identity *
 
-                    // We create a translation matrix so we are able to move our points easily 
-                    // from one place to another. 
-                    // X,Y and Z, ofcourse Z will be 0.
-                    Matrix.CreateTranslation((float)-cameraRenderComponent.PositionComponent.Position.X, (float)-cameraRenderComponent.PositionComponent.Position.Y, 0) *
+                //    // We create a translation matrix so we are able to move our points easily 
+                //    // from one place to another. 
+                //    // X,Y and Z, ofcourse Z will be 0.
+                //    Matrix.CreateTranslation((float)-cameraRenderComponent.PositionComponent.Position.X, (float)-cameraRenderComponent.PositionComponent.Position.Y, 0) *
                    
-                    // We won't be having any rotation.
-                    Matrix.CreateRotationZ(0) * 
-                    Matrix.CreateTranslation(camera.Origin.X, camera.Origin.Y, 0) *
+                //    // We won't be having any rotation.
+                //    Matrix.CreateRotationZ(0) * 
+                //    Matrix.CreateTranslation(camera.Origin.X, camera.Origin.Y, 0) *
                     
-                    // Our zoom effect will be doing its jobb here,
-                    // as this matrix will easily help us achieve it.
-                    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
+                //    // Our zoom effect will be doing its jobb here,
+                //    // as this matrix will easily help us achieve it.
+                //    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
                 
             }
         }
