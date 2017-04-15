@@ -66,15 +66,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var objectPosition = objectRenderable.PositionComponent.Position;
             var objectWidth = objectRenderable.DimensionsComponent.Width;
             var objectHeight = objectRenderable.DimensionsComponent.Height;
+            //Creates a ray heading out from the movingObjects facing direction
             var ray = new Ray(new Vector3(movingPosition, 0), new Vector3(movingDirection));
+
+            //Creating boundingbox for which to see if the ray has intersected
             var objectBox = new BoundingBox(
                 new Vector3((float) objectPosition.X, (float) objectPosition.Y, 0),
                 new Vector3((float) (objectPosition.X + objectWidth), (float) (objectPosition.Y + objectHeight), 0));
+
             float? distance = ray.Intersects(objectBox);
+
             System.Diagnostics.Debug.WriteLine("\nDistance " + distance + ", actual distance " + Vector2.Distance(newPosition, objectPosition));
             System.Diagnostics.Debug.WriteLine("ObjectPosition " + objectPosition + ", MovingPosition " + newPosition);
+            //Distance will be a number if the ray hits the Objects BoundingBox
             if (distance != null)
             {
+                //The distance of the new position from the objectPosition will be greater than the ray distance to the object
+                // only if there will be a collision on the next frame
                 if (distance < Vector2.Distance(newPosition, objectPosition))
                 {
                     System.Diagnostics.Debug.WriteLine("COLLISION TRUE");
