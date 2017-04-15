@@ -80,21 +80,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
             var renderComponentCage = new RenderComponentBuilder()
-                .Position((int) (0), (int) (0), 2)
-                .Dimensions((int)(viewportDimensions.X), (int)(viewportDimensions.Y))
+                .Position((int) ((int) viewportDimensions.X * 0.5), (int) (viewportDimensions.Y * 0.5), 2)
+                .Dimensions((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8))
                 .Fixed(true).Build();
-            var cageColor = new RenderPaintComponent()
+            var cageSprite = new SpriteComponent()
             {
-                Paint = Color.DarkRed
+                SpriteName = "dot"
             };
             var collisionComponentCage = new CollisionComponent()
             {
-                CageMode = true,
-                spriteBoundingRectangle = new Rectangle((int)(viewportDimensions.X * 0.12), (int)(viewportDimensions.Y * (0.12)), (int)(viewportDimensions.X * 0.9), (int)(viewportDimensions.Y * 0.9))
+                IsCage = true,
             };
-            var offsetComponent = new RenderOffsetComponent();
+            var offsetComponent = new RenderOffsetComponent()
+            {
+                Offset = new Vector2(viewportDimensions.X / 2, viewportDimensions.Y / 2)
+            };
             ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
-            ComponentManager.Instance.AddComponentToEntity(cageColor, cameraCage);
+            //ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
 
@@ -111,6 +113,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "Atlantis Nebula UHD"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
+
 
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
             var cameraViewComponent = new CameraViewComponent()
@@ -167,7 +170,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             
             CreatePlayer(player1, actionBindings1, cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
             CreatePlayer(player2, actionBindings2, cameraFollow: true, collision: true, disabled: true);
-            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, movable: true);
+            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, isCaged: true, movable: true, disabled: false);
         }
 
         public void CreatePlayer(int entityId, ActionBindings actionBindings, bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
@@ -176,10 +179,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //Initializing first, movable, entity
             var renderComponent = new RenderComponentBuilder()
                 .Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
-                .Radius(50).Build();
+                //.Radius(60)
+                .Dimensions(100, 100)
+                .Build();
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "topDownSoldier"
+                SpriteName = "dummy"
             };
             var light = new LightComponent()
             {
@@ -219,7 +224,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 var collisionComponent = new CollisionComponent()
                 {
-                    spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
+                    //spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
                 };
                 ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
             }

@@ -25,6 +25,7 @@ namespace ZEngine.Systems
 
             foreach (var entity in entities)
             {
+                if (string.IsNullOrEmpty(entity.Value.SpriteName)) continue;
                 entity.Value.Sprite = contentManager.Load<Texture2D>(entity.Value.SpriteName);
                 entity.Value.SpriteIsLoaded = true;
                 entity.Value.Width = entity.Value.Sprite.Width;

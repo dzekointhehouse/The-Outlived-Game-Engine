@@ -37,9 +37,8 @@ namespace ZEngine.Systems
             foreach (var fixedEntity in fixedRenderables)
             {
                 var offsetComponent = ComponentManager.GetEntityComponent<RenderOffsetComponent>(fixedEntity.Key);
-                offsetComponent.Offset.X = camera.Value.View.X;
-                offsetComponent.Offset.Y = camera.Value.View.Y;
-
+                fixedEntity.Value.PositionComponent.Position.X = camera.Value.View.X;
+                fixedEntity.Value.PositionComponent.Position.Y = camera.Value.View.Y;
                 Debug.WriteLine("Offset " + offsetComponent.Offset);
             }
         }
@@ -70,12 +69,13 @@ namespace ZEngine.Systems
             foreach (var cameraEntity in cameras)
             {
                 var camera = cameraEntity.Value;
-                // camera.Value.Position = new Vector2((float)Xpositions.Average(), (float)Ypositions.Average());
                 Point screenCenter = camera.View.Center;
                 var cameraRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(cameraEntity.Key);
-                cameraRenderComponent.PositionComponent.Position = averagePosition;
-                var centerVector = new Vector2(screenCenter.X, screenCenter.Y);
 
+                //Setting the position of the red dot (for debugging camera follow of multiple entities)
+                cameraRenderComponent.PositionComponent.Position = averagePosition;
+
+                var centerVector = new Vector2(screenCenter.X, screenCenter.Y);
                 var direction = averagePosition - centerVector;
                 float cameraSpeed = (float)(5 * delta);
                 var ratioY = (float)camera.View.Width / (float)camera.View.Height;
@@ -84,7 +84,7 @@ namespace ZEngine.Systems
                 var oldPosition = new Vector2(camera.View.X, camera.View.Y);
                 var newPosition = oldPosition + direction * speed;
                 camera.View = new Rectangle((int)Math.Ceiling(newPosition.X), (int)Math.Ceiling(newPosition.Y), camera.View.Width, camera.View.Height);
-
+                Debug.WriteLine("CAMERA POSITION " + new Vector2(camera.View.X, camera.View.Y));
 
                 //camera.Origin = new Vector2(camera.View.Width / 2, camera.View.Height / 2);
 

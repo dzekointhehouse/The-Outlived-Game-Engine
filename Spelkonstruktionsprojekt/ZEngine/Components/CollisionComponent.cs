@@ -12,7 +12,7 @@ namespace ZEngine.Components.CollisionComponent
     {
         public Rectangle spriteBoundingRectangle { get; set; }
 
-        public bool CageMode = false;
+        public bool IsCage = false;
 
         //each int is an entityId
         public List<int> collisions = new List<int>();
