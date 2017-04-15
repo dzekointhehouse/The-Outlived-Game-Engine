@@ -40,6 +40,7 @@ namespace ZEngine.Systems
             graphics.Clear(Color.CornflowerBlue); // Maybe done outside
 
             var cameraView = cameraEntities.View;
+
             var transform = Matrix.Identity *
                             Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
                             Matrix.CreateRotationZ(0) *

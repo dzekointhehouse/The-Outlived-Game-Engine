@@ -24,8 +24,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public PenumbraComponent Initialize(GameDependencies gameDependencies)
         {
             this._gameDependencies = gameDependencies;
-            var penumbra = new PenumbraComponent(gameDependencies.Game);
-
+            var penumbra = new PenumbraComponent(gameDependencies.Game)
+            {
+                AmbientColor = new Color(new Vector3(0.01f))
+            };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
             foreach (var instance in lights)
             {
@@ -38,20 +40,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void Update(GameTime gameTime, Vector2 gameDimensions)
         {
+            var camera = ComponentManager.Instance.GetEntitiesWithComponent<CameraViewComponent>().First();
+            var cameraView = camera.Value.View;
             var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
             foreach (var lightEntity in lightEntities)
             {
                 if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(lightEntity.Key))
                 {
                     var moveComponent = ComponentManager.Instance.GetEntityComponent<MoveComponent>(lightEntity.Key);
-                    lightEntity.Value.Light.Rotation = (float) moveComponent.Direction;
+                    lightEntity.Value.Light.Rotation = (float)moveComponent.Direction;
                 }
 
                 if (ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
                 {
                     var renderComponent = ComponentManager.Instance.GetEntityComponent<RenderComponent>(lightEntity.Key);
-                    //lightEntity.Value.Light.Origin = new Vector2(-100, -100);
-                    lightEntity.Value.Light.Position = gameDimensions - renderComponent.PositionComponent.Position;
+                    //lightEntity.Value.Light.Origin = new Vector2((float)0.1, (float)0.3);
+                    //lightEntity.Value.Light.Origin = Vector2.Normalize(gameDimensions);                    
+                    //lightEntity.Value.Light.Origin = Vector2.Normalize(renderComponent.PositionComponent.Position);
+                    lightEntity.Value.Light.Position =
+                        new Vector2(
+                            (float)(renderComponent.PositionComponent.Position.X - cameraView.X),
+                            (float)(renderComponent.PositionComponent.Position.Y - cameraView.Y)
+                            );
                 }
             }
         }
