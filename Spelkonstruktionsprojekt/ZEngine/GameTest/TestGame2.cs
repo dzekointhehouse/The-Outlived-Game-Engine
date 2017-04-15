@@ -79,7 +79,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             lightSystems.BeginDraw(penumbraComponent);
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            lightSystems.EndDraw(penumbraComponent);
+            lightSystems.EndDraw(penumbraComponent, gameTime);
 
             base.Draw(gameTime);
         }

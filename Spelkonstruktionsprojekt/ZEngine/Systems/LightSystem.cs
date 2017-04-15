@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using ZEngine.Components;
+using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 
@@ -22,17 +24,36 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public PenumbraComponent Initialize(GameDependencies gameDependencies)
         {
             this._gameDependencies = gameDependencies;
-            var _penumbra = new PenumbraComponent(gameDependencies.Game);
+            var penumbra = new PenumbraComponent(gameDependencies.Game);
 
             var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
-
             foreach (var instance in lights)
             {
-                _penumbra.Lights.Add(instance.Value.Light);
+                penumbra.Lights.Add(instance.Value.Light);
             }
 
-            _penumbra.Initialize();
-            return _penumbra;
+            penumbra.Initialize();
+            return penumbra;
+        }
+
+        public void Update(GameTime gameTime, Vector2 gameDimensions)
+        {
+            var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
+            foreach (var lightEntity in lightEntities)
+            {
+                if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(lightEntity.Key))
+                {
+                    var moveComponent = ComponentManager.Instance.GetEntityComponent<MoveComponent>(lightEntity.Key);
+                    lightEntity.Value.Light.Rotation = (float) moveComponent.Direction;
+                }
+
+                if (ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
+                {
+                    var renderComponent = ComponentManager.Instance.GetEntityComponent<RenderComponent>(lightEntity.Key);
+                    //lightEntity.Value.Light.Origin = new Vector2(-100, -100);
+                    lightEntity.Value.Light.Position = gameDimensions - renderComponent.PositionComponent.Position;
+                }
+            }
         }
 
         // We use begin draw to start drawing the lights that have
@@ -45,9 +66,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         // Used to finish the penumbra instance drawing process,
         // all the items drawn after this call won't be affected.
-        public void EndDraw(PenumbraComponent penumbraComponent)
+        public void EndDraw(PenumbraComponent penumbraComponent, GameTime gameTime)
         {
-            penumbraComponent.Draw(_gameDependencies.GameTime);
+            penumbraComponent.Draw(gameTime);
         }
     }
 }

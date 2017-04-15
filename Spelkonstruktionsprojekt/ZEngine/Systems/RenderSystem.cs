@@ -43,20 +43,23 @@ namespace ZEngine.Systems
             var transform = Matrix.Identity *
                             Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
                             Matrix.CreateRotationZ(0) *
-                            Matrix.CreateScale(1) *
-                            Matrix.CreateTranslation(new Vector3(cameraView.Width * 0.5f, cameraView.Height * 0.5f, 0));
+                            Matrix.CreateScale(1);
 
-spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: transform);
+
+            //spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: transform);
+
+            //        }
+
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
             DrawEntities(spriteBatch, cameraEntities.View);
             spriteBatch.End();
         }
 
-
         // This method will render all the entities that are associated 
-        // with the render component. 1. we use our Component manager instance
-        // to get all the entities with RenderComponent and then we render them.
-        // we use the spritebach to draw all the entities.
-        private void DrawEntities(SpriteBatch spriteBatch, Rectangle subsetView)
+            // with the render component. 1. we use our Component manager instance
+            // to get all the entities with RenderComponent and then we render them.
+            // we use the spritebach to draw all the entities.
+            private void DrawEntities(SpriteBatch spriteBatch, Rectangle subsetView)
         {
 
             var renderableEntities = 

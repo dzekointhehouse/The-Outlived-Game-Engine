@@ -15,9 +15,7 @@ namespace ZEngine.Wrappers
         // they will probably be used in the systems we have created.
         // For instance, we need spritebach for our render component.
         public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
-        public GameTime GameTime { get; set; }
         public SpriteBatch SpriteBatch { get; set; }
-        public SpriteFont SpritFont { get; set; }
         public Object GameContent { get; set; }
 
         public Game Game { get; set; }

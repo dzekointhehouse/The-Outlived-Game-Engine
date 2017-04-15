@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
@@ -36,7 +37,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private TitlesafeRenderSystem TitlesafeRenderSystem;
         private CollisionSystem CollisionSystem;
         private CameraSceneSystem CameraFollowSystem;
+        private FlashlightSystem lightSystems;
+
         private Vector2 viewportDimensions = new Vector2(900, 500);
+        private PenumbraComponent penumbraComponent;
 
         public TestGame()
         {
@@ -57,15 +61,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
             CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
             CameraFollowSystem = SystemManager.Instance.GetSystem<CameraSceneSystem>();
+            lightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
+            
 
             TankMovementSystem.Start();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
 
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            _gameDependencies.Game = this;
 
             CreateTestEntities();
-
             base.Initialize();
         }
 
@@ -83,6 +89,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
 
             InitPlayers(cameraCage);
+
+
 
             //Initializing a second, imovable, entity
             var entityId3 = EntityManager.GetEntityManager().NewEntity();
@@ -138,6 +146,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //    .SetAction(Keys.J, "entityTurnLeft")
             //    .SetAction(Keys.L, "entityTurnRight")
             //    .Build();
+            //var cameraFollow3 = new CameraFollowComponent();
+            //ComponentManager.Instance.AddComponentToEntity(cameraFollow3, player2);
 
             //var player3 = EntityManager.GetEntityManager().NewEntity();
             //var actionBindings3 = new ActionBindingsBuilder()
@@ -147,7 +157,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //    .SetAction(Keys.Right, "entityTurnRight")
             //    .Build();
             //var cameraFollow2 = new CameraFollowComponent();
-            //ComponentManager.Instance.AddComponentToEntity(cameraFollow2, player2);
+            //ComponentManager.Instance.AddComponentToEntity(cameraFollow2, player3);
 
             CreatePlayer(player1, actionBindings1);
             //CreatePlayer(player2, actionBindings2);
@@ -182,12 +192,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
             ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
 
-
+            var light = new LightComponent()
+            {
+                Light = new Spotlight()
+                {
+                    Position = new Vector2(150, 150),
+                    Scale = new Vector2(500f),
+                    ShadowType = ShadowType.Solid // Will not lit hulls themselves
+                }
+            };
+            ComponentManager.Instance.AddComponentToEntity(light, entityId);
         }
 
         protected override void LoadContent()
         {
             LoadContentSystem.LoadContent(this.Content);
+            penumbraComponent = lightSystems.Initialize(_gameDependencies);
         }
 
         protected override void UnloadContent()
@@ -197,6 +217,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
+            lightSystems.Update(gameTime, viewportDimensions);
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
             MoveSystem.Move(gameTime);
@@ -207,7 +228,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Draw(GameTime gameTime)
         {
+            lightSystems.BeginDraw(penumbraComponent);
             RenderSystem.Render(_gameDependencies);
+            lightSystems.EndDraw(penumbraComponent, gameTime);
             //TitlesafeRenderSystem.Render(_gameDependencies);
             base.Draw(gameTime);
         }
