@@ -168,7 +168,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //Initializing first, movable, entity
             var renderComponent = new RenderComponentBuilder()
                 .Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 1000), 150, 2)
-                .Dimensions(100, 100).Build();
+                .Radius(50).Build();
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "topDownSoldier"

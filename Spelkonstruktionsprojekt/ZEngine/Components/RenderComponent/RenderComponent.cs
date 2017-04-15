@@ -14,11 +14,23 @@ namespace ZEngine.Components
     {
         public PositionComponent PositionComponent { get; set; } = null;
 
-        public DimensionsComponent DimensionsComponent { get; set; }
+        public DimensionsComponent DimensionsComponent { get; set; } = null;
 
         public double Radius { get; set; } = 0;
 
         public bool IsVisible { get; set; } = true;
+    }
+
+    public class RenderComponentHelper
+    {
+        public static DimensionsComponent GetDimensions(RenderComponent renderComponent)
+        {
+            return renderComponent.DimensionsComponent ?? new DimensionsComponent()
+            {
+                Width = (int) renderComponent.Radius * 2,
+                Height = (int) renderComponent.Radius * 2
+            };
+        }
     }
 
     public class RenderComponentBuilder

@@ -69,7 +69,7 @@ namespace ZEngine.Systems
             foreach (var entity in renderableEntities)
             {
                 var zIndex = entity.Value.PositionComponent.ZIndex;
-                var renderBox = new Rectangle((int) entity.Value.PositionComponent.Position.X, (int) entity.Value.PositionComponent.Position.Y, entity.Value.DimensionsComponent.Width, entity.Value.DimensionsComponent.Height);
+                var renderBox = new Rectangle((int) entity.Value.PositionComponent.Position.X, (int) entity.Value.PositionComponent.Position.Y, RenderComponentHelper.GetDimensions(entity.Value).Width, RenderComponentHelper.GetDimensions(entity.Value).Height);
 
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
@@ -112,7 +112,7 @@ namespace ZEngine.Systems
         private bool InsideView(RenderComponent entity, Rectangle view)
         {
             return true;
-            var renderBox = new Rectangle((int) entity.PositionComponent.Position.X, (int) entity.PositionComponent.Position.Y, entity.DimensionsComponent.Width, entity.DimensionsComponent.Height);
+            var renderBox = new Rectangle((int) entity.PositionComponent.Position.X, (int) entity.PositionComponent.Position.Y, RenderComponentHelper.GetDimensions(entity).Width, RenderComponentHelper.GetDimensions(entity).Height);
             return view.Intersects(renderBox);
         }
     }
