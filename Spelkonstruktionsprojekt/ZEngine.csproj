@@ -51,6 +51,7 @@
     <Compile Include="ZEngine\Components\LightComponent.cs" />
     <Compile Include="ZEngine\Components\MoveComponent.cs" />
     <Compile Include="ZEngine\Components\PickupComponent.cs" />
+    <Compile Include="ZEngine\Components\PlayerComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\DimensionsComponent.cs" />
     <Compile Include="ZEngine\Components\IComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\PositionComponent.cs" />

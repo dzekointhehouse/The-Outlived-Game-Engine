@@ -28,6 +28,7 @@ namespace ZEngine.Managers
             { typeof(TitlesafeRenderSystem), new TitlesafeRenderSystem()},
             { typeof(FlashlightSystem), new FlashlightSystem()},
             { typeof(CollisionSystem), new CollisionSystem() },
+
             { typeof(CameraSceneSystem), new CameraSceneSystem() }
         };
 
@@ -54,7 +55,7 @@ namespace ZEngine.Managers
         // this method is called, No big deal.
         private Boolean ContainsSystem<T>()
         {
-            return _systems.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
+            return _systems.Count(system => system.Value.GetType() == typeof(T)) == 1;
         }
     }
 }
