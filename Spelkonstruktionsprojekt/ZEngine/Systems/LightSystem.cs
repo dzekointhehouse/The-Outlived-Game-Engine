@@ -26,7 +26,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             this._gameDependencies = gameDependencies;
             var penumbra = new PenumbraComponent(gameDependencies.Game)
             {
-                AmbientColor = new Color(new Vector3(1f))
+                AmbientColor = new Color(new Vector3(0.7f))
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
             foreach (var instance in lights)

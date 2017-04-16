@@ -10,6 +10,7 @@ using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
@@ -40,8 +41,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private CameraSceneSystem CameraFollowSystem;
         private FlashlightSystem LightSystems;
         private CollisionResolveSystem CollisionResolveSystem;
+        private WallCollisionSystem WallCollisionSystem;
 
-        private Vector2 viewportDimensions = new Vector2(900, 500);
+        private Vector2 viewportDimensions = new Vector2(1500, 1000);
         private PenumbraComponent penumbraComponent;
 
         public TestGame()
@@ -66,9 +68,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             CameraFollowSystem = SystemManager.Instance.GetSystem<CameraSceneSystem>();
             LightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
+            CollisionResolveSystem = SystemManager.Instance.GetSystem<CollisionResolveSystem>();
+            WallCollisionSystem = SystemManager.Instance.GetSystem<WallCollisionSystem>();
 
             //Init systems that require initialization
             TankMovementSystem.Start();
+            WallCollisionSystem.Start();
 
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -83,7 +88,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
-            SetupBackground();
+            //SetupBackground();
+            SetupBackgroundTiles(5,5);
             SetupCamera();
         }
 
@@ -119,13 +125,33 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var entityId3 = EntityManager.GetEntityManager().NewEntity();
             var renderComponent3 = new RenderComponentBuilder()
                 .Position(0, 0, 1)
-                .Dimensions(1800, 1000).Build();
+                .Dimensions(1000, 1000).Build();
             ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
             var spriteComponent3 = new SpriteComponent()
             {
-                SpriteName = "Atlantis Nebula UHD"
+                SpriteName = "Grass"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
+        }
+
+        public void SetupBackgroundTiles(int width, int height)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                for (var y = 0; y < height; y++)
+                {
+                    var entityId3 = EntityManager.GetEntityManager().NewEntity();
+                    var renderComponent3 = new RenderComponentBuilder()
+                        .Position(x * 1000, y * 1000, 1)
+                        .Dimensions(1000, 1000).Build();
+                    ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
+                    var spriteComponent3 = new SpriteComponent()
+                    {
+                        SpriteName = "Grass"
+                    };
+                    ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
+                }
+            }
         }
 
         public void SetupCamera()
@@ -152,9 +178,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     ShadowType = ShadowType.Solid // Will not lit hulls themselves
                 }
             };
-            ComponentManager.Instance.AddComponentToEntity(light, cameraEntity);
+            //ComponentManager.Instance.AddComponentToEntity(light, cameraEntity);
             ComponentManager.Instance.AddComponentToEntity(cameraRenderable, cameraEntity);
-            ComponentManager.Instance.AddComponentToEntity(cameraSprite, cameraEntity);
+            //ComponentManager.Instance.AddComponentToEntity(cameraSprite, cameraEntity);
         }
 
         public void InitPlayers(int cageId)
@@ -200,7 +226,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Build();
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "dummy"
+                SpriteName = "topDownSoldier"
             };
             var light = new LightComponent()
             {
@@ -240,7 +266,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 var collisionComponent = new CollisionComponent()
                 {
-                    //spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
+                    spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
                 };
                 ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
             }
@@ -277,10 +303,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
 
+            MoveSystem.Move(gameTime);
+
             CollisionSystem.DetectCollisions();
             CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents);
+
             CameraFollowSystem.Update(gameTime);
-            MoveSystem.Move(gameTime);
             LightSystems.Update(gameTime, viewportDimensions);
 
             base.Update(gameTime);

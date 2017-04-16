@@ -55,20 +55,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     moveComponent.Velocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction,
                         moveComponent.VelocitySpeed);
 
-                    //If the object has collided, move back to previous position.
-                    // If NOT then update position with current velocity.
-                    if (HasCollided(entity.Key))
-                    {
-                        entity.Value.PositionComponent.Position = moveComponent.PreviousPosition;
-                        var collisonComponent = ComponentManager.GetEntityComponent<CollisionComponent>(entity.Key);
-                        collisonComponent.collisions.Clear();
-                        moveComponent.Velocity = new Vector2(0,0);
-                    }
-                    else
-                    {
-                        moveComponent.PreviousPosition = entity.Value.PositionComponent.Position;
-                        entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity, delta);
-                    }
+                    // Update position with current velocity.
+                    moveComponent.PreviousPosition = entity.Value.PositionComponent.Position;
+                    entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity, delta);
 
                     //System.Diagnostics.Debug.WriteLine(
                     //    "moment " + moveComponent.RotationMomentum

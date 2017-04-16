@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Systems;
 
@@ -30,6 +31,7 @@ namespace ZEngine.Managers
             { typeof(FlashlightSystem), new FlashlightSystem()},
             { typeof(CollisionSystem), new CollisionSystem() },
             { typeof(CollisionResolveSystem), new CollisionResolveSystem() },
+            { typeof(WallCollisionSystem), new WallCollisionSystem() },
             { typeof(CameraSceneSystem), new CameraSceneSystem() }
         };
 

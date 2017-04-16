@@ -40,7 +40,7 @@ namespace ZEngine.Systems
 
             var cameraEntities = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>().First().Value;
 
-            graphics.Clear(Color.CornflowerBlue); // Maybe done outside
+            graphics.Clear(Color.Black); // Maybe done outside
 
             var cameraView = cameraEntities.View;
 
@@ -48,11 +48,6 @@ namespace ZEngine.Systems
                             Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
                             Matrix.CreateRotationZ(0) *
                             Matrix.CreateScale(1);
-
-
-            //spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: transform);
-
-            //        }
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
             DrawEntities(spriteBatch, cameraEntities.View);
