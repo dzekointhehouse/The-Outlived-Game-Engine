@@ -46,7 +46,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
-            var previousHeight = 0f;
+            var previousHeight = 5f;
 
             var g = _gameDependencies.GameContent as ContentManager;
             
@@ -80,7 +80,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 previousHeight = textHeight;
 
                 var position = new Vector2(xPosition, yPosition);
-                _gameDependencies.SpriteBatch.DrawString(spriteFont, text, position, Color.White);
+                _gameDependencies.SpriteBatch.DrawString(spriteFont, text, position, Color.BlueViolet);
 
             }
         }

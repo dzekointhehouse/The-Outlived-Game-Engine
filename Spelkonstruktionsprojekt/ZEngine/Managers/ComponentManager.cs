@@ -111,12 +111,6 @@ namespace ZEngine.Managers
             }
         }
 
-        // I don't know what this does, this shit wasn't me.
-        private ISystem NewComponent(Type name)
-        {
-            return (ISystem)Activator.CreateInstance(_components[name].GetType());
-        }
-
         // The only thing done here is that this method checks
         // if the dictionary contains the componenttype specified
         // in the type parameter.
@@ -125,7 +119,7 @@ namespace ZEngine.Managers
             return _components.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
         }
 
-        public void AddComponentToEntity<T>(int entityId) where T : new()
+        public void AddComponentToEntity<T>(int entityId) where T : IComponent, new()
         {
             AddComponentKeyIfNotPresent(typeof(T));
 
@@ -133,8 +127,7 @@ namespace ZEngine.Managers
             entityComponents.Add(entityId, (IComponent) new T());
 
             var entityComponents2 = _entity[entityId];
-            entityComponents2.Add(typeof(T), (IComponent)new T());
-            
+            entityComponents2.Add(typeof(T), (IComponent)new T());  
         }
 
         // This method is used to associate an instance of a component to a specified

@@ -135,3 +135,9 @@
 /processorParam:TextureFormat=Color
 /build:zombie.png
 
+#begin assassins.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:assassins.mp3
+

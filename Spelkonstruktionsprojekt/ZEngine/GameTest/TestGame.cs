@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
@@ -50,6 +51,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private PenumbraComponent penumbraComponent;
         private TempGameEnder TempGameEnder;
 
+        // testing
+        private FPS fps;
+
+        public SpriteBatch spriteBatch;
+
+        private Song musicTest;
+
         public TestGame()
         {
             _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -58,6 +66,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 PreferredBackBufferHeight = (int)viewportDimensions.Y
             };
             Content.RootDirectory = "Content";
+
+            // Create an instance of the FPS GameComponent
+            fps = new FPS(this);
+
+            // Turn off the fixed time step 
+            // and the synchronization with the vertical retrace
+            // so the game's FPS can be measured
+            IsFixedTimeStep = false;
+            _gameDependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
         }
 
         protected override void Initialize()
@@ -88,6 +105,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            // just quickly done for FPS testing
+            spriteBatch = _gameDependencies.SpriteBatch;
             _gameDependencies.Game = this;
 
             CreateTestEntities();
@@ -363,8 +382,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void LoadContent()
         {
+
+            musicTest = Content.Load<Song>("assassins");
             LoadContentSystem.LoadContent(this.Content);
             penumbraComponent = LightSystems.Initialize(_gameDependencies);
+            MediaPlayer.Play(musicTest);
         }
 
         protected override void UnloadContent()
