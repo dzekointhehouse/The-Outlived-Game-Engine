@@ -46,6 +46,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private EnemyCollisionSystem EnemyCollisionSystem;
         private AISystem AISystem;
         private AbilitySystem AbilitySystem;
+        private Video video;
+        private VideoPlayer player;
 
         private Vector2 viewportDimensions = new Vector2(1500, 1000);
         private PenumbraComponent penumbraComponent;
@@ -382,11 +384,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void LoadContent()
         {
+            video = Content.Load<Video>("ZEngine-intro");
 
+            player = new VideoPlayer();
             musicTest = Content.Load<Song>("assassins");
             LoadContentSystem.LoadContent(this.Content);
             penumbraComponent = LightSystems.Initialize(_gameDependencies);
             MediaPlayer.Play(musicTest);
+            if (player.State == MediaState.Stopped)
+            {
+                player.Play(video);
+            }
+
         }
 
         protected override void UnloadContent()
@@ -396,32 +405,49 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            EnemyCollisionSystem.GameTime = gameTime;
-            InputHandlerSystem.HandleInput(_oldKeyboardState);
-            _oldKeyboardState = Keyboard.GetState();
-
-            AISystem.Process(gameTime);
-            MoveSystem.Move(gameTime);
-
-            CollisionSystem.DetectCollisions();
-            CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents);
-
-            CameraFollowSystem.Update(gameTime);
-            LightSystems.Update(gameTime, viewportDimensions);
-            if (TempGameEnder.Score > 0)
+            if (player.State == MediaState.Stopped)
             {
-                Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);
-                while (true) ;
+                EnemyCollisionSystem.GameTime = gameTime;
+                InputHandlerSystem.HandleInput(_oldKeyboardState);
+                _oldKeyboardState = Keyboard.GetState();
+
+                AISystem.Process(gameTime);
+                MoveSystem.Move(gameTime);
+
+                CollisionSystem.DetectCollisions();
+                CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents);
+
+                CameraFollowSystem.Update(gameTime);
+                LightSystems.Update(gameTime, viewportDimensions);
+                if (TempGameEnder.Score > 0)
+                {
+                    Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);
+                    while (true) ;
+                }
             }
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            LightSystems.BeginDraw(penumbraComponent);
-            RenderSystem.Render(_gameDependencies);
-            LightSystems.EndDraw(penumbraComponent, gameTime);
-            TitlesafeRenderSystem.Draw(_gameDependencies);
+            Texture2D videoTexture = null;
+
+            if (player.State != MediaState.Stopped)
+                videoTexture = player.GetTexture();
+
+            if (videoTexture != null)
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(videoTexture, new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y), Color.White);
+                spriteBatch.End();
+            }
+            if (player.State == MediaState.Stopped) {
+
+                LightSystems.BeginDraw(penumbraComponent);
+                RenderSystem.Render(_gameDependencies);
+                LightSystems.EndDraw(penumbraComponent, gameTime);
+                TitlesafeRenderSystem.Draw(_gameDependencies);
+            }
             base.Draw(gameTime);
         }
     }

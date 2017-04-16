@@ -141,3 +141,8 @@
 /processorParam:Quality=Best
 /build:assassins.mp3
 
+#begin ZEngine-intro.wmv
+/importer:WmvImporter
+/processor:VideoProcessor
+/build:ZEngine-intro.wmv
+
