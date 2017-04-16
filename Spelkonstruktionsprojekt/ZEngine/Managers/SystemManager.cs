@@ -29,6 +29,7 @@ namespace ZEngine.Managers
             { typeof(TitlesafeRenderSystem), new TitlesafeRenderSystem()},
             { typeof(FlashlightSystem), new FlashlightSystem()},
             { typeof(CollisionSystem), new CollisionSystem() },
+            { typeof(CollisionResolveSystem), new CollisionResolveSystem() },
             { typeof(CameraSceneSystem), new CameraSceneSystem() }
         };
 

@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Win32;
-using ZEngine.Components;
 using ZEngine.Components.CollisionComponent;
-using ZEngine.Components;
 using ZEngine.Components.MoveComponent;
-using ZEngine.EventBus;
 using ZEngine.Managers;
-using static ZEngine.Systems.CollisionResolveSystem.CollisionEvents;
+using static ZEngine.Systems.CollisionEvents;
 
 namespace ZEngine.Systems
 {
-    class CollisionResolveSystem
+    class CollisionResolveSystem : ISystem
     {
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
@@ -32,8 +26,8 @@ namespace ZEngine.Systems
                     //If the collision matches any valid collision event
                     foreach (var collisionEvent in collisionEvents)
                     {
-                        //Collision events are made up from requirement at each party
-                        //If both entities (parties) fulfil the component requirement
+                        //Collision events are made up from requirement of each party
+                        //If both entities (parties) fulfil the component requirements
                         //Then there is a match for a collision event
                         int movingEntityId = entity.Key;
                         var collisionRequirements = collisionEvent.Key;
@@ -41,10 +35,10 @@ namespace ZEngine.Systems
 
                         if (MatchesCollisionEvent(collisionRequirements, movingEntityId, collisionTarget))
                         {
-                            //When there is a match for a collision event then an event is published
+                            //When there is a match for a collision-event, an event is published
                             // for any system to pickup and resolve
                             var collisionEventTypeName = FromCollisionEventType(collisionEventType);
-                            var collisionEventWrapper = new CollisionEventWrapper(movingEntityId,collisionEventType);
+                            var collisionEventWrapper = new CollisionEventWrapper(movingEntityId, collisionEventType);
                             EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
                         }
                     }
@@ -61,18 +55,19 @@ namespace ZEngine.Systems
                        .Count(componentType => ComponentManager.EntityHasComponent(componentType, targetId))
                             == collisionRequirements.TargetEntityRequirements.Count;
         }
+    }
 
-        public static class CollisionEvents
+    public static class CollisionEvents
+    {
+        public enum CollisionEvent
         {
-            public enum CollisionEvent
-            {
-                Wall = 0,
-                Bullet,
-                Enemy,
-                Neutral
-            }
+            Wall = 0,
+            Bullet,
+            Enemy,
+            Neutral
+        }
 
-            public static Dictionary<string, CollisionEvent> EventTypes = new Dictionary<string, CollisionEvent>()
+        public static Dictionary<string, CollisionEvent> EventTypes = new Dictionary<string, CollisionEvent>()
             {
                 { "Wall", CollisionEvent.Wall },
                 { "Bullet", CollisionEvent.Bullet },
@@ -80,76 +75,71 @@ namespace ZEngine.Systems
                 { "Neutral", CollisionEvent.Neutral },
             };
 
-            public static CollisionEvent FromCollisionEventName(string collisionEventName)
-            {
-                return EventTypes[collisionEventName];
-            }
-
-            public static string FromCollisionEventType(CollisionEvent collisionEvent)
-            {
-                return EventTypes.First(e => e.Value == collisionEvent).Key;
-            }
+        public static CollisionEvent FromCollisionEventName(string collisionEventName)
+        {
+            return EventTypes[collisionEventName];
         }
 
-        //Used for passing event data to system responsible for resolving collision
-        public class CollisionEventWrapper
+        public static string FromCollisionEventType(CollisionEvent collisionEvent)
         {
-            public int Target;
-            public CollisionEvent Event;
-
-            public CollisionEventWrapper(int target, CollisionEvent collisionEvent)
-            {
-                Target = target;
-                Event = collisionEvent;
-            }
+            return EventTypes.First(e => e.Value == collisionEvent).Key;
         }
+    }
 
-        //Used for mapping componenet requirements to CollisionEvents
-        //This is a preset. The user may setup its own component requirements.
-        public class ZEngineCollisionEventPresets
+    //Used for passing event data to system responsible for resolving collision
+    public class CollisionEventWrapper
+    {
+        public int Target;
+        public CollisionEvent Event;
+
+        public CollisionEventWrapper(int target, CollisionEvent collisionEvent)
         {
-            public static Dictionary<CollisionRequirement, CollisionEvent> CollisionEvents()
+            Target = target;
+            Event = collisionEvent;
+        }
+    }
+
+    //Used for mapping componenet requirements to CollisionEvents
+    //This is a preset. The user may setup its own component requirements.
+    public class ZEngineCollisionEventPresets
+    {
+        public static Dictionary<CollisionRequirement, CollisionEvent> StandardCollisionEvents { get; } = new Dictionary<CollisionRequirement, CollisionEvent>()
             {
-                Dictionary<CollisionRequirement, CollisionEvent> events = new Dictionary<CollisionRequirement, CollisionEvent>()
                 {
+                    new CollisionRequirement()
                     {
-                        new CollisionRequirement()
+                        MovingEntityRequirements = new List<Type>()
                         {
-                            MovingEntityRequirements = new List<Type>()
-                            {
-                                typeof(MoveComponent)
-                            },
-                            TargetEntityRequirements = new List<Type>()
-                            {
-                                typeof(CollisionComponent)
-                            }
+                            typeof(MoveComponent)
                         },
-                        CollisionEvent.Wall
+                        TargetEntityRequirements = new List<Type>()
+                        {
+                            typeof(CollisionComponent)
+                        }
                     },
+                    CollisionEvent.Wall
+                },
+                {
+                    new CollisionRequirement()
                     {
-                        new CollisionRequirement()
+                        MovingEntityRequirements = new List<Type>()
                         {
-                            MovingEntityRequirements = new List<Type>()
-                            {
-                                typeof(MoveComponent)
-                            },
-                            TargetEntityRequirements = new List<Type>()
-                            {
-                                typeof(CollisionComponent),
-                                typeof(MoveComponent)
-                            }
+                            typeof(MoveComponent)
                         },
-                        CollisionEvent.Neutral
+                        TargetEntityRequirements = new List<Type>()
+                        {
+                            typeof(CollisionComponent),
+                            typeof(MoveComponent)
+                        }
                     },
-                };
-                return events;
-            }
-        }
+                    CollisionEvent.Neutral
+                },
+            };
+    }
 
-        public class CollisionRequirement
-        {
-            public List<Type> MovingEntityRequirements;
-            public List<Type> TargetEntityRequirements;
-        }
+    public class CollisionRequirement
+    {
+        public List<Type> MovingEntityRequirements;
+        public List<Type> TargetEntityRequirements;
     }
 }

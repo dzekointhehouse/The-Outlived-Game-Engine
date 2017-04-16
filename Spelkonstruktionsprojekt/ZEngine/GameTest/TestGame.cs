@@ -38,7 +38,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private TitlesafeRenderSystem TitlesafeRenderSystem;
         private CollisionSystem CollisionSystem;
         private CameraSceneSystem CameraFollowSystem;
-        private FlashlightSystem lightSystems;
+        private FlashlightSystem LightSystems;
+        private CollisionResolveSystem CollisionResolveSystem;
 
         private Vector2 viewportDimensions = new Vector2(900, 500);
         private PenumbraComponent penumbraComponent;
@@ -55,6 +56,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Initialize()
         {
+            //Get Systems
             RenderSystem = SystemManager.Instance.GetSystem<RenderSystem>();
             LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
@@ -62,25 +64,35 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
             CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
             CameraFollowSystem = SystemManager.Instance.GetSystem<CameraSceneSystem>();
-            lightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
-            
-
-            TankMovementSystem.Start();
+            LightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
+
+            //Init systems that require initialization
+            TankMovementSystem.Start();
 
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
             _gameDependencies.Game = this;
 
             CreateTestEntities();
+
             base.Initialize();
         }
 
         private void CreateTestEntities()
         {
+            var cameraCageId = SetupCameraCage();
+            InitPlayers(cameraCageId);
+            SetupBackground();
+            SetupCamera();
+        }
+
+        //The camera cage keeps players from reaching the edge of the screen
+        public int SetupCameraCage()
+        {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
             var renderComponentCage = new RenderComponentBuilder()
-                .Position((int) ((int) viewportDimensions.X * 0.5), (int) (viewportDimensions.Y * 0.5), 2)
+                .Position((int)((int)viewportDimensions.X * 0.5), (int)(viewportDimensions.Y * 0.5), 2)
                 .Dimensions((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8))
                 .Fixed(true).Build();
             var cageSprite = new SpriteComponent()
@@ -99,10 +111,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
+            return cameraCage;
+        }
 
-            InitPlayers(cameraCage);
-
-            //Initializing a second, imovable, entity
+        public void SetupBackground()
+        {
             var entityId3 = EntityManager.GetEntityManager().NewEntity();
             var renderComponent3 = new RenderComponentBuilder()
                 .Position(0, 0, 1)
@@ -113,8 +126,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SpriteName = "Atlantis Nebula UHD"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
+        }
 
-
+        public void SetupCamera()
+        {
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
             var cameraViewComponent = new CameraViewComponent()
             {
@@ -170,9 +185,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             
             CreatePlayer(player1, actionBindings1, cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
             CreatePlayer(player2, actionBindings2, cameraFollow: true, collision: true, disabled: true);
-            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, isCaged: true, movable: true, disabled: false);
+            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, isCaged: true);
         }
 
+        //The multitude of options here is for easy debug purposes
         public void CreatePlayer(int entityId, ActionBindings actionBindings, bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
         {
             if (disabled) return;
@@ -248,7 +264,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         protected override void LoadContent()
         {
             LoadContentSystem.LoadContent(this.Content);
-            penumbraComponent = lightSystems.Initialize(_gameDependencies);
+            penumbraComponent = LightSystems.Initialize(_gameDependencies);
         }
 
         protected override void UnloadContent()
@@ -258,21 +274,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            lightSystems.Update(gameTime, viewportDimensions);
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
-            MoveSystem.Move(gameTime);
+
             CollisionSystem.DetectCollisions();
-            //CollisionSystem.Collisions();
+            CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents);
             CameraFollowSystem.Update(gameTime);
+            MoveSystem.Move(gameTime);
+            LightSystems.Update(gameTime, viewportDimensions);
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            lightSystems.BeginDraw(penumbraComponent);
+            LightSystems.BeginDraw(penumbraComponent);
             RenderSystem.Render(_gameDependencies);
-            lightSystems.EndDraw(penumbraComponent, gameTime);
+            LightSystems.EndDraw(penumbraComponent, gameTime);
             //TitlesafeRenderSystem.Render(_gameDependencies);
             base.Draw(gameTime);
         }
