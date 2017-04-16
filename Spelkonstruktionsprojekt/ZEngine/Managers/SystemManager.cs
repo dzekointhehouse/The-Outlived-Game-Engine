@@ -16,8 +16,9 @@ namespace ZEngine.Managers
         public static SystemManager Instance => LazyInitializer.Value;
         private static readonly Lazy<SystemManager> LazyInitializer = new Lazy<SystemManager>(() => new SystemManager());
 
-        // We have an dictionary with
-        // the dictionary name as the key, and the system instance as value.
+        // We immediately put instances of systems in this
+        // dictionary, now they can easily be accessed with it's
+        // type used as the key.
         private readonly Dictionary<Type, ISystem> _systems = new Dictionary<Type, ISystem>()
         {
             { typeof(RenderSystem), new RenderSystem() },
@@ -28,7 +29,6 @@ namespace ZEngine.Managers
             { typeof(TitlesafeRenderSystem), new TitlesafeRenderSystem()},
             { typeof(FlashlightSystem), new FlashlightSystem()},
             { typeof(CollisionSystem), new CollisionSystem() },
-
             { typeof(CameraSceneSystem), new CameraSceneSystem() }
         };
 
@@ -53,7 +53,7 @@ namespace ZEngine.Managers
         // Checks the systems dictionary if it contains the 
         // system that is specified as (T) type parameter when
         // this method is called, No big deal.
-        private Boolean ContainsSystem<T>()
+        private bool ContainsSystem<T>()
         {
             return _systems.Count(system => system.Value.GetType() == typeof(T)) == 1;
         }
