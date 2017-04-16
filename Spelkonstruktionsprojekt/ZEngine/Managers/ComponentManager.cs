@@ -36,7 +36,7 @@ namespace ZEngine.Managers
 
         }
 
-        public void addEntity(int id)
+        public void AddEntity(int id)
         {
             _entity.Add(id, new Dictionary<Type, IComponent>());
         }
@@ -76,9 +76,15 @@ namespace ZEngine.Managers
         // This method returns true if the entity has an association
         // with the specified component. The component type is given as type parameter
         // and that type has to implement the IComponent interface.
-        public bool EntityHasComponent<T>(int entityId) where T : IComponent
+        public bool EntityHasComponent<ComponentType>(int entityId) where ComponentType : IComponent
         {
-            var entityComponents = this.GetEntitiesWithComponent<T>();
+            var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
+            return entityComponents.ContainsKey(entityId);
+        }
+
+        public bool EntityHasComponent(Type componentType, int entityId)
+        {
+            var entityComponents = this.GetEntitiesWithComponent(componentType);
             return entityComponents.ContainsKey(entityId);
         }
 
