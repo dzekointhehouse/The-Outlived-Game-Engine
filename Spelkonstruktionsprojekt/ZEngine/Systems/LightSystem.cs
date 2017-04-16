@@ -18,7 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public static string SystemName = "LightSystem";
         private GameDependencies _gameDependencies;
-w
+
         // This method is used to initialize the penumbra instance, and add
         // all the entities that have an associated instance of light component.
         public PenumbraComponent Initialize(GameDependencies gameDependencies)

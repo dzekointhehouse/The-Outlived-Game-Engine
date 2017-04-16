@@ -80,3 +80,10 @@
 /processorParam:TextureFormat=Color
 /build:dummy.png
 
+#begin spritefont1.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:spritefont1.spritefont
+

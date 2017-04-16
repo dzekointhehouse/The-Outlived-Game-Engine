@@ -21,6 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         readonly GameDependencies gameDependencies = new GameDependencies();
         private FlashlightSystem lightSystems;
         private PenumbraComponent penumbraComponent;
+        private TitlesafeRenderSystem titleSafeSystem;
 
         public TestGame2()
         {
@@ -35,7 +36,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             // TODO: Add your initialization logic here
             lightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
-
+            titleSafeSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
 
             base.Initialize();
         }
@@ -53,7 +54,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             CreateObjects();
 
-            penumbraComponent = lightSystems.Initialize(gameDependencies);
+            //penumbraComponent = lightSystems.Initialize(gameDependencies);
         }
 
         protected override void UnloadContent()
@@ -75,11 +76,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Draw(GameTime gameTime)
         {
-
-
-            lightSystems.BeginDraw(penumbraComponent);
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            lightSystems.EndDraw(penumbraComponent, gameTime);
+            titleSafeSystem.Draw(gameDependencies);
+           // lightSystems.BeginDraw(penumbraComponent);
+
+
+
+           // lightSystems.EndDraw(penumbraComponent, gameTime);
 
             base.Draw(gameTime);
         }
@@ -100,7 +103,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 }
             };
 
+            var player = new PlayerComponent()
+            {
+                Name = "Kalle"
+            };
+
+            var ammo = new AmmoComponent()
+            {
+                Amount = 65
+            };
+
+            var health = new HealthComponent()
+            {
+                CurrentHealth = 34,
+                MaxHealth = 77
+            };
+
             ComponentManager.Instance.AddComponentToEntity(light,obj1);
+            ComponentManager.Instance.AddComponentToEntity(player, obj1);
+            ComponentManager.Instance.AddComponentToEntity(ammo, obj1);
+            ComponentManager.Instance.AddComponentToEntity(health, obj1);
         }
 
 

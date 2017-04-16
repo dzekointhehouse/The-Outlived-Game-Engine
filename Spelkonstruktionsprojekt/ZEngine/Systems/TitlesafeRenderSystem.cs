@@ -43,46 +43,36 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var titlesafearea = graphics.Viewport.TitleSafeArea;
 
             var playerComponents = ComponentManager.Instance.GetEntitiesWithComponent<PlayerComponent>();
-            //var healthComponents = ComponentManager.Instance.GetEntitiesWithComponent<HealthComponent>();
-            //var renderable = ComponentManager.Instance.GetEntitiesWithComponent<AmmoComponent>();
 
             // We save the previous text height so we can stack
-            // them on top of eachother.
+            // them (the text for every player) on top of eachother.
             var previousHeight = 0f;
 
             var g = _gameDependencies.GameContent as ContentManager;
-            // Need to let the user decide
-            var spriteFont = g.Load<SpriteFont>("Healthfont");
+            
+            // Maybe let the user decide?
+            var spriteFont = g.Load<SpriteFont>("ZEone");
 
             foreach (var playerInstance in playerComponents)
             {
-                //var g = _gameDependencies.GameContent as ContentManager;
-                //var spriteFont = g.Load<SpriteFont>("Healthfont");
-
-                //string text = instance.Value.CurrentHealth + " | " + instance.Value.MaxHealth;
-
-                //var textHeight = spriteFont.MeasureString(text).Y;
-
-                //var xPosition = titlesafearea.Width - spriteFont.MeasureString(text).X - 10;
-                //var yPosition = titlesafearea.Height - textHeight - previousHeight;
-                //previousHeight = textHeight;
-
-                //var position = new Vector2(xPosition, yPosition);
-                //_gameDependencies.SpriteBatch.DrawString(spriteFont, text, position, Color.White);
-
                 string text = playerInstance.Value.Name;
 
+                // Adding the health component to text.
                 if (ComponentManager.Instance.EntityHasComponent<HealthComponent>(playerInstance.Key))
                 {
                     var health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(playerInstance.Key);
-                    text = text + ": " + health.CurrentHealth + "|" + health.MaxHealth;
+                    text = text + ": " + health.CurrentHealth + "HP";
                 }
+
+                // adding ammo here the same way.
                 if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(playerInstance.Key))
                 {
                     var ammo = ComponentManager.Instance.GetEntityComponent<AmmoComponent>(playerInstance.Key);
                     text = text + " Ammo: " + ammo.Amount;
                 }
 
+                // this call gives us the height of the text,
+                // so now we are able to stack them on top of each other.
                 var textHeight = spriteFont.MeasureString(text).Y;
 
                 var xPosition = titlesafearea.Width - spriteFont.MeasureString(text).X - 10;
