@@ -341,7 +341,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 };
                 ComponentManager.Instance.AddComponentToEntity(cageComponent, entityId);
             }
-           
+
+            var playerComponent = new PlayerComponent()
+            {
+                Name = entityId.ToString()
+            };
+            ComponentManager.Instance.AddComponentToEntity(playerComponent, entityId);
+            var healthComponent = new HealthComponent()
+            {
+                CurrentHealth = new Random().Next(0, 100)
+            };
+            ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId);
+
         }
 
         protected override void LoadContent()
@@ -382,7 +393,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             LightSystems.BeginDraw(penumbraComponent);
             RenderSystem.Render(_gameDependencies);
             LightSystems.EndDraw(penumbraComponent, gameTime);
-            //TitlesafeRenderSystem.Render(_gameDependencies);
+            TitlesafeRenderSystem.Draw(_gameDependencies);
             base.Draw(gameTime);
         }
     }
