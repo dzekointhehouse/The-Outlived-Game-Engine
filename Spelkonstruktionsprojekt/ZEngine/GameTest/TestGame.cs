@@ -207,7 +207,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Build();
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "dot"
+                SpriteName = "zombie"
             };
             var light = new LightComponent()
             {

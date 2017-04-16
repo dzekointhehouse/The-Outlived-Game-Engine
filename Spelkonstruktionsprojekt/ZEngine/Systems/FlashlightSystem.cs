@@ -15,7 +15,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     public class FlashlightSystem : ISystem
     {
-        public static string SystemName = "LightSystem";
+        public static string SystemName = "FlashlightSystem";
         private GameDependencies _gameDependencies;
 
         // This method is used to initialize the penumbra instance, and add
@@ -25,7 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             this._gameDependencies = gameDependencies;
             var penumbra = new PenumbraComponent(gameDependencies.Game)
             {
-                AmbientColor = new Color(new Vector3(0.004f))
+                AmbientColor = new Color(new Vector3(0.4f))
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
             foreach (var instance in lights)

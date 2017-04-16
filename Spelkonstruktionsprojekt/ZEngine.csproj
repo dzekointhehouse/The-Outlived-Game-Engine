@@ -82,7 +82,7 @@
     <Compile Include="ZEngine\Systems\InputHandler\AbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
-    <Compile Include="ZEngine\Systems\LightSystem.cs" />
+    <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
     <Compile Include="ZEngine\Systems\MoveSystem.cs" />
