@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZEngine.Components.CollisionComponent;
-using ZEngine.Components.MoveComponent;
+using ZEngine.Components;
 using ZEngine.Managers;
 using static ZEngine.Systems.CollisionEvents;
 
@@ -142,10 +141,11 @@ namespace ZEngine.Systems
                         TargetEntityRequirements = new List<Type>()
                         {
                             typeof(CollisionComponent),
-                            typeof(MoveComponent)
+                            typeof(MoveComponent),
+                            typeof(AIComponent)
                         }
                     },
-                    CollisionEvent.Neutral
+                    CollisionEvent.Enemy
                 },
             };
     }

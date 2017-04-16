@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
-using ZEngine.Components.CollisionComponent;
-using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
 
-namespace Spelkonstruktionsprojekt.ZEngine.Systems
+namespace ZEngine.Systems
 {
     class MoveSystem : ISystem
     {

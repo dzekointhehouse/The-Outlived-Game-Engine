@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Wrappers;
 
-namespace ZEngine.Components.MoveComponent
+namespace ZEngine.Components
 {
     public class MoveComponent : IComponent
     {

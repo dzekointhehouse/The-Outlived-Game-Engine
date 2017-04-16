@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZEngine.Components.CollisionComponent
+namespace ZEngine.Components
 {
     class CollisionComponent : IComponent
     {

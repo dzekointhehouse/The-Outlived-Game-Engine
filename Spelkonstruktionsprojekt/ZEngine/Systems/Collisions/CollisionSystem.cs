@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ZEngine.Managers;
 using ZEngine.Components;
-using ZEngine.Components.CollisionComponent;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Wrappers;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
@@ -15,7 +14,6 @@ using System.Collections;
 using System.Diagnostics;
 using System.Runtime.Remoting;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
-using ZEngine.Components.MoveComponent;
 
 namespace ZEngine.Systems
 {

@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using ZEngine.Components;
-using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
 using ZEngine.EventBus;
 using ZEngine.Wrappers;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,11 @@ using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
-using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
 using ZEngine.Systems;
+using ZEngine.Systems.Collisions;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
-using ZEngine.Components.CollisionComponent;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -42,9 +42,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private FlashlightSystem LightSystems;
         private CollisionResolveSystem CollisionResolveSystem;
         private WallCollisionSystem WallCollisionSystem;
+        private EnemyCollisionSystem EnemyCollisionSystem;
+        private AISystem AISystem;
 
         private Vector2 viewportDimensions = new Vector2(1500, 1000);
         private PenumbraComponent penumbraComponent;
+        private TempGameEnder TempGameEnder;
 
         public TestGame()
         {
@@ -70,10 +73,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
             CollisionResolveSystem = SystemManager.Instance.GetSystem<CollisionResolveSystem>();
             WallCollisionSystem = SystemManager.Instance.GetSystem<WallCollisionSystem>();
-
+            AISystem = SystemManager.Instance.GetSystem<AISystem>();
+            EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
+            TempGameEnder = new TempGameEnder();
             //Init systems that require initialization
             TankMovementSystem.Start();
             WallCollisionSystem.Start();
+            EnemyCollisionSystem.Start(TempGameEnder);
 
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -91,6 +97,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //SetupBackground();
             SetupBackgroundTiles(5,5);
             SetupCamera();
+            SetupEnemy();
         }
 
         //The camera cage keeps players from reaching the edge of the screen
@@ -183,6 +190,56 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //ComponentManager.Instance.AddComponentToEntity(cameraSprite, cameraEntity);
         }
 
+        public void SetupEnemy()
+        {
+            var x = new Random(DateTime.Now.Millisecond).Next(0, 5000);
+            var y = new Random(DateTime.Now.Millisecond).Next(0, 5000);
+
+            var entityId = EntityManager.GetEntityManager().NewEntity();
+            var renderComponent = new RenderComponentBuilder()
+                .Position(x, y, 20)
+                .Dimensions(300, 300)
+                .Build();
+            var spriteComponent = new SpriteComponent()
+            {
+                SpriteName = "dot"
+            };
+            var light = new LightComponent()
+            {
+                Light = new Spotlight()
+                {
+                    Position = new Vector2(150, 150),
+                    Scale = new Vector2(500f),
+                    ShadowType = ShadowType.Solid // Will not lit hulls themselves
+                }
+            };
+            var moveComponent = new MoveComponent()
+            {
+                Velocity = Vector2D.Create(0, 0),
+                Acceleration = Vector2D.Create(0, 0),
+                MaxAcceleration = Vector2D.Create(80, 80),
+                MaxVelocitySpeed = 205,
+                AccelerationSpeed = 20,
+                RotationSpeed = 4,
+                Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
+            };
+            var aiComponent = new AIComponent();
+            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
+            //ComponentManager.Instance.AddComponentToEntity(light, entityId);
+            ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(aiComponent, entityId);
+            var collisionComponent = new CollisionComponent()
+            {
+                //spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
+            };
+            ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
+            //if (collision)
+            //{
+            //    
+            //}
+        }
+
         public void InitPlayers(int cageId)
         {
             var player1 = EntityManager.GetEntityManager().NewEntity();
@@ -211,7 +268,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             
             CreatePlayer(player1, actionBindings1, cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
             CreatePlayer(player2, actionBindings2, cameraFollow: true, collision: true, disabled: true);
-            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, isCaged: true);
+            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, isCaged: true, disabled: true);
         }
 
         //The multitude of options here is for easy debug purposes
@@ -300,9 +357,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
+            EnemyCollisionSystem.GameTime = gameTime;
             InputHandlerSystem.HandleInput(_oldKeyboardState);
             _oldKeyboardState = Keyboard.GetState();
 
+            AISystem.Process(gameTime);
             MoveSystem.Move(gameTime);
 
             CollisionSystem.DetectCollisions();
@@ -310,7 +369,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             CameraFollowSystem.Update(gameTime);
             LightSystems.Update(gameTime, viewportDimensions);
-
+            if (TempGameEnder.Score > 0)
+            {
+                Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);
+                while (true) ;
+            }
             base.Update(gameTime);
         }
 

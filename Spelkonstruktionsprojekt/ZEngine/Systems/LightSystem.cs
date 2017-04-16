@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
-using ZEngine.Components.MoveComponent;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 
@@ -26,7 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             this._gameDependencies = gameDependencies;
             var penumbra = new PenumbraComponent(gameDependencies.Game)
             {
-                AmbientColor = new Color(new Vector3(0.7f))
+                AmbientColor = new Color(new Vector3(0.004f))
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
             foreach (var instance in lights)
@@ -54,9 +53,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
                 {
                     var renderComponent = ComponentManager.Instance.GetEntityComponent<RenderComponent>(lightEntity.Key);
-                    //lightEntity.Value.Light.Origin = new Vector2((float)0.1, (float)0.3);
-                    //lightEntity.Value.Light.Origin = Vector2.Normalize(gameDimensions);                    
-                    //lightEntity.Value.Light.Origin = Vector2.Normalize(renderComponent.PositionComponent.Position);
                     lightEntity.Value.Light.Position =
                         new Vector2(
                             (float)(renderComponent.PositionComponent.Position.X - cameraView.X),

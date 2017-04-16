@@ -6,8 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using ZEngine.Components;
-using ZEngine.Components.CollisionComponent;
-using ZEngine.Components.MoveComponent;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Systems;
