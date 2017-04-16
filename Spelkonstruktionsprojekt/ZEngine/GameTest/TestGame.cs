@@ -44,6 +44,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private WallCollisionSystem WallCollisionSystem;
         private EnemyCollisionSystem EnemyCollisionSystem;
         private AISystem AISystem;
+        private AbilitySystem AbilitySystem;
 
         private Vector2 viewportDimensions = new Vector2(1500, 1000);
         private PenumbraComponent penumbraComponent;
@@ -75,9 +76,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             WallCollisionSystem = SystemManager.Instance.GetSystem<WallCollisionSystem>();
             AISystem = SystemManager.Instance.GetSystem<AISystem>();
             EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
+            AbilitySystem = SystemManager.Instance.GetSystem<AbilitySystem>();
+
             TempGameEnder = new TempGameEnder();
+
             //Init systems that require initialization
             TankMovementSystem.Start();
+            AbilitySystem.Start();
             WallCollisionSystem.Start();
             EnemyCollisionSystem.Start(TempGameEnder);
 
@@ -248,6 +253,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.S, "entityWalkBackwards")
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
+                .SetAction(Keys.Q, "entityTurnAround")
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();

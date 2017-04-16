@@ -95,10 +95,10 @@ namespace ZEngine.Systems
                         new Point(sprite.Width, sprite.Height)
                     );
 
-                    System.Diagnostics.Debug.WriteLine(
-                        "Position " + new Vector2(destinationRectangle.X, destinationRectangle.Y).ToString()
-                        + " Dimensions  [ W:" + destinationRectangle.Width + ",  H:" + destinationRectangle.Height + " ]"
-                    );
+                    //System.Diagnostics.Debug.WriteLine(
+                    //    "Position " + new Vector2(destinationRectangle.X, destinationRectangle.Y).ToString()
+                    //    + " Dimensions  [ W:" + destinationRectangle.Width + ",  H:" + destinationRectangle.Height + " ]"
+                    //);
 
                     var zIndexMaxLimit = 1000;
                     spriteBatch.Draw(

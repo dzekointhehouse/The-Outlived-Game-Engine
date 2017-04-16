@@ -45,8 +45,6 @@ namespace ZEngine.Systems
                             var contains = EntityContains(stillEntityId, movingEntityId);
                             if (!contains)
                             {
-                                System.Diagnostics.Debug.WriteLine("COLLISION!!!!!! CLAMPED OR WHATEVER");
-
                                 if (!movingEntityCollisionComponent.collisions.Contains(stillEntityId))
                                 {
                                     movingEntityCollisionComponent.collisions.Add(stillEntityId);
@@ -146,7 +144,7 @@ namespace ZEngine.Systems
             var height = spriteBoundingBox.Height > 0 ? spriteBoundingBox.Height : renderComponent.DimensionsComponent.Height;
             var x = renderComponent.PositionComponent.Position.X + spriteBoundingBox.X + offset.X - width / 2;
             var y = renderComponent.PositionComponent.Position.Y + spriteBoundingBox.Y + offset.Y - height / 2;
-            Debug.WriteLine("In collisions RENDER DATA is W:" + width + ", H:" + height + ", X:" + x + ", Y:" + y);
+            //Debug.WriteLine("In collisions RENDER DATA is W:" + width + ", H:" + height + ", X:" + x + ", Y:" + y);
             return new Rectangle((int)x, (int)y, (int)width, (int)height);
         }
 

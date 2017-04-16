@@ -39,7 +39,6 @@ namespace ZEngine.Systems
                 var offsetComponent = ComponentManager.GetEntityComponent<RenderOffsetComponent>(fixedEntity.Key);
                 fixedEntity.Value.PositionComponent.Position.X = camera.Value.View.X;
                 fixedEntity.Value.PositionComponent.Position.Y = camera.Value.View.Y;
-                Debug.WriteLine("Offset " + offsetComponent.Offset);
             }
         }
 
@@ -84,7 +83,7 @@ namespace ZEngine.Systems
                 var oldPosition = new Vector2(camera.View.X, camera.View.Y);
                 var newPosition = oldPosition + direction * speed;
                 camera.View = new Rectangle((int)Math.Ceiling(newPosition.X), (int)Math.Ceiling(newPosition.Y), camera.View.Width, camera.View.Height);
-                Debug.WriteLine("CAMERA POSITION " + new Vector2(camera.View.X, camera.View.Y));
+                //Debug.WriteLine("CAMERA POSITION " + new Vector2(camera.View.X, camera.View.Y));
 
                 //camera.Origin = new Vector2(camera.View.Width / 2, camera.View.Height / 2);
 
