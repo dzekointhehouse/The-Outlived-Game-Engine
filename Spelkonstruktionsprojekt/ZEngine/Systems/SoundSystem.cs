@@ -20,10 +20,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private ComponentManager ComponentManager = ComponentManager.Instance;
         public void Start()
         {
+            // Here we subscribe what will happen when the entity walks forwards
+            // We'll use WalkingSounds to handle it.
             EventBus.Subscribe<MoveEvent>("entityWalkForwards", WalkingSounds);
+            EventBus.Subscribe<MoveEvent>("entityWalkBackwards", WalkingSounds);
 
 
         }
+
 
         public void WalkingSounds(MoveEvent moveEvent)
         {
@@ -31,23 +35,32 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var soundComponent = ComponentManager.GetEntityComponentOrDefault<SoundComponent>(moveEvent.EntityId);
             if (soundComponent == default(SoundComponent)) return;
 
+            soundComponent.SoundInstace.Volume = soundComponent.Volume;
+
             var entityId = moveEvent.EntityId;
             if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
-                var isLooped = true;
-                var lengthInSeconds = 1;
-                var animation = new AnimationComponent()
-                {
-                    LenghtInSeconds = lengthInSeconds,
-                    Animation = NewWalkingSoundAnimation(soundComponent, isLooped),
-                    Loop = isLooped
-                };
-                if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
-                {
-                    ComponentManager.AddComponentToEntity(animation, entityId);
-                    Debug.WriteLine("Added sound animation");
+                //var isLooped = true;
+                //var lengthInSeconds = 1;
+                //var animation = new AnimationComponent()
+                //{
+                //    LenghtInSeconds = lengthInSeconds,
+                //    Animation = NewWalkingSoundAnimation(soundComponent, isLooped),
+                //    Loop = isLooped
+                //};
+                //if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
+                //{
+                //    ComponentManager.AddComponentToEntity(animation, entityId);
+                //    Debug.WriteLine("Added sound animation");
 
-                }
+                //}
+
+                soundComponent.SoundInstace.Play();
+            } else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
+            {
+                // REMEMBER set pan value depending on X position.
+                soundComponent.SoundInstace.Stop();
+
             }
         }
         
@@ -60,7 +73,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (isLooped) sound.IsLooped = true;
 
                 sound.Play();
-                Debug.WriteLine("Played sound");
             };
         }
     }
