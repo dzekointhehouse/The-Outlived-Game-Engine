@@ -37,7 +37,8 @@ namespace ZEngine.Managers
             { typeof(CameraSceneSystem), new CameraSceneSystem() },
             { typeof(AISystem), new AISystem() },
             { typeof(AbilitySystem), new AbilitySystem() },
-            { typeof(AnimationSystem), new AnimationSystem() }
+            { typeof(AnimationSystem), new AnimationSystem() },
+            { typeof(SoundSystem), new SoundSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

@@ -4,16 +4,45 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
-using ZEngine.Components;
+using ZEngine.Managers;
 
-namespace Spelkonstruktionsprojekt.ZEngine.Components
+namespace ZEngine.Components
 {
     // Component to use when the entity can make sounds.
-    class SoundComponent : IComponent
+    public class SoundComponent : IComponent
     {
         public string SongName { get; set; }
-        public Song Song { get; set; }
-        public TimeSpan Duration { get; set; }
+        public SoundEffectInstance SoundInstace { get; set; }
     }
+
+    public class ZEngineSoundBank
+    {
+        public enum Sounds
+        {
+            WalkingForward
+        }
+
+        public static Dictionary<Sounds, SoundEffectInstance> SoundInstances = new Dictionary<Sounds, SoundEffectInstance>();
+
+        public static void Load(ContentManager contentManager)
+        {
+            SoundInstances[Sounds.WalkingForward] = contentManager.Load<SoundEffect>("assassins").CreateInstance();
+
+            var entities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SoundComponent));
+            foreach (var entity in entities)
+            {
+                SoundComponent soundComponent = (SoundComponent) entity.Value;
+                soundComponent.SoundInstace = contentManager.Load<SoundEffect>(soundComponent.SongName).CreateInstance();
+
+            }
+        }
+
+        
+
+    }
+
+
 }

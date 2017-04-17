@@ -47,6 +47,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private AISystem AISystem;
         private AbilitySystem AbilitySystem;
         private AnimationSystem AnimationSystem;
+        private SoundSystem SoundSystem;
         private Video video;
         private VideoPlayer player;
 
@@ -98,7 +99,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
             AbilitySystem = SystemManager.Instance.GetSystem<AbilitySystem>();
             AnimationSystem = SystemManager.Instance.GetSystem<AnimationSystem>();
-
+            SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
+            
             TempGameEnder = new TempGameEnder();
 
             //Init systems that require initialization
@@ -324,6 +326,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 }
             };
 
+            var sound = new SoundComponent()
+            {
+                SongName = "assassins"
+            };
+
+            ComponentManager.Instance.AddComponentToEntity(sound, entityId);
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
@@ -392,7 +400,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             musicTest = Content.Load<Song>("assassins");
             LoadContentSystem.LoadContent(this.Content);
             penumbraComponent = LightSystems.Initialize(_gameDependencies);
-            MediaPlayer.Play(musicTest);
+            //MediaPlayer.Play(musicTest);
+            ZEngineSoundBank.Load(this.Content);
+           
             if (player.State == MediaState.Stopped)
             {
                 player.Play(video);
@@ -413,6 +423,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 InputHandlerSystem.HandleInput(_oldKeyboardState);
                 _oldKeyboardState = Keyboard.GetState();
 
+                SoundSystem.Update();
                 AISystem.Process(gameTime);
                 MoveSystem.Move(gameTime);
                 AnimationSystem.RunAnimations(gameTime);
