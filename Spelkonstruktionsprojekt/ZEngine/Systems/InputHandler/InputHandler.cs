@@ -31,7 +31,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 {
                     Keys key = binding.Key;
                     var currentKeyEvent = GetKeyEvent(key, keyboardState, oldKeyboardState);
-                    EventBus.Publish(binding.Value, new MoveEvent(entity.Key, currentKeyEvent, gameTime.TotalGameTime.Milliseconds));
+                    EventBus.Publish(binding.Value, new MoveEvent(entity.Key, currentKeyEvent, gameTime.TotalGameTime.TotalMilliseconds));
                 }
             }
         }

@@ -31,19 +31,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             var entityId = moveEvent.EntityId;
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {
+                Debug.WriteLine("INITIATING ANIMATION");
                 var lengthInSeconds = 1;
-                var animation = new AnimationComponent()
+                var animation = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
+                if (animation == null)
                 {
-                    Animation = NewTurningAnimation(moveEvent.CurrentTimeMilliseconds ,lengthInSeconds, entityId)
-                };
-                if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
-                {
+                    animation = new AnimationComponent();
                     ComponentManager.AddComponentToEntity(animation, entityId);
                 }
+                animation.Animations.Add(NewTurningAnimation(moveEvent.CurrentTimeMilliseconds, lengthInSeconds,
+                    entityId));
             }
         }
 
-        public Action<double> NewTurningAnimation(int startOfAnimation, double length,  int entityId)
+        public Func<double, bool> NewTurningAnimation(double startOfAnimation, double length,  int entityId)
         {
             var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
             if (moveComponent == null) return null;
@@ -54,8 +55,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             {
                 var elapsedTime = currentTime - startOfAnimation;
                 moveComponent.Direction = (start + (target - start) / length * elapsedTime) % MathHelper.TwoPi;
-                //Debug.WriteLine("Start " + start + ", Target " + target + ", TotalFrame " + totalFrames +
-                //                ", CurrentFrame " + currentFrame);
+                Debug.WriteLine("Start " + start + ", Target " + target + ", elapsedTime " + elapsedTime +
+                                ", currentTime " + currentTime);
+
+                var targetToleranceSpan = 0.01;
+                return moveComponent.Direction >= target - targetToleranceSpan;
             };
         }
     }

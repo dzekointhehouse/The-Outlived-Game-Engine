@@ -115,11 +115,11 @@ namespace ZEngine.Systems
 
     public class MoveEvent
     {
-        public int CurrentTimeMilliseconds = 0;
+        public double CurrentTimeMilliseconds = 0;
         public int EntityId { get; set; }
         public ActionBindings.KeyEvent KeyEvent { get; set; }
 
-        public MoveEvent(int entityId, ActionBindings.KeyEvent keyEvent, int currentTimeMilliseconds)
+        public MoveEvent(int entityId, ActionBindings.KeyEvent keyEvent, double currentTimeMilliseconds)
         {
             CurrentTimeMilliseconds = currentTimeMilliseconds;
             EntityId = entityId;

@@ -27,7 +27,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void WalkingSounds(MoveEvent moveEvent)
         {
-            Debug.WriteLine("In sound system");
+            //Debug.WriteLine("In sound system");
             var soundComponent = ComponentManager.GetEntityComponentOrDefault<SoundComponent>(moveEvent.EntityId);
             if (soundComponent == default(SoundComponent)) return;
 
@@ -43,7 +43,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
                 {
                     ComponentManager.AddComponentToEntity(animation, entityId);
-                    Debug.WriteLine("Added sound animation");
+                    //Debug.WriteLine("Added sound animation");
 
                 }
             }
@@ -58,7 +58,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (isLooped) sound.IsLooped = true;
 
                 sound.Play();
-                Debug.WriteLine("Played sound");
+                //Debug.WriteLine("Played sound");
             };
         }
     }

@@ -11,8 +11,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     {
         public Action<double> Animation = null;
 
-        //Animation takes one parameter
-        // <CurrentTimeInMilliseconds>
-        public List<Action<double>> Animations = new List<Action<double>>();
+        //Animation takes one parameter <CurrentTimeInMilliseconds>
+        //Return true when finished 
+        public List<Func<double, bool>> Animations = new List<Func<double, bool>>();
     }
 }
