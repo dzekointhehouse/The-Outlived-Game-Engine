@@ -38,9 +38,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var lengthInSeconds = 1;
                 var animation = new AnimationComponent()
                 {
-                    LenghtInSeconds = lengthInSeconds,
                     Animation = NewWalkingSoundAnimation(soundComponent, isLooped),
-                    Loop = isLooped
                 };
                 if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
                 {

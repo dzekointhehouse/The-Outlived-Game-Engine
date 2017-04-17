@@ -34,8 +34,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 var lengthInSeconds = 1;
                 var animation = new AnimationComponent()
                 {
-                    LenghtInSeconds = lengthInSeconds,
-                    Animation = NewTurningAnimation(lengthInSeconds, entityId)
+                    Animation = NewTurningAnimation(moveEvent.CurrentTimeMilliseconds ,lengthInSeconds, entityId)
                 };
                 if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
                 {
@@ -44,16 +43,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             }
         }
 
-        public Action<double> NewTurningAnimation(double lengthInSeconds, int entityId)
+        public Action<double> NewTurningAnimation(int startOfAnimation, double length,  int entityId)
         {
             var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
             if (moveComponent == null) return null;
 
             double start = moveComponent.Direction;
             double target = (start + Math.PI);
-            return delegate(double elapsedTime)
+            return delegate(double currentTime)
             {
-                moveComponent.Direction = (start + (target - start) / lengthInSeconds * elapsedTime) % MathHelper.TwoPi;
+                var elapsedTime = currentTime - startOfAnimation;
+                moveComponent.Direction = (start + (target - start) / length * elapsedTime) % MathHelper.TwoPi;
                 //Debug.WriteLine("Start " + start + ", Target " + target + ", TotalFrame " + totalFrames +
                 //                ", CurrentFrame " + currentFrame);
             };

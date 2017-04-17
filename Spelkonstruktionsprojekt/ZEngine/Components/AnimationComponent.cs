@@ -9,13 +9,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class AnimationComponent : IComponent
     {
-        public double ElapsedTime = 0;
-        public double LenghtInSeconds;
-        public bool Loop = false;
-
-        //Animation takes three parameters
-        // <ElapsedTime>
         public Action<double> Animation = null;
 
+        //Animation takes one parameter
+        // <CurrentTimeInMilliseconds>
+        public List<Action<double>> Animations = new List<Action<double>>();
     }
 }

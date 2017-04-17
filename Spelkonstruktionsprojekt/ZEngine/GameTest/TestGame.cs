@@ -420,7 +420,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (player.State == MediaState.Stopped)
             {
                 EnemyCollisionSystem.GameTime = gameTime;
-                InputHandlerSystem.HandleInput(_oldKeyboardState);
+                InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
 
                 SoundSystem.Update();
