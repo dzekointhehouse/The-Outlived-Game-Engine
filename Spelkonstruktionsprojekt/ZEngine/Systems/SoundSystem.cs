@@ -18,7 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     public class SoundSystem : ISystem
     {
-        private EventBus EventBus = EventBus.Instance;
+        private readonly EventBus EventBus = EventBus.Instance;
 
         public ISystem Start()
         {
@@ -54,6 +54,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var sound = 
                     ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(bulletSpriteEntities.First().Key);
 
+                // We create a SoundEffectInstance which gives us more control
                 var soundInstance = sound.SoundEffect.CreateInstance();
 
                 if (soundInstance.State != SoundState.Playing)
