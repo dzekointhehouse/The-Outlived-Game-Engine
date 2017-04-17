@@ -29,7 +29,7 @@ namespace ZEngine.Components
 
         public static void Load(ContentManager contentManager)
         {
-            SoundInstances[Sounds.WalkingForward] = contentManager.Load<SoundEffect>("assassins").CreateInstance();
+            SoundInstances[Sounds.WalkingForward] = contentManager.Load<SoundEffect>("walking").CreateInstance();
 
             var entities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SoundComponent));
             foreach (var entity in entities)
