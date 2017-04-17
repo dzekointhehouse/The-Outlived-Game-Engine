@@ -88,6 +88,7 @@
     <Compile Include="ZEngine\Systems\MoveSystem.cs" />
     <Compile Include="ZEngine\Systems\TitlesafeRenderSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
+    <Compile Include="ZEngine\Systems\VideoPlayerSystem.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
