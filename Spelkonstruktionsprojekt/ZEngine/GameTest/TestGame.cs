@@ -412,7 +412,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             LoadContentSystem.LoadContent(this.Content);
             penumbraComponent = LightSystems.Initialize(_gameDependencies);
             //MediaPlayer.Play(musicTest);
-            ZEngineSoundBank.Load(this.Content);
            
             if (player.State == MediaState.Stopped)
             {

@@ -28,24 +28,6 @@ namespace ZEngine.Components
             WalkingForward
 
         }
-
-        public static Dictionary<Sounds, SoundEffectInstance> SoundInstances = new Dictionary<Sounds, SoundEffectInstance>();
-
-        public static void Load(ContentManager contentManager)
-        {
-           // SoundInstances[Sounds.WalkingForward] = contentManager.Load<SoundEffect>("walking").CreateInstance();
-
-            var entities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SoundComponent));
-            foreach (var entity in entities)
-            {
-                SoundComponent soundComponent = (SoundComponent) entity.Value;
-                soundComponent.SoundInstace = contentManager.Load<SoundEffect>(soundComponent.SongName).CreateInstance();
-
-            }
-        }
-
-        
-
     }
 
 
