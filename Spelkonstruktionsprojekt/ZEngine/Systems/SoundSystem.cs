@@ -18,7 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        public void Update()
+        public void Start()
         {
             EventBus.Subscribe<MoveEvent>("entityWalkForwards", WalkingSounds);
 
