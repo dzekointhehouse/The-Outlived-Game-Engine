@@ -126,6 +126,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
+            var bulletSprite = EntityManager.GetEntityManager().NewEntity();
+            var bulletSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "dot"
+            };
+            var bulletSpriteComponent = new BulletSpriteComponent();
+            ComponentManager.Instance.AddComponentToEntity(bulletSpriteSprite, bulletSprite);
+            ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, bulletSprite);
+
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
             //SetupBackground();
@@ -258,9 +267,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var moveComponent = new MoveComponent()
             {
-                Velocity = Vector2D.Create(0, 0),
-                Acceleration = Vector2D.Create(0, 0),
-                MaxAcceleration = Vector2D.Create(80, 80),
                 MaxVelocitySpeed = 205,
                 AccelerationSpeed = 5,
                 RotationSpeed = 4,
@@ -355,9 +361,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 var moveComponent = new MoveComponent()
                 {
-                    Velocity = Vector2D.Create(0, 0),
-                    Acceleration = Vector2D.Create(0, 0),
-                    MaxAcceleration = Vector2D.Create(80, 80),
                     MaxVelocitySpeed = 200,
                     AccelerationSpeed = 380,
                     RotationSpeed = 4,
@@ -403,7 +406,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 CurrentHealth = new Random().Next(0, 100)
             };
             ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId);
-
+            var weaponComponent = new WeaponComponent()
+            {
+                Damage = 10
+            };
+            ComponentManager.Instance.AddComponentToEntity(weaponComponent, entityId);
         }
 
         protected override void LoadContent()

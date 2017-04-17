@@ -73,6 +73,16 @@ namespace ZEngine.Components
             return this;
         }
 
+        public RenderComponentBuilder Position(double x, double y, int zIndex)
+        {
+            _renderComponent.PositionComponent = new PositionComponent()
+            {
+                Position = Vector2D.Create(x, y),
+                ZIndex = zIndex
+            };
+            return this;
+        }
+
         public RenderComponentBuilder Dimensions(int width, int height)
         {
             _renderComponent.DimensionsComponent = new DimensionsComponent()

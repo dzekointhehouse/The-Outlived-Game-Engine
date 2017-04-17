@@ -40,11 +40,11 @@ namespace ZEngine.Systems
             {
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    moveComponent.VelocitySpeed = 1;
+                    moveComponent.Speed = 1;
                 }
                 else if(moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
                 {
-                    moveComponent.VelocitySpeed = 0;
+                    moveComponent.Speed = 0;
                 }
             });
         }
@@ -54,11 +54,11 @@ namespace ZEngine.Systems
             {
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    moveComponent.VelocitySpeed = -1;
+                    moveComponent.Speed = -1;
                 }
                 else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
                 {
-                    moveComponent.VelocitySpeed = 0;
+                    moveComponent.Speed = 0;
                 }
             });
         }
@@ -98,10 +98,7 @@ namespace ZEngine.Systems
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {
                 var component = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
-                if (component.Velocity != null && component.Acceleration != null)
-                {
-                    updateAction(component);
-                }
+                updateAction(component);
             }
         }
     }

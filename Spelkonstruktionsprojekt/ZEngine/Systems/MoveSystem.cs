@@ -32,30 +32,30 @@ namespace ZEngine.Systems
 
                     //If the entity is moving, calculate new acceleration
                     //And if moving backwards, apply backwards motion penalty factor
-                    var entityIsMoving = moveComponent.VelocitySpeed < -0.01 || moveComponent.VelocitySpeed > 0.01;
+                    var entityIsMoving = moveComponent.Speed < -0.01 || moveComponent.Speed > 0.01;
                     if (entityIsMoving)
                     {
                         //If an object is to accerlerate/deccelerate the VelocitySpeed is set to slightly above or below 0
                         // this is done by movement systems.
                         //If the velocity speed is positive than increase acceleration
                         //Else, decrease (i.e. deccelerate)
-                        var multiplier = moveComponent.VelocitySpeed > 0
+                        var multiplier = moveComponent.Speed > 0
                             ? 1
                             : (-1 * moveComponent.BackwardsPenaltyFactor);
 
-                        moveComponent.VelocitySpeed += multiplier * moveComponent.AccelerationSpeed * delta;
+                        moveComponent.Speed += multiplier * moveComponent.AccelerationSpeed * delta;
                     }
 
                     //Limit velocity if above max velocity
                     ApplyVelocityLimits(moveComponent);
 
                     //Start Velocity based on current direction and acceleration
-                    moveComponent.Velocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction,
-                        moveComponent.VelocitySpeed);
+                    var velocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction,
+                        moveComponent.Speed);
 
                     // Start position with current velocity.
                     moveComponent.PreviousPosition = entity.Value.PositionComponent.Position;
-                    entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, moveComponent.Velocity, delta);
+                    entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, velocity, delta);
 
                     //System.Diagnostics.Debug.WriteLine(
                     //    "moment " + moveComponent.RotationMomentum
@@ -71,13 +71,13 @@ namespace ZEngine.Systems
 
         public void ApplyVelocityLimits(MoveComponent moveComponent)
         {
-            if (moveComponent.VelocitySpeed > moveComponent.MaxVelocitySpeed)
+            if (moveComponent.Speed > moveComponent.MaxVelocitySpeed)
             {
-                moveComponent.VelocitySpeed = moveComponent.MaxVelocitySpeed;
+                moveComponent.Speed = moveComponent.MaxVelocitySpeed;
             }
-            else if (moveComponent.VelocitySpeed < -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor)
+            else if (moveComponent.Speed < -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor)
             {
-                moveComponent.VelocitySpeed = -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor;
+                moveComponent.Speed = -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor;
             }
         }
 

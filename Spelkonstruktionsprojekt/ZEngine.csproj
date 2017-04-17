@@ -44,6 +44,8 @@
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
     <Compile Include="ZEngine\Components\AIComponent.cs" />
     <Compile Include="ZEngine\Components\AnimationComponent.cs" />
+    <Compile Include="ZEngine\Components\BulletComponent.cs" />
+    <Compile Include="ZEngine\Components\BulletSpriteComponent.cs" />
     <Compile Include="ZEngine\Components\CageComponent.cs" />
     <Compile Include="ZEngine\Components\CameraFollowComponent.cs" />
     <Compile Include="ZEngine\Components\CameraViewComponent.cs" />

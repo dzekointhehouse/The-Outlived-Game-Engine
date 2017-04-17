@@ -33,9 +33,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 double newDirection = Math.Atan2(dir.Y, dir.X);
 
                 aiMoveComponent.Direction = newDirection;
-                if (aiMoveComponent.VelocitySpeed < 1)
+                if (aiMoveComponent.Speed < 1)
                 {
-                    aiMoveComponent.VelocitySpeed = 1;
+                    aiMoveComponent.Speed = 1;
                 }
             }
         }

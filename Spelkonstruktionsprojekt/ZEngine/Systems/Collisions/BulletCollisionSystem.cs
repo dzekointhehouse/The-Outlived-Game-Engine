@@ -29,7 +29,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
             var entityRenderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(collisionEvent.Entity);
 
             entityRenderComponent.PositionComponent.Position = entityMoveComponent.PreviousPosition;
-            entityMoveComponent.Velocity = new Vector2(0, 0);
+            entityMoveComponent.Speed = 0;
 
             var collisonComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Entity);
             collisonComponent.collisions.Remove(collisionEvent.Target);
