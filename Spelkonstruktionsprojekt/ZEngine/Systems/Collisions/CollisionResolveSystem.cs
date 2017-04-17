@@ -38,10 +38,10 @@ namespace ZEngine.Systems
                         var collisionRequirements = collisionEvent.Key;
                         var collisionEventType = collisionEvent.Value;
 
-                        Debug.WriteLine("Testing match for " + FromCollisionEventType(collisionEventType));
+//                        Debug.WriteLine("Testing match for " + FromCollisionEventType(collisionEventType));
                         if (MatchesCollisionEvent(collisionRequirements, movingEntityId, collisionTarget))
                         {
-                            Debug.WriteLine("Matched with " + FromCollisionEventType(collisionEventType));
+//                            Debug.WriteLine("Matched with " + FromCollisionEventType(collisionEventType));
                             //When there is a match for a collision-event, an event is published
                             // for any system to pickup and resolve
                             var collisionEventTypeName = FromCollisionEventType(collisionEventType);

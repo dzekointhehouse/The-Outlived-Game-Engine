@@ -152,7 +152,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
             var renderComponentCage = new RenderComponentBuilder()
-                .Position((int)((int)viewportDimensions.X * 0.5), (int)(viewportDimensions.Y * 0.5), 2)
+//                .Position((int)((int)viewportDimensions.X * 0.5), (int)(viewportDimensions.Y * 0.5), 2)
+                .Position(0, 0, 2)
                 .Dimensions((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8))
                 .Fixed(true).Build();
             var cageSprite = new SpriteComponent()
@@ -165,10 +166,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
             var offsetComponent = new RenderOffsetComponent()
             {
-                Offset = new Vector2((float) (viewportDimensions.X * 0.1), (float) (viewportDimensions.Y * 0.1))
+                Offset = new Vector2((float) (viewportDimensions.X * 0.25), (float) (viewportDimensions.Y * 0.25))
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
-            //ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
+            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
@@ -431,7 +432,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
            
             if (player.State == MediaState.Stopped)
             {
-                player.Play(video);
+//                player.Play(video);
             }
 
 
