@@ -34,18 +34,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var entityId = moveEvent.EntityId;
             if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
-                var isLooped = true;
-                var lengthInSeconds = 1;
-                var animation = new AnimationComponent()
-                {
-                    Animation = NewWalkingSoundAnimation(soundComponent, isLooped),
-                };
-                if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
-                {
-                    ComponentManager.AddComponentToEntity(animation, entityId);
-                    //Debug.WriteLine("Added sound animation");
-
-                }
             }
         }
         

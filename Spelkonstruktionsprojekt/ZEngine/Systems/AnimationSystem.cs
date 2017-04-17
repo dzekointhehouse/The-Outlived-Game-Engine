@@ -17,11 +17,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             foreach (var entity in entities)
             {
                 var doneAnimations = new List<int>();
-                
+                var usedUniqueAnimationTypes = new List<string>();
+
                 for (var i = 0; i < entity.Value.Animations.Count; i++)
                 {
-                    var isDone = entity.Value.Animations[i].Invoke(gameTime.TotalGameTime.TotalMilliseconds);
-                    if(isDone) doneAnimations.Add(i);
+                    var animationWrapper = entity.Value.Animations[i];
+                    if(animationWrapper.Unique && usedUniqueAnimationTypes.Contains(animationWrapper.AnimationType)) continue;
+
+                    animationWrapper.Animation.Invoke(gameTime.TotalGameTime.TotalMilliseconds);
+
+                    if(animationWrapper.Unique) usedUniqueAnimationTypes.Add(animationWrapper.AnimationType);
+                    if(animationWrapper.IsDone) doneAnimations.Add(i);
                 }
 
                 foreach (int animationIndex in doneAnimations)

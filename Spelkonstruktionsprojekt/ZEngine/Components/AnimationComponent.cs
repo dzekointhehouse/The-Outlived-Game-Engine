@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class AnimationComponent : IComponent
     {
-        public Action<double> Animation = null;
-
-        //Animation takes one parameter <CurrentTimeInMilliseconds>
-        //Return true when finished 
-        public List<Func<double, bool>> Animations = new List<Func<double, bool>>();
+        public List<GeneralAnimation> Animations = new List<GeneralAnimation>();
     }
 }
