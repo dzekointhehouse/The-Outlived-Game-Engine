@@ -126,6 +126,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
+            var cameraCageId = SetupCameraCage();
+            InitPlayers(cameraCageId);
+            //SetupBackground();
+            SetupBackgroundTiles(5,5);
+            SetupCamera();
+            //SetupEnemy();
+            CreateGlobalBulletSpriteEntity();
+        }
+
+        private static void CreateGlobalBulletSpriteEntity()
+        {
             var bulletSprite = EntityManager.GetEntityManager().NewEntity();
             var bulletSpriteSprite = new SpriteComponent()
             {
@@ -134,13 +145,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var bulletSpriteComponent = new BulletSpriteComponent();
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteSprite, bulletSprite);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, bulletSprite);
-
-            var cameraCageId = SetupCameraCage();
-            InitPlayers(cameraCageId);
-            //SetupBackground();
-            SetupBackgroundTiles(5,5);
-            SetupCamera();
-            SetupEnemy();
         }
 
         //The camera cage keeps players from reaching the edge of the screen
@@ -317,18 +321,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.Right, "entityTurnRight")
                 .Build();
             
-            CreatePlayer(player1, actionBindings1, cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
+            CreatePlayer(player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
             CreatePlayer(player2, actionBindings2, cameraFollow: true, collision: true, disabled: true);
-            CreatePlayer(player3, actionBindings3, cameraFollow: true, collision: true, isCaged: true, disabled: true);
+            CreatePlayer(player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true, collision: true, isCaged: true);
         }
 
         //The multitude of options here is for easy debug purposes
-        public void CreatePlayer(int entityId, ActionBindings actionBindings, bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
+        public void CreatePlayer(int entityId, ActionBindings actionBindings, Vector2 position = default(Vector2), bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
         {
             if (disabled) return;
+            if(position == default(Vector2)) position = new Vector2(150, 150);
             //Initializing first, movable, entity
             var renderComponent = new RenderComponentBuilder()
-                .Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
+                //.Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
+                .Position(position.X, position.Y, 10)
                 //.Radius(60)
                 .Dimensions(100, 100)
                 .Build();
@@ -449,7 +455,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 AnimationSystem.RunAnimations(gameTime);
 
                 CollisionSystem.DetectCollisions();
-                CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents);
+                CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
 
                 CameraFollowSystem.Update(gameTime);
                 LightSystems.Update(gameTime, viewportDimensions);

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
 using ZEngine.Managers;
 using static ZEngine.Systems.CollisionEvents;
@@ -12,7 +15,7 @@ namespace ZEngine.Systems
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void ResolveCollisions(Dictionary<CollisionRequirement, CollisionEvent> collisionEvents)
+        public void ResolveCollisions(Dictionary<CollisionRequirement, CollisionEvent> collisionEvents, GameTime gameTime)
         {
             var collidableEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
 
@@ -35,15 +38,24 @@ namespace ZEngine.Systems
                         var collisionRequirements = collisionEvent.Key;
                         var collisionEventType = collisionEvent.Value;
 
+                        Debug.WriteLine("Testing match for " + FromCollisionEventType(collisionEventType));
                         if (MatchesCollisionEvent(collisionRequirements, movingEntityId, collisionTarget))
                         {
+                            Debug.WriteLine("Matched with " + FromCollisionEventType(collisionEventType));
                             //When there is a match for a collision-event, an event is published
                             // for any system to pickup and resolve
                             var collisionEventTypeName = FromCollisionEventType(collisionEventType);
-                            var collisionEventWrapper = new SpecificCollisionEvent(movingEntityId, collisionTarget, collisionEventType);
+                            var collisionEventWrapper = new SpecificCollisionEvent()
+                            {
+                                Entity = movingEntityId,
+                                Target = collisionTarget,
+                                Event = collisionEventType,
+                                EventTime = gameTime.TotalGameTime.TotalMilliseconds
+                            };
                             EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
                         }
                     }
+                    entity.Value.collisions.Remove(collisionTarget);
                 }
             }
         }
@@ -91,16 +103,10 @@ namespace ZEngine.Systems
     //Used for passing event data to system responsible for resolving collision
     public class SpecificCollisionEvent
     {
-        public int Entity;
-        public int Target;
-        public CollisionEvent Event;
-
-        public SpecificCollisionEvent(int entity, int target, CollisionEvent collisionEvent)
-        {
-            Entity = entity;
-            Target = target;
-            Event = collisionEvent;
-        }
+        public int Entity = -1;
+        public int Target = -1;
+        public CollisionEvent Event = 0;
+        public double EventTime = 0;
     }
 
 
@@ -146,6 +152,20 @@ namespace ZEngine.Systems
                         }
                     },
                     CollisionEvent.Enemy
+                },
+                {
+                    new CollisionRequirement()
+                    {
+                        MovingEntityRequirements = new List<Type>()
+                        {
+                            typeof(BulletComponent)
+                        },
+                        TargetEntityRequirements = new List<Type>()
+                        {
+                            typeof(CollisionComponent),
+                        }
+                    },
+                    CollisionEvent.Bullet
                 },
             };
     }

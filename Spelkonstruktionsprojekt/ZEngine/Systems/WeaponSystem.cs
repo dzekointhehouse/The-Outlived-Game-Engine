@@ -69,12 +69,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             };
             var bulletComponent = new BulletComponent()
             {
-                Damage = weaponComponent.Damage
+                Damage = weaponComponent.Damage,
+                ShooterEntityId = inputEvent.EntityId
             };
+            var bulletCollisionComponent = new CollisionComponent();
             ComponentManager.AddComponentToEntity(bulletComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletSpriteComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletMoveComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
+            ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
 
             var animationComponent = new AnimationComponent();
             ComponentManager.AddComponentToEntity(animationComponent, bulletEntityId);
