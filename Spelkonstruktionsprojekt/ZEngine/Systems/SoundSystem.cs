@@ -18,7 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        public void Update()
+        public void Start()
         {
             EventBus.Subscribe<MoveEvent>("entityWalkForwards", WalkingSounds);
 
@@ -38,9 +38,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var lengthInSeconds = 1;
                 var animation = new AnimationComponent()
                 {
-                    LenghtInSeconds = lengthInSeconds,
                     Animation = NewWalkingSoundAnimation(soundComponent, isLooped),
-                    Loop = isLooped
                 };
                 if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
                 {

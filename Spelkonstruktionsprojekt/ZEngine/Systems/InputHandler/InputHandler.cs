@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
@@ -17,14 +18,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
     {
         private readonly EventBus EventBus = EventBus.Instance;
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
-        private readonly Action<KeyboardState> _systemAction;
-
-        public InputHandler()
-        {
-            _systemAction = new Action<KeyboardState>(HandleInput);
-        }
-
-        public void HandleInput(KeyboardState oldKeyboardState)
+        
+        public void HandleInput(KeyboardState oldKeyboardState, GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
             var entitiesWithActionBindings = ComponentManager.GetEntitiesWithComponent<ActionBindings>();
@@ -36,7 +31,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 {
                     Keys key = binding.Key;
                     var currentKeyEvent = GetKeyEvent(key, keyboardState, oldKeyboardState);
-                    EventBus.Publish(binding.Value, new MoveEvent(entity.Key, currentKeyEvent));
+                    EventBus.Publish(binding.Value, new MoveEvent(entity.Key, currentKeyEvent, gameTime.TotalGameTime.Milliseconds));
                 }
             }
         }

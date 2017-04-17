@@ -107,6 +107,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             TankMovementSystem.Start();
             AbilitySystem.Start();
             WallCollisionSystem.Start();
+            SoundSystem.Start();
             EnemyCollisionSystem.Start(TempGameEnder);
 
             _gameDependencies.GameContent = this.Content;
@@ -398,7 +399,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             video = Content.Load<Video>("ZEngine-intro");
 
             player = new VideoPlayer();
-            musicTest = Content.Load<Song>("assassins");
+           // musicTest = Content.Load<Song>("assassins");
             LoadContentSystem.LoadContent(this.Content);
             penumbraComponent = LightSystems.Initialize(_gameDependencies);
             //MediaPlayer.Play(musicTest);
@@ -408,6 +409,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 player.Play(video);
             }
+
 
         }
 
@@ -421,10 +423,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (player.State == MediaState.Stopped)
             {
                 EnemyCollisionSystem.GameTime = gameTime;
-                InputHandlerSystem.HandleInput(_oldKeyboardState);
+                InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
 
-                SoundSystem.Update();
+
                 AISystem.Process(gameTime);
                 MoveSystem.Move(gameTime);
                 AnimationSystem.RunAnimations(gameTime);

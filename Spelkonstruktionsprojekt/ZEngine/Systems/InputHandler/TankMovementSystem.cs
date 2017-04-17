@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -114,11 +115,13 @@ namespace ZEngine.Systems
 
     public class MoveEvent
     {
+        public int CurrentTimeMilliseconds = 0;
         public int EntityId { get; set; }
         public ActionBindings.KeyEvent KeyEvent { get; set; }
 
-        public MoveEvent(int entityId, ActionBindings.KeyEvent keyEvent)
+        public MoveEvent(int entityId, ActionBindings.KeyEvent keyEvent, int currentTimeMilliseconds)
         {
+            CurrentTimeMilliseconds = currentTimeMilliseconds;
             EntityId = entityId;
             KeyEvent = keyEvent;
         }

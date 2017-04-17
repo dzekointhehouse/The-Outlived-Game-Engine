@@ -13,20 +13,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public void RunAnimations(GameTime gameTime)
         {
-            var delta = gameTime.ElapsedGameTime.TotalSeconds;
             var entities = ComponentManager.Instance.GetEntitiesWithComponent<AnimationComponent>();
             foreach (var entity in entities)
             {
-                if (entity.Value.ElapsedTime > entity.Value.LenghtInSeconds)
+                foreach (var animation in entity.Value.Animations)
                 {
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(AnimationComponent), entity.Key);
+                    animation.Invoke(gameTime.TotalGameTime.Milliseconds);
                 }
-                else
-                {
-                    entity.Value.Animation.Invoke(entity.Value.ElapsedTime);
-                    entity.Value.ElapsedTime += delta;
-                }
-
             }
         }
     }
