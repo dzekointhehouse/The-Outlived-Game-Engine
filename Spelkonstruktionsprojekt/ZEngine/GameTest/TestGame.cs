@@ -289,6 +289,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
                 .SetAction(Keys.Q, "entityTurnAround")
+                .SetAction(Keys.Space, "entityFireWeapon")
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
@@ -431,7 +432,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (player.State == MediaState.Stopped)
             {
                 EnemyCollisionSystem.GameTime = gameTime;
-                InputHandlerSystem.HandleInput(_oldKeyboardState);
+                InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
 
 
