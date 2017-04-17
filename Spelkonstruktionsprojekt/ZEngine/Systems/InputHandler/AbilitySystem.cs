@@ -23,10 +23,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 
         public void Start()
         {
-            EventBus.Subscribe<MoveEvent>(TurnAroundEventName, HandleTurnAroundEvent);
+            EventBus.Subscribe<InputEvent>(TurnAroundEventName, HandleTurnAroundEvent);
         }
 
-        private void HandleTurnAroundEvent(MoveEvent moveEvent)
+        private void HandleTurnAroundEvent(InputEvent moveEvent)
         {
             if (moveEvent.KeyEvent != ActionBindings.KeyEvent.KeyPressed) return;
 
@@ -43,7 +43,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 var animation = new GeneralAnimation()
                 {
                     AnimationType = TurnAroundEventName,
-                    StartOfAnimation = moveEvent.CurrentTimeMilliseconds,
+                    StartOfAnimation = moveEvent.EventTime,
                     Unique = true,
                     Length = 220
                 };

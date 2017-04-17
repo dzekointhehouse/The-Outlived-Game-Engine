@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
@@ -16,23 +17,15 @@ namespace ZEngine.Systems
 {
     class TankMovementSystem : ISystem
     {
-        private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
-        private ComponentManager ComponentManager = ComponentManager.Instance;
-        private Action<MoveEvent> _entityAccelerate;
-        private Action<MoveEvent> _entityDeccelerate;
-
-        public TankMovementSystem()
-        {
-            _entityAccelerate = new Action<MoveEvent>(WalkForwards);
-            _entityDeccelerate = new Action<MoveEvent>(WalkBackwards);
-        }
+        private readonly EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
+        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
         public ISystem Start()
         {
-            EventBus.Subscribe<MoveEvent>("entityWalkForwards", _entityAccelerate);
-            EventBus.Subscribe<MoveEvent>("entityWalkBackwards", _entityDeccelerate);
-            EventBus.Subscribe<MoveEvent>("entityTurnLeft", TurnLeft);
-            EventBus.Subscribe<MoveEvent>("entityTurnRight", TurnRight);
+            EventBus.Subscribe<InputEvent>("entityWalkForwards", WalkForwards);
+            EventBus.Subscribe<InputEvent>("entityWalkBackwards", WalkBackwards);
+            EventBus.Subscribe<InputEvent>("entityTurnLeft", TurnLeft);
+            EventBus.Subscribe<InputEvent>("entityTurnRight", TurnRight);
             return this;
         }
 
@@ -41,7 +34,7 @@ namespace ZEngine.Systems
             return this;
         }
         
-        public void WalkForwards(MoveEvent moveEvent)
+        public void WalkForwards(InputEvent moveEvent)
         {
             UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
             {
@@ -55,7 +48,7 @@ namespace ZEngine.Systems
                 }
             });
         }
-        public void WalkBackwards(MoveEvent moveEvent)
+        public void WalkBackwards(InputEvent moveEvent)
         {
             UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
             {
@@ -70,7 +63,7 @@ namespace ZEngine.Systems
             });
         }
 
-        public void TurnRight(MoveEvent moveEvent)
+        public void TurnRight(InputEvent moveEvent)
         {
             UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
             {
@@ -85,7 +78,7 @@ namespace ZEngine.Systems
             });
         }
 
-        public void TurnLeft(MoveEvent moveEvent)
+        public void TurnLeft(InputEvent moveEvent)
         {
             UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
             {

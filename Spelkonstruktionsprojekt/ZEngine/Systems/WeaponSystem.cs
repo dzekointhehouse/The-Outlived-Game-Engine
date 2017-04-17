@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 
@@ -17,7 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public ISystem Start()
         {
-            EventBus.Subscribe<ShootEvent>("entityFireWeapon", HandleFireWeapon);
+            EventBus.Subscribe<InputEvent>("entityFireWeapon", HandleFireWeapon);
             return this;
         }
 
@@ -26,29 +27,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             return this;
         }
 
-        public void HandleFireWeapon(ShootEvent shootEvent)
+        public void HandleFireWeapon(InputEvent shootEvent)
         {
-            if (shootEvent.KeyEvent == ActionBindings.KeyEvent.KeyDown)
+            if (shootEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
                 Debug.WriteLine("Say hello to my little friend");
             }
         }
 
-    }
-
-
-
-
-
-    public class ShootEvent
-    {
-        public int EntityId { get; set; }
-        public ActionBindings.KeyEvent KeyEvent { get; set; }
-
-        public ShootEvent(int entityId, ActionBindings.KeyEvent keyEvent)
-        {
-            EntityId = entityId;
-            KeyEvent = keyEvent;
-        }
     }
 }

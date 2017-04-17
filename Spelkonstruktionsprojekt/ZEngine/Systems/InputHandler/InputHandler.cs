@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Emit;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
@@ -18,7 +19,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
     {
         private readonly EventBus EventBus = EventBus.Instance;
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
-        
+
         public void HandleInput(KeyboardState oldKeyboardState, GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
@@ -30,8 +31,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 foreach (var binding in keyBindings)
                 {
                     Keys key = binding.Key;
+                    string eventName = binding.Value;
                     var currentKeyEvent = GetKeyEvent(key, keyboardState, oldKeyboardState);
-                    EventBus.Publish(binding.Value, new MoveEvent(entity.Key, currentKeyEvent, gameTime.TotalGameTime.TotalMilliseconds));
+                    EventBus.Publish(
+                        binding.Value,
+                        new InputEvent()
+                        {
+                            EntityId = entity.Key,
+                            EventTime = gameTime.TotalGameTime.TotalMilliseconds,
+                            KeyEvent = currentKeyEvent,
+                            Key = key,
+                            EventName = eventName
+                        });
                 }
             }
         }
@@ -68,5 +79,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             return newState.IsKeyUp(key) && oldState.IsKeyDown(key);
         }
 
+    }
+
+    public class InputEvent
+    {
+        public KeyEvent KeyEvent;
+        public Keys Key;
+        public string EventName;
+        public int EntityId;
+        public double EventTime;
     }
 }
