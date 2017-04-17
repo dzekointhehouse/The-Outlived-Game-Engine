@@ -50,6 +50,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private SoundSystem SoundSystem;
         private Video video;
         private VideoPlayer player;
+        private WeaponSystem WeaponSystem;
 
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
@@ -100,6 +101,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             AbilitySystem = SystemManager.Instance.GetSystem<AbilitySystem>();
             AnimationSystem = SystemManager.Instance.GetSystem<AnimationSystem>();
             SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
+            WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
             
             TempGameEnder = new TempGameEnder();
 
@@ -108,6 +110,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             AbilitySystem.Start();
             WallCollisionSystem.Start();
             SoundSystem.Start();
+            WeaponSystem.Start();
             EnemyCollisionSystem.Start(TempGameEnder);
 
             _gameDependencies.GameContent = this.Content;

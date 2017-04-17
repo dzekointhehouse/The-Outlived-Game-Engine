@@ -15,14 +15,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private Action<ShootEvent> _entityShoot;
-
-        public WeaponSystem()
-        {
-            _entityShoot = new Action<ShootEvent>(HandleFireWeapon);
-        }
-
-
         public ISystem Start()
         {
             EventBus.Subscribe<ShootEvent>("entityFireWeapon", HandleFireWeapon);
