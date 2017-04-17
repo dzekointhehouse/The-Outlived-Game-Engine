@@ -94,6 +94,20 @@ namespace ZEngine.Managers
             return entityComponents[entityId];
         }
 
+        public ComponentType GetEntityComponentOrDefault<ComponentType>(int entityId) where ComponentType : IComponent
+        {
+            var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
+            if (!entityComponents.ContainsKey(entityId)) return default(ComponentType);
+            return entityComponents[entityId];
+        }
+
+        public IComponent GetEntityComponentOrDefault(Type componentType, int entityId)
+        {
+            var entityComponents = this.GetEntitiesWithComponent(componentType);
+            if (!entityComponents.ContainsKey(entityId)) return null;
+            return entityComponents[entityId];
+        }
+
         // Creates an returns an instance of an empty component
         // that is specified in the type parameter. This metod also checks
         // if the dictionary contains that metod, otherwise we cannot create it.
