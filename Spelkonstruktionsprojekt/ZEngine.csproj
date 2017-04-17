@@ -76,6 +76,7 @@
     <Compile Include="ZEngine\Systems\AISystem.cs" />
     <Compile Include="ZEngine\Systems\AnimationSystem.cs" />
     <Compile Include="ZEngine\Systems\CameraFollowSystem.cs" />
+    <Compile Include="ZEngine\Systems\Collisions\BulletCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionResolveSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\EnemyCollisionSystem.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="ZEngine\Systems\TitlesafeRenderSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
     <Compile Include="ZEngine\Systems\VideoPlayerSystem.cs" />
+    <Compile Include="ZEngine\Systems\WeaponSystem.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />

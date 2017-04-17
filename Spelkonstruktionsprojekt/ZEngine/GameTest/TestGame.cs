@@ -244,6 +244,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     ShadowType = ShadowType.Solid // Will not lit hulls themselves
                 }
             };
+
+            var sound = new SoundComponent()
+            {
+                SongName = "zombiewalking",
+                Volume = 0.5f
+
+            };
+            ComponentManager.Instance.AddComponentToEntity(sound, entityId);
+
             var moveComponent = new MoveComponent()
             {
                 Velocity = Vector2D.Create(0, 0),
@@ -280,6 +289,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
                 .SetAction(Keys.Q, "entityTurnAround")
+                .SetAction(Keys.Space, "entityFireWeapon")
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
@@ -329,7 +339,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var sound = new SoundComponent()
             {
-                SongName = "assassins"
+                SongName = "walking"
             };
 
             ComponentManager.Instance.AddComponentToEntity(sound, entityId);

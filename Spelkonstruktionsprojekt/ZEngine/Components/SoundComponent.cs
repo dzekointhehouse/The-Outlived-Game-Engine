@@ -16,6 +16,9 @@ namespace ZEngine.Components
     {
         public string SongName { get; set; }
         public SoundEffectInstance SoundInstace { get; set; }
+        public float Volume { get; set; } = 1f;
+
+
     }
 
     public class ZEngineSoundBank
@@ -23,13 +26,14 @@ namespace ZEngine.Components
         public enum Sounds
         {
             WalkingForward
+
         }
 
         public static Dictionary<Sounds, SoundEffectInstance> SoundInstances = new Dictionary<Sounds, SoundEffectInstance>();
 
         public static void Load(ContentManager contentManager)
         {
-            SoundInstances[Sounds.WalkingForward] = contentManager.Load<SoundEffect>("walking").CreateInstance();
+           // SoundInstances[Sounds.WalkingForward] = contentManager.Load<SoundEffect>("walking").CreateInstance();
 
             var entities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SoundComponent));
             foreach (var entity in entities)
