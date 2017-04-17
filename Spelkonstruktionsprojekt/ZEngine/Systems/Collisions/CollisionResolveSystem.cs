@@ -23,6 +23,7 @@ namespace ZEngine.Systems
             foreach (var entity in collidableEntities)
             {
                 var collisions = new List<int>();
+                //Copy collection of collisions for iteration (as they will altered within the foreach loop below)
                 entity.Value.collisions.ForEach(c => collisions.Add(c));
 
                 //Check every occured collision
@@ -38,10 +39,8 @@ namespace ZEngine.Systems
                         var collisionRequirements = collisionEvent.Key;
                         var collisionEventType = collisionEvent.Value;
 
-//                        Debug.WriteLine("Testing match for " + FromCollisionEventType(collisionEventType));
                         if (MatchesCollisionEvent(collisionRequirements, movingEntityId, collisionTarget))
                         {
-//                            Debug.WriteLine("Matched with " + FromCollisionEventType(collisionEventType));
                             //When there is a match for a collision-event, an event is published
                             // for any system to pickup and resolve
                             var collisionEventTypeName = FromCollisionEventType(collisionEventType);
@@ -55,6 +54,7 @@ namespace ZEngine.Systems
                             EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
                         }
                     }
+                    //Remove collision as it is now resolved.
                     entity.Value.collisions.Remove(collisionTarget);
                 }
             }
@@ -71,6 +71,21 @@ namespace ZEngine.Systems
         }
     }
 
+    public class CollisionRequirement
+    {
+        public List<Type> MovingEntityRequirements;
+        public List<Type> TargetEntityRequirements;
+    }
+
+    //Used for passing event data to system responsible for resolving collision
+    public class SpecificCollisionEvent
+    {
+        public int Entity = -1;
+        public int Target = -1;
+        public CollisionEvent Event = 0;
+        public double EventTime = 0;
+    }
+
     public static class CollisionEvents
     {
         public enum CollisionEvent
@@ -81,6 +96,7 @@ namespace ZEngine.Systems
             Neutral
         }
 
+        //Keeps all event names that correspond to each CollisionEvent
         public static Dictionary<string, CollisionEvent> EventTypes = new Dictionary<string, CollisionEvent>()
             {
                 { "WallCollision", CollisionEvent.Wall },
@@ -98,23 +114,6 @@ namespace ZEngine.Systems
         {
             return EventTypes.First(e => e.Value == collisionEvent).Key;
         }
-    }
-
-    //Used for passing event data to system responsible for resolving collision
-    public class SpecificCollisionEvent
-    {
-        public int Entity = -1;
-        public int Target = -1;
-        public CollisionEvent Event = 0;
-        public double EventTime = 0;
-    }
-
-
-    //Not currently used, but should possible be used by the CollisionComponent
-    public class UnkownCollisionEvent
-    {
-        public int Entity;
-        public int Target;
     }
 
     //Used for mapping componenet requirements to CollisionEvents
@@ -168,11 +167,5 @@ namespace ZEngine.Systems
                     CollisionEvent.Bullet
                 },
             };
-    }
-
-    public class CollisionRequirement
-    {
-        public List<Type> MovingEntityRequirements;
-        public List<Type> TargetEntityRequirements;
     }
 }

@@ -25,7 +25,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
-            Debug.WriteLine("Handle bullet collision");
             var bulletComponent = ComponentManager.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Entity);
             if (collisionEvent.Target == bulletComponent.ShooterEntityId) return;
             var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
@@ -35,15 +34,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
             int bulletId = collisionEvent.Entity;
             var animationComponent = ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(bulletId);
             StopAnimation(collisionEvent.EventTime, animationComponent);
-
-            //entityRenderComponent.PositionComponent.Position = entityMoveComponent.PreviousPosition;
-            //entityMoveComponent.Speed = 0;
-
-            //var collisonComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Entity);
-            //collisonComponent.collisions.Remove(collisionEvent.Target);
         }
 
-        private static void StopAnimation(double currentTime, AnimationComponent animationComponent)
+        private void 
+
+        private void StopAnimation(double currentTime, AnimationComponent animationComponent)
         {
             animationComponent.Animations.ForEach(
                 animation => { animation.Animation.Invoke(currentTime + animation.Length); });

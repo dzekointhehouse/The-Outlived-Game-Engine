@@ -25,28 +25,34 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
-//            Debug.WriteLine("Handle wall collision");
-            Debug.WriteLine("WALL E:" + collisionEvent.Entity + ", T:" + collisionEvent.Target + ", -:" + collisionEvent.Event);
+            if (IsBulletRelatedShouldBeIgnored(collisionEvent)) return;
+
+            var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
+            var entityRenderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(collisionEvent.Entity);
+            HaltMovement(entityMoveComponent, entityRenderComponent);
+        }
+
+        public void HaltMovement(MoveComponent moveComponent, RenderComponent renderComponent)
+        {
+            renderComponent.PositionComponent.Position = moveComponent.PreviousPosition;
+            moveComponent.Speed = 0;
+        }
+
+        public bool IsBulletRelatedShouldBeIgnored(SpecificCollisionEvent collisionEvent)
+        {
             var bulletComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Target);
             if (bulletComponent != null)
             {
-                if (bulletComponent.ShooterEntityId == collisionEvent.Entity) return;
+                return bulletComponent.ShooterEntityId == collisionEvent.Entity;
             }
             var bulletComponent2 =
                 ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Entity);
             if (bulletComponent2 != null)
             {
-                if (bulletComponent2.ShooterEntityId == collisionEvent.Target) return;
+                return bulletComponent2.ShooterEntityId == collisionEvent.Target;
             }
-            var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
-            var entityRenderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(collisionEvent.Entity);
-
-            entityRenderComponent.PositionComponent.Position = entityMoveComponent.PreviousPosition;
-            entityMoveComponent.Speed = 0;
-
-            //var collisonComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Entity);
-            //collisonComponent.collisions.Remove(collisionEvent.Target);
+            return false;
         }
     }
 }

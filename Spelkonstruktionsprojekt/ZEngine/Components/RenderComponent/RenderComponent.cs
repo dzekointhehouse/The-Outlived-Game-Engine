@@ -60,6 +60,10 @@ namespace ZEngine.Components
 
         public RenderComponent Build()
         {
+            if (_renderComponent.PositionComponent == null)
+            {
+                _renderComponent.PositionComponent = new PositionComponent();
+            }
             return _renderComponent;
         }
 
