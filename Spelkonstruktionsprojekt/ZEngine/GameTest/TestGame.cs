@@ -47,7 +47,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private AISystem AISystem;
         private AbilitySystem AbilitySystem;
 
-        private Vector2 viewportDimensions = new Vector2(1500, 1000);
+        private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
         private TempGameEnder TempGameEnder;
 
@@ -226,7 +226,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Build();
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "zombie"
+                SpriteName = "zombieSquare"
             };
             var light = new LightComponent()
             {
@@ -243,7 +243,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 Acceleration = Vector2D.Create(0, 0),
                 MaxAcceleration = Vector2D.Create(80, 80),
                 MaxVelocitySpeed = 205,
-                AccelerationSpeed = 20,
+                AccelerationSpeed = 5,
                 RotationSpeed = 4,
                 Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
             };
@@ -255,7 +255,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(aiComponent, entityId);
             var collisionComponent = new CollisionComponent()
             {
-                //spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
+                //spriteBoundingRectangle = new Rectangle(50, 50, 200, 200)
             };
             ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
             //if (collision)

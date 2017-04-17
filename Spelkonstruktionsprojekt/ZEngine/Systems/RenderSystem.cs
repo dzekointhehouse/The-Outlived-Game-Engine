@@ -43,6 +43,20 @@ namespace ZEngine.Systems
 
             var cameraView = cameraEntities.View;
 
+            //    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
+            //// Using a matrix makes it easier for us to move the camera
+            //// independently of all the sprites, which means that we easily can
+            //// rotate, scale, etc. without much effort. plus its recommended.
+            //// What we do when are multiplying matrices is that we combine them
+            //// so the result will be a matrix that does the combination of it's 
+            //// products. Now when we use this transform in the begindraw, it will
+            //// affect all the stuff that is drawn after it.
+            //    // We create a translation matrix so we are able to move our points easily 
+            //    // from one place to another. 
+            //    // X,Y and Z, ofcourse Z will be 0.
+            //    // We won't be having any rotation.
+            //    // Our zoom effect will be doing its jobb here,
+            //    // as this matrix will easily help us achieve it.
             var transform = Matrix.Identity *
                             Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
                             Matrix.CreateRotationZ(0) *
