@@ -144,7 +144,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
             var offsetComponent = new RenderOffsetComponent()
             {
-                Offset = new Vector2(viewportDimensions.X / 2, viewportDimensions.Y / 2)
+                Offset = new Vector2((float) (viewportDimensions.X * 0.1), (float) (viewportDimensions.Y * 0.1))
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
             //ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
