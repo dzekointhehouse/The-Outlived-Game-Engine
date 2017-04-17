@@ -36,7 +36,8 @@ namespace ZEngine.Managers
             { typeof(EnemyCollisionSystem), new EnemyCollisionSystem() },
             { typeof(CameraSceneSystem), new CameraSceneSystem() },
             { typeof(AISystem), new AISystem() },
-            { typeof(AbilitySystem), new AbilitySystem() }
+            { typeof(AbilitySystem), new AbilitySystem() },
+            { typeof(AnimationSystem), new AnimationSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //
