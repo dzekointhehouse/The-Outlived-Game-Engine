@@ -46,6 +46,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private EnemyCollisionSystem EnemyCollisionSystem;
         private AISystem AISystem;
         private AbilitySystem AbilitySystem;
+        private AnimationSystem AnimationSystem;
         private Video video;
         private VideoPlayer player;
 
@@ -96,6 +97,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             AISystem = SystemManager.Instance.GetSystem<AISystem>();
             EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
             AbilitySystem = SystemManager.Instance.GetSystem<AbilitySystem>();
+            AnimationSystem = SystemManager.Instance.GetSystem<AnimationSystem>();
 
             TempGameEnder = new TempGameEnder();
 
@@ -413,6 +415,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 AISystem.Process(gameTime);
                 MoveSystem.Move(gameTime);
+                AnimationSystem.RunAnimations(gameTime);
 
                 CollisionSystem.DetectCollisions();
                 CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents);

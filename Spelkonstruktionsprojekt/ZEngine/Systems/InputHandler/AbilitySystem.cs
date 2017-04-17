@@ -31,10 +31,32 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             var entityId = moveEvent.EntityId;
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {
-                var component = ComponentManager.GetEntityComponent<MoveComponent>(entityId);
-                //component.Direction = (component.Direction + Math.PI) % MathHelper.TwoPi;
-                component.RotationMomentum = Math.PI * 0.1;
+                var lengthInSeconds = 1;
+                var animation = new AnimationComponent()
+                {
+                    LenghtInSeconds = lengthInSeconds,
+                    Animation = NewTurningAnimation(lengthInSeconds, entityId)
+                };
+                if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
+                {
+                    ComponentManager.AddComponentToEntity(animation, entityId);
+                }
             }
+        }
+
+        public Action<double> NewTurningAnimation(double lengthInSeconds, int entityId)
+        {
+            var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
+            if (moveComponent == null) return null;
+
+            double start = moveComponent.Direction;
+            double target = (start + Math.PI);
+            return delegate(double elapsedTime)
+            {
+                moveComponent.Direction = (start + (target - start) / lengthInSeconds * elapsedTime) % MathHelper.TwoPi;
+                //Debug.WriteLine("Start " + start + ", Target " + target + ", TotalFrame " + totalFrames +
+                //                ", CurrentFrame " + currentFrame);
+            };
         }
     }
 }
