@@ -7,7 +7,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class BulletSpriteComponent : IComponent
+    class BulletFlyweightComponent : IComponent
     {
     }
 }

@@ -19,48 +19,84 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     public class SoundSystem : ISystem
     {
         private EventBus EventBus = EventBus.Instance;
-        private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void Start()
+        public ISystem Start()
         {
             // Here we subscribe what will happen when the entity walks forwards
             // We'll use WalkingSounds to handle it.
             EventBus.Subscribe<MoveEvent>("entityWalkForwards", WalkingSounds);
             EventBus.Subscribe<MoveEvent>("entityWalkBackwards", WalkingSounds);
+
+            // We subscribe to the input inputEvent for when the entity fires a
+            // weapon, then we use the WeaponSounds method to "say" what should
+            // be done. 
             EventBus.Subscribe<InputEvent>("entityFireWeapon", WeaponSounds);
+            return this;
+        }
+        public ISystem Stop()
+        {
+            return this;
         }
 
-        private void WeaponSounds(InputEvent obj)
+        private void WeaponSounds(InputEvent inputEvent)
         {
-            var sound = ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(obj.EntityId);
-
-            if (ComponentManager.Instance.EntityHasComponent<BulletComponent>(obj.EntityId))
-                NewBulletSoundAnimation(sound);
-        }
-
-
-        public Action<double> NewBulletSoundAnimation(SoundComponent soundComponent)
-        {
-            SoundEffectInstance sound = soundComponent.SoundInstace;
-            return delegate(double elapsedTime)
+            // First things first, we only handle this event if the key is pressed
+            // that is associated with this event "entityFireWeapon"
+            if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
-                if (sound.State == SoundState.Playing) return;
+                // To play the bullet sound the entity needs to have
+                // the BulletFlyweightComponent
+                var bulletSpriteEntities =
+                    ComponentManager.Instance.GetEntitiesWithComponent<BulletFlyweightComponent>();
+                if (bulletSpriteEntities.Count <= 0) return;
 
-                sound.Play();
-            };
+                // Get the sound instance for this entity
+                var sound = 
+                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(bulletSpriteEntities.First().Key);
+
+                var soundInstance = sound.SoundEffect.CreateInstance();
+
+                if (soundInstance.State != SoundState.Playing)
+                {
+                    soundInstance.IsLooped = false;
+                    soundInstance.Play();
+                }
+            }
         }
 
         public void WalkingSounds(MoveEvent moveEvent)
         {
+            if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
+            {
+                var moveComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(moveEvent.EntityId);
+
+                var soundComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(moveEvent.EntityId);
+
+                var animationComponent = new AnimationComponent();
+                ComponentManager.Instance.AddComponentToEntity(animationComponent, moveEvent.EntityId);
+
+                var animation = new GeneralAnimation()
+                {
+                    StartOfAnimation = moveEvent.CurrentTimeMilliseconds,
+                    Length = 2000
+                };
+                var animationAction = NewWalkingSoundAnimation(soundComponent, moveComponent);
+                animation.Animation = animationAction;
+
+                animationComponent.Animations.Add(animation);
+            }
         }
 
-        public Action<double> NewWalkingSoundAnimation(SoundComponent soundComponent, bool isLooped)
+        public Action<double> NewWalkingSoundAnimation(SoundComponent soundComponent, MoveComponent moveComponent)
         {
-            SoundEffectInstance sound = soundComponent.SoundInstace;
-            return delegate(double elapsedTime)
+            var sound = soundComponent.SoundEffect.CreateInstance();
+
+            return delegate (double elapsedTime)
             {
                 if (sound.State == SoundState.Playing) return;
-                if (isLooped) sound.IsLooped = true;
+               // if (isLooped) sound.IsLooped = true;
 
                 sound.Play();
             };
@@ -68,48 +104,3 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     }
 }
 
-//private void HandleTurnAroundEvent(InputEvent moveEvent)
-//{
-//if (moveEvent.KeyEvent != ActionBindings.KeyEvent.KeyPressed) return;
-
-//var entityId = moveEvent.EntityId;
-//if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
-//{
-//var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
-//    if (animationComponent == null)
-//{
-//    animationComponent = new AnimationComponent();
-//    ComponentManager.AddComponentToEntity(animationComponent, entityId);
-//}
-
-//var animation = new GeneralAnimation()
-//{
-//    AnimationType = TurnAroundEventName,
-//    StartOfAnimation = moveEvent.EventTime,
-//    Unique = true,
-//    Length = 220
-//};
-//var animationAction = NewTurningAnimation(entityId, animation);
-//animation.Animation = animationAction;
-
-//animationComponent.Animations.Add(animation);
-//}
-//}
-
-//public Action<double> NewTurningAnimation(int entityId, GeneralAnimation generalAnimation)
-//{
-//var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
-//if (moveComponent == null) return null;
-
-//double start = moveComponent.Direction;
-//double target = (start + Math.PI);
-//return delegate (double currentTime)
-//{
-//var elapsedTime = currentTime - generalAnimation.StartOfAnimation;
-//if (elapsedTime > generalAnimation.Length) generalAnimation.IsDone = true;
-
-////Algorithm for turning stepwise on each iteration
-////Modulus is for when the direction makes a whole turn
-//moveComponent.Direction = (start + (target - start) / generalAnimation.Length * elapsedTime) % MathHelper.TwoPi;
-//};
-//}

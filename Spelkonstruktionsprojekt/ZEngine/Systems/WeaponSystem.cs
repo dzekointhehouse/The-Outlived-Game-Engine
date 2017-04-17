@@ -41,7 +41,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var moveComponent =
                                     ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(inputEvent.EntityId);
 
-                var bulletSpriteEntities = ComponentManager.Instance.GetEntitiesWithComponent<BulletSpriteComponent>();
+                var bulletSpriteEntities = ComponentManager.Instance.GetEntitiesWithComponent<BulletFlyweightComponent>();
                 if (bulletSpriteEntities.Count <= 0) return;
                 var bulletSpriteComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(bulletSpriteEntities.First().Key);

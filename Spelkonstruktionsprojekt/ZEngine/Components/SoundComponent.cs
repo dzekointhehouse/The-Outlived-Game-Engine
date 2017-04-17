@@ -14,8 +14,8 @@ namespace ZEngine.Components
     // Component to use when the entity can make sounds.
     public class SoundComponent : IComponent
     {
-        public string SongName { get; set; }
-        public SoundEffectInstance SoundInstace { get; set; }
+        public string SoundEffectName { get; set; }
+        public SoundEffect SoundEffect { get; set; }
         public float Volume { get; set; } = 1f;
 
 

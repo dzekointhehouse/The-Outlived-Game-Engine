@@ -35,7 +35,7 @@ namespace ZEngine.Systems
             foreach (var entity in soundEntities)
             {
                 SoundComponent soundComponent = (SoundComponent)entity.Value;
-                soundComponent.SoundInstace = contentManager.Load<SoundEffect>(soundComponent.SongName).CreateInstance();
+                soundComponent.SoundEffect = contentManager.Load<SoundEffect>(soundComponent.SoundEffectName);
             }
         }
     }

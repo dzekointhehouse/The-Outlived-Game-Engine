@@ -170,3 +170,9 @@
 /processorParam:Quality=Best
 /build:zombiewalking.mp3
 
+#begin bullet9mm.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:bullet9mm.wav
+
