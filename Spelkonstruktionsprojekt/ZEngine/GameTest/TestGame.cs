@@ -279,6 +279,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
                 .SetAction(Keys.Q, "entityTurnAround")
+                .SetAction(Keys.Space, "entityFireWeapon")
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
