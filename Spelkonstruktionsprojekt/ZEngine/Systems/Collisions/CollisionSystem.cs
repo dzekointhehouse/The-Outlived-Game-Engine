@@ -73,16 +73,16 @@ namespace ZEngine.Systems
 
         public bool EntitiesIntersects(int movingEntity, int stillEntity)
         {
-            var movingRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(movingEntity);
-            var movingCollisionBox = ComponentManager.GetEntityComponent<CollisionComponent>(stillEntity).spriteBoundingRectangle;
-            var stillRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(stillEntity);
-            var stillCollisionBox = ComponentManager.GetEntityComponent<CollisionComponent>(stillEntity).spriteBoundingRectangle;
+            var movingRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(movingEntity);
+            var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity).spriteBoundingRectangle;
+            var stillRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(stillEntity);
+            var stillCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity).spriteBoundingRectangle;
 
             var movingEntityOffset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(movingEntity)
-                ? ComponentManager.GetEntityComponent<RenderOffsetComponent>(movingEntity).Offset
+                ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(movingEntity).Offset
                 : default(Vector2);
             var stillEntityOffset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(stillEntity)
-                ? ComponentManager.GetEntityComponent<RenderOffsetComponent>(stillEntity).Offset
+                ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(stillEntity).Offset
                 : default(Vector2);
 
             if (movingRenderComponent.Radius > 0)
@@ -106,17 +106,17 @@ namespace ZEngine.Systems
         }
         public bool EntityContains(int cageId, int movingEntity)
         {
-            var cageRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(cageId);
-            var cageCollisionBox = ComponentManager.GetEntityComponent<CollisionComponent>(cageId).spriteBoundingRectangle;
+            var cageRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(cageId);
+            var cageCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(cageId).spriteBoundingRectangle;
 
-            var movingEntityComponent = ComponentManager.GetEntityComponent<RenderComponent>(movingEntity);
-            var movingCollisionBox = ComponentManager.GetEntityComponent<CollisionComponent>(movingEntity).spriteBoundingRectangle;
+            var movingEntityComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(movingEntity);
+            var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity).spriteBoundingRectangle;
 
             var movingEntityOffset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(movingEntity)
-                ? ComponentManager.GetEntityComponent<RenderOffsetComponent>(movingEntity).Offset
+                ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(movingEntity).Offset
                 : default(Vector2);
             var cageEntityOffset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(cageId)
-                ? ComponentManager.GetEntityComponent<RenderOffsetComponent>(cageId).Offset
+                ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(cageId).Offset
                 : default(Vector2);
 
             if (movingEntityComponent.Radius > 0)
@@ -173,7 +173,7 @@ namespace ZEngine.Systems
         {
             if (!ComponentManager.EntityHasComponent<CageComponent>(entityId)) return false;
 
-            var cageComponent = ComponentManager.GetEntityComponent<CageComponent>(entityId);
+            var cageComponent = ComponentManager.GetEntityComponentOrDefault<CageComponent>(entityId);
             return cageComponent.CageId == potentialCageId;
         }
 

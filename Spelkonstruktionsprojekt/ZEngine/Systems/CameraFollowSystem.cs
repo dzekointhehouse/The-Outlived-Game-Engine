@@ -36,7 +36,7 @@ namespace ZEngine.Systems
 
             foreach (var fixedEntity in fixedRenderables)
             {
-                var offsetComponent = ComponentManager.GetEntityComponent<RenderOffsetComponent>(fixedEntity.Key);
+                var offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(fixedEntity.Key);
                 fixedEntity.Value.PositionComponent.Position.X = camera.Value.View.X + offsetComponent.Offset.X;
                 fixedEntity.Value.PositionComponent.Position.Y = camera.Value.View.Y + offsetComponent.Offset.Y;
             }
@@ -52,11 +52,11 @@ namespace ZEngine.Systems
 
             foreach (var entity in followEntities)
             {
-                if (ComponentManager.EntityHasComponent<RenderComponent>(entity.Key))
-                {
-                    var comp = ComponentManager.GetEntityComponent<RenderComponent>(entity.Key);
+                //if (ComponentManager.EntityHasComponent<RenderComponent>(entity.Key))
+                //{
+                    var comp = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
                     averagePosition += comp.PositionComponent.Position;
-                }
+                //}
             }
 
 
@@ -69,7 +69,7 @@ namespace ZEngine.Systems
             {
                 var camera = cameraEntity.Value;
                 Point screenCenter = camera.View.Center;
-                var cameraRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(cameraEntity.Key);
+                var cameraRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(cameraEntity.Key);
 
                 //Setting the position of the red dot (for debugging camera follow of multiple entities)
                 cameraRenderComponent.PositionComponent.Position = averagePosition;

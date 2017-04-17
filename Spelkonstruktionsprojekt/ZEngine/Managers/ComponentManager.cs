@@ -22,23 +22,6 @@ namespace ZEngine.Managers
         //second dictionary to get all components in one entity
         // _____________________________________________________________________________________________________________________ //
 
-         //returns a dictionary with components instance in a entity
-        //public Dictionary<Type, IComponent> GetComponentsWithEntity(int entity) {
-        //    if (!_entity.ContainsKey(entity))
-        //    {
-        //        return new Dictionary<Type, IComponent>();
-        //    }
-        //    else
-        //    {
-        //        return _entity[entity];
-        //    }
-
-        //}
-
-        //public void AddEntity(int id)
-        //{
-        //    _entity.Add(id, new Dictionary<Type, IComponent>());
-        //}
         
         // Returns a dictionary with all the entities that have an instance 
         // of the component type that is given as a parameter.        
@@ -63,85 +46,56 @@ namespace ZEngine.Managers
             {
                 return new Dictionary<int, T>();
             }
-            else
-            {
                 return _components[typeof(T)].ToDictionary(
                     entry => entry.Key,
                     entry => (T) entry.Value
                 );
-            }
         }
 
         // This method returns true if the entity has an association
         // with the specified component. The component type is given as type parameter
         // and that type has to implement the IComponent interface.
-        public bool EntityHasComponent<ComponentType>(int entityId) where ComponentType : IComponent
+        public bool EntityHasComponent<TComponentType>(int entityId) where TComponentType : IComponent
         {
-            var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
+            var entityComponents = GetEntitiesWithComponent<TComponentType>();
             return entityComponents.ContainsKey(entityId);
         }
-
+  
         public bool EntityHasComponent(Type componentType, int entityId)
         {
-            var entityComponents = this.GetEntitiesWithComponent(componentType);
+            var entityComponents = GetEntitiesWithComponent(componentType);
             return entityComponents.ContainsKey(entityId);
         }
 
-        public ComponentType GetEntityComponent<ComponentType>(int entityId) where ComponentType : IComponent
-        {
-            var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
-            if (!entityComponents.ContainsKey(entityId)) throw new Exception("No such Entity has component.");
-            return entityComponents[entityId];
-        }
+        // returns the component for the entity
+        //public TComponentType GetEntityComponent<TComponentType>(int entityId) where TComponentType : IComponent
+        //{
+        //    var entityComponents = GetEntitiesWithComponent<TComponentType>();
+        //    if (!entityComponents.ContainsKey(entityId)) throw new Exception("No such Entity has component.");
+        //    return entityComponents[entityId];
+        //}
 
-        public ComponentType GetEntityComponentOrDefault<ComponentType>(int entityId) where ComponentType : IComponent
+        public TComponentType GetEntityComponentOrDefault<TComponentType>(int entityId) where TComponentType : IComponent
         {
-            var entityComponents = this.GetEntitiesWithComponent<ComponentType>();
-            if (!entityComponents.ContainsKey(entityId)) return default(ComponentType);
-            return entityComponents[entityId];
+            var entityComponents = GetEntitiesWithComponent(typeof(TComponentType));
+            if (!entityComponents.ContainsKey(entityId)) return default(TComponentType);
+            return (TComponentType) entityComponents[entityId];
         }
 
         public IComponent GetEntityComponentOrDefault(Type componentType, int entityId)
         {
-            var entityComponents = this.GetEntitiesWithComponent(componentType);
+            var entityComponents = GetEntitiesWithComponent(componentType);
             if (!entityComponents.ContainsKey(entityId)) return null;
             return entityComponents[entityId];
         }
 
-        // Creates an returns an instance of an empty component
-        // that is specified in the type parameter. This metod also checks
-        // if the dictionary contains that metod, otherwise we cannot create it.
-        // The component type you want to create also needs to implement IComponent.
-        public T CreateComponent<T>() where T : IComponent, new()
-        {
-            if (ContainsComponent<T>())
-            {
-                return new T();
-            }
-            else
-            {
-                throw new Exception("No such component exist.");
-            }
-        }
+        //public void AddComponentToEntity<TComponentType>(int entityId) where TComponentType : IComponent, new()
+        //{
+        //    AddComponentKeyIfNotPresent(typeof(TComponentType));
 
-        // The only thing done here is that this method checks
-        // if the dictionary contains the componenttype specified
-        // in the type parameter.
-        private Boolean ContainsComponent<T>()
-        {
-            return _components.Count(entry => entry.Value.GetType() == typeof(T)) == 1;
-        }
-
-        public void AddComponentToEntity<T>(int entityId) where T : IComponent, new()
-        {
-            AddComponentKeyIfNotPresent(typeof(T));
-
-            var entityComponents = _components[typeof(T)];
-            entityComponents.Add(entityId, (IComponent) new T());
-
-            //var entityComponents2 = _entity[entityId];
-            //entityComponents2.Add(typeof(T), (IComponent)new T());  
-        }
+        //    var entityComponents = _components[typeof(TComponentType)];
+        //    entityComponents.Add(entityId, (IComponent) new TComponentType());
+        //}
 
         // This method is used to associate an instance of a component to a specified
         // entity. it takes the instance of the component and the key: entityId.
@@ -151,13 +105,6 @@ namespace ZEngine.Managers
 
             var entityComponents = _components[componentInstance.GetType()];
             entityComponents.Add(entityId, componentInstance);
-
-            //var entityComponents2 = _entity[entityId];
-            //if(entityComponents2 == null)
-            //{
-            //    entityComponents2 = new Dictionary<Type, IComponent>();
-            //}
-            //entityComponents2.Add(componentInstance.GetType(), componentInstance);
 
         }
 

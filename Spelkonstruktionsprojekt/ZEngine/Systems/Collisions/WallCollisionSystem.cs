@@ -25,13 +25,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
             Debug.WriteLine("Handle wall collision");
-            var entityMoveComponent = ComponentManager.Instance.GetEntityComponent<MoveComponent>(collisionEvent.Entity);
-            var entityRenderComponent = ComponentManager.Instance.GetEntityComponent<RenderComponent>(collisionEvent.Entity);
+            var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
+            var entityRenderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(collisionEvent.Entity);
 
             entityRenderComponent.PositionComponent.Position = entityMoveComponent.PreviousPosition;
             entityMoveComponent.Velocity = new Vector2(0, 0);
 
-            var collisonComponent = ComponentManager.GetEntityComponent<CollisionComponent>(collisionEvent.Entity);
+            var collisonComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Entity);
             collisonComponent.collisions.Remove(collisionEvent.Target);
         }
     }

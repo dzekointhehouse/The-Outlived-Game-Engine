@@ -84,19 +84,19 @@ namespace ZEngine.Systems
 
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
-                    var sprite = ComponentManager.GetEntityComponent<SpriteComponent>(entity.Key);
+                    var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
 
                     double angle = sprite.Angle;
                     if (ComponentManager.EntityHasComponent<MoveComponent>(entity.Key))
                     {
-                        var moveComponent = ComponentManager.GetEntityComponent<MoveComponent>(entity.Key);
+                        var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                         angle = moveComponent.Direction;
                     }
 
                     sprite.Scale = 1; // For testing, will be removed once feature is actually implemented
 
                     var offset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(entity.Key)
-                        ? ComponentManager.GetEntityComponent<RenderOffsetComponent>(entity.Key).Offset
+                        ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key).Offset
                         : default(Vector2);
 
                     //var offset = Vector2.Zero;

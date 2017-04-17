@@ -16,15 +16,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     public class FlashlightSystem : ISystem
     {
         public static string SystemName = "FlashlightSystem";
-        private GameDependencies _gameDependencies;
 
         // This method is used to initialize the penumbra instance, and add
         // all the entities that have an associated instance of light component.
         public PenumbraComponent Initialize(GameDependencies gameDependencies)
         {
-            this._gameDependencies = gameDependencies;
             var penumbra = new PenumbraComponent(gameDependencies.Game)
             {
+                // Ambient color will determine how dark everything else
+                // except for the light will be.
                 AmbientColor = new Color(new Vector3(0.005f))
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
@@ -46,13 +46,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(lightEntity.Key))
                 {
-                    var moveComponent = ComponentManager.Instance.GetEntityComponent<MoveComponent>(lightEntity.Key);
+                    var moveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(lightEntity.Key);
                     lightEntity.Value.Light.Rotation = (float)moveComponent.Direction;
                 }
 
                 if (ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
                 {
-                    var renderComponent = ComponentManager.Instance.GetEntityComponent<RenderComponent>(lightEntity.Key);
+                    var renderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(lightEntity.Key);
                     lightEntity.Value.Light.Position =
                         new Vector2(
                             (float)(renderComponent.PositionComponent.Position.X - cameraView.X),

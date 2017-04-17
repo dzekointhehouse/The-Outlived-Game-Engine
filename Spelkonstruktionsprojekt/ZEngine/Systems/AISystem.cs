@@ -21,9 +21,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             foreach (var entity in ComponentManager.GetEntitiesWithComponent<AIComponent>())
             {
                 var firstPlayer = ComponentManager.GetEntitiesWithComponent<MoveComponent>().First();
-                var firstPlayerRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(firstPlayer.Key);
-                var aiMoveComponent = ComponentManager.GetEntityComponent<MoveComponent>(entity.Key);
-                var aiRenderComponent = ComponentManager.GetEntityComponent<RenderComponent>(entity.Key);
+                var firstPlayerRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(firstPlayer.Key);
+                var aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                var aiRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
 
                 Vector2 playerPos = firstPlayerRenderComponent.PositionComponent.Position;
                 Vector2 aiPos = aiRenderComponent.PositionComponent.Position;

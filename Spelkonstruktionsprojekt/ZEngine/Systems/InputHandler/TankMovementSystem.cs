@@ -103,7 +103,7 @@ namespace ZEngine.Systems
         {
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {
-                var component = ComponentManager.GetEntityComponent<MoveComponent>(entityId);
+                var component = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
                 if (component.Velocity != null && component.Acceleration != null)
                 {
                     updateAction(component);

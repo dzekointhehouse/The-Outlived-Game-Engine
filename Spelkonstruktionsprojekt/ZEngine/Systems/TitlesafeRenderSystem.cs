@@ -60,14 +60,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // Adding the health component to text.
                 if (ComponentManager.Instance.EntityHasComponent<HealthComponent>(playerInstance.Key))
                 {
-                    var health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(playerInstance.Key);
+                    var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(playerInstance.Key);
                     text = text + ": " + health.CurrentHealth + "HP";
                 }
 
                 // adding ammo here the same way.
                 if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(playerInstance.Key))
                 {
-                    var ammo = ComponentManager.Instance.GetEntityComponent<AmmoComponent>(playerInstance.Key);
+                    var ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(playerInstance.Key);
                     text = text + " Ammo: " + ammo.Amount;
                 }
 

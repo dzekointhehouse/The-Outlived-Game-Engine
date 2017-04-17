@@ -31,7 +31,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             var entityId = moveEvent.EntityId;
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {
-                var component = ComponentManager.GetEntityComponent<MoveComponent>(entityId);
+                var component = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
                 //component.Direction = (component.Direction + Math.PI) % MathHelper.TwoPi;
                 component.RotationMomentum = Math.PI * 0.1;
             }

@@ -40,11 +40,11 @@ namespace ZEngine.Components
         {
             if (renderComponent == null && ComponentManager.Instance.EntityHasComponent<RenderComponent>(entityId))
             {
-                renderComponent = ComponentManager.Instance.GetEntityComponent<RenderComponent>(entityId);
+                renderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(entityId);
             }
             if (ComponentManager.Instance.EntityHasComponent<RenderOffsetComponent>(entityId))
             {
-                var offsetComponent = ComponentManager.Instance.GetEntityComponent<RenderOffsetComponent>(entityId);
+                var offsetComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderOffsetComponent>(entityId);
                 return new Vector2(
                     (float) (renderComponent.PositionComponent.Position.X + offsetComponent.Offset.X),
                     (float) (renderComponent.PositionComponent.Position.Y + offsetComponent.Offset.Y)
@@ -89,7 +89,7 @@ namespace ZEngine.Components
             return this;
         }
 
-        public RenderComponentBuilder IsVisivle(bool isVisible)
+        public RenderComponentBuilder IsVisible(bool isVisible)
         {
             _renderComponent.IsVisible = isVisible;
             return this;

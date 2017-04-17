@@ -86,6 +86,7 @@
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
     <Compile Include="ZEngine\Systems\MoveSystem.cs" />
+    <Compile Include="ZEngine\Systems\SoundSystem.cs" />
     <Compile Include="ZEngine\Systems\TitlesafeRenderSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
     <Compile Include="ZEngine\Systems\VideoPlayerSystem.cs" />

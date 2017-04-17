@@ -110,7 +110,7 @@ namespace ZEngine.Systems
         {
             if (ComponentManager.EntityHasComponent<CollisionComponent>(entityId))
             {
-                var collisionComponent = ComponentManager.GetEntityComponent<CollisionComponent>(entityId);
+                var collisionComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(entityId);
                 return collisionComponent.collisions.Count > 0;
             }
             return false;
