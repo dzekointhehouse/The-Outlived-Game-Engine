@@ -29,7 +29,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void WalkingSounds(MoveEvent moveEvent)
         {
-            Debug.WriteLine("In sound system");
             var soundComponent = ComponentManager.GetEntityComponentOrDefault<SoundComponent>(moveEvent.EntityId);
             if (soundComponent == default(SoundComponent)) return;
 
