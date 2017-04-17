@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
@@ -18,32 +19,42 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
+        private string TurnAroundEventName = "entityTurnAround";
+
         public void Start()
         {
-            EventBus.Subscribe<MoveEvent>("entityTurnAround", Handle);
+            EventBus.Subscribe<MoveEvent>(TurnAroundEventName, HandleTurnAroundEvent);
         }
 
-        private void Handle(MoveEvent moveEvent)
+        private void HandleTurnAroundEvent(MoveEvent moveEvent)
         {
             if (moveEvent.KeyEvent != ActionBindings.KeyEvent.KeyPressed) return;
 
-            Debug.WriteLine("ABILITY HANDLE");
             var entityId = moveEvent.EntityId;
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {
-                var lengthInSeconds = 1;
-                var animation = new AnimationComponent()
+                var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
+                if (animationComponent == null)
                 {
-                    Animation = NewTurningAnimation(moveEvent.CurrentTimeMilliseconds ,lengthInSeconds, entityId)
-                };
-                if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
-                {
-                    ComponentManager.AddComponentToEntity(animation, entityId);
+                    animationComponent = new AnimationComponent();
+                    ComponentManager.AddComponentToEntity(animationComponent, entityId);
                 }
+
+                var animation = new GeneralAnimation()
+                {
+                    AnimationType = TurnAroundEventName,
+                    StartOfAnimation = moveEvent.CurrentTimeMilliseconds,
+                    Unique = true,
+                    Length = 220
+                };
+                var animationAction = NewTurningAnimation(entityId, animation);
+                animation.Animation = animationAction;
+                
+                animationComponent.Animations.Add(animation);
             }
         }
 
-        public Action<double> NewTurningAnimation(int startOfAnimation, double length,  int entityId)
+        public Action<double> NewTurningAnimation(int entityId, GeneralAnimation generalAnimation)
         {
             var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
             if (moveComponent == null) return null;
@@ -52,11 +63,33 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             double target = (start + Math.PI);
             return delegate(double currentTime)
             {
-                var elapsedTime = currentTime - startOfAnimation;
-                moveComponent.Direction = (start + (target - start) / length * elapsedTime) % MathHelper.TwoPi;
-                //Debug.WriteLine("Start " + start + ", Target " + target + ", TotalFrame " + totalFrames +
-                //                ", CurrentFrame " + currentFrame);
+                var elapsedTime = currentTime - generalAnimation.StartOfAnimation;
+                if (elapsedTime > generalAnimation.Length) generalAnimation.IsDone = true;
+                
+                //Algorithm for turning stepwise on each iteration
+                //Modulus is for when the direction makes a whole turn
+                moveComponent.Direction = (start + (target - start) / generalAnimation.Length * elapsedTime) % MathHelper.TwoPi;
             };
         }
     }
+
+    public class GeneralAnimation
+    {
+        public bool IsDone = false;
+
+        //Animation takes one parameter <CurrentTimeInMilliseconds>
+        public Action<double> Animation { get; set; }
+
+        public bool Loop { get; set; }
+
+        //When animation is unique, no second animation of same AnimationId may run on entity
+        public bool Unique { get; set; }
+
+        public string AnimationType { get; set; }
+
+        public double Length { get; set; }
+
+        public double StartOfAnimation { get; set; }
+    }
+
 }

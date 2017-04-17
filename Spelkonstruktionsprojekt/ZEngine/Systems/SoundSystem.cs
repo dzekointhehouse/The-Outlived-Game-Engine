@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
 using ZEngine.EventBus;
@@ -24,10 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // We'll use WalkingSounds to handle it.
             EventBus.Subscribe<MoveEvent>("entityWalkForwards", WalkingSounds);
             EventBus.Subscribe<MoveEvent>("entityWalkBackwards", WalkingSounds);
-
-
         }
-
 
         public void WalkingSounds(MoveEvent moveEvent)
         {
@@ -37,24 +35,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             soundComponent.SoundInstace.Volume = soundComponent.Volume;
 
-            var entityId = moveEvent.EntityId;
             if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
-                //var isLooped = true;
-                //var lengthInSeconds = 1;
-                //var animation = new AnimationComponent()
-                //{
-                //    LenghtInSeconds = lengthInSeconds,
-                //    Animation = NewWalkingSoundAnimation(soundComponent, isLooped),
-                //    Loop = isLooped
-                //};
-                //if (!ComponentManager.EntityHasComponent<AnimationComponent>(entityId))
-                //{
-                //    ComponentManager.AddComponentToEntity(animation, entityId);
-                //    Debug.WriteLine("Added sound animation");
-
-                //}
-
                 soundComponent.SoundInstace.Play();
             } else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
             {

@@ -415,7 +415,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             LoadContentSystem.LoadContent(this.Content);
             penumbraComponent = LightSystems.Initialize(_gameDependencies);
             //MediaPlayer.Play(musicTest);
-            ZEngineSoundBank.Load(this.Content);
            
             if (player.State == MediaState.Stopped)
             {
@@ -437,7 +436,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 EnemyCollisionSystem.GameTime = gameTime;
                 InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
-
 
                 AISystem.Process(gameTime);
                 MoveSystem.Move(gameTime);

@@ -16,9 +16,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var entities = ComponentManager.Instance.GetEntitiesWithComponent<AnimationComponent>();
             foreach (var entity in entities)
             {
-                foreach (var animation in entity.Value.Animations)
+                var doneAnimations = new List<int>();
+                var usedUniqueAnimationTypes = new List<string>();
+
+                for (var i = 0; i < entity.Value.Animations.Count; i++)
                 {
-                    animation.Invoke(gameTime.TotalGameTime.Milliseconds);
+                    var animationWrapper = entity.Value.Animations[i];
+                    if(animationWrapper.Unique && usedUniqueAnimationTypes.Contains(animationWrapper.AnimationType)) continue;
+
+                    animationWrapper.Animation.Invoke(gameTime.TotalGameTime.TotalMilliseconds);
+
+                    if(animationWrapper.Unique) usedUniqueAnimationTypes.Add(animationWrapper.AnimationType);
+                    if(animationWrapper.IsDone) doneAnimations.Add(i);
+                }
+
+                foreach (int animationIndex in doneAnimations)
+                {
+                    entity.Value.Animations.RemoveAt(animationIndex);
                 }
             }
         }
