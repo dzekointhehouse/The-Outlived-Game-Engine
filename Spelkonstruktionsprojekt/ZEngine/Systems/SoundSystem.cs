@@ -39,7 +39,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             return this;
         }
 
-        // We want to subscribe this method to events where a entity fires 
+        // We want to subscribe this method to events where a entity fires
         // a weapon. We check if the bullet fire key has been pressed, then we
         // fire the sound.
         private void WeaponSounds(InputEvent inputEvent)
@@ -55,7 +55,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (bulletSpriteEntities.Count <= 0) return;
 
                 // Get the sound instance for this entity
-                var sound = 
+                var sound =
                     ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(bulletSpriteEntities.First().Key);
 
                 // We create a SoundEffectInstance which gives us more control
@@ -78,29 +78,32 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
-                // We need to have the sound component to play the sound
+                var moveComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(moveEvent.EntityId);
+
                 var soundComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(moveEvent.EntityId);
 
-                if (!ComponentManager.Instance.EntityHasComponent<AnimationComponent>(moveEvent.EntityId))
+
+                var animationComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(moveEvent.EntityId);
+                if (animationComponent == null)
                 {
-                    var animationComponent = new AnimationComponent();
-
+                    animationComponent = new AnimationComponent();
                     ComponentManager.Instance.AddComponentToEntity(animationComponent, moveEvent.EntityId);
-
-                    var animation = new GeneralAnimation()
-                    {
-                        StartOfAnimation = moveEvent.EventTime,
-                        Length = 2000
-                    };
-                    
-                    var sound = soundComponent.SoundEffect.CreateInstance();
-
-                    var animationAction = NewWalkingSoundAnimation(sound, moveEvent.EntityId);
-                    animation.Animation = animationAction;
-
-                    animationComponent.Animations.Add(animation);
                 }
+
+                var animation = new GeneralAnimation()
+                {
+                    StartOfAnimation = moveEvent.EventTime,
+                    Length = 2000
+                };
+
+                var sound = soundComponent.SoundEffect.CreateInstance();
+                sound.Play();
+                var animationAction = NewWalkingSoundAnimation(animation, sound, moveComponent);
+                animation.Animation = animationAction;
+                animationComponent.Animations.Add(animation);
             }
         }
 
@@ -109,17 +112,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // general animation. This action will then be performed in another system and can do it's
         // own stuff independently of this system later on. Good for when we maybe trigger something
         // that will go on for a while until a set tim
-        public Action<double> NewWalkingSoundAnimation(SoundEffectInstance sound, int entityId)
+        public Action<double> NewWalkingSoundAnimation(GeneralAnimation animation, SoundEffectInstance sound, MoveComponent moveComponent)
         {
             return delegate (double elapsedTime)
             {
-                var soundComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(entityId);
-                if (soundComponent.Speed <= 0 && sound.State == SoundState.Playing)
+                if (moveComponent.Speed > -0.01 && moveComponent.Speed < 0.01)
+                {
                     sound.Stop();
-                if (sound.State == SoundState.Playing) return;
-               // if (isLooped) sound.IsLooped = true;
-               System.Diagnostics.Debug.WriteLine("yes yes");
-                sound.Play();
+                    animation.IsDone = true;
+                }
             };
         }
     }

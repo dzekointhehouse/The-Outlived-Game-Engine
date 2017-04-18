@@ -53,6 +53,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private Video video;
         private VideoPlayer player;
         private WeaponSystem WeaponSystem;
+        private HealthSystem HealthSystem;
 
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
@@ -105,6 +106,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
             WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
             BulletCollisionSystem = SystemManager.Instance.GetSystem<BulletCollisionSystem>();
+            HealthSystem = SystemManager.Instance.GetSystem<HealthSystem>();
 
             TempGameEnder = new TempGameEnder();
 
@@ -135,7 +137,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //SetupBackground();
             SetupBackgroundTiles(5,5);
             SetupCamera();
-            SetupEnemy();
+//            SetupEnemy();
             CreateGlobalBulletSpriteEntity();
         }
 
@@ -309,30 +311,37 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var actionBindings1 = new ActionBindingsBuilder()
                 .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
                 .SetAction(Keys.S, EventConstants.WalkBackward)
-                .SetAction(Keys.A, EventConstants.TurnLeft)
-                .SetAction(Keys.D, EventConstants.TurnRight)
-                .SetAction(Keys.Q, EventConstants.TurnAround)
-                .SetAction(Keys.Space, EventConstants.FireWeapon)
+                .SetAction(Keys.A, "entityTurnLeft")
+                .SetAction(Keys.D, "entityTurnRight")
+                .SetAction(Keys.Q, "entityTurnAround")
+                .SetAction(Keys.E, "entityFireWeapon")
+                .SetAction(Keys.LeftShift, "entityRun")
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings2 = new ActionBindingsBuilder()
-                .SetAction(Keys.I, EventConstants.WalkForward)
-                .SetAction(Keys.K, EventConstants.WalkBackward)
-                .SetAction(Keys.J, EventConstants.TurnLeft)
-                .SetAction(Keys.L, EventConstants.TurnRight)
+                .SetAction(Keys.I, "entityWalkForwards")
+                .SetAction(Keys.K, "entityWalkBackwards")
+                .SetAction(Keys.J, "entityTurnLeft")
+                .SetAction(Keys.L, "entityTurnRight")
+                .SetAction(Keys.O, "entityFireWeapon")
+                .SetAction(Keys.U, "entityTurnAround")
+                .SetAction(Keys.H, "entityRun")
                 .Build();
 
             var player3 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings3 = new ActionBindingsBuilder()
-                .SetAction(Keys.Up, EventConstants.WalkForward)
-                .SetAction(Keys.Down, EventConstants.WalkBackward)
-                .SetAction(Keys.Left, EventConstants.TurnLeft)
-                .SetAction(Keys.Right, EventConstants.TurnRight)
+                .SetAction(Keys.Up, "entityWalkForwards")
+                .SetAction(Keys.Down, "entityWalkBackwards")
+                .SetAction(Keys.Left, "entityTurnLeft")
+                .SetAction(Keys.Right, "entityTurnRight")
+                .SetAction(Keys.PageDown, "entityFireWeapon")
+                .SetAction(Keys.PageUp, "entityTurnAround")
+                .SetAction(Keys.RightControl, "entityRun")
                 .Build();
             
             CreatePlayer(player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
-            CreatePlayer(player2, actionBindings2, cameraFollow: true, collision: true, disabled: true);
+            CreatePlayer(player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true, collision: true, disabled: false);
             CreatePlayer(player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true, collision: true, isCaged: true);
         }
 
@@ -357,7 +366,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 Light = new Spotlight()
                 {
                     Position = new Vector2(150, 150),
-                    Scale = new Vector2(500f),
+                    Scale = new Vector2(850f),
+                    Radius = (float) 0.0001,
+                    Intensity = (float) 0.6,
                     ShadowType = ShadowType.Solid // Will not lit hulls themselves
                 }
             };
@@ -470,6 +481,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 CameraFollowSystem.Update(gameTime);
                 LightSystems.Update(gameTime, viewportDimensions);
+                HealthSystem.TempEndGameIfDead(TempGameEnder);
                 if (TempGameEnder.Score > 0)
                 {
                     Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
@@ -30,6 +31,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     healthComponent.CurrentHealth = 0;
                     healthComponent.Alive = false;
                     Debug.WriteLine("Entity " + key + " has fallen");
+                }
+            }
+        }
+
+        public void TempEndGameIfDead(TempGameEnder tempGameEnder)
+        {
+            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent<HealthComponent>();
+            foreach (var entity in healthEntities)
+            {
+                var currentHealth = entity.Value.MaxHealth - entity.Value.Damage.Sum();
+//                Debug.WriteLine(currentHealth);
+                if (currentHealth <= 0)
+                {
+                    tempGameEnder.Score = entity.Key;
                 }
             }
         }

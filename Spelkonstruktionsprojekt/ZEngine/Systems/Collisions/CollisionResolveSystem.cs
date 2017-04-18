@@ -146,7 +146,8 @@ namespace ZEngine.Systems
                     {
                         MovingEntityRequirements = new List<Type>()
                         {
-                            typeof(MoveComponent)
+                            typeof(MoveComponent),
+                            typeof(PlayerComponent)
                         },
                         TargetEntityRequirements = new List<Type>()
                         {
