@@ -134,7 +134,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //SetupBackground();
             SetupBackgroundTiles(5,5);
             SetupCamera();
-            //SetupEnemy();
+            SetupEnemy();
             CreateGlobalBulletSpriteEntity();
         }
 
@@ -440,7 +440,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
            
             if (player.State == MediaState.Stopped)
             {
-//                player.Play(video);
+                player.Play(video);
             }
 
 
