@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
@@ -306,8 +307,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
-                .SetAction(Keys.W, "entityWalkForwards")
-                .SetAction(Keys.S, "entityWalkBackwards")
+                .SetAction(Keys.W, EventConstants.WalkForward)
+                .SetAction(Keys.S, EventConstants.WalkBackward)
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
                 .SetAction(Keys.Q, "entityTurnAround")
