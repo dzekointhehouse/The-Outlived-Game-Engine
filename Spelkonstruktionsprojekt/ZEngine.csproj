@@ -83,6 +83,7 @@
     <Compile Include="ZEngine\Systems\Collisions\CollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\EnemyCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
+    <Compile Include="ZEngine\Systems\HealthSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\AbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
