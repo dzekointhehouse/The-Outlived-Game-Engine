@@ -69,9 +69,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
-                var moveComponent =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(moveEvent.EntityId);
-
                 var soundComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(moveEvent.EntityId);
 
@@ -90,7 +87,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     
                     var sound = soundComponent.SoundEffect.CreateInstance();
 
-                    var animationAction = NewWalkingSoundAnimation(sound);
+                    var animationAction = NewWalkingSoundAnimation(sound, moveEvent.EntityId);
                     animation.Animation = animationAction;
 
                     animationComponent.Animations.Add(animation);
@@ -98,12 +95,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        public Action<double> NewWalkingSoundAnimation(SoundEffectInstance sound)
+        public Action<double> NewWalkingSoundAnimation(SoundEffectInstance sound, int entityId)
         {
-            
-
             return delegate (double elapsedTime)
             {
+                var soundComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(entityId);
+                if (soundComponent.Speed <= 0 && sound.State == SoundState.Playing)
+                    sound.Stop();
                 if (sound.State == SoundState.Playing) return;
                // if (isLooped) sound.IsLooped = true;
                System.Diagnostics.Debug.WriteLine("yes yes");

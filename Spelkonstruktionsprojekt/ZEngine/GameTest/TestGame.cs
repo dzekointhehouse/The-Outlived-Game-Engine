@@ -274,7 +274,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var sound = new SoundComponent()
             {
                 SoundEffectName = "zombiewalking",
-                Volume = 0.5f
+                Volume = 1f
 
             };
             ComponentManager.Instance.AddComponentToEntity(sound, entityId);
