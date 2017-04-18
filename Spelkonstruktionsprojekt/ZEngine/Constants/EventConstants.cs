@@ -21,5 +21,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public static readonly string FireWeapon = "entityFireWeapon";
         public static readonly string ReloadWeapon = "entityReloadWeapon";
 
+        // Collisions
+        public static readonly string WallCollision = "WallCollision";
+        public static readonly string EnemyCollision = "EnemyCollision";
+        public static readonly string BulletCollision = "BulletCollision";
+            
     }
 }

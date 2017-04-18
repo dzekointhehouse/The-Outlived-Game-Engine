@@ -307,7 +307,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
-                .SetAction(Keys.W, EventConstants.WalkForward)
+                .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
                 .SetAction(Keys.S, EventConstants.WalkBackward)
                 .SetAction(Keys.A, "entityTurnLeft")
                 .SetAction(Keys.D, "entityTurnRight")
