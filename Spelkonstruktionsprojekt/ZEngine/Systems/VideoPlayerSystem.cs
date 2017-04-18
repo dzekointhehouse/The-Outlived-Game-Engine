@@ -10,23 +10,26 @@ using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class VideoPlayerSystem
+    public class VideoPlayerSystem
     {
 
-        private VideoPlayer videoPlayer;
+        private readonly VideoPlayer _videoPlayer;
+
+        public VideoPlayerSystem()
+        {
+            _videoPlayer = new VideoPlayer();
+        }
 
         public bool IsDonePlaying()
         {
-                return videoPlayer.State == MediaState.Stopped;  
-
-
+                return _videoPlayer.State == MediaState.Stopped;  
         }
 
-        public void Start()
+        public void Play(Video video)
         {
-            if (videoPlayer.State == MediaState.Stopped)
+            if (_videoPlayer.State == MediaState.Stopped)
             {
-               // videoPlayer.Play(video);
+                _videoPlayer.Play(video);
             }
 
         }
@@ -37,7 +40,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             Texture2D videoTexture = null;
 
             if (!IsDonePlaying())
-                videoTexture = videoPlayer.GetTexture();
+                videoTexture = _videoPlayer.GetTexture();
 
             if (videoTexture != null)
             {

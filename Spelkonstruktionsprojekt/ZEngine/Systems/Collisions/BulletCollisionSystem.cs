@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -20,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Start()
         {
-            EventBus.Subscribe<SpecificCollisionEvent>("BulletCollision", Handle);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.BulletCollision, Handle);
         }
 
         public void Handle(SpecificCollisionEvent collisionEvent)

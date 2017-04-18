@@ -8,6 +8,7 @@ using System.Xml.Schema;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Components;
 using ZEngine.EventBus;
@@ -24,13 +25,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             // Here we subscribe what will happen when the entity walks forwards
             // We'll use WalkingSounds to handle it.
-            EventBus.Subscribe<InputEvent>("entityWalkForwards", WalkingSounds);
-            EventBus.Subscribe<InputEvent>("entityWalkBackwards", WalkingSounds);
+            EventBus.Subscribe<InputEvent>(EventConstants.WalkForward, WalkingSounds);
+            EventBus.Subscribe<InputEvent>(EventConstants.WalkBackward, WalkingSounds);
 
             // We subscribe to the input inputEvent for when the entity fires a
             // weapon, then we use the WeaponSounds method to "say" what should
             // be done. 
-            EventBus.Subscribe<InputEvent>("entityFireWeapon", WeaponSounds);
+            EventBus.Subscribe<InputEvent>(EventConstants.FireWeapon, WeaponSounds);
             return this;
         }
         public ISystem Stop()

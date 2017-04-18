@@ -26,7 +26,7 @@ namespace ZEngine.Systems
                 {
                     var moveComponent = moveEntities[entity.Key];
 
-                    //Start direction based on angular momentum
+                    //Play direction based on angular momentum
                     moveComponent.Direction = (moveComponent.Direction + moveComponent.RotationMomentum * delta) %
                                               MathHelper.TwoPi;
 
@@ -49,11 +49,11 @@ namespace ZEngine.Systems
                     //Limit velocity if above max velocity
                     ApplyVelocityLimits(moveComponent);
 
-                    //Start Velocity based on current direction and acceleration
+                    //Play Velocity based on current direction and acceleration
                     var velocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction,
                         moveComponent.Speed);
 
-                    // Start position with current velocity.
+                    // Play position with current velocity.
                     moveComponent.PreviousPosition = entity.Value.PositionComponent.Position;
                     entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, velocity, delta);
 

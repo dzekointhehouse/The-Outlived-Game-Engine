@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using ZEngine.Components;
 using ZEngine.Managers;
@@ -20,7 +21,7 @@ namespace ZEngine.Systems.Collisions
         public void Start(TempGameEnder gameEnder)
         {
             GameEnder = gameEnder;
-            EventBus.Subscribe<SpecificCollisionEvent>("EnemyCollision", Handle);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.EnemyCollision, Handle);
         }
 
         public void Handle(SpecificCollisionEvent collisionEvent)

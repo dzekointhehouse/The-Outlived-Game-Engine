@@ -14,16 +14,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class AISystem : ISystem
     {
-        private ComponentManager ComponentManager = ComponentManager.Instance;
-        public void Process(GameTime gameTime)
+        private ComponentManager componentManager = ComponentManager.Instance;
+
+        public void Update(GameTime gameTime)
         {
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (var entity in ComponentManager.GetEntitiesWithComponent<AIComponent>())
+            foreach (var entity in componentManager.GetEntitiesWithComponent<AIComponent>())
             {
-                var firstPlayer = ComponentManager.GetEntitiesWithComponent<MoveComponent>().First();
-                var firstPlayerRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(firstPlayer.Key);
-                var aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-                var aiRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
+                var firstPlayer = componentManager.GetEntitiesWithComponent<MoveComponent>().First();
+                var firstPlayerRenderComponent = componentManager.GetEntityComponentOrDefault<RenderComponent>(firstPlayer.Key);
+                var aiMoveComponent = componentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                var aiRenderComponent = componentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
 
                 Vector2 playerPos = firstPlayerRenderComponent.PositionComponent.Position;
                 Vector2 aiPos = aiRenderComponent.PositionComponent.Position;

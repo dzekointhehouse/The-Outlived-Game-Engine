@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -20,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Start()
         {
-            EventBus.Subscribe<SpecificCollisionEvent>("WallCollision", Handle);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.WallCollision, Handle);
         }
 
         public void Handle(SpecificCollisionEvent collisionEvent)

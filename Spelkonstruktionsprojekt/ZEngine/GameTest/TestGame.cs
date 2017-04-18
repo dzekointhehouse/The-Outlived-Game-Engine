@@ -461,7 +461,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
 
-                AISystem.Process(gameTime);
+                AISystem.Update(gameTime);
                 MoveSystem.Move(gameTime);
                 AnimationSystem.RunAnimations(gameTime);
 
