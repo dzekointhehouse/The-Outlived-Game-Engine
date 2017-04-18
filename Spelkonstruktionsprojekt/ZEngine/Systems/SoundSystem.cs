@@ -38,6 +38,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             return this;
         }
 
+        // We want to subscribe this method to events where a entity fires 
+        // a weapon. We check if the bullet fire key has been pressed, then we
+        // fire the sound.
         private void WeaponSounds(InputEvent inputEvent)
         {
             // First things first, we only handle this event if the key is pressed
@@ -57,6 +60,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // We create a SoundEffectInstance which gives us more control
                 var soundInstance = sound.SoundEffect.CreateInstance();
 
+                // If it is not already playing then play it
                 if (soundInstance.State != SoundState.Playing)
                 {
                     soundInstance.IsLooped = false;
@@ -65,17 +69,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
+
+        // This method is supposed to be used to subscribe to events
+        // where the entity is walking. We check if a key is pressed,
+        // then we check if the entity has the right components.
         public void WalkingSounds(InputEvent moveEvent)
         {
             if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
+                // We need to have the sound component to play the sound
                 var soundComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(moveEvent.EntityId);
 
                 if (!ComponentManager.Instance.EntityHasComponent<AnimationComponent>(moveEvent.EntityId))
                 {
                     var animationComponent = new AnimationComponent();
-
 
                     ComponentManager.Instance.AddComponentToEntity(animationComponent, moveEvent.EntityId);
 
@@ -95,6 +103,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
+        // This one is fascinating. We add this to our entitys animation component instance which
+        // contains a list of GeneralAnimations, this method is the action that is stored in the
+        // general animation. This action will then be performed in another system and can do it's
+        // own stuff independently of this system later on. Good for when we maybe trigger something
+        // that will go on for a while until a set tim
         public Action<double> NewWalkingSoundAnimation(SoundEffectInstance sound, int entityId)
         {
             return delegate (double elapsedTime)
