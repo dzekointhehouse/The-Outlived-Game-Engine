@@ -309,26 +309,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var actionBindings1 = new ActionBindingsBuilder()
                 .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
                 .SetAction(Keys.S, EventConstants.WalkBackward)
-                .SetAction(Keys.A, "entityTurnLeft")
-                .SetAction(Keys.D, "entityTurnRight")
-                .SetAction(Keys.Q, "entityTurnAround")
-                .SetAction(Keys.Space, "entityFireWeapon")
+                .SetAction(Keys.A, EventConstants.TurnLeft)
+                .SetAction(Keys.D, EventConstants.TurnRight)
+                .SetAction(Keys.Q, EventConstants.TurnAround)
+                .SetAction(Keys.Space, EventConstants.FireWeapon)
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings2 = new ActionBindingsBuilder()
-                .SetAction(Keys.I, "entityWalkForwards")
-                .SetAction(Keys.K, "entityWalkBackwards")
-                .SetAction(Keys.J, "entityTurnLeft")
-                .SetAction(Keys.L, "entityTurnRight")
+                .SetAction(Keys.I, EventConstants.WalkForward)
+                .SetAction(Keys.K, EventConstants.WalkBackward)
+                .SetAction(Keys.J, EventConstants.TurnLeft)
+                .SetAction(Keys.L, EventConstants.TurnRight)
                 .Build();
 
             var player3 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings3 = new ActionBindingsBuilder()
-                .SetAction(Keys.Up, "entityWalkForwards")
-                .SetAction(Keys.Down, "entityWalkBackwards")
-                .SetAction(Keys.Left, "entityTurnLeft")
-                .SetAction(Keys.Right, "entityTurnRight")
+                .SetAction(Keys.Up, EventConstants.WalkForward)
+                .SetAction(Keys.Down, EventConstants.WalkBackward)
+                .SetAction(Keys.Left, EventConstants.TurnLeft)
+                .SetAction(Keys.Right, EventConstants.TurnRight)
                 .Build();
             
             CreatePlayer(player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
