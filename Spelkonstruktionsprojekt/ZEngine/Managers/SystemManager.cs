@@ -39,7 +39,8 @@ namespace ZEngine.Managers
             { typeof(AbilitySystem), new AbilitySystem() },
             { typeof(AnimationSystem), new AnimationSystem() },
             { typeof(SoundSystem), new SoundSystem() },
-            { typeof(WeaponSystem), new WeaponSystem() }
+            { typeof(WeaponSystem), new WeaponSystem() },
+            { typeof(BulletCollisionSystem), new BulletCollisionSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

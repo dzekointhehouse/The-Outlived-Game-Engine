@@ -25,26 +25,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
-            Debug.WriteLine("Handle bullet collision");
-            var bulletComponent = ComponentManager.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Entity);
-            if (collisionEvent.Target == bulletComponent.ShooterEntityId) return;
-            var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
-            var entityRenderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(collisionEvent.Entity);
-            if (entityMoveComponent == null) return;
+            if (TargetIsShooter(collisionEvent)) return;
 
-            int bulletId = collisionEvent.Entity;
-            var animationComponent = ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(bulletId);
-            StopAnimation(collisionEvent.EventTime, animationComponent);
-
-            //entityRenderComponent.PositionComponent.Position = entityMoveComponent.PreviousPosition;
-            //entityMoveComponent.Speed = 0;
-
-            //var collisonComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Entity);
-            //collisonComponent.collisions.Remove(collisionEvent.Target);
+            StopBulletAnimation(collisionEvent.EventTime, collisionEvent.Entity);
         }
 
-        private static void StopAnimation(double currentTime, AnimationComponent animationComponent)
+        private bool TargetIsShooter(SpecificCollisionEvent collisionEvent)
         {
+            var bulletComponent = ComponentManager.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Entity);
+            return collisionEvent.Target == bulletComponent.ShooterEntityId;
+        }
+
+        private void StopBulletAnimation(double currentTime, int bulletId)
+        {
+            var animationComponent = ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(bulletId);
             animationComponent.Animations.ForEach(
                 animation => { animation.Animation.Invoke(currentTime + animation.Length); });
         }

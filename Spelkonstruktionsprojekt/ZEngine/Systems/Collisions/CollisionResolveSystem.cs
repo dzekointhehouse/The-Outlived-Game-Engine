@@ -31,6 +31,10 @@ namespace ZEngine.Systems
                     //If the collision matches any valid collision event
                     foreach (var collisionEvent in collisionEvents)
                     {
+                        if (collisionEvent.Value == CollisionEvent.Bullet)
+                        {
+                            Debug.WriteLine("");
+                        }
                         //Collision events are made up from requirement of each party
                         //If both entities (parties) fulfil the component requirements
                         //Then there is a match for a collision event

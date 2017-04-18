@@ -44,6 +44,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private CollisionResolveSystem CollisionResolveSystem;
         private WallCollisionSystem WallCollisionSystem;
         private EnemyCollisionSystem EnemyCollisionSystem;
+        private BulletCollisionSystem BulletCollisionSystem;
         private AISystem AISystem;
         private AbilitySystem AbilitySystem;
         private AnimationSystem AnimationSystem;
@@ -102,7 +103,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             AnimationSystem = SystemManager.Instance.GetSystem<AnimationSystem>();
             SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
             WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
-            
+            BulletCollisionSystem = SystemManager.Instance.GetSystem<BulletCollisionSystem>();
+
             TempGameEnder = new TempGameEnder();
 
             //Init systems that require initialization
@@ -112,6 +114,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             SoundSystem.Start();
             WeaponSystem.Start();
             EnemyCollisionSystem.Start(TempGameEnder);
+            BulletCollisionSystem.Start();
 
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -174,7 +177,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 Offset = new Vector2((float) (viewportDimensions.X * 0.25), (float) (viewportDimensions.Y * 0.25))
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
-            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
+//            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
