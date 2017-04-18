@@ -24,8 +24,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             // Here we subscribe what will happen when the entity walks forwards
             // We'll use WalkingSounds to handle it.
-            EventBus.Subscribe<MoveEvent>("entityWalkForwards", WalkingSounds);
-            EventBus.Subscribe<MoveEvent>("entityWalkBackwards", WalkingSounds);
+            EventBus.Subscribe<InputEvent>("entityWalkForwards", WalkingSounds);
+            EventBus.Subscribe<InputEvent>("entityWalkBackwards", WalkingSounds);
 
             // We subscribe to the input inputEvent for when the entity fires a
             // weapon, then we use the WeaponSounds method to "say" what should
@@ -65,7 +65,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        public void WalkingSounds(MoveEvent moveEvent)
+        public void WalkingSounds(InputEvent moveEvent)
         {
             if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
@@ -75,30 +75,38 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var soundComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(moveEvent.EntityId);
 
-                var animationComponent = new AnimationComponent();
-                ComponentManager.Instance.AddComponentToEntity(animationComponent, moveEvent.EntityId);
-
-                var animation = new GeneralAnimation()
+                if (!ComponentManager.Instance.EntityHasComponent<AnimationComponent>(moveEvent.EntityId))
                 {
-                    StartOfAnimation = moveEvent.CurrentTimeMilliseconds,
-                    Length = 2000
-                };
-                var animationAction = NewWalkingSoundAnimation(soundComponent, moveComponent);
-                animation.Animation = animationAction;
+                    var animationComponent = new AnimationComponent();
 
-                animationComponent.Animations.Add(animation);
+
+                    ComponentManager.Instance.AddComponentToEntity(animationComponent, moveEvent.EntityId);
+
+                    var animation = new GeneralAnimation()
+                    {
+                        StartOfAnimation = moveEvent.EventTime,
+                        Length = 2000
+                    };
+                    
+                    var sound = soundComponent.SoundEffect.CreateInstance();
+
+                    var animationAction = NewWalkingSoundAnimation(sound);
+                    animation.Animation = animationAction;
+
+                    animationComponent.Animations.Add(animation);
+                }
             }
         }
 
-        public Action<double> NewWalkingSoundAnimation(SoundComponent soundComponent, MoveComponent moveComponent)
+        public Action<double> NewWalkingSoundAnimation(SoundEffectInstance sound)
         {
-            var sound = soundComponent.SoundEffect.CreateInstance();
+            
 
             return delegate (double elapsedTime)
             {
                 if (sound.State == SoundState.Playing) return;
                // if (isLooped) sound.IsLooped = true;
-
+               System.Diagnostics.Debug.WriteLine("yes yes");
                 sound.Play();
             };
         }

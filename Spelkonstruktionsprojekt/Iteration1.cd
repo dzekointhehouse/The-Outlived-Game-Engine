@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings.KeyEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ZEngine\Components\ActionBindings.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\ActionBindings.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.ActionBindingsBuilder">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAUAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\ActionBindings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.AmmoComponent" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\AmmoComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.AnimationComponent" BaseTypeListCollapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\AnimationComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.BulletComponent" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>ZEngine\Components\BulletComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.BulletFlyweightComponent" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\BulletFlyweightComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.CageComponent" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>ZEngine\Components\CageComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.CameraFollowComponent" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\CameraFollowComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.CameraViewComponent" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAIAAAAAAAABAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\CameraViewComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.HealthComponent" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\HealthComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.LightComponent" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\LightComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.PickupComponent">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Spelkonstruktionsprojekt.ZEngine.Components.PickupComponent.PickupEventType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ZEngine\Components\PickupComponent.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\PickupComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.PlayerComponent" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\PlayerComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.WeaponComponent" BaseTypeListCollapsed="true">
+    <Position X="11" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACACAAAAACAAAAAAAAAQAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\WeaponComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Components.AIComponent" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\AIComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Components.CollisionComponent" BaseTypeListCollapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAABAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\CollisionComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Components.MoveComponent" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAMIAAAEAAAAAAACAAAAABAAAAAAAAAABAAAAAQAA=</HashCode>
+      <FileName>ZEngine\Components\MoveComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Components.DimensionsComponent" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\RenderComponent\DimensionsComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Components.PositionComponent" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\RenderComponent\PositionComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Components.RenderComponent" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAEAAQAAEAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>ZEngine\Components\RenderComponent\RenderComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Components.RenderComponentHelper">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>ZEngine\Components\RenderComponent\RenderComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Components.RenderComponentBuilder">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAEAAgAAAAAAIAAAAAhAAAAAAAAABAAAA=</HashCode>
+      <FileName>ZEngine\Components\RenderComponent\RenderComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Components.SoundComponent" BaseTypeListCollapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAIAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\SoundComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Components.ZEngineSoundBank">
+    <Position X="4" Y="7.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="ZEngine.Components.ZEngineSoundBank.Sounds" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ZEngine\Components\SoundComponent.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\SoundComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Components.SpriteComponent" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAgAAgAAIAAEAAAAAAABAQAEAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\SpriteComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent.RenderOffsetComponent" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>ZEngine\Components\RenderComponent\RenderOffsetComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent.RenderPaintComponent" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>ZEngine\Components\RenderComponent\RenderPaintComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.EventBus.EventBus" BaseTypeListCollapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAEAAAAAAAAAGAAQAQAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\EventBus\EventBus.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.EventBus.ParameterlessEventBus">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAEAAAAAAAAACBAAAQAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\EventBus\ParameterlessEventBuss.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.EventBus.TypedEventBus">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAEAAAgAAAAACBAAAQAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\EventBus\TypedEventBus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.GameTest.FPS">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAEAAAAAAAAwAAAAEBAAAAAAAAAAAIAJAAAAAAAAQ=</HashCode>
+      <FileName>ZEngine\GameTest\FPS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.GameTest.TestGame">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAEHFAABgAAwAAAAMUEDEAECQCBBAJAJBSCAgEAAQ=</HashCode>
+      <FileName>ZEngine\GameTest\TestGame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.GameTest.TestGame2">
+    <Position X="2.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEEABAAAAAwAAAAAAAAAAAAAAAAkAAAAACAgAAAQ=</HashCode>
+      <FileName>ZEngine\GameTest\TestGame2.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Managers.ComponentManager">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAgAAEAAgAAACAIAQAQAAAAEgAAAA=</HashCode>
+      <FileName>ZEngine\Managers\ComponentManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Managers.EntityManager">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAEAAAAAEAAAAAAAAAIBAAAACAAACAAA=</HashCode>
+      <FileName>ZEngine\Managers\EntityManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Managers.SystemManager">
+    <Position X="11" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAQAAAQACAAAI=</HashCode>
+      <FileName>ZEngine\Managers\SystemManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.AISystem" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\AISystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.AnimationSystem" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\AnimationSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.FlashlightSystem" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAAAAAAQAAAAABAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\FlashlightSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.SoundSystem" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAIACAAAAAAAACAAEAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\SoundSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.TitlesafeRenderSystem" BaseTypeListCollapsed="true">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAEAAAAAAAgAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\TitlesafeRenderSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.WeaponSystem" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAAAACAAAAEAAAAAAAAAAABIAAAAAAAACA=</HashCode>
+      <FileName>ZEngine\Systems\WeaponSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.VideoPlayerSystem">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAgAAAIAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\VideoPlayerSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Systems.CameraSceneSystem" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAEAAAAAAAAAAIAEAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\CameraFollowSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Systems.CollisionResolveSystem" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAKAAAAEAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\CollisionResolveSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Systems.CollisionEvents">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="ZEngine.Systems.CollisionEvents.CollisionEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ZEngine\Systems\Collisions\CollisionResolveSystem.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAABAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\CollisionResolveSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Systems.SpecificCollisionEvent">
+    <Position X="7.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAACAAAgCAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\CollisionResolveSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Systems.UnkownCollisionEvent">
+    <Position X="7.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\CollisionResolveSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Systems.ZEngineCollisionEventPresets">
+    <Position X="2.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\CollisionResolveSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Systems.CollisionRequirement">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAABAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\CollisionResolveSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Systems.CollisionSystem" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAEAAAAIAAAAAAAAEgQBAAgAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\CollisionSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Systems.TankMovementSystem" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACACAACAAAAEAgAAAAAAAEAAIAAAAABAAAA=</HashCode>
+      <FileName>ZEngine\Systems\InputHandler\TankMovementSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Systems.MoveEvent">
+    <Position X="14.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAIAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>ZEngine\Systems\InputHandler\TankMovementSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Systems.LoadContentSystem" BaseTypeListCollapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>ZEngine\Systems\LoadContentSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Systems.MoveSystem" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAJAAAAAAAAAEAAAAAAAAAAAAAAAEACAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\MoveSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Systems.RenderSystem" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAEAAIAAAAAAAAAAhAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\RenderSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.Collisions.BulletCollisionSystem" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAACAAAACAIAAEAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\BulletCollisionSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.Collisions.TempGameEnder">
+    <Position X="14.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\EnemyCollisionSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.Collisions.WallCollisionSystem" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAACAAAAEIAAAAAAAAQIAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\WallCollisionSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZEngine.Systems.Collisions.EnemyCollisionSystem" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAACAAAAIAAAAAAAAAAIAAAAAAAACAAA=</HashCode>
+      <FileName>ZEngine\Systems\Collisions\EnemyCollisionSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler.AbilitySystem" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAGAAAACAAAAEAAAAAACAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ZEngine\Systems\InputHandler\AbilitySystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler.GeneralAnimation">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAIAAAAAAIggAAAAABAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\InputHandler\AbilitySystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler.InputHandler" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAACAAAAEAAAAAAAAAAAIAAAAJAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\InputHandler\InputHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler.InputEvent">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAQAAAAAAAAAAICAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>ZEngine\Systems\InputHandler\InputHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Wrappers.GameDependencies">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgACEAAQAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Wrappers\GameDependencies.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spelkonstruktionsprojekt.ZEngine.Wrappers.Vector2D">
+    <Position X="14.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAIAAAAAAAAkAAAAAAAAAAYAA=</HashCode>
+      <FileName>ZEngine\Wrappers\Vector2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ZEngine.Components.IComponent">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Components\IComponent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ZEngine.EventBus.IEventBus">
+    <Position X="2.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAACAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\EventBus\IEventBus.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ZEngine.Managers.ISystem">
+    <Position X="4" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\ISystem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

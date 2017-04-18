@@ -143,7 +143,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var bulletSprite = EntityManager.GetEntityManager().NewEntity();
             var bulletSpriteSprite = new SpriteComponent()
             {
-                SpriteName = "dot"
+                SpriteName = "dot2"
             };
             var bulletSpriteComponent = new BulletFlyweightComponent();
             var soundComponent = new SoundComponent()
@@ -361,12 +361,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 }
             };
 
-            //var sound = new SoundComponent()
-            //{
-            //    SoundEffectName = "walking"
-            //};
+            var sound = new SoundComponent()
+            {
+                SoundEffectName = "walking"
+       
+            };
 
-   //         ComponentManager.Instance.AddComponentToEntity(sound, entityId);
+            ComponentManager.Instance.AddComponentToEntity(sound, entityId);
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
