@@ -139,6 +139,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             SetupCamera();
 //            SetupEnemy();
             CreateGlobalBulletSpriteEntity();
+            SetupTempPlayerDeadSpriteFlyweight();
+        }
+
+        private void SetupTempPlayerDeadSpriteFlyweight()
+        {
+            var tempEntity = EntityManager.GetEntityManager().NewEntity();
+            var spriteComponent = new SpriteComponent()
+            {
+                SpriteName = "dot"
+            };
+            var tempDeadSpriteComponent = new TempPlayerDeadSpriteComponent();
+            ComponentManager.Instance.AddComponentToEntity(tempDeadSpriteComponent, tempEntity);
+            ComponentManager.Instance.AddComponentToEntity(spriteComponent, tempEntity);
         }
 
         private static void CreateGlobalBulletSpriteEntity()

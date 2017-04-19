@@ -48,7 +48,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 
                 var animation = new GeneralAnimation()
                 {
-                    AnimationType = TurnAroundEventName,
+                    AnimationType = RunEventName,
                     StartOfAnimation = moveEvent.EventTime,
                     Unique = true,
                     Length = 220
@@ -111,6 +111,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 
         public Action<double> NewRunAnimation(GeneralAnimation generalAnimation, MoveComponent moveComponent, int sprintTime)
         {
+            Debug.WriteLine("RUN FORREST RUN");
+
             return delegate(double currentTime)
             {
                 var elapsedTime = currentTime - generalAnimation.StartOfAnimation;

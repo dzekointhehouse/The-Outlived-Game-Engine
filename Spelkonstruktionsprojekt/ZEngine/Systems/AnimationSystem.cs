@@ -22,7 +22,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 for (var i = 0; i < entity.Value.Animations.Count; i++)
                 {
                     var animationWrapper = entity.Value.Animations[i];
-                    if(animationWrapper.Unique && usedUniqueAnimationTypes.Contains(animationWrapper.AnimationType)) continue;
+                    if (animationWrapper.Unique && usedUniqueAnimationTypes.Contains(animationWrapper.AnimationType))
+                    {
+                        doneAnimations.Add(i);
+                    }
 
                     animationWrapper.Animation.Invoke(gameTime.TotalGameTime.TotalMilliseconds);
 

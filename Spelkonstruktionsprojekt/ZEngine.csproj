@@ -64,6 +64,7 @@
     <Compile Include="ZEngine\Components\RenderComponent\RenderPaintComponent.cs" />
     <Compile Include="ZEngine\Components\SoundComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteComponent.cs" />
+    <Compile Include="ZEngine\Components\TempPlayerDeadSpriteComponent.cs" />
     <Compile Include="ZEngine\Components\WeaponComponent.cs" />
     <Compile Include="ZEngine\Constants\EventConstants.cs" />
     <Compile Include="ZEngine\EventBus\IEventBus.cs" />
