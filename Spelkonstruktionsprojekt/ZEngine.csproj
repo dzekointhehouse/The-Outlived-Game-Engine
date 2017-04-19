@@ -103,6 +103,7 @@
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
     <Compile Include="ZEngine\Wrappers\Vector2D.cs" />
+    <Compile Include="Zenu\Button.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
