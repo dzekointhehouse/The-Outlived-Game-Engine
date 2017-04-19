@@ -61,7 +61,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (ComponentManager.Instance.EntityHasComponent<HealthComponent>(playerInstance.Key))
                 {
                     var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(playerInstance.Key);
-                    text = text + ": " + health.CurrentHealth + "HP";
+                    var currentHealth = health.MaxHealth - health.Damage.Sum();
+                    //text = text + ": " + health.CurrentHealth + "HP";
+                    text = text + ": " + currentHealth + "HP";
+
                 }
 
                 // adding ammo here the same way.
@@ -76,8 +79,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var textHeight = spriteFont.MeasureString(text).Y;
 
                 var xPosition = titlesafearea.Width - spriteFont.MeasureString(text).X - 10;
-                var yPosition = titlesafearea.Height - textHeight - previousHeight;
-                previousHeight = textHeight;
+                var yPosition = titlesafearea.Height - (textHeight + previousHeight);
+                previousHeight += textHeight;
 
                 var position = new Vector2(xPosition, yPosition);
                 _gameDependencies.SpriteBatch.DrawString(spriteFont, text, position, Color.BlueViolet);
