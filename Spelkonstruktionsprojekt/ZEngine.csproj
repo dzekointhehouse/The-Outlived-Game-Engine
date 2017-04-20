@@ -74,6 +74,7 @@
     <Compile Include="ZEngine\GameTest\TestChaseGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
+    <Compile Include="ZEngine\Helpers\FullZengineBundle.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
