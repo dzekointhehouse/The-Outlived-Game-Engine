@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -35,7 +36,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 foreach (int animationIndex in doneAnimations)
                 {
-                    entity.Value.Animations.RemoveAt(animationIndex);
+                    if (entity.Value.Animations.ElementAtOrDefault<GeneralAnimation>(animationIndex) != null)
+                        entity.Value.Animations.RemoveAt(animationIndex);
                 }
             }
         }
