@@ -55,7 +55,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private WeaponSystem WeaponSystem;
         private HealthSystem HealthSystem;
 
-        private Vector2 viewportDimensions = new Vector2(1800, 1300);
+        private Vector2 viewportDimensions = new Vector2(1600, 800);
         private PenumbraComponent penumbraComponent;
         private TempGameEnder TempGameEnder;
 

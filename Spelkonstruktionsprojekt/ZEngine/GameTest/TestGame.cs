@@ -324,11 +324,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var actionBindings1 = new ActionBindingsBuilder()
                 .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
                 .SetAction(Keys.S, EventConstants.WalkBackward)
-                .SetAction(Keys.A, "entityTurnLeft")
-                .SetAction(Keys.D, "entityTurnRight")
-                .SetAction(Keys.Q, "entityTurnAround")
-                .SetAction(Keys.E, "entityFireWeapon")
-                .SetAction(Keys.LeftShift, "entityRun")
+                .SetAction(Keys.A, EventConstants.TurnLeft)
+                .SetAction(Keys.D, EventConstants.TurnRight)
+                .SetAction(Keys.Q, EventConstants.TurnAround)
+                .SetAction(Keys.E, EventConstants.FireWeapon)
+                .SetAction(Keys.LeftShift, EventConstants.Running)  
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
