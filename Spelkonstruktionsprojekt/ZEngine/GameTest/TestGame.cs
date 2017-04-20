@@ -333,33 +333,33 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings2 = new ActionBindingsBuilder()
-                .SetAction(Keys.I, "entityWalkForwards")
-                .SetAction(Keys.K, "entityWalkBackwards")
-                .SetAction(Keys.J, "entityTurnLeft")
-                .SetAction(Keys.L, "entityTurnRight")
-                .SetAction(Keys.O, "entityFireWeapon")
-                .SetAction(Keys.U, "entityTurnAround")
-                .SetAction(Keys.H, "entityRun")
+                .SetAction(Keys.I, EventConstants.WalkForward)
+                .SetAction(Keys.K, EventConstants.WalkBackward)
+                .SetAction(Keys.J, EventConstants.TurnLeft)
+                .SetAction(Keys.L, EventConstants.TurnRight)
+                .SetAction(Keys.O, EventConstants.FireWeapon)
+                .SetAction(Keys.U, EventConstants.TurnAround)
+                .SetAction(Keys.H, EventConstants.Running)
                 .Build();
 
             var player3 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings3 = new ActionBindingsBuilder()
-                .SetAction(Keys.Up, "entityWalkForwards")
-                .SetAction(Keys.Down, "entityWalkBackwards")
-                .SetAction(Keys.Left, "entityTurnLeft")
-                .SetAction(Keys.Right, "entityTurnRight")
-                .SetAction(Keys.PageDown, "entityFireWeapon")
-                .SetAction(Keys.PageUp, "entityTurnAround")
-                .SetAction(Keys.RightControl, "entityRun")
+                .SetAction(Keys.Up, EventConstants.WalkForward)
+                .SetAction(Keys.Down, EventConstants.WalkBackward)
+                .SetAction(Keys.Left, EventConstants.TurnLeft)
+                .SetAction(Keys.Right, EventConstants.TurnRight)
+                .SetAction(Keys.PageDown, EventConstants.FireWeapon)
+                .SetAction(Keys.PageUp, EventConstants.TurnAround)
+                .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
             
-            CreatePlayer(player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
-            CreatePlayer(player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true, collision: true, disabled: false);
-            CreatePlayer(player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true, collision: true, isCaged: true);
+            CreatePlayer("Carlos",player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
+            CreatePlayer("Elvir",player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true, collision: true, disabled: false);
+            CreatePlayer("Markus",player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true, collision: true, isCaged: true);
         }
 
         //The multitude of options here is for easy debug purposes
-        public void CreatePlayer(int entityId, ActionBindings actionBindings, Vector2 position = default(Vector2), bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
+        public void CreatePlayer(string name, int entityId, ActionBindings actionBindings, Vector2 position = default(Vector2), bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
         {
             if (disabled) return;
             if(position == default(Vector2)) position = new Vector2(150, 150);
@@ -439,7 +439,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var playerComponent = new PlayerComponent()
             {
-                Name = entityId.ToString()
+                Name = name
             };
             ComponentManager.Instance.AddComponentToEntity(playerComponent, entityId);
             var healthComponent = new HealthComponent()
