@@ -20,11 +20,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public static readonly string TurnAround = "entityTurnAround";
         public static readonly string FireWeapon = "entityFireWeapon";
         public static readonly string ReloadWeapon = "entityReloadWeapon";
+        public static readonly string Running = "entityRun";
+
 
         // Collisions
         public static readonly string WallCollision = "WallCollision";
         public static readonly string EnemyCollision = "EnemyCollision";
         public static readonly string BulletCollision = "BulletCollision";
-            
     }
 }
