@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
-using ZEngine.Wrappers;
+﻿using Microsoft.Xna.Framework;
 
 namespace ZEngine.Components
 {

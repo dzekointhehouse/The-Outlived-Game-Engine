@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 
