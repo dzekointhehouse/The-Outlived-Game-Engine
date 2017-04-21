@@ -37,49 +37,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             }
         }
-
-        //public void TempEndGameIfDead(TempGameEnder tempGameEnder)
-        //{
-        //    var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent<HealthComponent>();
-        //    foreach (var entity in healthEntities)
-        //    {
-        //        var currentHealth = entity.Value.MaxHealth - entity.Value.Damage.Sum();
-        //        Debug.WriteLine(currentHealth);
-        //        if (currentHealth <= 0)
-        //        {
-        //            var playerDeadSpriteEntity = ComponentManager.Instance
-        //                .GetEntitiesWithComponent<TempPlayerDeadSpriteComponent>()
-        //                .First()
-        //                .Key;
-        //            var playerDeadSpriteComponent = ComponentManager.Instance
-        //                .GetEntityComponentOrDefault<SpriteComponent>(playerDeadSpriteEntity);
-        //            if (playerDeadSpriteComponent == null)
-        //            {
-        //                Debug.WriteLine("No player dead sprite flyweight available.");
-        //            }
-
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteComponent), entity.Key);
-        //            ComponentManager.Instance.AddComponentToEntity(playerDeadSpriteComponent, entity.Key);
-
-        //            var lightComponent =
-        //                ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
-        //            lightComponent.Light.Scale = Vector2.Zero;
-
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(CameraFollowComponent), entity.Key);
-        //            var renderComponent =
-        //                ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
-        //            renderComponent.DimensionsComponent.Width = (int) (renderComponent.DimensionsComponent.Width * 0.5);
-        //            renderComponent.DimensionsComponent.Height = (int) (renderComponent.DimensionsComponent.Height * 0.5);
-
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entity.Key);
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entity.Key);
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(SoundComponent), entity.Key);
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(WeaponComponent), entity.Key);
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(ActionBindings), entity.Key);
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(CollisionComponent), entity.Key);
-        //            ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entity.Key);
-        //        }
-        //    }
-        //}
     }
 }

@@ -43,7 +43,8 @@ namespace ZEngine.Managers
             { typeof(BulletCollisionSystem), new BulletCollisionSystem() },
             { typeof(HealthSystem), new HealthSystem() },
             { typeof(VideoPlayerSystem), new VideoPlayerSystem() },
-            {typeof(SpriteAnimationSystem), new SpriteAnimationSystem() }
+            { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
+            { typeof(EntityRemovalSystem), new EntityRemovalSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

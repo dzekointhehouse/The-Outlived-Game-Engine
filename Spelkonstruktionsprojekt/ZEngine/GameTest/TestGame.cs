@@ -54,6 +54,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private WeaponSystem WeaponSystem;
         private HealthSystem HealthSystem;
         private SpriteAnimationSystem spriteAnimationSystem;
+        private EntityRemovalSystem entityRemovalSystem;
 
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
@@ -108,6 +109,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             BulletCollisionSystem = SystemManager.Instance.GetSystem<BulletCollisionSystem>();
             HealthSystem = SystemManager.Instance.GetSystem<HealthSystem>();
             spriteAnimationSystem = SystemManager.Instance.GetSystem<SpriteAnimationSystem>();
+            entityRemovalSystem = SystemManager.Instance.GetSystem<EntityRemovalSystem>();
 
             TempGameEnder = new TempGameEnder();
 
@@ -508,6 +510,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 LightSystems.Update(gameTime, viewportDimensions);
                // HealthSystem.TempEndGameIfDead(TempGameEnder);
                 HealthSystem.Update();
+                entityRemovalSystem.Update(gameTime);
 
                 if (TempGameEnder.Score > 0)
                 {
