@@ -13,11 +13,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class SpriteAnimationSystem : ISystem
     {
+        // This method is called when using this system. 
+        // This will activate an animation for all the
+        // entities that have an SpriteAnimationComponent.
         public void Update(GameTime gameTime)
         {
             DeathAnimation(gameTime);
         }
 
+        // DeathAnimation as it states in the method name is used for entities that
+        // have a sprite, sprite animation and a health component instance. This is 
+        // intented to be used so that the entities show a splash of blood when they die.
         private void DeathAnimation(GameTime gameTime)
         {
             var animationComponents = ComponentManager.Instance.GetEntitiesWithComponent<SpriteAnimationComponent>();
@@ -37,6 +43,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                     frameSize = animation.Value.FrameSize;
                 }
+
+                // We get the health component to check if the entity is alive, and
+                // the sprite component so we can set the new texture to render upon death.
                 var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(animation.Key);
                 var sprite = ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(animation.Key);
 
@@ -50,9 +59,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         {
                             animation.Value.TimeSinceLastFrame -= animation.Value.MillisecondsPerFrame;
                             ++currentFrame.X;
-
-
-
+                        
                             if (currentFrame.X >= animation.Value.SpritesheetSize.X)
                             {
                                 currentFrame.X = 0;
@@ -66,19 +73,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             }
                         }
 
+                        // Insert the new values in the component
                         animation.Value.CurrentFrame = new Point(currentFrame.X, currentFrame.Y);
+
                         sprite.Scale = 2;
 
                         sprite.Sprite = animation.Value.Spritesheet;
-                        // Calculate the current animation frame
+                        
+
+                        // This will calculate the sourceRectangel
+                        // from the spritesheet (which sprite is used).
                         sprite.SourceRectangle = new Rectangle(
                             currentFrame.X * frameSize.X, // x-offset into texture
                             currentFrame.Y * frameSize.Y, // y-offset into texture
                             frameSize.X, // frame width in pixels
                             frameSize.Y // frame height in pixels
                         );
-                        //if (!health.Alive && animation.Value.CurrentFrame == animation.Value.SpritesheetSize)
-                        //    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), animation.Key);
                     }
                 }
             }
