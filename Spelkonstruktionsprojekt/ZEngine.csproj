@@ -89,6 +89,7 @@
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\AbilitySystem.cs" />
+    <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
-    <Compile Include="ZEngine\Wrappers\Vector2D.cs" />
     <Compile Include="Zenu\Button.cs" />
   </ItemGroup>
   <ItemGroup>

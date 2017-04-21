@@ -67,17 +67,17 @@ namespace ZEngine.Components
         {
             _renderComponent.PositionComponent = new PositionComponent()
             {
-                Position = Vector2D.Create(x, y),
+                Position = new Vector2(x,y),
                 ZIndex = zIndex
             };
             return this;
         }
 
-        public RenderComponentBuilder Position(double x, double y, int zIndex)
+        public RenderComponentBuilder Position(float x, float y, int zIndex)
         {
             _renderComponent.PositionComponent = new PositionComponent()
             {
-                Position = Vector2D.Create(x, y),
+                Position = new Vector2(x, y),
                 ZIndex = zIndex
             };
             return this;

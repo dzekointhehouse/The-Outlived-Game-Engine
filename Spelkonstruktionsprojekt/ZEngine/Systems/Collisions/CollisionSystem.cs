@@ -178,7 +178,7 @@ namespace ZEngine.Systems
         }
 
         // stops the sprite from going off the screen
-        public void Boundering(Vector2D spritePosition, int width, int height)
+        public void Boundering(Vector2 spritePosition, int width, int height)
         {
             spritePosition.X = MathHelper.Clamp((float)spritePosition.X, (0 + (width / 2)), (900 - (width / 2)));
             spritePosition.Y = MathHelper.Clamp((float)spritePosition.Y, (0 + (height / 2)), (500 - (height / 2)));

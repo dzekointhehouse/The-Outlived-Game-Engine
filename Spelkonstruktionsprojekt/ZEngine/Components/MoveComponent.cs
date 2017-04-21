@@ -14,11 +14,11 @@ namespace ZEngine.Components
     public class MoveComponent : IComponent
     {
         public Vector2 PreviousPosition { get; set; }
-        public double Direction { get; set; } = 0;
-        public double Speed = 0;
+        public float Direction { get; set; } = 0;
+        public float Speed = 0;
         public double AccelerationSpeed = 10;
         public double BackwardsPenaltyFactor = 0.5;
-        public double MaxVelocitySpeed = 0;
+        public float MaxVelocitySpeed = 0;
         public double RotationMomentum = 0;
         public double RotationSpeed = 0;
     }

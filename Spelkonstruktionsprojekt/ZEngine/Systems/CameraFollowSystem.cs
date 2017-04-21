@@ -15,7 +15,7 @@ namespace ZEngine.Systems
 {
     class CameraSceneSystem : ISystem
     {
-        private ComponentManager ComponentManager = ComponentManager.Instance;
+        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void Update(GameTime gameTime)
         {
@@ -37,8 +37,10 @@ namespace ZEngine.Systems
             foreach (var fixedEntity in fixedRenderables)
             {
                 var offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(fixedEntity.Key);
-                fixedEntity.Value.PositionComponent.Position.X = camera.Value.View.X + offsetComponent.Offset.X;
-                fixedEntity.Value.PositionComponent.Position.Y = camera.Value.View.Y + offsetComponent.Offset.Y;
+
+                var position = fixedEntity.Value.PositionComponent.Position;
+                position.X = camera.Value.View.X + offsetComponent.Offset.X;
+                position.Y = camera.Value.View.Y + offsetComponent.Offset.Y;
             }
         }
 
