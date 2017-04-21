@@ -16,6 +16,8 @@ namespace ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
+        // Update call so the camera follows the followable
+        // entities.
         public void Update(GameTime gameTime)
         {
             UpdateCameraPosition(gameTime);
