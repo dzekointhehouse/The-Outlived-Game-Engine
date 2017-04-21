@@ -74,13 +74,14 @@
     <Compile Include="ZEngine\GameTest\TestChaseGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
+    <Compile Include="ZEngine\Helpers\FullZengineBundle.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
     <Compile Include="ZEngine\Systems\AISystem.cs" />
     <Compile Include="ZEngine\Systems\AnimationSystem.cs" />
-    <Compile Include="ZEngine\Systems\CameraFollowSystem.cs" />
+    <Compile Include="ZEngine\Systems\CameraSceneSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\BulletCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionResolveSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionSystem.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\AbilitySystem.cs" />
+    <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
@@ -103,7 +105,6 @@
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
-    <Compile Include="ZEngine\Wrappers\Vector2D.cs" />
     <Compile Include="Zenu\Button.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 
@@ -31,9 +30,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 var dir = playerPos - aiPos;
                 dir.Normalize();
-                double newDirection = Math.Atan2(dir.Y, dir.X);
+                var newDirection = Math.Atan2(dir.Y, dir.X);
 
-                aiMoveComponent.Direction = newDirection;
+                aiMoveComponent.Direction = (float) newDirection;
                 if (aiMoveComponent.Speed < 1)
                 {
                     aiMoveComponent.Speed = 1;

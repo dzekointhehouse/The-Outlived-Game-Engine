@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,13 +11,11 @@ using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
 using ZEngine.Wrappers;
-using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -81,6 +75,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Initialize()
         {
+            this.IsMouseVisible = true;
             //Get Systems
             RenderSystem = SystemManager.Instance.GetSystem<RenderSystem>();
             LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
@@ -447,7 +442,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, entityId);
         }
-
+        
         protected override void LoadContent()
         {
             video = Content.Load<Video>("ZEngine-intro");
@@ -462,8 +457,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 player.Play(video);
             }
-
-
         }
 
         protected override void UnloadContent()
@@ -471,10 +464,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             // TODO: Unload any non ContentManager content here
         }
 
-        protected override void Update(GameTime gameTime)
+        public void ToUpdate(GameTime gameTime)
         {
-            if (player.State == MediaState.Stopped)
-            {
                 EnemyCollisionSystem.GameTime = gameTime;
                 InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
@@ -492,13 +483,46 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 if (TempGameEnder.Score > 0)
                 {
                     Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);
-                    while (true) ;
+                    while (true) ;       
                 }
-            }
+        }
+
+        // Game states
+        private enum GameState {
+            Intro,
+            Menu,
+            InGame,
+            GameOver
+        };
+
+        // Here we just say that the first state is the Intro
+        private GameState currentGameState = GameState.Intro;
+
+        protected override void Update(GameTime gameTime)
+        {
+            ToUpdate(gameTime);                        
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        public void continueButton()
+        {
+            SpriteFont font = Content.Load<SpriteFont>("Score");            
+            String text = "PRESS ENTER TO CONTINUE...";           
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
+                || Keyboard.GetState().IsKeyDown(Keys.Enter)) currentGameState = GameState.InGame;
+
+            spriteBatch.Begin();
+
+            spriteBatch.DrawString(font, text, new Vector2((Window.ClientBounds.Width / 2)
+                                - (font.MeasureString(text).X / 2),
+                                  (Window.ClientBounds.Height / 2)
+                                - (font.MeasureString(text).Y / 2)), Color.SaddleBrown);
+
+            spriteBatch.End();
+        }
+
+        public void IntroVideo()
         {
             Texture2D videoTexture = null;
 
@@ -510,13 +534,46 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 spriteBatch.Begin();
                 spriteBatch.Draw(videoTexture, new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y), Color.White);
                 spriteBatch.End();
-            }
-            if (player.State == MediaState.Stopped) {
 
+            } else currentGameState = GameState.Menu;
+        }
+
+        public void PlayGame(GameTime gameTime)
+        {
                 LightSystems.BeginDraw(penumbraComponent);
                 RenderSystem.Render(_gameDependencies);
                 LightSystems.EndDraw(penumbraComponent, gameTime);
-                TitlesafeRenderSystem.Draw(_gameDependencies);
+                TitlesafeRenderSystem.Draw(_gameDependencies);            
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            switch (currentGameState) {
+
+                case GameState.Intro:
+
+                    IntroVideo();
+
+                    break;
+
+                case GameState.Menu:
+
+                    continueButton();
+
+                    break;
+
+                case GameState.InGame:
+
+                    PlayGame(gameTime);
+
+                    break;
+
+                case GameState.GameOver:
+
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
+                        Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+
+                    break;
             }
             base.Draw(gameTime);
         }

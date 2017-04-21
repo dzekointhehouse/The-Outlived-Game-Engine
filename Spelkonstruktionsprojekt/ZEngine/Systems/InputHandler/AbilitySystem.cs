@@ -23,8 +23,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         private string RunEventName = "entityRun";
 
         //Temp thing for demo
-        private double VelcoityBonus = 400;
-        private double PreviousMaxVelocity;
+        private float VelocityBonus = 400;
+        private float PreviousMaxVelocity;
 
         public void Start()
         {
@@ -74,8 +74,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 
                 //Algorithm for turning stepwise on each iteration
                 //Modulus is for when the direction makes a whole turn
-                moveComponent.Direction = (start + (target - start) / generalAnimation.Length * elapsedTime) %
-                                          MathHelper.TwoPi;
+                moveComponent.Direction = (float) ((start + (target - start) / generalAnimation.Length * elapsedTime) %
+                                                   MathHelper.TwoPi);
             };
         }
 
@@ -105,7 +105,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 
             animationComponent.Animations.Add(animation);
             PreviousMaxVelocity = moveComponent.MaxVelocitySpeed;
-            moveComponent.MaxVelocitySpeed = VelcoityBonus;
+            moveComponent.MaxVelocitySpeed = VelocityBonus;
             moveComponent.Speed = moveComponent.MaxVelocitySpeed;
         }
 
@@ -122,32 +122,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                     generalAnimation.IsDone = true;
                     return;
                 }
-                if (elapsedTime > sprintTime && moveComponent.MaxVelocitySpeed == VelcoityBonus)
+                if (elapsedTime > sprintTime && moveComponent.MaxVelocitySpeed == VelocityBonus)
                 {
                     Debug.WriteLine("Sprint done.");
                     moveComponent.MaxVelocitySpeed = PreviousMaxVelocity;
-                    moveComponent.Speed = moveComponent.MaxVelocitySpeed * 0.2;
+                    moveComponent.Speed = (float) (moveComponent.MaxVelocitySpeed * 0.2);
                 }
             };
         }
-    }
-
-    public class GeneralAnimation
-    {
-        public bool IsDone = false;
-
-        //Animation takes one parameter <CurrentTimeInMilliseconds>
-        public Action<double> Animation { get; set; }
-
-        public bool Loop { get; set; } = false;
-
-        //When animation is unique, no second animation of same AnimationId may run on entity
-        public bool Unique { get; set; } = false;
-
-        public string AnimationType { get; set; } = "";
-
-        public double Length { get; set; } = 0;
-
-        public double StartOfAnimation { get; set; } = 0;
     }
 }

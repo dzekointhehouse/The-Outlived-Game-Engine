@@ -15,7 +15,6 @@ using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
