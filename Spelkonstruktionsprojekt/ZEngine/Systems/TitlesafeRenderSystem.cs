@@ -48,9 +48,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // them (the text for every player) on top of eachother.
             var previousHeight = 5f;
 
-            var g = _gameDependencies.GameContent as ContentManager;         
+            var contentManager = _gameDependencies.GameContent as ContentManager;         
             // Maybe let the user decide?
-            var spriteFont = g.Load<SpriteFont>("ZEone");
+            var spriteFont = contentManager.Load<SpriteFont>("ZEone");
 
             foreach (var playerInstance in playerComponents)
             {

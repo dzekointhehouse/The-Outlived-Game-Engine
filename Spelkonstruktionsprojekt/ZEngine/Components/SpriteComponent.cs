@@ -18,6 +18,7 @@ namespace ZEngine.Components
         public bool SpriteIsLoaded { get; set; } = false;
         public Texture2D Sprite { get; set; }
         public string SpriteName { get; set; }
+        public Rectangle SourceRectangle { get; set; }
         public float Scale { get; set; } = 1;
     }
 }

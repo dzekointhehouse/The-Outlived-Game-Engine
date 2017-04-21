@@ -93,7 +93,7 @@ namespace ZEngine.Systems
                         angle = moveComponent.Direction;
                     }
 
-                    sprite.Scale = 1; // For testing, will be removed once feature is actually implemented
+                    sprite.Scale = 4; // For testing, will be removed once feature is actually implemented
 
                     var offset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(entity.Key)
                         ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key).Offset
@@ -104,11 +104,15 @@ namespace ZEngine.Systems
                         new Point((int) (renderBox.X + offset.X), (int) (renderBox.Y + offset.Y)),
                         new Point((int) (renderBox.Width * sprite.Scale), (int) (renderBox.Height * sprite.Scale))  
                     );
-                    var spriteCrop = new Rectangle(
-                        sprite.Position,
-                        new Point(sprite.Width, sprite.Height)
-                    );
 
+                    var spriteCrop = sprite.SourceRectangle;
+                    if (spriteCrop == default(Rectangle))
+                    {
+                        spriteCrop = new Rectangle(
+                            sprite.Position,
+                            new Point(sprite.Width, sprite.Height)
+                        );
+                    }
                     //System.Diagnostics.Debug.WriteLine(
                     //    "Position " + new Vector2(destinationRectangle.X, destinationRectangle.Y).ToString()
                     //    + " Dimensions  [ W:" + destinationRectangle.Width + ",  H:" + destinationRectangle.Height + " ]"

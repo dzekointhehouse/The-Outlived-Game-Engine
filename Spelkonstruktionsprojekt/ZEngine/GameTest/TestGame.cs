@@ -53,6 +53,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private VideoPlayer player;
         private WeaponSystem WeaponSystem;
         private HealthSystem HealthSystem;
+        private SpriteAnimationSystem spriteAnimationSystem;
 
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
@@ -106,6 +107,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
             BulletCollisionSystem = SystemManager.Instance.GetSystem<BulletCollisionSystem>();
             HealthSystem = SystemManager.Instance.GetSystem<HealthSystem>();
+            spriteAnimationSystem = SystemManager.Instance.GetSystem<SpriteAnimationSystem>();
 
             TempGameEnder = new TempGameEnder();
 
@@ -391,6 +393,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
        
             };
 
+            var animation = new SpriteAnimationComponent()
+            {
+
+                Spritesheet = Content.Load<Texture2D>("blood"),
+                SpritesheetSize = new Point(6,6),
+                
+            };
+            ComponentManager.Instance.AddComponentToEntity(animation, entityId);
+
             ComponentManager.Instance.AddComponentToEntity(sound, entityId);
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
@@ -495,6 +506,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 LightSystems.Update(gameTime, viewportDimensions);
                // HealthSystem.TempEndGameIfDead(TempGameEnder);
                 HealthSystem.Update();
+                spriteAnimationSystem.Update(gameTime);
                 if (TempGameEnder.Score > 0)
                 {
                     Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);
