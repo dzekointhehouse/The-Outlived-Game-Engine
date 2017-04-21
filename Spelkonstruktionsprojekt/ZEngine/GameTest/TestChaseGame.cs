@@ -521,8 +521,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public void ExitButton()
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                       Keyboard.GetState().IsKeyDown(Keys.S)) Exit();
+            if ((GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                       Keyboard.GetState().IsKeyDown(Keys.S)) && currentGameState == GameState.Menu) Exit();
         }
 
         public void BackToMenu()
