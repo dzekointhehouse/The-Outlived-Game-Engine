@@ -488,7 +488,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 CameraFollowSystem.Update(gameTime);
                 LightSystems.Update(gameTime, viewportDimensions);
-                HealthSystem.TempEndGameIfDead(TempGameEnder);
+                //HealthSystem.TempEndGameIfDead(TempGameEnder);
                 if (TempGameEnder.Score > 0)
                 {
                     Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);
