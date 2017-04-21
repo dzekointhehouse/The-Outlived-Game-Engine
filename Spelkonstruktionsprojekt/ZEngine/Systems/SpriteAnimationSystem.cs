@@ -39,40 +39,44 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(animation.Key);
                 var sprite = ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(animation.Key);
 
-                //if (!health.Alive && animation.Value.CurrentFrame != animation.Value.SpritesheetSize)
-                //    {
-                        animation.Value.TimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+                if (!health.Alive)
+                {
+                    animation.Value.TimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
 
-                        if (animation.Value.TimeSinceLastFrame > animation.Value.MillisecondsPerFrame)
+                    if (animation.Value.TimeSinceLastFrame > animation.Value.MillisecondsPerFrame)
+                    {
+                        animation.Value.TimeSinceLastFrame -= animation.Value.MillisecondsPerFrame;
+                        ++valueCurrentFrame.X;
+
+
+
+                        if (valueCurrentFrame.X >= animation.Value.SpritesheetSize.X && animation.Value.CurrentFrame != animation.Value.SpritesheetSize)
                         {
-                            animation.Value.TimeSinceLastFrame -= animation.Value.MillisecondsPerFrame;
-                            ++valueCurrentFrame.X;
+                            valueCurrentFrame.X = 0;
+                            ++valueCurrentFrame.Y;
 
-                            if (valueCurrentFrame.X >= animation.Value.SpritesheetSize.X)
+                            if (valueCurrentFrame.Y >= animation.Value.SpritesheetSize.Y)
                             {
-                                valueCurrentFrame.X = 0;
-                                ++valueCurrentFrame.Y;
+                                valueCurrentFrame.Y = 3;
 
-                                if (valueCurrentFrame.Y >= animation.Value.SpritesheetSize.Y)
-                                {
-                                    valueCurrentFrame.Y = 3;
-
-                                }
                             }
-                        //}
-
-                        animation.Value.CurrentFrame = new Point(valueCurrentFrame.X, valueCurrentFrame.Y);
-                        sprite.Scale = 5;
-
-                        sprite.Sprite = animation.Value.Spritesheet;
-                        // Calculate the current animation frame
-                        sprite.SourceRectangle = new Rectangle(
-                            valueCurrentFrame.X * frameSize.X, // x-offset into texture
-                            valueCurrentFrame.Y * frameSize.Y, // y-offset into texture
-                            frameSize.X, // frame width in pixels
-                            frameSize.Y // frame height in pixels
-                        );
+                        }
                     }
+
+                    animation.Value.CurrentFrame = new Point(valueCurrentFrame.X, valueCurrentFrame.Y);
+                    sprite.Scale = 1;
+
+                    sprite.Sprite = animation.Value.Spritesheet;
+                    // Calculate the current animation frame
+                    sprite.SourceRectangle = new Rectangle(
+                        valueCurrentFrame.X * frameSize.X, // x-offset into texture
+                        valueCurrentFrame.Y * frameSize.Y, // y-offset into texture
+                        frameSize.X, // frame width in pixels
+                        frameSize.Y // frame height in pixels
+                    );
+                    if (!health.Alive && animation.Value.CurrentFrame == animation.Value.SpritesheetSize)
+                        ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), animation.Key);
+                }
             }
         }
     }
