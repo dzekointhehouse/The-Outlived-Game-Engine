@@ -373,7 +373,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Build();
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "topDownSoldier"
+                SpriteName = "topDownSoldier",
+                Scale = 1
+
             };
             var light = new LightComponent()
             {
@@ -397,7 +399,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
 
                 Spritesheet = Content.Load<Texture2D>("blood"),
-                SpritesheetSize = new Point(6,6),
+                SpritesheetSize = new Point(3,3),
                 
             };
             ComponentManager.Instance.AddComponentToEntity(animation, entityId);
@@ -498,7 +500,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 AISystem.Update(gameTime);
                 MoveSystem.Move(gameTime);
                 AnimationSystem.RunAnimations(gameTime);
-
+                spriteAnimationSystem.Update(gameTime);
                 CollisionSystem.DetectCollisions();
                 CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
 
@@ -506,7 +508,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 LightSystems.Update(gameTime, viewportDimensions);
                // HealthSystem.TempEndGameIfDead(TempGameEnder);
                 HealthSystem.Update();
-                spriteAnimationSystem.Update(gameTime);
+
                 if (TempGameEnder.Score > 0)
                 {
                     Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);

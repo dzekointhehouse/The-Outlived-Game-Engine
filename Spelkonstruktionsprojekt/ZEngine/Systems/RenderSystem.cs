@@ -93,8 +93,6 @@ namespace ZEngine.Systems
                         angle = moveComponent.Direction;
                     }
 
-                    sprite.Scale = 4; // For testing, will be removed once feature is actually implemented
-
                     var offset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(entity.Key)
                         ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key).Offset
                         : default(Vector2);
