@@ -1,24 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using ZEngine.Components;
 using ZEngine.Managers;
+using static Spelkonstruktionsprojekt.ZEngine.GameTest.TestChaseGame;
 
 namespace Spelkonstruktionsprojekt.Zenu
 {
     public class Button
     {
-        public Button(string text, Rectangle rectangle)
+        public Button(GameState currentGameState, GameState nextGameState)
         {
-            var entityId = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent = new RenderComponentBuilder()
-                .Position(rectangle.X, rectangle.Y, 800)
-                .Dimensions(rectangle.Width, rectangle.Height)
-                .Build();
-            var spriteComponent = new SpriteComponent()
-            {
-                SpriteName = "dot"
-            };
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+                || Keyboard.GetState().IsKeyDown(Keys.Enter)) currentGameState = nextGameState;
         }
     }
 }

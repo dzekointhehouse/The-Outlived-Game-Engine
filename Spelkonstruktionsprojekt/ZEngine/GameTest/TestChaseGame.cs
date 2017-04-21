@@ -495,7 +495,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         }
 
         // Game states
-        private enum GameState {
+        public enum GameState {
             Intro,
             Menu,
             InGame,
@@ -503,7 +503,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         };
 
         // Here we just say that the first state is the Intro
-        private GameState currentGameState = GameState.Intro;
+        public GameState currentGameState = GameState.Intro;
 
         protected override void Update(GameTime gameTime)
         {
@@ -511,20 +511,46 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             base.Update(gameTime);
         }
 
-        public void continueButton()
+        public void MainMenu()
         {
-            SpriteFont font = Content.Load<SpriteFont>("Score");            
-            String text = "PRESS ENTER TO CONTINUE...";           
+            MainMenuDisplay();
+            ContinueButton();
+            BackToMenu();
+            ExitButton();
+        }
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
+        public void ContinueButton()
+        {
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
                 || Keyboard.GetState().IsKeyDown(Keys.Enter)) currentGameState = GameState.InGame;
+        }
+
+        public void ExitButton()
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                       Keyboard.GetState().IsKeyDown(Keys.S)) Exit();
+        }
+
+        public void BackToMenu()
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                       Keyboard.GetState().IsKeyDown(Keys.Escape)) currentGameState = GameState.Menu;
+        }
+
+        public void MainMenuDisplay()
+        {
+            SpriteFont font = Content.Load<SpriteFont>("Score");
+
+            String textEscape = "ESCAPE: BACK TO THE MAIN MENU / PAUSE THE GAME";
+            String textContinue = "ENTER: CONTINUE";
+            String textExit = "S: EXIT THE GAME";
 
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(font, text, new Vector2((Window.ClientBounds.Width / 2)
-                                - (font.MeasureString(text).X / 2),
-                                  (Window.ClientBounds.Height / 2)
-                                - (font.MeasureString(text).Y / 2)), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textContinue, new Vector2(400, 170), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textEscape, new Vector2(400, 200), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textExit, new Vector2(400, 230), Color.SaddleBrown);
 
             spriteBatch.End();
         }
@@ -550,7 +576,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 LightSystems.BeginDraw(penumbraComponent);
                 RenderSystem.Render(_gameDependencies);
                 LightSystems.EndDraw(penumbraComponent, gameTime);
-                TitlesafeRenderSystem.Draw(_gameDependencies);            
+                TitlesafeRenderSystem.Draw(_gameDependencies);
+
+                BackToMenu();
+                ContinueButton();
+                ExitButton();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -565,7 +595,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 case GameState.Menu:
 
-                    continueButton();
+                    MainMenu();
 
                     break;
 
@@ -577,8 +607,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 case GameState.GameOver:
 
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
-                        Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+                    ExitButton();
 
                     break;
             }
