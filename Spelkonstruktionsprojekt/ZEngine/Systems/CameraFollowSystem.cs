@@ -53,11 +53,8 @@ namespace ZEngine.Systems
 
             foreach (var entity in followEntities)
             {
-                //if (ComponentManager.EntityHasComponent<RenderComponent>(entity.Key))
-                //{
                     var comp = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
                     averagePosition += comp.PositionComponent.Position;
-                //}
             }
 
 

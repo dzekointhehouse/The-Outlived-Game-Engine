@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Components;
 using ZEngine.Managers;
@@ -21,10 +22,11 @@ namespace ZEngine.Systems
 
         public ISystem Start()
         {
-            EventBus.Subscribe<InputEvent>("entityWalkForwards", WalkForwards);
-            EventBus.Subscribe<InputEvent>("entityWalkBackwards", WalkBackwards);
-            EventBus.Subscribe<InputEvent>("entityTurnLeft", TurnLeft);
-            EventBus.Subscribe<InputEvent>("entityTurnRight", TurnRight);
+            
+            EventBus.Subscribe<InputEvent>(EventConstants.WalkForward, WalkForwards);
+            EventBus.Subscribe<InputEvent>(EventConstants.WalkBackward, WalkBackwards);
+            EventBus.Subscribe<InputEvent>(EventConstants.TurnLeft, TurnLeft);
+            EventBus.Subscribe<InputEvent>(EventConstants.TurnRight, TurnRight);
             return this;
         }
 
