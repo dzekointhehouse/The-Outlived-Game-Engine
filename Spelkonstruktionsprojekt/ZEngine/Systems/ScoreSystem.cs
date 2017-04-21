@@ -26,5 +26,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
             return total;
         }
+
+        public int totalScore(TeamComponent team)
+        {
+            int total = 0;
+            foreach(int member in team.members)
+            {
+                if (ComponentManager.Instance.EntityHasComponent(typeof(ScoreComponent), member)){
+                    total += ComponentManager.Instance.GetEntityComponentOrDefault<ScoreComponent>(member).score;
+                }
+            }
+            return total;
+        }
+
     }
 }
