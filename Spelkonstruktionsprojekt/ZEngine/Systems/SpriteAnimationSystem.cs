@@ -46,6 +46,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 // We get the health component to check if the entity is alive, and
                 // the sprite component so we can set the new texture to render upon death.
+                //if (ComponentManager.Instance.EntityHasComponent(typeof(HealthComponent), animation.Key))
+                //    continue;
+
                 var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(animation.Key);
                 var sprite = ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(animation.Key);
 
