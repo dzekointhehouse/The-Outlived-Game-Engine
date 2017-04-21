@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,14 +11,11 @@ using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
 using ZEngine.Wrappers;
-using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
-using Spelkonstruktionsprojekt.Zenu;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -486,7 +479,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 CameraFollowSystem.Update(gameTime);
                 LightSystems.Update(gameTime, viewportDimensions);
-                HealthSystem.TempEndGameIfDead(TempGameEnder);
+                //HealthSystem.TempEndGameIfDead(TempGameEnder);
                 if (TempGameEnder.Score > 0)
                 {
                     Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);

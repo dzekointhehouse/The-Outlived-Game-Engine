@@ -15,7 +15,6 @@ using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
@@ -494,7 +493,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 CameraFollowSystem.Update(gameTime);
                 LightSystems.Update(gameTime, viewportDimensions);
-                HealthSystem.TempEndGameIfDead(TempGameEnder);
+               // HealthSystem.TempEndGameIfDead(TempGameEnder);
+                HealthSystem.Update();
                 if (TempGameEnder.Score > 0)
                 {
                     Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);

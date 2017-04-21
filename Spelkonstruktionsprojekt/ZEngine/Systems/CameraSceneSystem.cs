@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 
@@ -15,8 +14,10 @@ namespace ZEngine.Systems
 {
     class CameraSceneSystem : ISystem
     {
-        private ComponentManager ComponentManager = ComponentManager.Instance;
+        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
+        // Update call so the camera follows the followable
+        // entities.
         public void Update(GameTime gameTime)
         {
             UpdateCameraPosition(gameTime);
@@ -37,8 +38,10 @@ namespace ZEngine.Systems
             foreach (var fixedEntity in fixedRenderables)
             {
                 var offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(fixedEntity.Key);
-                fixedEntity.Value.PositionComponent.Position.X = camera.Value.View.X + offsetComponent.Offset.X;
-                fixedEntity.Value.PositionComponent.Position.Y = camera.Value.View.Y + offsetComponent.Offset.Y;
+
+                var position = fixedEntity.Value.PositionComponent.Position;
+                position.X = camera.Value.View.X + offsetComponent.Offset.X;
+                position.Y = camera.Value.View.Y + offsetComponent.Offset.Y;
             }
         }
 
@@ -52,11 +55,8 @@ namespace ZEngine.Systems
 
             foreach (var entity in followEntities)
             {
-                //if (ComponentManager.EntityHasComponent<RenderComponent>(entity.Key))
-                //{
                     var comp = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
                     averagePosition += comp.PositionComponent.Position;
-                //}
             }
 
 

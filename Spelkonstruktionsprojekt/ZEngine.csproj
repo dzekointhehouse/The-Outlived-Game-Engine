@@ -81,7 +81,7 @@
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
     <Compile Include="ZEngine\Systems\AISystem.cs" />
     <Compile Include="ZEngine\Systems\AnimationSystem.cs" />
-    <Compile Include="ZEngine\Systems\CameraFollowSystem.cs" />
+    <Compile Include="ZEngine\Systems\CameraSceneSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\BulletCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionResolveSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionSystem.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\AbilitySystem.cs" />
+    <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
     <Compile Include="ZEngine\Systems\MoveSystem.cs" />
     <Compile Include="ZEngine\Systems\SoundSystem.cs" />
+    <Compile Include="ZEngine\Systems\SpriteAnimationSystem.cs" />
     <Compile Include="ZEngine\Systems\TitlesafeRenderSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
     <Compile Include="ZEngine\Systems\VideoPlayerSystem.cs" />
@@ -103,7 +105,6 @@
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
-    <Compile Include="ZEngine\Wrappers\Vector2D.cs" />
     <Compile Include="Zenu\Button.cs" />
   </ItemGroup>
   <ItemGroup>

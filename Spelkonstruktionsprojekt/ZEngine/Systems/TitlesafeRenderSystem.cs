@@ -48,30 +48,34 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // them (the text for every player) on top of eachother.
             var previousHeight = 5f;
 
-            var g = _gameDependencies.GameContent as ContentManager;
-            
+            var g = _gameDependencies.GameContent as ContentManager;         
             // Maybe let the user decide?
             var spriteFont = g.Load<SpriteFont>("ZEone");
 
             foreach (var playerInstance in playerComponents)
             {
                 string text = playerInstance.Value.Name;
-
                 // Adding the health component to text.
                 if (ComponentManager.Instance.EntityHasComponent<HealthComponent>(playerInstance.Key))
                 {
                     var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(playerInstance.Key);
-                    var currentHealth = health.MaxHealth - health.Damage.Sum();
-                    //text = text + ": " + health.CurrentHealth + "HP";
-                    text = text + ": " + currentHealth + "HP";
 
-                }
+                    if (health.Alive)
+                    {
+                        var currentHealth = health.MaxHealth - health.Damage.Sum();
+                        text = text + ": " + currentHealth + "HP";
+                    }
+                    else
+                    {
+                        text = text + ": Rest in peace";                      
+                    }
 
-                // adding ammo here the same way.
-                if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(playerInstance.Key))
-                {
-                    var ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(playerInstance.Key);
-                    text = text + " Ammo: " + ammo.Amount;
+                    // adding ammo here the same way.
+                    if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(playerInstance.Key) && health.Alive)
+                    {
+                        var ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(playerInstance.Key);
+                        text = text + " Ammo: " + ammo.Amount;
+                    }
                 }
 
                 // this call gives us the height of the text,

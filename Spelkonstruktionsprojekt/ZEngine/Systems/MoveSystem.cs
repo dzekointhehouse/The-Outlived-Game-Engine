@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 
@@ -17,7 +16,7 @@ namespace ZEngine.Systems
 
         public void Move(GameTime gameTime)
         {
-            var delta = gameTime.ElapsedGameTime.TotalSeconds;
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             var moveEntities = ComponentManager.GetEntitiesWithComponent<MoveComponent>();
             var renderEntities = ComponentManager.GetEntitiesWithComponent<RenderComponent>();
             foreach (var entity in renderEntities)
@@ -27,8 +26,8 @@ namespace ZEngine.Systems
                     var moveComponent = moveEntities[entity.Key];
 
                     //Play direction based on angular momentum
-                    moveComponent.Direction = (moveComponent.Direction + moveComponent.RotationMomentum * delta) %
-                                              MathHelper.TwoPi;
+                    moveComponent.Direction = (float) ((moveComponent.Direction + moveComponent.RotationMomentum * delta) %
+                                                       MathHelper.TwoPi);
 
                     //If the entity is moving, calculate new acceleration
                     //And if moving backwards, apply backwards motion penalty factor
@@ -43,7 +42,7 @@ namespace ZEngine.Systems
                             ? 1
                             : (-1 * moveComponent.BackwardsPenaltyFactor);
 
-                        moveComponent.Speed += multiplier * moveComponent.AccelerationSpeed * delta;
+                        moveComponent.Speed += (float)(multiplier * moveComponent.AccelerationSpeed * delta);
                     }
 
                     //Limit velocity if above max velocity
@@ -77,33 +76,33 @@ namespace ZEngine.Systems
             }
             else if (moveComponent.Speed < -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor)
             {
-                moveComponent.Speed = -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor;
+                moveComponent.Speed = (float) (-moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor);
             }
         }
 
-        public Vector2D MoveVector(Vector2D oldVector, Vector2D deltaVector, double deltaTime)
+        public Vector2 MoveVector(Vector2 oldVector, Vector2 deltaVector, float deltaTime)
         {
             var x = deltaVector.X * deltaTime;
             var y = deltaVector.Y * deltaTime;
-            return Vector2D.Create(oldVector.X + x, oldVector.Y + y);
+            return new Vector2(oldVector.X + x, oldVector.Y + y);
         }
 
-        public Vector2D Move(Vector2D oldVector, double direction, Vector2D acceleration, double deltaTime)
+        public Vector2 Move(Vector2 oldVector, float direction, Vector2 acceleration, float deltaTime)
         {
             var x1 = acceleration.X * Math.Cos(direction) * deltaTime;
             var y1 = acceleration.Y * Math.Sin(direction) * deltaTime;
             var x = (oldVector.X + x1);
             var y = (oldVector.Y + y1);
-            return Vector2D.Create(x, y);
+            return new Vector2((float)x, (float)y);
         }
 
-        public Vector2D MoveDirectly(Vector2D oldVector, double direction, double acceleration)
+        public Vector2 MoveDirectly(Vector2 oldVector, float direction, float acceleration)
         {
             var x1 = acceleration * Math.Cos(direction);
             var y1 = acceleration * Math.Sin(direction);
             var x = (oldVector.X + x1);
             var y = (oldVector.Y + y1);
-            return Vector2D.Create(x, y);
+            return new Vector2((float) x, (float) y);
         }
 
         public bool HasCollided(int entityId)
