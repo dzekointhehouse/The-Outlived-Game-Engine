@@ -400,7 +400,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 Spritesheet = Content.Load<Texture2D>("blood"),
                 SpritesheetSize = new Point(3,3),
-                
+                MillisecondsPerFrame = 30              
             };
             ComponentManager.Instance.AddComponentToEntity(animation, entityId);
 

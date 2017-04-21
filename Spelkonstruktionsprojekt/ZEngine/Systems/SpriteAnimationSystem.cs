@@ -24,7 +24,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             foreach (var animation in animationComponents)
             {
-                var valueCurrentFrame = animation.Value.CurrentFrame;
+                var currentFrame = animation.Value.CurrentFrame;
+                var sheetSize = animation.Value.SpritesheetSize;
                 var frameSize = animation.Value.FrameSize;
 
                 if (frameSize == default(Point))
@@ -39,43 +40,46 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(animation.Key);
                 var sprite = ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(animation.Key);
 
-                if (!health.Alive)
+                if (currentFrame.X != (sheetSize.X - 1) && currentFrame.Y != sheetSize.Y)
                 {
-                    animation.Value.TimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
-
-                    if (animation.Value.TimeSinceLastFrame > animation.Value.MillisecondsPerFrame)
+                    if (!health.Alive)
                     {
-                        animation.Value.TimeSinceLastFrame -= animation.Value.MillisecondsPerFrame;
-                        ++valueCurrentFrame.X;
+                        animation.Value.TimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
 
-
-
-                        if (valueCurrentFrame.X >= animation.Value.SpritesheetSize.X && animation.Value.CurrentFrame != animation.Value.SpritesheetSize)
+                        if (animation.Value.TimeSinceLastFrame > animation.Value.MillisecondsPerFrame)
                         {
-                            valueCurrentFrame.X = 0;
-                            ++valueCurrentFrame.Y;
+                            animation.Value.TimeSinceLastFrame -= animation.Value.MillisecondsPerFrame;
+                            ++currentFrame.X;
 
-                            if (valueCurrentFrame.Y >= animation.Value.SpritesheetSize.Y)
+
+
+                            if (currentFrame.X >= animation.Value.SpritesheetSize.X)
                             {
-                                valueCurrentFrame.Y = 3;
+                                currentFrame.X = 0;
+                                ++currentFrame.Y;
 
+                                if (currentFrame.Y >= animation.Value.SpritesheetSize.Y)
+                                {
+                                    currentFrame.Y = 3;
+
+                                }
                             }
                         }
+
+                        animation.Value.CurrentFrame = new Point(currentFrame.X, currentFrame.Y);
+                        sprite.Scale = 2;
+
+                        sprite.Sprite = animation.Value.Spritesheet;
+                        // Calculate the current animation frame
+                        sprite.SourceRectangle = new Rectangle(
+                            currentFrame.X * frameSize.X, // x-offset into texture
+                            currentFrame.Y * frameSize.Y, // y-offset into texture
+                            frameSize.X, // frame width in pixels
+                            frameSize.Y // frame height in pixels
+                        );
+                        //if (!health.Alive && animation.Value.CurrentFrame == animation.Value.SpritesheetSize)
+                        //    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), animation.Key);
                     }
-
-                    animation.Value.CurrentFrame = new Point(valueCurrentFrame.X, valueCurrentFrame.Y);
-                    sprite.Scale = 1;
-
-                    sprite.Sprite = animation.Value.Spritesheet;
-                    // Calculate the current animation frame
-                    sprite.SourceRectangle = new Rectangle(
-                        valueCurrentFrame.X * frameSize.X, // x-offset into texture
-                        valueCurrentFrame.Y * frameSize.Y, // y-offset into texture
-                        frameSize.X, // frame width in pixels
-                        frameSize.Y // frame height in pixels
-                    );
-                    if (!health.Alive && animation.Value.CurrentFrame == animation.Value.SpritesheetSize)
-                        ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), animation.Key);
                 }
             }
         }
