@@ -16,6 +16,7 @@ using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
 using ZEngine.Wrappers;
+using System.Collections.Generic;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -465,7 +466,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         }
 
         public void ToUpdate(GameTime gameTime)
-        {
+        {            
                 EnemyCollisionSystem.GameTime = gameTime;
                 InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
@@ -500,23 +501,60 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            ToUpdate(gameTime);                        
+            ToUpdate(gameTime);
             base.Update(gameTime);
         }
 
         public void MainMenu()
         {
+            MoveToOption();
             MainMenuDisplay();
             ContinueButton();
             BackToMenu();
             ExitButton();
         }
 
+        public void MoveToOption()
+        {
+            List<Vector2> soldierPositions = new List<Vector2>();
+
+            Texture2D soldier = Content.Load<Texture2D>("Reso");
+
+            soldierPositions.Add(new Vector2(330, 320));
+            soldierPositions.Add(new Vector2(330, 390));
+
+            //int size = 3;
+            //int start = 0;
+            //int end = 2;
+
+            spriteBatch.Begin();
+
+            //spriteBatch.Draw(soldier, soldierPositions[1], Color.SaddleBrown);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) || GamePad.GetState(PlayerIndex.One).DPad.Up == ButtonState.Pressed)
+            {
+                GraphicsDevice.Clear(Color.Black);
+                spriteBatch.Draw(soldier, soldierPositions[0], Color.SaddleBrown);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down) || GamePad.GetState(PlayerIndex.One).DPad.Down == ButtonState.Pressed)
+            {
+                GraphicsDevice.Clear(Color.Black);
+                spriteBatch.Draw(soldier, soldierPositions[1], Color.SaddleBrown);
+
+            } else if (Keyboard.GetState().IsKeyUp(Keys.Down))
+            {
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+                || Keyboard.GetState().IsKeyDown(Keys.Enter)) currentGameState = GameState.InGame;
+            }
+
+            spriteBatch.End();
+        }
+
         public void ContinueButton()
         {
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || Keyboard.GetState().IsKeyDown(Keys.Enter)) currentGameState = GameState.InGame;
+                || Keyboard.GetState().IsKeyDown(Keys.A)) currentGameState = GameState.InGame;
         }
 
         public void ExitButton()
@@ -535,15 +573,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             SpriteFont font = Content.Load<SpriteFont>("Score");
 
-            String textEscape = "ESCAPE: BACK TO THE MAIN MENU / PAUSE THE GAME";
-            String textContinue = "ENTER: CONTINUE";
-            String textExit = "S: EXIT THE GAME";
+            String textCursor = "USE THE UP / DOWN ARROW-KEYS TO CHOOSE - ENTER: select option";
+            String textEscape = "ESC: BACK TO THE MAIN MENU / PAUSE THE GAME";
+            String textContinue = "START / CONTINUE";
+            String textExit = "EXIT THE GAME";
 
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(font, textContinue, new Vector2(400, 170), Color.SaddleBrown);
-            spriteBatch.DrawString(font, textEscape, new Vector2(400, 200), Color.SaddleBrown);
-            spriteBatch.DrawString(font, textExit, new Vector2(400, 230), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textCursor, new Vector2(400, 200), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textEscape, new Vector2(400, 280), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textContinue, new Vector2(400, 350), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textExit, new Vector2(400, 420), Color.SaddleBrown);
 
             spriteBatch.End();
         }
