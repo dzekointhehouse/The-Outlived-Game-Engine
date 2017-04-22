@@ -111,17 +111,18 @@ namespace ZEngine.Systems
                             new Point(sprite.Width, sprite.Height)
                         );
                     }
-                    //System.Diagnostics.Debug.WriteLine(
-                    //    "Position " + new Vector2(destinationRectangle.X, destinationRectangle.Y).ToString()
-                    //    + " Dimensions  [ W:" + destinationRectangle.Width + ",  H:" + destinationRectangle.Height + " ]"
-                    //);
+
+                    // We have color so we can use transparency for instance.
+                    var spriteColor = sprite.SpriteColor;
+                    if (sprite.SpriteColor == default(Color))
+                        spriteColor = Color.White;
 
                     var zIndexMaxLimit = 1000;
                     spriteBatch.Draw(
                         texture: sprite.Sprite,
                         destinationRectangle: destinationRectangle,
                         sourceRectangle: spriteCrop,
-                        color: Color.White,
+                        color: spriteColor * sprite.Alpha,
                         rotation: (float)angle,
                         origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2),
                         effects: SpriteEffects.None,

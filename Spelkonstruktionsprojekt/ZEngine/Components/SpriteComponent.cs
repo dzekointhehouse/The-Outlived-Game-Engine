@@ -19,6 +19,11 @@ namespace ZEngine.Components
         public Texture2D Sprite { get; set; }
         public string SpriteName { get; set; }
         public Rectangle SourceRectangle { get; set; }
+
+        // Added to be used for gradient transparency when an entity
+        // dies, but can be used in other cases also.
+        public Color SpriteColor { get; set; } = default(Color);
         public float Scale { get; set; } = 1;
+        public float Alpha { get; set; } = 1;
     }
 }
