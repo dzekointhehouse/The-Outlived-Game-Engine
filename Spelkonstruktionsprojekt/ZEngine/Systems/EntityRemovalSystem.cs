@@ -56,16 +56,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     var animation = new GeneralAnimation()
                     {
                         // this seems to be weird
-                        StartOfAnimation = gameTime.ElapsedGameTime.Milliseconds,
-                        Length = 6000
+                        
+                        StartOfAnimation = gameTime.TotalGameTime.TotalMilliseconds,
+                        Length = 6000,
+                        Unique = true
+                    
                     };
 
                     var animationAction = NewDeathFadeAwayAnimation(animation, entity.Key);
                     animation.Animation = animationAction;
 
-                    // Create the animation only if it doesn't already exist
-                    if (!animationComponent.Animations.Contains(animation))
-                        animationComponent.Animations.Add(animation);
                 }
             }
 
@@ -93,9 +93,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entityKey);
                     lightComponent.Light.Scale = Vector2.Zero;
                     
-                    //ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
-                    //ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entityKey);
-                    //ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteComponent), entityKey);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entityKey);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteComponent), entityKey);
 
                     animation.IsDone = true;
                 }

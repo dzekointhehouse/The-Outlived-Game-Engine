@@ -510,7 +510,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 LightSystems.Update(gameTime, viewportDimensions);
                // HealthSystem.TempEndGameIfDead(TempGameEnder);
                 HealthSystem.Update();
-                entityRemovalSystem.Update(gameTime);
+               entityRemovalSystem.Update(gameTime);
 
                 if (TempGameEnder.Score > 0)
                 {
@@ -537,9 +537,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (player.State == MediaState.Stopped) {
 
                 LightSystems.BeginDraw(penumbraComponent);
-                RenderSystem.Render(_gameDependencies);
+                RenderSystem.Render(_gameDependencies); // lowers FPS by half (2000)
                 LightSystems.EndDraw(penumbraComponent, gameTime);
-                TitlesafeRenderSystem.Draw(_gameDependencies);
+                TitlesafeRenderSystem.Draw(_gameDependencies); // not noticable
             }
             base.Draw(gameTime);
         }

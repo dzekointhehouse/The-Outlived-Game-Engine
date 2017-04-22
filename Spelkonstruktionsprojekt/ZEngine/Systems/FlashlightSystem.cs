@@ -25,7 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.
-                AmbientColor = new Color(new Vector3(0.1f))
+                AmbientColor = new Color(new Vector3(1f))
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
             foreach (var instance in lights)
