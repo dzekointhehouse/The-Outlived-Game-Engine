@@ -26,7 +26,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
-            Debug.WriteLine("WALL E:" + collisionEvent.Entity + ", T:" + collisionEvent.Target + ", -:" + collisionEvent.Event);
+            //Debug.WriteLine("WALL E:" + collisionEvent.Entity + ", T:" + collisionEvent.Target + ", -:" + collisionEvent.Event);
             if (IsBulletCollisionAndNotRelevant(collisionEvent)) return;
 
             var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);

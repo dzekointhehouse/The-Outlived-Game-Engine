@@ -59,11 +59,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     // this animation also needs to be unique, which means we won't create it 
                     // every time we come to this system. Also the gametime is needed.
                     var animation = new GeneralAnimation()
-                    {   
+                    {
                         StartOfAnimation = gameTime.TotalGameTime.TotalMilliseconds,
                         Length = 6000,
                         Unique = true
-                    
+
                     };
 
                     // Now we add it.
@@ -91,7 +91,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 var sprite = ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(entityKey);
 
-                if(sprite == null) return;
+                if (sprite == null) return;
 
                 // This will make the blood disappear in a fading fashion.
                 if (animation.Length < elapsedTime)
@@ -106,7 +106,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     var lightComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entityKey);
                     lightComponent.Light.Scale = Vector2.Zero;
-                    
+
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entityKey);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteComponent), entityKey);
