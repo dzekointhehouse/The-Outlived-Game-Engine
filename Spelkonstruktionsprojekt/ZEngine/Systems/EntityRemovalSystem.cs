@@ -99,7 +99,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     if (sprite.Alpha > 0)
                     {
                         // fading rate can be adjusted here.
-                        sprite.Alpha -= 0.00001f;
+                        sprite.Alpha -= 0.0001f;
                         return;
                     }
 
