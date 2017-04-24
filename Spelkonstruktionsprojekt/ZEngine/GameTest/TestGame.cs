@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Penumbra;
-using Spelkonstruktionsprojekt.Zenu;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
@@ -136,7 +135,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
-            var button = new Button();
+           // var button = new Button();
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
             //SetupBackground();

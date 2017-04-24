@@ -53,7 +53,6 @@
     <Compile Include="ZEngine\Components\HealthComponent.cs" />
     <Compile Include="ZEngine\Components\AmmoComponent.cs" />
     <Compile Include="ZEngine\Components\LightComponent.cs" />
-    <Compile Include="ZEngine\Components\MenuComponent.cs" />
     <Compile Include="ZEngine\Components\MoveComponent.cs" />
     <Compile Include="ZEngine\Components\PickupComponent.cs" />
     <Compile Include="ZEngine\Components\PlayerComponent.cs" />
