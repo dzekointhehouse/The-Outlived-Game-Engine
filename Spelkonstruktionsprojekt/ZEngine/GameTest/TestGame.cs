@@ -12,6 +12,7 @@ using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
+using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
@@ -240,30 +241,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public void SetupBackgroundTiles(int width, int height)
         {
-            for (var x = 0; x < width; x++)
+           var map = new Dictionary<int, string>();
+
+            map.Add(1, "grass");
+            map.Add(2, "dot");
+
+            MapHelper mapcreator = new MapHelper(map);
+
+            int[,] matrix = new int[,]
             {
-                for (var y = 0; y < height; y++)
-                {
-                    var entityId3 = EntityManager.GetEntityManager().NewEntity();
-                    //var renderComponent3 = new RenderComponentBuilder()
-                    //    .Position(x * 1000, y * 1000, 1)
-                    //    .Dimensions(1000, 1000).Build();
-                    var position = new PositionComponent() {Position = new Vector2(x * 1000, y * 1000), ZIndex = 1};
-                    ComponentManager.Instance.AddComponentToEntity(position, entityId3);
-
-
-                    var renderComponent3 = new RenderComponent()
-                    {
-                         DimensionsComponent = new DimensionsComponent() { Height =  1000, Width = 1000}  
-                    };
-                    ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
-                    var spriteComponent3 = new SpriteComponent()
-                    {
-                        SpriteName = "Grass"
-                    };
-                    ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
-                }
-            }
+                {2, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1},
+                {1, 1, 2, 1, 1},
+                {1, 1, 1, 1, 1},
+            };
+            mapcreator.CreateMapTiles(matrix, 1000);
         }
 
         public void SetupCamera()

@@ -33,8 +33,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                 // Gets the number of values in the specified dimension.
                 for (var y = 0; y < map.GetLength(0); y++)
                 {
+                    //
                     int positionNumber = map[y, x];
 
+                    // where to place it.
                     var position = new PositionComponent() { Position = new Vector2(x * size, y * size), ZIndex = 1 };
 
 
