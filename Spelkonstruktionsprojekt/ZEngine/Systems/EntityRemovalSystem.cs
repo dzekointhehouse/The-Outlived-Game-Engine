@@ -45,6 +45,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(CollisionComponent), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entity.Key);
 
+                    var lightComponent =
+                        ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
+                    lightComponent.Light.Scale = Vector2.Zero;
+
                     var animationComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
 
@@ -102,10 +106,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         sprite.Alpha -= 0.0001f;
                         return;
                     }
-
-                    var lightComponent =
-                        ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entityKey);
-                    lightComponent.Light.Scale = Vector2.Zero;
 
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entityKey);
