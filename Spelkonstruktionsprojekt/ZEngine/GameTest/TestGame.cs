@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Penumbra;
+using Spelkonstruktionsprojekt.Zenu;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
@@ -135,6 +136,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
+            var button = new Button();
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
             //SetupBackground();
@@ -388,7 +390,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.D, EventConstants.TurnRight)
                 .SetAction(Keys.Q, EventConstants.TurnAround)
                 .SetAction(Keys.E, EventConstants.FireWeapon)
-                .SetAction(Keys.LeftShift, EventConstants.Running)  
+                .SetAction(Keys.LeftShift, EventConstants.Running)
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();

@@ -548,7 +548,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public void ContinueButton()
         {
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
                 || Keyboard.GetState().IsKeyDown(Keys.Enter)) currentGameState = GameState.InGame;
         }
