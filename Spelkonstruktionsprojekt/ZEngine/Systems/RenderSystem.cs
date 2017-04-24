@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.EventBus;
@@ -25,7 +26,6 @@ namespace ZEngine.Systems
 
         public static string SystemName = "Render";
         private ComponentManager ComponentManager = ComponentManager.Instance;
-
         private GraphicsDevice graphics;
 
         // _____________________________________________________________________________________________________________________ //
@@ -112,7 +112,15 @@ namespace ZEngine.Systems
                         new Point((int)(renderBox.Width * sprite.Scale), (int)(renderBox.Height * sprite.Scale))
                     );
 
-                    var spriteCrop = sprite.SourceRectangle;
+
+                    // render the sprite only if it's visible (sourceRectangle) intersects
+                    // with the viewport.
+                    var camera = ComponentManager.Instance.GetEntitiesWithComponent<CameraViewComponent>().First();
+                    if (camera.Value.View.Intersects(destinationRectangle))
+                    {
+
+
+                        var spriteCrop = sprite.SourceRectangle;
                     if (spriteCrop == default(Rectangle))
                     {
                         spriteCrop = new Rectangle(
@@ -126,15 +134,12 @@ namespace ZEngine.Systems
                     if (sprite.SpriteColor == default(Color))
                         spriteColor = Color.White;
 
-                    var zIndexMaxLimit = 1000;
+                    // limit can be changed in SystemConstants
+                    var zIndexMaxLimit = SystemConstants.LayerDepthMaxLimit;
 
+                    
+                    
 
-
-                    //if (sprite.Position.X > graphics.Viewport.X &&
-                    //    sprite.Position.Y > graphics.Viewport.Y
-                    //    && sprite.Position.X < graphics.Viewport.Width - sprite.Width &&
-                    //    sprite.Position.Y < graphics.Viewport.Height - sprite.Height)
-                    //{
                         spriteBatch.Draw(
                             texture: sprite.Sprite,
                             destinationRectangle: destinationRectangle,
@@ -146,7 +151,7 @@ namespace ZEngine.Systems
                             layerDepth: (float) zIndex / zIndexMaxLimit
                             //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
                         );
-                   // }
+                    }
                 }
             }
 

@@ -37,6 +37,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             return penumbra;
         }
 
+        // This update call will be used to update the lights position if it is
+        // attached to an moving entity.
         public void Update(GameTime gameTime, Vector2 gameDimensions)
         {
             var camera = ComponentManager.Instance.GetEntitiesWithComponent<CameraViewComponent>().First();
@@ -52,8 +54,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 if (ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
                 {
-                    //var renderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(lightEntity.Key);
                     var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(lightEntity.Key);
+
                     lightEntity.Value.Light.Position =
                         new Vector2(
                             positionComponent.Position.X - cameraView.X,

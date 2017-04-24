@@ -49,12 +49,15 @@ namespace ZEngine.Systems
                     ApplyVelocityLimits(moveComponent);
 
                     //Play Velocity based on current direction and acceleration
-                    var velocity = MoveDirectly(new Vector2(0, 0), moveComponent.Direction,
+                    var oldVector = new Vector2(0, 0);
+                    var velocity = MoveDirectly(ref oldVector, moveComponent.Direction,
                         moveComponent.Speed);
 
                     // Play position with current velocity.
+                    var valuePosition = entity.Value.Position;
+
                     moveComponent.PreviousPosition = entity.Value.Position;
-                    entity.Value.Position = MoveVector(entity.Value.Position, velocity, delta);
+                    entity.Value.Position = MoveVector(ref valuePosition, ref velocity, delta);
 
                     //System.Diagnostics.Debug.WriteLine(
                     //    "moment " + moveComponent.RotationMomentum
@@ -80,14 +83,14 @@ namespace ZEngine.Systems
             }
         }
 
-        public Vector2 MoveVector(Vector2 oldVector, Vector2 deltaVector, float deltaTime)
+        public Vector2 MoveVector(ref Vector2 oldVector, ref Vector2 deltaVector, float deltaTime)
         {
             var x = deltaVector.X * deltaTime;
             var y = deltaVector.Y * deltaTime;
             return new Vector2(oldVector.X + x, oldVector.Y + y);
         }
 
-        public Vector2 Move(Vector2 oldVector, float direction, Vector2 acceleration, float deltaTime)
+        public Vector2 Move(ref Vector2 oldVector, float direction, ref Vector2 acceleration, float deltaTime)
         {
             var x1 = acceleration.X * Math.Cos(direction) * deltaTime;
             var y1 = acceleration.Y * Math.Sin(direction) * deltaTime;
@@ -96,7 +99,7 @@ namespace ZEngine.Systems
             return new Vector2((float)x, (float)y);
         }
 
-        public Vector2 MoveDirectly(Vector2 oldVector, float direction, float acceleration)
+        public Vector2 MoveDirectly(ref Vector2 oldVector, float direction, float acceleration)
         {
             var x1 = acceleration * Math.Cos(direction);
             var y1 = acceleration * Math.Sin(direction);

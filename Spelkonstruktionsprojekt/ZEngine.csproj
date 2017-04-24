@@ -70,6 +70,7 @@
     <Compile Include="ZEngine\Components\TempPlayerDeadSpriteComponent.cs" />
     <Compile Include="ZEngine\Components\WeaponComponent.cs" />
     <Compile Include="ZEngine\Constants\EventConstants.cs" />
+    <Compile Include="ZEngine\Constants\SystemConstants.cs" />
     <Compile Include="ZEngine\EventBus\IEventBus.cs" />
     <Compile Include="ZEngine\EventBus\TypedEventBus.cs" />
     <Compile Include="ZEngine\EventBus\EventBus.cs" />

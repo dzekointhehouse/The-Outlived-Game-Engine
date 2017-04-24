@@ -17,7 +17,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class EntityRemovalSystem : ISystem
     {
-        EventBus EventBus = EventBus.Instance;
 
         public void Update(GameTime gameTime)
         {

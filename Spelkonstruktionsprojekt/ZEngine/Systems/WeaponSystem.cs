@@ -14,11 +14,14 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
+    // Weapons system will be handling weapons stuff.
     class WeaponSystem : ISystem
     {
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
+        // On start we subsribe to the events that
+        // will be necessary for this system.
         public ISystem Start()
         {
             EventBus.Subscribe<InputEvent>(EventConstants.FireWeapon, HandleFireWeapon);
@@ -30,6 +33,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             return this;
         }
 
+        // This method is used to handle the event when an entity
+        // fires a weapon. It will create a bullet that travels from its
+        // origion to the direction of the entities moveComponent.
         public void HandleFireWeapon(InputEvent inputEvent)
         {
             if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
@@ -54,12 +60,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
+        // This method is called in the handleFireWeapon method to create the bullet
+        // that is fired from the entity. It will give the bullet all the necessary components.
         public void CreateBullet(InputEvent inputEvent, SpriteComponent bulletSpriteComponent, WeaponComponent weaponComponent, MoveComponent moveComponent, RenderComponent renderComponent, PositionComponent positionComponent)
         {
-            //var x = positionComponent.Position.X;
-            //var y = positionComponent.Position.Y;
-            //var z = positionComponent.ZIndex;
-
             // We create an new position instance for the bullet that starts from the player but should
             // not be the same as the players, as we found out when we did our test, otherwise the player
             // will follow the same way ass the bullet.
@@ -71,10 +75,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             
 
             int bulletEntityId = EntityManager.GetEntityManager().NewEntity();
-            //var bulletRenderComponent = new RenderComponentBuilder()
-            //   // .Position(x, y, z)
-            //    .Dimensions(10, 10)
-            //    .Build();
+
             var bulletRenderComponent = new RenderComponent()
             {
                 DimensionsComponent = new DimensionsComponent()
@@ -96,6 +97,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 ShooterEntityId = inputEvent.EntityId
             };
             var bulletCollisionComponent = new CollisionComponent();
+            var animationComponent = new AnimationComponent();
 
             ComponentManager.AddComponentToEntity(bulletPositionComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletComponent, bulletEntityId);
@@ -103,8 +105,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             ComponentManager.AddComponentToEntity(bulletMoveComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
-
-            var animationComponent = new AnimationComponent();
             ComponentManager.AddComponentToEntity(animationComponent, bulletEntityId);
 
             var animation = new GeneralAnimation()
@@ -118,6 +118,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             animationComponent.Animations.Add(animation);
         }
 
+
+        // Animation for when the bullet should be deleted.
         public Action<double> NewBulletAnimation(GeneralAnimation generalAnimation, int entityId)
         {
             return delegate(double currentTimeInMilliseconds)
