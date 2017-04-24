@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Penumbra;
+using Spelkonstruktionsprojekt.Zenu;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
@@ -135,6 +136,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
+            var button = new Button();
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
             //SetupBackground();
@@ -178,11 +180,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public int SetupCameraCage()
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
-            var renderComponentCage = new RenderComponentBuilder()
-//                .Position((int)((int)viewportDimensions.X * 0.5), (int)(viewportDimensions.Y * 0.5), 2)
-                .Position(0, 0, 2)
-                .Dimensions((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8))
-                .Fixed(true).Build();
+            //            var renderComponentCage = new RenderComponentBuilder()
+            ////                .Position((int)((int)viewportDimensions.X * 0.5), (int)(viewportDimensions.Y * 0.5), 2)
+            //                .Position(0, 0, 2)
+            //                .Dimensions((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8))
+            //                .Fixed(true).Build();
+
+            var renderComponentCage = new RenderComponent()
+                {
+                    DimensionsComponent = new DimensionsComponent()
+                    {
+                        Height = (int)(viewportDimensions.X * 0.8), Width = (int)(viewportDimensions.Y * 0.8)                      
+                    },
+                    Fixed = true
+                };
+
+            var position = new PositionComponent() {Position = new Vector2(0, 0), ZIndex = 2};
+
             var cageSprite = new SpriteComponent()
             {
                 SpriteName = "dot"
@@ -197,6 +211,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
 //            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
+            ComponentManager.Instance.AddComponentToEntity(position, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
@@ -205,9 +220,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public void SetupBackground()
         {
             var entityId3 = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent3 = new RenderComponentBuilder()
-                .Position(0, 0, 1)
-                .Dimensions(1000, 1000).Build();
+            //var renderComponent3 = new RenderComponentBuilder()
+            //    .Position(0, 0, 1)
+            //    .Dimensions(1000, 1000).Build();
+            var position = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 1 };
+            ComponentManager.Instance.AddComponentToEntity(position, entityId3);
+
+
+            var renderComponent3 = new RenderComponent()
+            {
+                DimensionsComponent = new DimensionsComponent() { Height = 1000, Width = 1000 }
+            };
             ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
             var spriteComponent3 = new SpriteComponent()
             {
@@ -223,9 +246,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 for (var y = 0; y < height; y++)
                 {
                     var entityId3 = EntityManager.GetEntityManager().NewEntity();
-                    var renderComponent3 = new RenderComponentBuilder()
-                        .Position(x * 1000, y * 1000, 1)
-                        .Dimensions(1000, 1000).Build();
+                    //var renderComponent3 = new RenderComponentBuilder()
+                    //    .Position(x * 1000, y * 1000, 1)
+                    //    .Dimensions(1000, 1000).Build();
+                    var position = new PositionComponent() {Position = new Vector2(x * 1000, y * 1000), ZIndex = 1};
+                    ComponentManager.Instance.AddComponentToEntity(position, entityId3);
+
+
+                    var renderComponent3 = new RenderComponent()
+                    {
+                         DimensionsComponent = new DimensionsComponent() { Height =  1000, Width = 1000}  
+                    };
                     ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
                     var spriteComponent3 = new SpriteComponent()
                     {
@@ -244,9 +275,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y)
             };
             ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
-            var cameraRenderable = new RenderComponentBuilder()
-                .Position(0, 0, 500)
-                .Dimensions(10, 10).Build();
+            //var cameraRenderable = new RenderComponentBuilder()
+            //    .Position(0, 0, 500)
+            //    .Dimensions(10, 10).Build();
+
+            var cameraRenderable = new RenderComponent()
+            {
+                DimensionsComponent = new DimensionsComponent()
+                {
+                    Height = 10,
+                    Width = 10
+                }        
+            };
+
+            var position = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 500 };
+
+
             var cameraSprite = new SpriteComponent()
             {
                 SpriteName = "dot"
@@ -262,6 +306,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
             //ComponentManager.Instance.AddComponentToEntity(light, cameraEntity);
             ComponentManager.Instance.AddComponentToEntity(cameraRenderable, cameraEntity);
+            ComponentManager.Instance.AddComponentToEntity(position, cameraEntity);
             //ComponentManager.Instance.AddComponentToEntity(cameraSprite, cameraEntity);
         }
 
@@ -271,10 +316,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var y = new Random(DateTime.Now.Millisecond).Next(0, 5000);
 
             var entityId = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent = new RenderComponentBuilder()
-                .Position(x, y, 20)
-                .Dimensions(300, 300)
-                .Build();
+            //var renderComponent = new RenderComponentBuilder()
+            //    .Position(x, y, 20)
+            //    .Dimensions(300, 300)
+            //    .Build();
+            var renderComponent = new RenderComponent()
+            {
+                DimensionsComponent = new DimensionsComponent()
+                {
+                    Height = 300,
+                    Width = 300
+                }
+            };
+
+            var position = new PositionComponent() { Position = new Vector2(x, y), ZIndex = 20 };
+
+
+
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "zombieSquare"
@@ -306,6 +364,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
             var aiComponent = new AIComponent();
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(position, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             //ComponentManager.Instance.AddComponentToEntity(light, entityId);
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
@@ -331,7 +390,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.D, EventConstants.TurnRight)
                 .SetAction(Keys.Q, EventConstants.TurnAround)
                 .SetAction(Keys.E, EventConstants.FireWeapon)
-                .SetAction(Keys.LeftShift, EventConstants.Running)  
+                .SetAction(Keys.LeftShift, EventConstants.Running)
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
@@ -357,8 +416,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Build();
             
             CreatePlayer("Carlos",player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
-            CreatePlayer("Elvir",player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true, collision: true, disabled: false);
-            CreatePlayer("Markus",player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true, collision: true, isCaged: true);
+            CreatePlayer("Elvir",player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
+            CreatePlayer("Markus",player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
         }
 
         //The multitude of options here is for easy debug purposes
@@ -367,12 +426,29 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (disabled) return;
             if(position == default(Vector2)) position = new Vector2(150, 150);
             //Initializing first, movable, entity
-            var renderComponent = new RenderComponentBuilder()
-                //.Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
-                .Position(position.X, position.Y, 10)
-                //.Radius(60)
-                .Dimensions(100, 100)
-                .Build();
+            //var renderComponent = new RenderComponentBuilder()
+            //    //.Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
+            //    .Position(position.X, position.Y, 10)
+            //    //.Radius(60)
+            //    .Dimensions(100, 100)
+            //    .Build();
+
+
+            var renderComponent = new RenderComponent()
+            {
+                DimensionsComponent = new DimensionsComponent()
+                {
+                    Height = 100,
+                    Width = 100
+                },
+
+                Radius = 60
+                
+            };
+
+            var positionComponent = new PositionComponent() { Position = position, ZIndex = 10 };
+
+
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "topDownSoldier",
@@ -408,6 +484,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             ComponentManager.Instance.AddComponentToEntity(sound, entityId);
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(positionComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
             ComponentManager.Instance.AddComponentToEntity(light, entityId);

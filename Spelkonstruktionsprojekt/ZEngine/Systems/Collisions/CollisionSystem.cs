@@ -73,8 +73,13 @@ namespace ZEngine.Systems
         public bool EntitiesIntersects(int movingEntity, int stillEntity)
         {
             var movingRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(movingEntity);
+            var movingPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(movingEntity);
+
+
+
             var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity).spriteBoundingRectangle;
             var stillRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(stillEntity);
+            var stillPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(stillEntity);
             var stillCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity).spriteBoundingRectangle;
 
             var movingEntityOffset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(movingEntity)
@@ -90,25 +95,28 @@ namespace ZEngine.Systems
                 {
                     //Both object are SPHERES
                     return
-                        GetSpriteBoundingSphere(movingRenderComponent, movingCollisionBox, movingEntityOffset)
-                            .Intersects(GetSpriteBoundingSphere(stillRenderComponent, stillCollisionBox, stillEntityOffset));
+                        GetSpriteBoundingSphere(movingRenderComponent, movingPositionComponent, movingCollisionBox, movingEntityOffset)
+                            .Intersects(GetSpriteBoundingSphere(stillRenderComponent, stillPositionComponent, stillCollisionBox, stillEntityOffset));
                 }
                 //Only ONE is a SPHERE
                 return
-                    GetBoundingRectangleFromSphere(movingRenderComponent, movingCollisionBox, movingEntityOffset)
-                        .Intersects(GetSpriteBoundingRectangle(stillRenderComponent, stillCollisionBox, stillEntityOffset));
+                    GetBoundingRectangleFromSphere(movingRenderComponent, movingPositionComponent, movingCollisionBox, movingEntityOffset)
+                        .Intersects(GetSpriteBoundingRectangle(stillRenderComponent, stillPositionComponent, stillCollisionBox, stillEntityOffset));
             }
             //Both objects are RECTANGLES
             return
-                GetSpriteBoundingRectangle(movingRenderComponent, movingCollisionBox, movingEntityOffset)
-                    .Intersects(GetSpriteBoundingRectangle(stillRenderComponent, stillCollisionBox, stillEntityOffset));
+                GetSpriteBoundingRectangle(movingRenderComponent, movingPositionComponent, movingCollisionBox, movingEntityOffset)
+                    .Intersects(GetSpriteBoundingRectangle(stillRenderComponent, stillPositionComponent, stillCollisionBox, stillEntityOffset));
         }
         public bool EntityContains(int cageId, int movingEntity)
         {
             var cageRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(cageId);
+            var cagePositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(cageId);
             var cageCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(cageId).spriteBoundingRectangle;
 
+
             var movingEntityComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(movingEntity);
+            var movingEntityPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(movingEntity);
             var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity).spriteBoundingRectangle;
 
             var movingEntityOffset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(movingEntity)
@@ -124,53 +132,54 @@ namespace ZEngine.Systems
                 {
                     //Both object are SPHERES
                     return
-                        GetSpriteBoundingSphere(cageRenderComponent, cageCollisionBox, cageEntityOffset)
-                            .Contains(GetSpriteBoundingSphere(movingEntityComponent, movingCollisionBox, movingEntityOffset)) == ContainmentType.Contains;
+                        GetSpriteBoundingSphere(cageRenderComponent, cagePositionComponent, cageCollisionBox, cageEntityOffset)
+                            .Contains(GetSpriteBoundingSphere(movingEntityComponent, movingEntityPositionComponent, movingCollisionBox, movingEntityOffset)) == ContainmentType.Contains;
                 }
                 //Only ONE is a SPHERE
-                return GetSpriteBoundingRectangle(cageRenderComponent, cageCollisionBox, cageEntityOffset)
-                            .Contains(GetBoundingRectangleFromSphere(movingEntityComponent, movingCollisionBox, movingEntityOffset));
+                return GetSpriteBoundingRectangle(cageRenderComponent, cagePositionComponent, cageCollisionBox, cageEntityOffset)
+                            .Contains(GetBoundingRectangleFromSphere(movingEntityComponent, movingEntityPositionComponent, movingCollisionBox, movingEntityOffset));
             }
             //Both objects are RECTANGLES
             return
-                GetSpriteBoundingRectangle(cageRenderComponent, cageCollisionBox, cageEntityOffset)
-                    .Contains(GetSpriteBoundingRectangle(movingEntityComponent, movingCollisionBox, movingEntityOffset));
+                GetSpriteBoundingRectangle(cageRenderComponent, cagePositionComponent, cageCollisionBox, cageEntityOffset)
+                    .Contains(GetSpriteBoundingRectangle(movingEntityComponent, movingEntityPositionComponent, movingCollisionBox, movingEntityOffset));
         }
 
-        public Rectangle GetSpriteBoundingRectangle(RenderComponent renderComponent, Rectangle spriteBoundingBox, Vector2 offset = default(Vector2))
+        public Rectangle GetSpriteBoundingRectangle(RenderComponent renderComponent, PositionComponent positionComponent, Rectangle spriteBoundingBox, Vector2 offset = default(Vector2))
         {
             var width = spriteBoundingBox.Width > 0 ? spriteBoundingBox.Width : renderComponent.DimensionsComponent.Width;
             var height = spriteBoundingBox.Height > 0 ? spriteBoundingBox.Height : renderComponent.DimensionsComponent.Height;
-            var x = renderComponent.PositionComponent.Position.X + spriteBoundingBox.X + offset.X - width / 2;
-            var y = renderComponent.PositionComponent.Position.Y + spriteBoundingBox.Y + offset.Y - height / 2;
+            var x = positionComponent.Position.X + spriteBoundingBox.X + offset.X - width / 2;
+            var y = positionComponent.Position.Y + spriteBoundingBox.Y + offset.Y - height / 2;
             //Debug.WriteLine("In collisions RENDER DATA is W:" + width + ", H:" + height + ", X:" + x + ", Y:" + y);
             return new Rectangle((int)x, (int)y, (int)width, (int)height);
         }
 
-        public BoundingSphere GetSpriteBoundingSphere(RenderComponent renderComponent, Rectangle spriteBoundingBox, Vector2 offset = default(Vector2))
+        public BoundingSphere GetSpriteBoundingSphere(RenderComponent renderComponent, PositionComponent positionComponent, Rectangle spriteBoundingBox, Vector2 offset = default(Vector2))
         {
             const double tightBoundFactor = 1; //makes for a tighter fit.
             //Assumes sprite bounding box width represents a radius
             var radius = spriteBoundingBox.Width > 0 ? spriteBoundingBox.Width : renderComponent.Radius;
-            var x = renderComponent.PositionComponent.Position.X + spriteBoundingBox.X + offset.X - radius;
-            var y = renderComponent.PositionComponent.Position.Y + spriteBoundingBox.Y + offset.Y - radius;
+            var x = positionComponent.Position.X + spriteBoundingBox.X + offset.X - radius;
+            var y = positionComponent.Position.Y + spriteBoundingBox.Y + offset.Y - radius;
 
             return new BoundingSphere(new Vector3((float)x, (float)y, 0), (float)(radius / 2 * tightBoundFactor));
         }
 
-        public Rectangle GetBoundingRectangleFromSphere(RenderComponent renderComponent, Rectangle spriteBoundingBox, Vector2 offset = default(Vector2))
+        public Rectangle GetBoundingRectangleFromSphere(RenderComponent renderComponent, PositionComponent positionComponent, Rectangle spriteBoundingBox, Vector2 offset = default(Vector2))
         {
             var width = spriteBoundingBox.Width > 0 ? spriteBoundingBox.Width : renderComponent.Radius;
             var height = spriteBoundingBox.Height > 0 ? spriteBoundingBox.Height : renderComponent.Radius;
-            var x = renderComponent.PositionComponent.Position.X + spriteBoundingBox.X + offset.X - width / 2;
-            var y = renderComponent.PositionComponent.Position.Y + spriteBoundingBox.Y + offset.Y - height / 2;
+            var x = positionComponent.Position.X + spriteBoundingBox.X + offset.X - width / 2;
+            var y = positionComponent.Position.Y + spriteBoundingBox.Y + offset.Y - height / 2;
 
             return new Rectangle((int)x, (int)y, (int)width, (int)height);
         }
 
         public bool IsCagedBy(int entityId, int potentialCageId)
         {
-            if (!ComponentManager.EntityHasComponent<CageComponent>(entityId)) return false;
+            if (!ComponentManager.EntityHasComponent<CageComponent>(entityId))
+                return false;
 
             var cageComponent = ComponentManager.GetEntityComponentOrDefault<CageComponent>(entityId);
             return cageComponent.CageId == potentialCageId;

@@ -18,8 +18,8 @@ namespace ZEngine.Systems
         {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             var moveEntities = ComponentManager.GetEntitiesWithComponent<MoveComponent>();
-            var renderEntities = ComponentManager.GetEntitiesWithComponent<RenderComponent>();
-            foreach (var entity in renderEntities)
+            var positionComponents = ComponentManager.GetEntitiesWithComponent<PositionComponent>();
+            foreach (var entity in positionComponents)
             {
                 if (moveEntities.ContainsKey(entity.Key))
                 {
@@ -53,8 +53,8 @@ namespace ZEngine.Systems
                         moveComponent.Speed);
 
                     // Play position with current velocity.
-                    moveComponent.PreviousPosition = entity.Value.PositionComponent.Position;
-                    entity.Value.PositionComponent.Position = MoveVector(entity.Value.PositionComponent.Position, velocity, delta);
+                    moveComponent.PreviousPosition = entity.Value.Position;
+                    entity.Value.Position = MoveVector(entity.Value.Position, velocity, delta);
 
                     //System.Diagnostics.Debug.WriteLine(
                     //    "moment " + moveComponent.RotationMomentum

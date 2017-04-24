@@ -13,7 +13,7 @@ namespace ZEngine.Components
 {
     public class RenderComponent : IComponent
     {
-        public PositionComponent PositionComponent = null;
+        //public PositionComponent PositionComponent = null;
 
         public DimensionsComponent DimensionsComponent = null;
 
@@ -34,7 +34,7 @@ namespace ZEngine.Components
                 Height = (int) renderComponent.Radius * 2
             };
         }
-
+/*
         public static Vector2 GetPosition(int entityId, RenderComponent renderComponent = null)
         {
             if (renderComponent == null && ComponentManager.Instance.EntityHasComponent<RenderComponent>(entityId))
@@ -52,8 +52,8 @@ namespace ZEngine.Components
             return default(Vector2);
         }
     }
-
-    public class RenderComponentBuilder
+*/
+/*    public class RenderComponentBuilder
     {
         private readonly RenderComponent _renderComponent = new RenderComponent();
 
@@ -109,5 +109,5 @@ namespace ZEngine.Components
             _renderComponent.Fixed = isFixed;
             return this;
         }
-    }
+    */}
 }

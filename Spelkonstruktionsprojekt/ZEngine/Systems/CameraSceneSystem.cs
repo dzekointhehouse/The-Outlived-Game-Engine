@@ -38,8 +38,10 @@ namespace ZEngine.Systems
             foreach (var fixedEntity in fixedRenderables)
             {
                 var offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(fixedEntity.Key);
+                var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(fixedEntity.Key);
 
-                var position = fixedEntity.Value.PositionComponent.Position;
+
+                var position = positionComponent.Position;
                 position.X = camera.Value.View.X + offsetComponent.Offset.X;
                 position.Y = camera.Value.View.Y + offsetComponent.Offset.Y;
             }
@@ -55,8 +57,9 @@ namespace ZEngine.Systems
 
             foreach (var entity in followEntities)
             {
-                    var comp = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
-                    averagePosition += comp.PositionComponent.Position;
+//                    var comp = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
+                    var pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                    averagePosition += pos.Position;
             }
 
 
@@ -70,9 +73,11 @@ namespace ZEngine.Systems
                 var camera = cameraEntity.Value;
                 Point screenCenter = camera.View.Center;
                 var cameraRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(cameraEntity.Key);
+                var cameraPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(cameraEntity.Key);
+
 
                 //Setting the position of the red dot (for debugging camera follow of multiple entities)
-                cameraRenderComponent.PositionComponent.Position = averagePosition;
+                cameraPositionComponent.Position = averagePosition;
 
                 var centerVector = new Vector2(screenCenter.X, screenCenter.Y);
                 var direction = averagePosition - centerVector;
@@ -83,6 +88,9 @@ namespace ZEngine.Systems
                 var oldPosition = new Vector2(camera.View.X, camera.View.Y);
                 var newPosition = oldPosition + direction * speed;
                 camera.View = new Rectangle((int)Math.Ceiling(newPosition.X), (int)Math.Ceiling(newPosition.Y), camera.View.Width, camera.View.Height);
+
+                
+
                 //Debug.WriteLine("CAMERA POSITION " + new Vector2(camera.View.X, camera.View.Y));
             }
         }
