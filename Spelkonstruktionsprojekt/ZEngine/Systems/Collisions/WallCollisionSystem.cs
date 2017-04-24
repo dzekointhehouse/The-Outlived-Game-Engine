@@ -31,12 +31,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
             var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
             var entityRenderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(collisionEvent.Entity);
-            StopMovement(entityRenderComponent, entityMoveComponent);
+            var entityPositionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(collisionEvent.Entity);
+            StopMovement(entityRenderComponent, entityPositionComponent, entityMoveComponent);
         }
 
-        private void StopMovement(RenderComponent renderComponent, MoveComponent moveComponent)
+        private void StopMovement(RenderComponent renderComponent, PositionComponent positionComponent, MoveComponent moveComponent)
         {
-            renderComponent.PositionComponent.Position = moveComponent.PreviousPosition;
+            positionComponent.Position = moveComponent.PreviousPosition;
             moveComponent.Speed = 0;
         }
 

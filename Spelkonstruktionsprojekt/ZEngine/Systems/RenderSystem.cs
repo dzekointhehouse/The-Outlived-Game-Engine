@@ -81,9 +81,16 @@ namespace ZEngine.Systems
 
             foreach (var entity in renderableEntities)
             {
-                var zIndex = entity.Value.PositionComponent.ZIndex;
-                var renderBox = new Rectangle((int)entity.Value.PositionComponent.Position.X, (int)entity.Value.PositionComponent.Position.Y, RenderComponentHelper.GetDimensions(entity.Value).Width, RenderComponentHelper.GetDimensions(entity.Value).Height);
 
+                var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+
+
+                var zIndex = positionComponent.ZIndex;
+                var renderBox = new Rectangle((int) positionComponent.Position.X,
+                    (int) positionComponent.Position.Y,
+                    RenderComponentHelper.GetDimensions(entity.Value).Width,
+                    RenderComponentHelper.GetDimensions(entity.Value).Height);
+                
                 if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
                 {
                     var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
@@ -149,8 +156,8 @@ namespace ZEngine.Systems
         private bool InsideView(RenderComponent entity, Rectangle view)
         {
             return true;
-            var renderBox = new Rectangle((int)entity.PositionComponent.Position.X, (int)entity.PositionComponent.Position.Y, RenderComponentHelper.GetDimensions(entity).Width, RenderComponentHelper.GetDimensions(entity).Height);
-            return view.Intersects(renderBox);
+            //var renderBox = new Rectangle((int)entity.positionComponent.Position.X, (int)entity.PositionComponent.Position.Y, RenderComponentHelper.GetDimensions(entity).Width, RenderComponentHelper.GetDimensions(entity).Height);
+            //return view.Intersects(renderBox);
         }
     }
 }

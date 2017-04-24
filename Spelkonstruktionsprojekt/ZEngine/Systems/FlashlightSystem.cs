@@ -52,11 +52,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 if (ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
                 {
-                    var renderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(lightEntity.Key);
+                    //var renderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(lightEntity.Key);
+                    var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(lightEntity.Key);
                     lightEntity.Value.Light.Position =
                         new Vector2(
-                            (float)(renderComponent.PositionComponent.Position.X - cameraView.X),
-                            (float)(renderComponent.PositionComponent.Position.Y - cameraView.Y)
+                            positionComponent.Position.X - cameraView.X,
+                            positionComponent.Position.Y - cameraView.Y
                             );
                 }
             }
