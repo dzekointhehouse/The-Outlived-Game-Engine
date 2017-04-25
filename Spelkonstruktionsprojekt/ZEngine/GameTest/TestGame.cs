@@ -241,21 +241,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public void SetupBackgroundTiles(int width, int height)
         {
-           var map = new Dictionary<int, string>();
+           var tileTypes = new Dictionary<int, string>();
 
-            map.Add(1, "grass");
-            map.Add(2, "dot");
+            tileTypes.Add(2, "grass");
+            tileTypes.Add(28, "dot");
 
-            MapHelper mapcreator = new MapHelper(map);
+            MapHelper mapcreator = new MapHelper(tileTypes);
 
-            int[,] matrix = new int[,]
-            {
-                {2, 1, 1, 1, 1},
-                {1, 1, 1, 1, 1},
-                {1, 1, 2, 1, 1},
-                {1, 1, 1, 1, 1},
-            };
-            mapcreator.CreateMapTiles(matrix, 1000);
+            //int[,] matrix = new int[,]
+            //{
+            //    {2, 1, 1, 1, 1},
+            //    {1, 1, 1, 1, 1},
+            //    {1, 1, 2, 1, 1},
+            //    {1, 1, 1, 1, 1},
+            //};
+            mapcreator.CreateMapTiles(MapPack.TheWallMap, 64);
         }
 
         public void SetupCamera()
