@@ -243,8 +243,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
            var tileTypes = new Dictionary<int, string>();
 
-            tileTypes.Add(2, "grass");
-            tileTypes.Add(28, "dot");
+            tileTypes.Add(2, "legotilesRed");
+            tileTypes.Add(28, "grass");
 
             MapHelper mapcreator = new MapHelper(tileTypes);
 
