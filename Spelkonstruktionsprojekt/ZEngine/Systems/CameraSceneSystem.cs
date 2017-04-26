@@ -45,10 +45,11 @@ namespace ZEngine.Systems
                     ComponentManager.GetEntityComponentOrDefault<PositionComponent>(fixedEntity.Key);
 
 
-                var position = positionComponent.Position;
                 var cameraViewComponent = camera.Value as CameraViewComponent;
-                position.X = cameraViewComponent.View.X + offsetComponent.Offset.X;
-                position.Y = cameraViewComponent.View.Y + offsetComponent.Offset.Y;
+                positionComponent.Position = new Vector2(
+                    cameraViewComponent.View.X + offsetComponent.Offset.X,
+                    cameraViewComponent.View.Y + offsetComponent.Offset.Y
+                );
             }
         }
 
