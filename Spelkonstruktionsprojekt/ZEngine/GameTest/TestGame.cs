@@ -14,6 +14,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
+using Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
@@ -202,19 +203,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
            var tileTypes = new Dictionary<int, string>();
 
-            tileTypes.Add(2, "legotilesRed");
-            tileTypes.Add(28, "grass");
+            tileTypes.Add(0, "blue64");
+            tileTypes.Add(1, "green64");
+            tileTypes.Add(2, "red64");
+            tileTypes.Add(4, "yellowwall64");
+
 
             MapHelper mapcreator = new MapHelper(tileTypes);
 
-            //int[,] matrix = new int[,]
-            //{
-            //    {2, 1, 1, 1, 1},
-            //    {1, 1, 1, 1, 1},
-            //    {1, 1, 2, 1, 1},
-            //    {1, 1, 1, 1, 1},
-            //};
-            mapcreator.CreateMapTiles(MapPack.TheWallMap, 64);
+            mapcreator.CreateMapTiles(MapPack.Happyworld, 64);
         }
 
         public void SetupCamera()
