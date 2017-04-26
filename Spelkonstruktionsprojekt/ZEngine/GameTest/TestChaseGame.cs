@@ -105,7 +105,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             WallCollisionSystem.Start();
             SoundSystem.Start();
             WeaponSystem.Start();
-            EnemyCollisionSystem.Start(TempGameEnder);
+            EnemyCollisionSystem.Start();
             BulletCollisionSystem.Start();
 
             _gameDependencies.GameContent = this.Content;

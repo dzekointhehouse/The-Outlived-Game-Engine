@@ -18,12 +18,10 @@ namespace ZEngine.Systems.Collisions
     {
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        private TempGameEnder GameEnder;
         public GameTime GameTime { get; set; }
 
-        public void Start(TempGameEnder gameEnder)
+        public void Start()
         {
-            GameEnder = gameEnder;
             EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.EnemyCollision, Handle);
         }
 

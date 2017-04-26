@@ -35,6 +35,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
         private Video video;
+        private VideoPlayer player;
 
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
@@ -73,7 +74,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             _<WallCollisionSystem>().Start();
             _<SoundSystem>().Start();
             _<WeaponSystem>().Start();
-            _<EnemyCollisionSystem>().Start(TempGameEnder);
+            _<EnemyCollisionSystem>().Start();
             _<BulletCollisionSystem>().Start();
 
             _gameDependencies.GameContent = this.Content;
@@ -530,9 +531,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 _<FlashlightSystem>().Update(gameTime, viewportDimensions);
                 _<HealthSystem>().Update();
                 _<EntityRemovalSystem>().Update(gameTime);
+                _<MoveSystem>().Move(gameTime);
                 _<InertiaDampenerSystem>().Apply(gameTime);
                 _<BackwardsPenaltySystem>().Apply();
-                _<MoveSystem>().Move(gameTime);
             }
             base.Update(gameTime);
         }
