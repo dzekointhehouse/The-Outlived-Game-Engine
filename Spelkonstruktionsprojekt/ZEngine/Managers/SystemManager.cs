@@ -21,7 +21,7 @@ namespace ZEngine.Managers
         // We immediately put instances of systems in this
         // dictionary, now they can easily be accessed with it's
         // type used as the key.
-        private readonly Dictionary<Type, ISystem> _systems = new Dictionary<Type, ISystem>()
+        private readonly Dictionary<Type, ISystem> _systems = new Dictionary<Type, ISystem>
         {
             { typeof(RenderSystem), new RenderSystem() },
             { typeof(LoadContentSystem), new LoadContentSystem() },
@@ -46,7 +46,7 @@ namespace ZEngine.Managers
             { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
             { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
             { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
-            { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
+            { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() }
 
         };
 

@@ -397,6 +397,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var positionComponent = new PositionComponent() {Position = position, ZIndex = 10};
 
+            var dampeningComponent = new InertiaDampeningComponent();
+            var backwardsPenaltyComponent = new BackwardsPenaltyComponent();
+            ComponentManager.Instance.AddComponentToEntity(dampeningComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(backwardsPenaltyComponent, entityId);
 
             var spriteComponent = new SpriteComponent()
             {
@@ -531,9 +535,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 _<FlashlightSystem>().Update(gameTime, viewportDimensions);
                 _<HealthSystem>().Update();
                 _<EntityRemovalSystem>().Update(gameTime);
-                _<MoveSystem>().Move(gameTime);
                 _<InertiaDampenerSystem>().Apply(gameTime);
                 _<BackwardsPenaltySystem>().Apply();
+                _<MoveSystem>().Move(gameTime);
             }
             base.Update(gameTime);
         }

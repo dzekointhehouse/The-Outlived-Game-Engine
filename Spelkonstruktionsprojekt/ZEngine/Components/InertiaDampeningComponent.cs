@@ -2,6 +2,6 @@
 {
     public class InertiaDampeningComponent : IComponent
     {
-        public int StabilisingSpeed = 10;
+        public int StabilisingSpeed = 1000;
     }
 }

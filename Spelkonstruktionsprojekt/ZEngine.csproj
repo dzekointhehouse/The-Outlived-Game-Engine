@@ -44,6 +44,7 @@
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
     <Compile Include="ZEngine\Components\AIComponent.cs" />
     <Compile Include="ZEngine\Components\AnimationComponent.cs" />
+    <Compile Include="ZEngine\Components\BackwardsPenaltyComponent.cs" />
     <Compile Include="ZEngine\Components\BulletComponent.cs" />
     <Compile Include="ZEngine\Components\BulletFlyweightComponent.cs" />
     <Compile Include="ZEngine\Components\CageComponent.cs" />

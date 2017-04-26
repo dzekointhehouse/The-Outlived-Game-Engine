@@ -11,29 +11,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public void Apply(GameTime gameTime)
         {
+            var delta = gameTime.ElapsedGameTime.TotalSeconds;
             foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(MoveComponent)))
             {
                 var moveComponent = entity.Value as MoveComponent;
                 var dampeningComponent = ComponentManager.Instance
                     .GetEntityComponentOrDefault<InertiaDampeningComponent>(entity.Key);
-                Debug.WriteLine("inside dampening 1");
                 if (dampeningComponent == null) return;
-                Debug.WriteLine("inside dampening 2");
 
                 if (moveComponent == null) return;
-                if (moveComponent.Speed < -0.01)
+                var notAccelerating = moveComponent.CurrentAcceleration > -0.01 &&
+                                      moveComponent.CurrentAcceleration < 0.01;
+                if (notAccelerating && moveComponent.Speed < 0)
                 {
                     Debug.WriteLine("damp up");
-                    moveComponent.Speed += dampeningComponent.StabilisingSpeed;
+                    moveComponent.Speed += (float)(dampeningComponent.StabilisingSpeed * delta);
                 }
-                else if (moveComponent.Speed > 0.01)
+                else if (notAccelerating && moveComponent.Speed > 0)
                 {
                     Debug.WriteLine("damp down");
-                    moveComponent.Speed -= dampeningComponent.StabilisingSpeed;
-                }
-                else
-                {
-                    moveComponent.Speed = 0;
+                    moveComponent.Speed -= (float) (dampeningComponent.StabilisingSpeed * delta);
                 }
             }
         }
