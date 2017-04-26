@@ -37,27 +37,12 @@ namespace ZEngine.Managers
             }
         }
 
-        // Overloaded method that is a generic method. It takes a type parameter
-        // and returns a dictionary with all the entities that are associated 
-        // with an instance of that component that was given as type parameter.
-        public Dictionary<int, T> GetEntitiesWithComponent<T>() where T : IComponent    
-        {
-            if (!_components.ContainsKey(typeof(T)))
-            {
-                return new Dictionary<int, T>();
-            }
-                return _components[typeof(T)].ToDictionary(
-                    entry => entry.Key,
-                    entry => (T) entry.Value
-                );
-        }
-
         // This method returns true if the entity has an association
         // with the specified component. The component type is given as type parameter
         // and that type has to implement the IComponent interface.
         public bool EntityHasComponent<TComponentType>(int entityId) where TComponentType : IComponent
         {
-            var entityComponents = GetEntitiesWithComponent<TComponentType>();
+            var entityComponents = GetEntitiesWithComponent(typeof(TComponentType));
             return entityComponents.ContainsKey(entityId);
         }
   

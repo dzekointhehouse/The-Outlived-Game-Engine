@@ -39,7 +39,15 @@ namespace ZEngine.Managers
             { typeof(AbilitySystem), new AbilitySystem() },
             { typeof(AnimationSystem), new AnimationSystem() },
             { typeof(SoundSystem), new SoundSystem() },
-            { typeof(WeaponSystem), new WeaponSystem() }
+            { typeof(WeaponSystem), new WeaponSystem() },
+            { typeof(BulletCollisionSystem), new BulletCollisionSystem() },
+            { typeof(HealthSystem), new HealthSystem() },
+            { typeof(VideoPlayerSystem), new VideoPlayerSystem() },
+            { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
+            { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
+            { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
+            { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
+
         };
 
         // _____________________________________________________________________________________________________________________ //
@@ -54,10 +62,16 @@ namespace ZEngine.Managers
             {
                 return _systems[typeof(T)] as T;
             }
-            else
+            throw new Exception("No such system exist.");
+        }
+
+        public ISystem GetSystem(Type systemType)
+        {
+            if (_systems.ContainsKey(systemType))
             {
-                throw new Exception("No such system exist.");
+                return _systems[systemType];
             }
+            throw new Exception("No such system exist.");
         }
 
         // Checks the systems dictionary if it contains the 

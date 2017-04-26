@@ -42,33 +42,41 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             var titlesafearea = graphics.Viewport.TitleSafeArea;
 
-            var playerComponents = ComponentManager.Instance.GetEntitiesWithComponent<PlayerComponent>();
+            var playerComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent));
 
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
             var previousHeight = 5f;
 
-            var g = _gameDependencies.GameContent as ContentManager;
-            
+            var contentManager = _gameDependencies.GameContent as ContentManager;         
             // Maybe let the user decide?
-            var spriteFont = g.Load<SpriteFont>("ZEone");
+            var spriteFont = contentManager.Load<SpriteFont>("ZEone");
 
             foreach (var playerInstance in playerComponents)
             {
-                string text = playerInstance.Value.Name;
-
+                var playerComponent = playerInstance.Value as PlayerComponent;
+                var text = playerComponent.Name;
                 // Adding the health component to text.
                 if (ComponentManager.Instance.EntityHasComponent<HealthComponent>(playerInstance.Key))
                 {
                     var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(playerInstance.Key);
-                    text = text + ": " + health.CurrentHealth + "HP";
-                }
 
-                // adding ammo here the same way.
-                if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(playerInstance.Key))
-                {
-                    var ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(playerInstance.Key);
-                    text = text + " Ammo: " + ammo.Amount;
+                    if (health.Alive)
+                    {
+                        var currentHealth = health.MaxHealth - health.Damage.Sum();
+                        text = text + ": " + currentHealth + "HP";
+                    }
+                    else
+                    {
+                        text = text + ": Rest in peace";                      
+                    }
+
+                    // adding ammo here the same way.
+                    if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(playerInstance.Key) && health.Alive)
+                    {
+                        var ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(playerInstance.Key);
+                        text = text + " Ammo: " + ammo.Amount;
+                    }
                 }
 
                 // this call gives us the height of the text,
@@ -76,8 +84,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var textHeight = spriteFont.MeasureString(text).Y;
 
                 var xPosition = titlesafearea.Width - spriteFont.MeasureString(text).X - 10;
-                var yPosition = titlesafearea.Height - textHeight - previousHeight;
-                previousHeight = textHeight;
+                var yPosition = titlesafearea.Height - (textHeight + previousHeight);
+                previousHeight += textHeight;
 
                 var position = new Vector2(xPosition, yPosition);
                 _gameDependencies.SpriteBatch.DrawString(spriteFont, text, position, Color.BlueViolet);

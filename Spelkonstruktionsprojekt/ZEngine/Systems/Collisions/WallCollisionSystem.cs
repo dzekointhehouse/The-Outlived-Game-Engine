@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -20,37 +21,39 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Start()
         {
-            EventBus.Subscribe<SpecificCollisionEvent>("WallCollision", Handle);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.WallCollision, Handle);
         }
 
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
-            if (IsBulletRelatedShouldBeIgnored(collisionEvent)) return;
+            //Debug.WriteLine("WALL E:" + collisionEvent.Entity + ", T:" + collisionEvent.Target + ", -:" + collisionEvent.Event);
+            if (IsBulletCollisionAndNotRelevant(collisionEvent)) return;
 
             var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
             var entityRenderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(collisionEvent.Entity);
-            HaltMovement(entityMoveComponent, entityRenderComponent);
+            var entityPositionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(collisionEvent.Entity);
+            StopMovement(entityRenderComponent, entityPositionComponent, entityMoveComponent);
         }
 
-        public void HaltMovement(MoveComponent moveComponent, RenderComponent renderComponent)
+        private void StopMovement(RenderComponent renderComponent, PositionComponent positionComponent, MoveComponent moveComponent)
         {
-            renderComponent.PositionComponent.Position = moveComponent.PreviousPosition;
+            positionComponent.Position = moveComponent.PreviousPosition;
             moveComponent.Speed = 0;
         }
 
-        public bool IsBulletRelatedShouldBeIgnored(SpecificCollisionEvent collisionEvent)
+        private static bool IsBulletCollisionAndNotRelevant(SpecificCollisionEvent collisionEvent)
         {
             var bulletComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Target);
             if (bulletComponent != null)
             {
-                return bulletComponent.ShooterEntityId == collisionEvent.Entity;
+                if (bulletComponent.ShooterEntityId == collisionEvent.Entity) return true;
             }
             var bulletComponent2 =
                 ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Entity);
             if (bulletComponent2 != null)
             {
-                return bulletComponent2.ShooterEntityId == collisionEvent.Target;
+                if (bulletComponent2.ShooterEntityId == collisionEvent.Target) return true;
             }
             return false;
         }

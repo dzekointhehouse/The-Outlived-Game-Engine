@@ -19,23 +19,24 @@ namespace ZEngine.Systems
         public void LoadContent(ContentManager contentManager)
         {
             var entities = ComponentManager.Instance
-                .GetEntitiesWithComponent<SpriteComponent>()
-                .Where(entity => !entity.Value.SpriteIsLoaded);
+                .GetEntitiesWithComponent(typeof(SpriteComponent))
+                .Where(entity => !(entity.Value as SpriteComponent).SpriteIsLoaded);
 
             foreach (var entity in entities)
             {
-                if (string.IsNullOrEmpty(entity.Value.SpriteName)) continue;
-                entity.Value.Sprite = contentManager.Load<Texture2D>(entity.Value.SpriteName);
-                entity.Value.SpriteIsLoaded = true;
-                entity.Value.Width = entity.Value.Sprite.Width;
-                entity.Value.Height = entity.Value.Sprite.Height;
+                var spriteComponent = entity.Value as SpriteComponent;
+                if (string.IsNullOrEmpty(spriteComponent.SpriteName)) continue;
+                spriteComponent.Sprite = contentManager.Load<Texture2D>(spriteComponent.SpriteName);
+                spriteComponent.SpriteIsLoaded = true;
+                spriteComponent.Width = spriteComponent.Sprite.Width;
+                spriteComponent.Height = spriteComponent.Sprite.Height;
             }
 
             var soundEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SoundComponent));
             foreach (var entity in soundEntities)
             {
                 SoundComponent soundComponent = (SoundComponent)entity.Value;
-                soundComponent.SoundInstace = contentManager.Load<SoundEffect>(soundComponent.SongName).CreateInstance();
+                soundComponent.SoundEffect = contentManager.Load<SoundEffect>(soundComponent.SoundEffectName);
             }
         }
     }

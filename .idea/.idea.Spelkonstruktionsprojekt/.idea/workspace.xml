@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dbd6e0f5-9b83-4e23-aafc-ce1150a1c351" name="Default" comment="Worked on bullet system">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.Spelkonstruktionsprojekt/.idea/contentModel.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.Spelkonstruktionsprojekt/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/BulletCollisionSystem.cs" afterPath="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/BulletCollisionSystem.cs" />
+    <list default="true" id="13a3d541-4c8a-4b0d-82f5-96dfe19ba61c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.idea.Spelkonstruktionsprojekt/.idea/contentModel.xml" afterPath="$PROJECT_DIR$/.idea/.idea.Spelkonstruktionsprojekt/.idea/contentModel.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.idea.Spelkonstruktionsprojekt/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/.idea.Spelkonstruktionsprojekt/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,331 +12,165 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_TABLE_DETAILS" value="true" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="TestGame.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/GameTest/TestGame.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="568">
-              <caret line="143" column="14" lean-forward="false" selection-start-line="143" selection-start-column="14" selection-end-line="143" selection-end-column="14" />
-              <folding>
-                <marker date="1492458770479" expanded="true" signature="6:841" ph="..." />
-                <marker date="1492458770479" expanded="true" signature="894:20707" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="901:978" ph="/// This is the main type for your game. ... " />
-                <marker date="1492458770479" expanded="true" signature="1011:20705" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="2397:3101" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="2506:2661" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="2816:2962" ph="/* Turn off the fixed time step ... */" />
-                <marker date="1492458770479" expanded="true" signature="3147:5321" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="5364:5646" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="5708:6188" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="5867:5917" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="6303:7476" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="6688:6738" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="6818:6864" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="6940:7070" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="7515:8058" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="7906:7958" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="8123:8917" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="8177:8907" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="8240:8893" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="8709:8777" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="8952:10197" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="9116:9228" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="9536:9586" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="9645:9921" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="9704:9907" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="10231:12407" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="10691:10750" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="10809:11084" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="10867:11070" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="11144:11234" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="11378:11589" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="12135:12226" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="12330:12397" ph="/* if (collision) ... */" />
-                <marker date="1492458770479" expanded="true" signature="12452:14153" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="14548:18164" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="15095:15156" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="15215:15490" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="15273:15476" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="15550:15602" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="16071:16495" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="16158:16391" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="16556:16679" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="16707:17008" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="16804:16899" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="17038:17236" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="17262:17508" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="17349:17404" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="17578:17636" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="17793:17866" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="18023:18066" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="18211:18697" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="18619:18685" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="18746:18830" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="18889:19852" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="18951:19807" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="19643:19793" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="19909:20699" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="20106:20342" ph="{...}" />
-                <marker date="1492458770479" expanded="true" signature="20395:20656" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CollisionSystem.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/CollisionSystem.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="547">
-              <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
-              <folding>
-                <marker date="1492430248828" expanded="false" signature="6:510" ph="..." />
-                <marker date="1492430248828" expanded="true" signature="537:10393" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="575:10391" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="709:3068" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="1010:3058" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="1231:3044" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="1527:2426" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="1619:2404" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="1778:2378" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="1912:2078" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="2182:2348" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="2506:3026" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="2624:2766" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="2862:3004" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="3143:5245" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="4219:4947" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="4286:4632" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="5310:7387" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="6365:7094" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="6431:6800" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="7537:8223" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="8375:8974" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="9128:9658" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="9724:10001" ph="{...}" />
-                <marker date="1492430248828" expanded="true" signature="10135:10385" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RenderComponent.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/RenderComponent/RenderComponent.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="64" column="77" lean-forward="false" selection-start-line="64" selection-start-column="77" selection-end-line="64" selection-end-column="77" />
-              <folding>
-                <marker date="1492458650623" expanded="false" signature="6:350" ph="..." />
-                <marker date="1492458650623" expanded="true" signature="380:3747" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="428:673" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="713:1986" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="808:1057" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="915:1046" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="1154:1980" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="1280:1424" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="1519:1933" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="2027:3745" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="2156:2379" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="2226:2332" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="2453:2682" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="2549:2646" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="2762:2991" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="2858:2955" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="3064:3278" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="3164:3242" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="3336:3427" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="3492:3589" ph="{...}" />
-                <marker date="1492458650623" expanded="true" signature="3648:3739" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PositionComponent.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/RenderComponent/PositionComponent.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="14" column="44" lean-forward="false" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-              <folding>
-                <marker date="1492458667782" expanded="false" signature="6:195" ph="..." />
-                <marker date="1492458667782" expanded="true" signature="225:398" ph="{...}" />
-                <marker date="1492458667782" expanded="true" signature="275:396" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CollisionResolveSystem.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/CollisionResolveSystem.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="546">
-              <caret line="25" column="113" lean-forward="false" selection-start-line="25" selection-start-column="113" selection-end-line="25" selection-end-column="113" />
-              <folding>
-                <marker date="1492459035379" expanded="false" signature="6:270" ph="..." />
-                <marker date="1492459035379" expanded="true" signature="297:7076" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="342:3622" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="632:2946" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="841:2936" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="1202:2922" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="1361:2773" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="1408:1626" ph="/* Collision events are made up from requirement of each party ... */" />
-                <marker date="1492459035379" expanded="true" signature="1934:2751" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="1989:2125" ph="/* When there is a match for a collision-event, an event is published ... */" />
-                <marker date="1492459035379" expanded="true" signature="2340:2631" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="3068:3616" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="3661:3777" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="3898:4052" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="4093:5033" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="4134:4235" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="4431:4690" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="4779:4850" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="4934:5027" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="5039:5175" ph="/* Used for mapping componenet requirements to CollisionEvents ... */" />
-                <marker date="1492459035379" expanded="true" signature="5221:7074" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="5401:7067" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="5488:5857" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="5582:5659" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="5753:5835" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="6003:6472" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="6097:6174" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="6268:6450" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="6619:6991" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="6713:6792" ph="{...}" />
-                <marker date="1492459035379" expanded="true" signature="6886:6969" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WallCollisionSystem.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/WallCollisionSystem.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="27" column="18" lean-forward="false" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
-              <folding>
-                <marker date="1492459299230" expanded="false" signature="6:320" ph="..." />
-                <marker date="1492459299230" expanded="true" signature="383:2171" ph="{...}" />
-                <marker date="1492459299230" expanded="true" signature="425:2169" ph="{...}" />
-                <marker date="1492459299230" expanded="true" signature="594:695" ph="{...}" />
-                <marker date="1492459299230" expanded="true" signature="762:1191" ph="{...}" />
-                <marker date="1492459299230" expanded="true" signature="1287:1433" ph="{...}" />
-                <marker date="1492459299230" expanded="true" signature="1524:2163" ph="{...}" />
-                <marker date="1492459299230" expanded="true" signature="1720:1829" ph="{...}" />
-                <marker date="1492459299230" expanded="true" signature="2017:2127" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BulletCollisionSystem.cs" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/BulletCollisionSystem.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="949">
-              <caret line="43" column="5" lean-forward="true" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
-              <folding>
-                <marker date="1492492295256" expanded="false" signature="6:320" ph="..." />
-                <marker date="1492492295256" expanded="true" signature="383:1822" ph="{...}" />
-                <marker date="1492492295256" expanded="true" signature="427:1820" ph="{...}" />
-                <marker date="1492492295256" expanded="true" signature="596:699" ph="{...}" />
-                <marker date="1492492295256" expanded="true" signature="766:1553" ph="{...}" />
-                <marker date="1492492295256" expanded="true" signature="1648:1814" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SoundComponent.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/SoundComponent.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="511">
-              <caret line="27" column="26" lean-forward="false" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
-              <folding>
-                <marker date="1492460194451" expanded="false" signature="6:275" ph="..." />
-                <marker date="1492460194451" expanded="true" signature="305:704" ph="{...}" />
-                <marker date="1492460194451" expanded="true" signature="409:578" ph="{...}" />
-                <marker date="1492460194451" expanded="true" signature="613:700" ph="{...}" />
-                <marker date="1492460194451" expanded="true" signature="646:694" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LoadContentSystem.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/LoadContentSystem.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="16" column="37" lean-forward="false" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="37" />
-              <folding>
-                <marker date="1492436950438" expanded="false" signature="6:347" ph="..." />
-                <marker date="1492436950438" expanded="true" signature="374:1504" ph="{...}" />
-                <marker date="1492436950438" expanded="true" signature="414:1502" ph="{...}" />
-                <marker date="1492436950438" expanded="true" signature="483:1496" ph="{...}" />
-                <marker date="1492436950438" expanded="true" signature="717:1099" ph="{...}" />
-                <marker date="1492436950438" expanded="true" signature="1258:1486" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WeaponSystem.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/WeaponSystem.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="23" column="9" lean-forward="false" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-              <folding>
-                <marker date="1492458224754" expanded="false" signature="6:327" ph="..." />
-                <marker date="1492458224754" expanded="true" signature="379:4582" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="414:4580" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="586:713" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="744:789" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="850:1994" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="935:1984" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="2185:4106" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="2706:2883" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="2953:3071" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="3802:3904" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="4205:4574" ph="{...}" />
-                <marker date="1492458224754" expanded="true" signature="4400:4549" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+          <file leaf-file-name="SoundSystem.cs" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/SoundSystem.cs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-702">
+                  <caret line="34" column="9" lean-forward="true" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
+                  <folding>
+                    <marker date="1492492562379" expanded="false" signature="6:451" ph="..." />
+                    <marker date="1492492562379" expanded="true" signature="503:4038" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="544:4036" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="646:1250" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="669:790" ph="/* Here we subscribe what will happen when the entity walks forwards ... */" />
+                    <marker date="1492492562379" expanded="true" signature="965:1137" ph="/* We subscribe to the input inputEvent for when the entity fires a ... */" />
+                    <marker date="1492492562379" expanded="true" signature="1280:1325" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="1383:2538" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="1406:1545" ph="/* First things first, we only handle this event if the key is pressed ... */" />
+                    <marker date="1492492562379" expanded="true" signature="1620:2528" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="1651:1751" ph="/* To play the bullet sound the entity needs to have ... */" />
+                    <marker date="1492492562379" expanded="true" signature="2384:2514" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="2594:3597" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="2678:3587" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="3232:3359" ph="{...}" />
+                    <marker date="1492492562379" expanded="true" signature="3713:4030" ph="{...}" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Content.mgcb" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/Content/Content.mgcb">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="453">
+                  <caret line="170" column="24" lean-forward="true" selection-start-line="170" selection-start-column="24" selection-end-line="170" selection-end-column="24" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BulletFlyweightComponent.cs" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/BulletFlyweightComponent.cs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="300">
+                  <caret line="10" column="5" lean-forward="false" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="TestGame.cs" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/GameTest/TestGame.cs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="12870">
+                  <caret line="429" column="21" lean-forward="false" selection-start-line="429" selection-start-column="21" selection-end-line="429" selection-end-column="21" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LoadContentSystem.cs" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/LoadContentSystem.cs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1110">
+                  <caret line="37" column="21" lean-forward="false" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SoundComponent.cs" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/SoundComponent.cs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="510">
+                  <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeaponSystem.cs" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/WeaponSystem.cs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="870">
+                  <caret line="39" column="64" lean-forward="false" selection-start-line="39" selection-start-column="64" selection-end-line="39" selection-end-column="64" />
+                  <folding>
+                    <marker date="1492492562397" expanded="false" signature="6:327" ph="..." />
+                    <marker date="1492492562397" expanded="true" signature="379:4585" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="414:4583" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="586:713" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="744:789" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="850:1997" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="935:1987" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="2188:4109" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="2709:2886" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="2956:3074" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="3805:3907" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="4208:4577" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="4403:4552" ph="{...}" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+          <file leaf-file-name="WeaponSystem.cs" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/WeaponSystem.cs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="277">
+                  <caret line="38" column="35" lean-forward="false" selection-start-line="38" selection-start-column="35" selection-end-line="38" selection-end-column="35" />
+                  <folding>
+                    <marker date="1492492562397" expanded="false" signature="6:327" ph="..." />
+                    <marker date="1492492562397" expanded="true" signature="379:4585" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="414:4583" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="586:713" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="744:789" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="850:1997" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="935:1987" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="2188:4109" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="2709:2886" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="2956:3074" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="3805:3907" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="4208:4577" ph="{...}" />
+                    <marker date="1492492562397" expanded="true" signature="4403:4552" ph="{...}" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>intro</find>
+      <find>bulletcom</find>
+      <find>load</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="UPDATE_TYPE" value="MERGE" />
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="optimusprime94 &lt;dzekson94@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/FlashlightSystem.cs" />
-        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/RenderComponent/RenderComponent.cs" />
-        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/RenderComponent/PositionComponent.cs" />
         <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/GameTest/TestGame.cs" />
-        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/CollisionResolveSystem.cs" />
-        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/WallCollisionSystem.cs" />
-        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/SoundComponent.cs" />
         <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/LoadContentSystem.cs" />
-        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/WeaponSystem.cs" />
-        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/BulletCollisionSystem.cs" />
+        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/SoundComponent.cs" />
+        <option value="$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/SoundSystem.cs" />
       </list>
     </option>
   </component>
@@ -353,7 +186,6 @@
     <option name="width" value="2578" />
     <option name="height" value="1458" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="SolutionExplorer" proportions="" version="1">
       <flattenPackages />
@@ -400,29 +232,7 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ZEngine" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Spelkonstruktionsprojekt (1 project)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZEngine" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZEngine" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="GameTest" />
+              <option name="myItemId" value="Content" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
@@ -434,8 +244,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
-    <property name="SearchEverywhereHistoryKey" value="Weap&#9;FILE&#9;file://C:/Users/August/Source/Repos/Spelkonstruktionsprojekt/Spelkonstruktionsprojekt/ZEngine/Systems/WeaponSystem.cs&#10;LoadCon&#9;null&#9;null&#10;SoundCom&#9;null&#9;null&#10;PositioNCom&#9;null&#9;null&#10;WeaponS&#9;FILE&#9;file://C:/Users/August/Source/Repos/Spelkonstruktionsprojekt/Spelkonstruktionsprojekt/ZEngine/Systems/WeaponSystem.cs&#10;RenderCompon&#9;null&#9;null&#10;RenderS&#9;null&#9;null&#10;Lightsystem&#9;FILE&#9;file://C:/Users/August/Source/Repos/Spelkonstruktionsprojekt/Spelkonstruktionsprojekt/ZEngine/Systems/FlashlightSystem.cs&#10;WallColl&#9;null&#9;null&#10;CollisionResolve&#9;null&#9;null&#10;WeaponSystem&#9;null&#9;null&#10;BulletCollision&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="load&#9;null&#9;null&#10;tes&#9;null&#9;null&#10;sound&#9;null&#9;null" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -450,9 +260,6 @@
     </option>
   </component>
   <component name="RunManager" selected=".NET Project.Default">
-    <configuration default="true" type="ConnectRemote" factoryName="Mono remote" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
-      <method />
-    </configuration>
     <configuration default="true" type="DotNetProject" factoryName=".NET Project">
       <option name="PROJECT_PATH" value="" />
       <option name="PROJECT_KIND" value="None" />
@@ -485,6 +292,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -531,32 +344,26 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="dbd6e0f5-9b83-4e23-aafc-ce1150a1c351" name="Default" comment="" />
-      <created>1492455135438</created>
+      <changelist id="13a3d541-4c8a-4b0d-82f5-96dfe19ba61c" name="Default" comment="" />
+      <created>1492458675606</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1492455135438</updated>
-      <workItem from="1492455138218" duration="6294000" />
+      <updated>1492458675606</updated>
+      <workItem from="1492458677458" duration="2294000" />
+      <workItem from="1492492568991" duration="134000" />
     </task>
-    <task id="LOCAL-00001" summary="Fixed move issue bug (CameraCage erronous offset)">
-      <created>1492457697328</created>
+    <task id="LOCAL-00001" summary="not tested">
+      <created>1492459314871</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1492457697328</updated>
+      <updated>1492459314871</updated>
     </task>
-    <task id="LOCAL-00002" summary="Worked on bullet system">
-      <created>1492460289985</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1492460289985</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6294000" />
+    <option name="totallyTimeSpent" value="2428000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -569,28 +376,29 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="2578" height="1458" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847276" sideWeight="0.5015625" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847276" sideWeight="0.4984375" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13476562" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847276" sideWeight="0.496875" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33000767" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28439662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.115625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4042879" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -601,354 +409,181 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed move issue bug (CameraCage erronous offset)" />
-    <MESSAGE value="Worked on bullet system" />
-    <option name="LAST_COMMIT_MESSAGE" value="Worked on bullet system" />
+    <MESSAGE value="not tested" />
+    <option name="LAST_COMMIT_MESSAGE" value="not tested" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/GameTest/FPS.cs">
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/SoundSystem.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="1410">
+          <caret line="47" column="17" lean-forward="false" selection-start-line="47" selection-start-column="17" selection-end-line="47" selection-end-column="17" />
+          <folding>
+            <marker date="1492492562379" expanded="false" signature="6:451" ph="..." />
+            <marker date="1492492562379" expanded="true" signature="503:4038" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="544:4036" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="646:1250" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="669:790" ph="/* Here we subscribe what will happen when the entity walks forwards ... */" />
+            <marker date="1492492562379" expanded="true" signature="965:1137" ph="/* We subscribe to the input inputEvent for when the entity fires a ... */" />
+            <marker date="1492492562379" expanded="true" signature="1280:1325" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="1383:2538" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="1406:1545" ph="/* First things first, we only handle this event if the key is pressed ... */" />
+            <marker date="1492492562379" expanded="true" signature="1620:2528" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="1651:1751" ph="/* To play the bullet sound the entity needs to have ... */" />
+            <marker date="1492492562379" expanded="true" signature="2384:2514" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="2594:3597" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="2678:3587" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="3232:3359" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="3713:4030" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/BulletFlyweightComponent.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="10" column="5" lean-forward="false" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/FlashlightSystem.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="27" column="54" lean-forward="false" selection-start-line="27" selection-start-column="54" selection-end-line="27" selection-end-column="54" />
-          <folding>
-            <marker date="1492457621347" expanded="false" signature="6:327" ph="..." />
-            <marker date="1492457621347" expanded="true" signature="379:3321" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="425:3319" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="503:651" ph="/* This method is used to initialize the penumbra instance, and add ... */" />
-            <marker date="1492457621347" expanded="true" signature="730:1323" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="825:1020" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="843:948" ph="/* Ambient color will determine how dark everything else ... */" />
-            <marker date="1492457621347" expanded="true" signature="1161:1248" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="1394:2689" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="1717:2679" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="1829:2079" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="2180:2665" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="2699:2901" ph="/* We use begin draw to start drawing the lights that have ... */" />
-            <marker date="1492457621347" expanded="true" signature="2968:3031" ph="{...}" />
-            <marker date="1492457621347" expanded="true" signature="3041:3163" ph="/* Used to finish the penumbra instance drawing process, ... */" />
-            <marker date="1492457621347" expanded="true" signature="3247:3313" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/RenderSystem.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-          <folding>
-            <marker date="1492430248899" expanded="false" signature="6:466" ph="..." />
-            <marker date="1492430248899" expanded="true" signature="493:7070" ph="{...}" />
-            <marker date="1492430248899" expanded="true" signature="535:7068" ph="{...}" />
-            <marker date="1492430248899" expanded="true" signature="550:821" ph="/* ______________________________________________________________________________________________________________ ... */" />
-            <marker date="1492430248899" expanded="true" signature="1097:1248" ph="/* Render just gets the graphicsdevice and the spritebatch ... */" />
-            <marker date="1492430248899" expanded="true" signature="1296:3131" ph="{...}" />
-            <marker date="1492430248899" expanded="true" signature="1663:2675" ph="/* Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale)); ... */" />
-            <marker date="1492430248899" expanded="true" signature="3141:3436" ph="/* This method will render all the entities that are associated ... */" />
-            <marker date="1492430248899" expanded="true" signature="3521:6665" ph="{...}" />
-            <marker date="1492430248899" expanded="true" signature="3777:6653" ph="{...}" />
-            <marker date="1492430248899" expanded="true" signature="4206:6639" ph="{...}" />
-            <marker date="1492430248899" expanded="true" signature="4470:4688" ph="{...}" />
-            <marker date="1492430248899" expanded="true" signature="5610:5907" ph="/* System.Diagnostics.Debug.WriteLine( ... */" />
-            <marker date="1492430248899" expanded="true" signature="6738:7062" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/CollisionSystem.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="547">
-          <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
-          <folding>
-            <marker date="1492430248828" expanded="false" signature="6:510" ph="..." />
-            <marker date="1492430248828" expanded="true" signature="537:10393" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="575:10391" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="709:3068" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="1010:3058" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="1231:3044" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="1527:2426" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="1619:2404" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="1778:2378" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="1912:2078" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="2182:2348" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="2506:3026" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="2624:2766" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="2862:3004" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="3143:5245" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="4219:4947" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="4286:4632" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="5310:7387" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="6365:7094" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="6431:6800" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="7537:8223" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="8375:8974" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="9128:9658" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="9724:10001" ph="{...}" />
-            <marker date="1492430248828" expanded="true" signature="10135:10385" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/RenderComponent/RenderComponent.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="64" column="77" lean-forward="false" selection-start-line="64" selection-start-column="77" selection-end-line="64" selection-end-column="77" />
-          <folding>
-            <marker date="1492458650623" expanded="false" signature="6:350" ph="..." />
-            <marker date="1492458650623" expanded="true" signature="380:3747" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="428:673" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="713:1986" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="808:1057" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="915:1046" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="1154:1980" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="1280:1424" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="1519:1933" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="2027:3745" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="2156:2379" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="2226:2332" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="2453:2682" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="2549:2646" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="2762:2991" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="2858:2955" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="3064:3278" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="3164:3242" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="3336:3427" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="3492:3589" ph="{...}" />
-            <marker date="1492458650623" expanded="true" signature="3648:3739" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/RenderComponent/PositionComponent.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="14" column="44" lean-forward="false" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-          <folding>
-            <marker date="1492458667782" expanded="false" signature="6:195" ph="..." />
-            <marker date="1492458667782" expanded="true" signature="225:398" ph="{...}" />
-            <marker date="1492458667782" expanded="true" signature="275:396" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/CollisionResolveSystem.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="25" column="113" lean-forward="false" selection-start-line="25" selection-start-column="113" selection-end-line="25" selection-end-column="113" />
-          <folding>
-            <marker date="1492459035379" expanded="false" signature="6:270" ph="..." />
-            <marker date="1492459035379" expanded="true" signature="297:7076" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="342:3622" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="632:2946" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="841:2936" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="1202:2922" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="1361:2773" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="1408:1626" ph="/* Collision events are made up from requirement of each party ... */" />
-            <marker date="1492459035379" expanded="true" signature="1934:2751" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="1989:2125" ph="/* When there is a match for a collision-event, an event is published ... */" />
-            <marker date="1492459035379" expanded="true" signature="2340:2631" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="3068:3616" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="3661:3777" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="3898:4052" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="4093:5033" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="4134:4235" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="4431:4690" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="4779:4850" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="4934:5027" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="5039:5175" ph="/* Used for mapping componenet requirements to CollisionEvents ... */" />
-            <marker date="1492459035379" expanded="true" signature="5221:7074" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="5401:7067" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="5488:5857" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="5582:5659" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="5753:5835" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="6003:6472" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="6097:6174" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="6268:6450" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="6619:6991" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="6713:6792" ph="{...}" />
-            <marker date="1492459035379" expanded="true" signature="6886:6969" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/WallCollisionSystem.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="27" column="18" lean-forward="false" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
-          <folding>
-            <marker date="1492459299230" expanded="false" signature="6:320" ph="..." />
-            <marker date="1492459299230" expanded="true" signature="383:2171" ph="{...}" />
-            <marker date="1492459299230" expanded="true" signature="425:2169" ph="{...}" />
-            <marker date="1492459299230" expanded="true" signature="594:695" ph="{...}" />
-            <marker date="1492459299230" expanded="true" signature="762:1191" ph="{...}" />
-            <marker date="1492459299230" expanded="true" signature="1287:1433" ph="{...}" />
-            <marker date="1492459299230" expanded="true" signature="1524:2163" ph="{...}" />
-            <marker date="1492459299230" expanded="true" signature="1720:1829" ph="{...}" />
-            <marker date="1492459299230" expanded="true" signature="2017:2127" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/GameTest/TestGame.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="568">
-          <caret line="143" column="14" lean-forward="false" selection-start-line="143" selection-start-column="14" selection-end-line="143" selection-end-column="14" />
-          <folding>
-            <marker date="1492458770479" expanded="true" signature="6:841" ph="..." />
-            <marker date="1492458770479" expanded="true" signature="894:20707" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="901:978" ph="/// This is the main type for your game. ... " />
-            <marker date="1492458770479" expanded="true" signature="1011:20705" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="2397:3101" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="2506:2661" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="2816:2962" ph="/* Turn off the fixed time step ... */" />
-            <marker date="1492458770479" expanded="true" signature="3147:5321" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="5364:5646" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="5708:6188" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="5867:5917" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="6303:7476" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="6688:6738" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="6818:6864" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="6940:7070" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="7515:8058" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="7906:7958" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="8123:8917" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="8177:8907" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="8240:8893" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="8709:8777" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="8952:10197" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="9116:9228" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="9536:9586" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="9645:9921" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="9704:9907" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="10231:12407" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="10691:10750" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="10809:11084" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="10867:11070" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="11144:11234" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="11378:11589" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="12135:12226" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="12330:12397" ph="/* if (collision) ... */" />
-            <marker date="1492458770479" expanded="true" signature="12452:14153" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="14548:18164" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="15095:15156" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="15215:15490" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="15273:15476" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="15550:15602" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="16071:16495" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="16158:16391" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="16556:16679" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="16707:17008" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="16804:16899" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="17038:17236" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="17262:17508" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="17349:17404" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="17578:17636" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="17793:17866" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="18023:18066" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="18211:18697" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="18619:18685" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="18746:18830" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="18889:19852" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="18951:19807" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="19643:19793" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="19909:20699" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="20106:20342" ph="{...}" />
-            <marker date="1492458770479" expanded="true" signature="20395:20656" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/SoundComponent.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="511">
-          <caret line="27" column="26" lean-forward="false" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
-          <folding>
-            <marker date="1492460194451" expanded="false" signature="6:275" ph="..." />
-            <marker date="1492460194451" expanded="true" signature="305:704" ph="{...}" />
-            <marker date="1492460194451" expanded="true" signature="409:578" ph="{...}" />
-            <marker date="1492460194451" expanded="true" signature="613:700" ph="{...}" />
-            <marker date="1492460194451" expanded="true" signature="646:694" ph="{...}" />
-          </folding>
+        <state relative-caret-position="12870">
+          <caret line="429" column="21" lean-forward="false" selection-start-line="429" selection-start-column="21" selection-end-line="429" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/LoadContentSystem.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="16" column="37" lean-forward="false" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="37" />
+        <state relative-caret-position="1110">
+          <caret line="37" column="21" lean-forward="false" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/SoundComponent.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/WeaponSystem.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1170">
+          <caret line="39" column="64" lean-forward="false" selection-start-line="39" selection-start-column="64" selection-end-line="39" selection-end-column="64" />
           <folding>
-            <marker date="1492436950438" expanded="false" signature="6:347" ph="..." />
-            <marker date="1492436950438" expanded="true" signature="374:1504" ph="{...}" />
-            <marker date="1492436950438" expanded="true" signature="414:1502" ph="{...}" />
-            <marker date="1492436950438" expanded="true" signature="483:1496" ph="{...}" />
-            <marker date="1492436950438" expanded="true" signature="717:1099" ph="{...}" />
-            <marker date="1492436950438" expanded="true" signature="1258:1486" ph="{...}" />
+            <marker date="1492492562397" expanded="false" signature="6:327" ph="..." />
+            <marker date="1492492562397" expanded="true" signature="379:4585" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="414:4583" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="586:713" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="744:789" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="850:1997" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="935:1987" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="2188:4109" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="2709:2886" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="2956:3074" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="3805:3907" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="4208:4577" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="4403:4552" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/WeaponSystem.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="23" column="9" lean-forward="false" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
+        <state relative-caret-position="870">
+          <caret line="39" column="64" lean-forward="false" selection-start-line="39" selection-start-column="64" selection-end-line="39" selection-end-column="64" />
           <folding>
-            <marker date="1492458224754" expanded="false" signature="6:327" ph="..." />
-            <marker date="1492458224754" expanded="true" signature="379:4582" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="414:4580" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="586:713" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="744:789" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="850:1994" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="935:1984" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="2185:4106" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="2706:2883" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="2953:3071" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="3802:3904" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="4205:4574" ph="{...}" />
-            <marker date="1492458224754" expanded="true" signature="4400:4549" ph="{...}" />
+            <marker date="1492492562397" expanded="false" signature="6:327" ph="..." />
+            <marker date="1492492562397" expanded="true" signature="379:4585" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="414:4583" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="586:713" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="744:789" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="850:1997" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="935:1987" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="2188:4109" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="2709:2886" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="2956:3074" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="3805:3907" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="4208:4577" ph="{...}" />
+            <marker date="1492492562397" expanded="true" signature="4403:4552" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/Collisions/BulletCollisionSystem.cs">
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/BulletFlyweightComponent.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="949">
-          <caret line="43" column="5" lean-forward="true" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
+        <state relative-caret-position="300">
+          <caret line="10" column="5" lean-forward="false" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/GameTest/TestGame.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12870">
+          <caret line="429" column="21" lean-forward="false" selection-start-line="429" selection-start-column="21" selection-end-line="429" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/LoadContentSystem.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="37" column="21" lean-forward="false" selection-start-line="37" selection-start-column="21" selection-end-line="37" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Components/SoundComponent.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/ZEngine/Systems/SoundSystem.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-702">
+          <caret line="34" column="9" lean-forward="true" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
           <folding>
-            <marker date="1492492295256" expanded="false" signature="6:320" ph="..." />
-            <marker date="1492492295256" expanded="true" signature="383:1822" ph="{...}" />
-            <marker date="1492492295256" expanded="true" signature="427:1820" ph="{...}" />
-            <marker date="1492492295256" expanded="true" signature="596:699" ph="{...}" />
-            <marker date="1492492295256" expanded="true" signature="766:1553" ph="{...}" />
-            <marker date="1492492295256" expanded="true" signature="1648:1814" ph="{...}" />
+            <marker date="1492492562379" expanded="false" signature="6:451" ph="..." />
+            <marker date="1492492562379" expanded="true" signature="503:4038" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="544:4036" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="646:1250" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="669:790" ph="/* Here we subscribe what will happen when the entity walks forwards ... */" />
+            <marker date="1492492562379" expanded="true" signature="965:1137" ph="/* We subscribe to the input inputEvent for when the entity fires a ... */" />
+            <marker date="1492492562379" expanded="true" signature="1280:1325" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="1383:2538" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="1406:1545" ph="/* First things first, we only handle this event if the key is pressed ... */" />
+            <marker date="1492492562379" expanded="true" signature="1620:2528" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="1651:1751" ph="/* To play the bullet sound the entity needs to have ... */" />
+            <marker date="1492492562379" expanded="true" signature="2384:2514" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="2594:3597" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="2678:3587" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="3232:3359" ph="{...}" />
+            <marker date="1492492562379" expanded="true" signature="3713:4030" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ScopeChooserConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+    <entry file="file://$PROJECT_DIR$/Spelkonstruktionsprojekt/Content/Content.mgcb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="453">
+          <caret line="170" column="24" lean-forward="true" selection-start-line="170" selection-start-column="24" selection-end-line="170" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

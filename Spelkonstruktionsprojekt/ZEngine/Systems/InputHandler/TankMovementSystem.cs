@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
@@ -22,10 +22,11 @@ namespace ZEngine.Systems
 
         public ISystem Start()
         {
-            EventBus.Subscribe<InputEvent>("entityWalkForwards", WalkForwards);
-            EventBus.Subscribe<InputEvent>("entityWalkBackwards", WalkBackwards);
-            EventBus.Subscribe<InputEvent>("entityTurnLeft", TurnLeft);
-            EventBus.Subscribe<InputEvent>("entityTurnRight", TurnRight);
+            
+            EventBus.Subscribe<InputEvent>(EventConstants.WalkForward, WalkForwards);
+            EventBus.Subscribe<InputEvent>(EventConstants.WalkBackward, WalkBackwards);
+            EventBus.Subscribe<InputEvent>(EventConstants.TurnLeft, TurnLeft);
+            EventBus.Subscribe<InputEvent>(EventConstants.TurnRight, TurnRight);
             return this;
         }
 
@@ -40,11 +41,11 @@ namespace ZEngine.Systems
             {
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    moveComponent.Speed = 1;
+                    moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
                 }
                 else if(moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
                 {
-                    moveComponent.Speed = 0;
+                    moveComponent.CurrentAcceleration = 0;
                 }
             });
         }
@@ -54,11 +55,11 @@ namespace ZEngine.Systems
             {
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    moveComponent.Speed = -1;
+                    moveComponent.CurrentAcceleration = -moveComponent.AccelerationSpeed;
                 }
                 else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
                 {
-                    moveComponent.Speed = 0;
+                    moveComponent.CurrentAcceleration = 0;
                 }
             });
         }

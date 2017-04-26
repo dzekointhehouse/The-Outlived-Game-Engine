@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ZEngine.Managers.ComponentManager">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAgAAEAAgAAACAIAQAQAAAAEgAAAA=</HashCode>
+      <FileName>ZEngine\Managers\ComponentManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Managers.EntityManager">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAEAAAAAEAAAAAAAAAIBAAAACAAACAAA=</HashCode>
+      <FileName>ZEngine\Managers\EntityManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZEngine.Managers.SystemManager">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAQAAAQACAAAI=</HashCode>
+      <FileName>ZEngine\Managers\SystemManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ZEngine.Managers.ISystem">
+    <Position X="1.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZEngine\Systems\ISystem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

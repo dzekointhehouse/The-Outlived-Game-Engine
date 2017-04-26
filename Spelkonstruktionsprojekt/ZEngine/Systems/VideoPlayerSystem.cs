@@ -6,45 +6,73 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using ZEngine.Managers;
 using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class VideoPlayerSystem
+    public class VideoPlayerSystem : ISystem
     {
+        // Maybe having our own player instance
+        private VideoPlayer _videoPlayer;
 
-        private VideoPlayer videoPlayer;
-
-        public bool IsDonePlaying()
+        // We instantiate our player when we create our system.
+        public VideoPlayerSystem()
         {
-                return videoPlayer.State == MediaState.Stopped;  
-
-
+            _videoPlayer = new VideoPlayer();
         }
 
-        public void Start()
+        // method to check if the videoplayer is playing.
+        public bool IsPlaying()
         {
-            if (videoPlayer.State == MediaState.Stopped)
+            return _videoPlayer.State == MediaState.Playing;
+        }
+
+        public bool IsStopped()
+        {
+            return _videoPlayer.State == MediaState.Stopped;
+        }
+
+        // if the video is not already playing, than this method
+        // calls it to play.
+        public void Play(Video video)
+        {
+            if (IsStopped())
             {
-               // videoPlayer.Play(video);
+                _videoPlayer.Play(video);
             }
 
         }
 
+        // This draw method call will render the video playing to the screen.
         public void Draw(GameDependencies gameDependencies)
         {
-            var viewport = gameDependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
             Texture2D videoTexture = null;
 
-            if (!IsDonePlaying())
-                videoTexture = videoPlayer.GetTexture();
+            var viewport = gameDependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
+
+            if (!IsStopped())
+                videoTexture = _videoPlayer.GetTexture();
 
             if (videoTexture != null)
             {
                 gameDependencies.SpriteBatch.Begin();
-                gameDependencies.SpriteBatch.Draw(videoTexture, new Rectangle(0, 0, (int)viewport.X, (int)viewport.Y), Color.White);
+                gameDependencies.SpriteBatch.Draw(videoTexture, new Rectangle(0, 0, (int) viewport.X, (int) viewport.Y),
+                    Color.White);
                 gameDependencies.SpriteBatch.End();
             }
         }
     }
 }
+
+//Texture2D videoTexture = null;
+
+//            if (player.State != MediaState.Stopped)
+//                videoTexture = player.GetTexture();
+
+//            if (videoTexture != null)
+//            {
+//                spriteBatch.Begin();
+//                spriteBatch.Draw(videoTexture, new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y), Color.White);
+//                spriteBatch.End();
+//            }

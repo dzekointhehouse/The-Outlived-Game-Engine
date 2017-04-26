@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
-using Spelkonstruktionsprojekt.ZEngine.Wrappers;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 
@@ -14,7 +13,7 @@ namespace ZEngine.Components
 {
     public class RenderComponent : IComponent
     {
-        public PositionComponent PositionComponent = null;
+        //public PositionComponent PositionComponent = null;
 
         public DimensionsComponent DimensionsComponent = null;
 
@@ -35,7 +34,7 @@ namespace ZEngine.Components
                 Height = (int) renderComponent.Radius * 2
             };
         }
-
+/*
         public static Vector2 GetPosition(int entityId, RenderComponent renderComponent = null)
         {
             if (renderComponent == null && ComponentManager.Instance.EntityHasComponent<RenderComponent>(entityId))
@@ -53,8 +52,8 @@ namespace ZEngine.Components
             return default(Vector2);
         }
     }
-
-    public class RenderComponentBuilder
+*/
+/*    public class RenderComponentBuilder
     {
         private readonly RenderComponent _renderComponent = new RenderComponent();
 
@@ -71,17 +70,17 @@ namespace ZEngine.Components
         {
             _renderComponent.PositionComponent = new PositionComponent()
             {
-                Position = Vector2D.Create(x, y),
+                Position = new Vector2(x,y),
                 ZIndex = zIndex
             };
             return this;
         }
 
-        public RenderComponentBuilder Position(double x, double y, int zIndex)
+        public RenderComponentBuilder Position(float x, float y, int zIndex)
         {
             _renderComponent.PositionComponent = new PositionComponent()
             {
-                Position = Vector2D.Create(x, y),
+                Position = new Vector2(x, y),
                 ZIndex = zIndex
             };
             return this;
@@ -114,5 +113,5 @@ namespace ZEngine.Components
             _renderComponent.Fixed = isFixed;
             return this;
         }
-    }
+    */}
 }
