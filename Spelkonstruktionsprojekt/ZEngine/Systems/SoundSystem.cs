@@ -50,13 +50,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // To play the bullet sound the entity needs to have
                 // the BulletFlyweightComponent
-                var bulletSpriteEntities =
-                    ComponentManager.Instance.GetEntitiesWithComponent<BulletFlyweightComponent>();
-                if (bulletSpriteEntities.Count <= 0) return;
+                var bulletFlyweightComponent =
+                    ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
+                if (bulletFlyweightComponent.Count <= 0) return;
 
                 // Get the sound instance for this entity
                 var sound =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(bulletSpriteEntities.First().Key);
+                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(bulletFlyweightComponent.First().Key);
 
                 // We create a SoundEffectInstance which gives us more control
                 var soundInstance = sound.SoundEffect.CreateInstance();

@@ -44,7 +44,10 @@ namespace ZEngine.Managers
             { typeof(HealthSystem), new HealthSystem() },
             { typeof(VideoPlayerSystem), new VideoPlayerSystem() },
             { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
-            { typeof(EntityRemovalSystem), new EntityRemovalSystem() }
+            { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
+            { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
+            { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
+
         };
 
         // _____________________________________________________________________________________________________________________ //
@@ -59,10 +62,16 @@ namespace ZEngine.Managers
             {
                 return _systems[typeof(T)] as T;
             }
-            else
+            throw new Exception("No such system exist.");
+        }
+
+        public ISystem GetSystem(Type systemType)
+        {
+            if (_systems.ContainsKey(systemType))
             {
-                throw new Exception("No such system exist.");
+                return _systems[systemType];
             }
+            throw new Exception("No such system exist.");
         }
 
         // Checks the systems dictionary if it contains the 

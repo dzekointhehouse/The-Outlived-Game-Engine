@@ -23,15 +23,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         public void HandleInput(KeyboardState oldKeyboardState, GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
-            var entitiesWithActionBindings = ComponentManager.GetEntitiesWithComponent<ActionBindings>();
+            var entitiesWithActionBindings = ComponentManager.GetEntitiesWithComponent(typeof(ActionBindings));
             foreach (var entity in entitiesWithActionBindings)
             {
-                var keyBindings = entity.Value.Actions;
+                var actionBindingsComponent = entity.Value as ActionBindings;
+                var keyBindings = actionBindingsComponent.Actions;
 
                 foreach (var binding in keyBindings)
                 {
-                    Keys key = binding.Key;
-                    string eventName = binding.Value;
+                    var key = binding.Key;
+                    var eventName = binding.Value;
                     var currentKeyEvent = GetKeyEvent(key, keyboardState, oldKeyboardState);
                     EventBus.Publish(
                         binding.Value,

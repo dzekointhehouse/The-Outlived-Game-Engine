@@ -7,7 +7,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class TeamComponent : IComponent
+    public class TeamComponent : IComponent
     {
         public List<int> members { get; set; } = new List<int>();
     }

@@ -18,15 +18,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public void Update(GameTime gameTime)
         {
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (var entity in componentManager.GetEntitiesWithComponent<AIComponent>())
+            foreach (var entity in componentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
-                var firstPlayer = componentManager.GetEntitiesWithComponent<MoveComponent>().First();
-//                var firstPlayerRenderComponent = componentManager.GetEntityComponentOrDefault<RenderComponent>(firstPlayer.Key);
-                var aiMoveComponent = componentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-//                var aiRenderComponent = componentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
+                var firstPlayerPositionComponent = componentManager.GetEntitiesWithComponent(typeof(PositionComponent)).First().Value as PositionComponent;
+                if (firstPlayerPositionComponent == null) return;
 
+                var aiMoveComponent = componentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 var aiPositionComponent = componentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
-                var firstPlayerPositionComponent = componentManager.GetEntityComponentOrDefault<PositionComponent>(firstPlayer.Key);
 
 
                 Vector2 playerPos = firstPlayerPositionComponent.Position;

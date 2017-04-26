@@ -39,7 +39,7 @@ namespace ZEngine.Systems
             graphics = gm.GraphicsDeviceManager.GraphicsDevice;
             var spriteBatch = gm.SpriteBatch;
 
-            var cameraEntities = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>().First().Value;
+            var cameraEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First().Value as CameraViewComponent;
 
             graphics.Clear(Color.Black); // Maybe done outside
 
@@ -76,51 +76,53 @@ namespace ZEngine.Systems
         private void DrawEntities(SpriteBatch spriteBatch, Rectangle subsetView)
         {
             var renderableEntities =
-                ComponentManager.Instance.GetEntitiesWithComponent<RenderComponent>()
-                    .Where(e => InsideView(e.Value, subsetView));
+                ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderComponent))
+                    .Where(e =>
+                    {
+                        var renderComponent = e.Value as RenderComponent;
+                        return InsideView(renderComponent, subsetView);
+                    });
 
             foreach (var entity in renderableEntities)
             {
-
                 var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                if(positionComponent == null) continue
+                var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
+                if (sprite == null) continue;
 
 
                 var zIndex = positionComponent.ZIndex;
+                var renderComponent = entity.Value as RenderComponent;
                 var renderBox = new Rectangle((int) positionComponent.Position.X,
                     (int) positionComponent.Position.Y,
-                    RenderComponentHelper.GetDimensions(entity.Value).Width,
-                    RenderComponentHelper.GetDimensions(entity.Value).Height);
-                
-                if (ComponentManager.EntityHasComponent<SpriteComponent>(entity.Key))
+                    RenderComponentHelper.GetDimensions(renderComponent).Width,
+                    RenderComponentHelper.GetDimensions(renderComponent).Height);
+
+                double angle = sprite.Angle;
+                if (ComponentManager.EntityHasComponent<MoveComponent>(entity.Key))
                 {
-                    var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
+                    var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                    angle = moveComponent.Direction;
+                }
 
-                    double angle = sprite.Angle;
-                    if (ComponentManager.EntityHasComponent<MoveComponent>(entity.Key))
-                    {
-                        var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-                        angle = moveComponent.Direction;
-                    }
+                var offset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(entity.Key)
+                    ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key).Offset
+                    : default(Vector2);
 
-                    var offset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(entity.Key)
-                        ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key).Offset
-                        : default(Vector2);
-
-                    //var offset = Vector2.Zero;
-                    var destinationRectangle = new Rectangle(
-                        new Point((int)(renderBox.X + offset.X), (int)(renderBox.Y + offset.Y)),
-                        new Point((int)(renderBox.Width * sprite.Scale), (int)(renderBox.Height * sprite.Scale))
-                    );
+                //var offset = Vector2.Zero;
+                var destinationRectangle = new Rectangle(
+                    new Point((int) (renderBox.X + offset.X), (int) (renderBox.Y + offset.Y)),
+                    new Point((int) (renderBox.Width * sprite.Scale), (int) (renderBox.Height * sprite.Scale))
+                );
 
 
-                    // render the sprite only if it's visible (sourceRectangle) intersects
-                    // with the viewport.
-                    var camera = ComponentManager.Instance.GetEntitiesWithComponent<CameraViewComponent>().First();
-                    if (camera.Value.View.Intersects(destinationRectangle))
-                    {
-
-
-                        var spriteCrop = sprite.SourceRectangle;
+                // render the sprite only if it's visible (sourceRectangle) intersects
+                // with the viewport.
+                var camera = ComponentManager.Instance.GetEntitiesWithComponent(CameraViewComponent).First();
+                var cameraViewComponent = camera.Value as CameraViewComponent;
+                if (cameraViewComponent.View.Intersects(destinationRectangle))
+                {
+                    var spriteCrop = sprite.SourceRectangle;
                     if (spriteCrop == default(Rectangle))
                     {
                         spriteCrop = new Rectangle(
@@ -135,27 +137,22 @@ namespace ZEngine.Systems
                         spriteColor = Color.White;
 
                     // limit can be changed in SystemConstants
-                    var zIndexMaxLimit = SystemConstants.LayerDepthMaxLimit;
+                    var zIndexMaxLimit = 1;
 
-                    
-                    
 
-                        spriteBatch.Draw(
-                            texture: sprite.Sprite,
-                            destinationRectangle: destinationRectangle,
-                            sourceRectangle: spriteCrop,
-                            color: spriteColor * sprite.Alpha,
-                            rotation: (float) angle,
-                            origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2),
-                            effects: SpriteEffects.None,
-                            layerDepth: (float) zIndex / zIndexMaxLimit
-                            //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
-                        );
-                    }
+                    spriteBatch.Draw(
+                        texture: sprite.Sprite,
+                        destinationRectangle: destinationRectangle,
+                        sourceRectangle: spriteCrop,
+                        color: spriteColor * sprite.Alpha,
+                        rotation: (float) angle,
+                        origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2),
+                        effects: SpriteEffects.None,
+                        layerDepth: (float) zIndex / zIndexMaxLimit
+                        //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
+                    );
                 }
             }
-
-
         }
 
         private bool InsideView(RenderComponent entity, Rectangle view)

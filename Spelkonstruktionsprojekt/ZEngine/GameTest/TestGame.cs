@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -35,27 +36,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private RenderSystem RenderSystem;
         private LoadContentSystem LoadContentSystem;
-        private InputHandler InputHandlerSystem;
         private MoveSystem MoveSystem;
         private TankMovementSystem TankMovementSystem;
         private TitlesafeRenderSystem TitlesafeRenderSystem;
-        private CollisionSystem CollisionSystem;
-        private CameraSceneSystem CameraFollowSystem;
         private FlashlightSystem LightSystems;
-        private CollisionResolveSystem CollisionResolveSystem;
         private WallCollisionSystem WallCollisionSystem;
         private EnemyCollisionSystem EnemyCollisionSystem;
         private BulletCollisionSystem BulletCollisionSystem;
         private AISystem AISystem;
         private AbilitySystem AbilitySystem;
-        private AnimationSystem AnimationSystem;
         private SoundSystem SoundSystem;
         private Video video;
         private VideoPlayer player;
         private WeaponSystem WeaponSystem;
-        private HealthSystem HealthSystem;
-        private SpriteAnimationSystem spriteAnimationSystem;
-        private EntityRemovalSystem entityRemovalSystem;
 
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
@@ -72,15 +65,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = (int)viewportDimensions.X,
-                PreferredBackBufferHeight = (int)viewportDimensions.Y
+                PreferredBackBufferWidth = (int) viewportDimensions.X,
+                PreferredBackBufferHeight = (int) viewportDimensions.Y
             };
             Content.RootDirectory = "Content";
 
             // Create an instance of the FPS GameComponent
             fps = new FPS(this);
 
-            // Turn off the fixed time step 
+            // Turn off the fixed time step
             // and the synchronization with the vertical retrace
             // so the game's FPS can be measured
             IsFixedTimeStep = false;
@@ -92,25 +85,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //Get Systems
             RenderSystem = SystemManager.Instance.GetSystem<RenderSystem>();
             LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
-            InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
             TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
-            CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
-            CameraFollowSystem = SystemManager.Instance.GetSystem<CameraSceneSystem>();
             LightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
             MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
-            CollisionResolveSystem = SystemManager.Instance.GetSystem<CollisionResolveSystem>();
             WallCollisionSystem = SystemManager.Instance.GetSystem<WallCollisionSystem>();
             AISystem = SystemManager.Instance.GetSystem<AISystem>();
             EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
             AbilitySystem = SystemManager.Instance.GetSystem<AbilitySystem>();
-            AnimationSystem = SystemManager.Instance.GetSystem<AnimationSystem>();
             SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
             WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
             BulletCollisionSystem = SystemManager.Instance.GetSystem<BulletCollisionSystem>();
-            HealthSystem = SystemManager.Instance.GetSystem<HealthSystem>();
-            spriteAnimationSystem = SystemManager.Instance.GetSystem<SpriteAnimationSystem>();
-            entityRemovalSystem = SystemManager.Instance.GetSystem<EntityRemovalSystem>();
 
             TempGameEnder = new TempGameEnder();
 
@@ -136,11 +121,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void CreateTestEntities()
         {
-           // var button = new Button();
+            // var button = new Button();
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
             //SetupBackground();
-            SetupBackgroundTiles(5,5);
+            SetupBackgroundTiles(5, 5);
             SetupCamera();
 //            SetupEnemy();
             CreateGlobalBulletSpriteEntity();
@@ -187,13 +172,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //                .Fixed(true).Build();
 
             var renderComponentCage = new RenderComponent()
+            {
+                DimensionsComponent = new DimensionsComponent()
                 {
-                    DimensionsComponent = new DimensionsComponent()
-                    {
-                        Height = (int)(viewportDimensions.X * 0.8), Width = (int)(viewportDimensions.Y * 0.8)                      
-                    },
-                    Fixed = true
-                };
+                    Height = (int) (viewportDimensions.X * 0.8),
+                    Width = (int) (viewportDimensions.Y * 0.8)
+                },
+                Fixed = true
+            };
 
             var position = new PositionComponent() {Position = new Vector2(0, 0), ZIndex = 2};
 
@@ -223,13 +209,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //var renderComponent3 = new RenderComponentBuilder()
             //    .Position(0, 0, 1)
             //    .Dimensions(1000, 1000).Build();
-            var position = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 1 };
+            var position = new PositionComponent() {Position = new Vector2(0, 0), ZIndex = 1};
             ComponentManager.Instance.AddComponentToEntity(position, entityId3);
 
 
             var renderComponent3 = new RenderComponent()
             {
-                DimensionsComponent = new DimensionsComponent() { Height = 1000, Width = 1000 }
+                DimensionsComponent = new DimensionsComponent() {Height = 1000, Width = 1000}
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
             var spriteComponent3 = new SpriteComponent()
@@ -263,7 +249,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
             var cameraViewComponent = new CameraViewComponent()
             {
-                View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y)
+                View = new Rectangle(0, 0, (int) viewportDimensions.X, (int) viewportDimensions.Y)
             };
             ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
             //var cameraRenderable = new RenderComponentBuilder()
@@ -276,10 +262,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 {
                     Height = 10,
                     Width = 10
-                }        
+                }
             };
 
-            var position = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 500 };
+            var position = new PositionComponent() {Position = new Vector2(0, 0), ZIndex = 500};
 
 
             var cameraSprite = new SpriteComponent()
@@ -320,8 +306,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 }
             };
 
-            var position = new PositionComponent() { Position = new Vector2(x, y), ZIndex = 20 };
-
+            var position = new PositionComponent() {Position = new Vector2(x, y), ZIndex = 20};
 
 
             var spriteComponent = new SpriteComponent()
@@ -342,7 +327,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 SoundEffectName = "zombiewalking",
                 Volume = 1f
-
             };
             ComponentManager.Instance.AddComponentToEntity(sound, entityId);
 
@@ -367,7 +351,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
             //if (collision)
             //{
-            //    
+            //
             //}
         }
 
@@ -405,17 +389,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.PageUp, EventConstants.TurnAround)
                 .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
-            
-            CreatePlayer("Carlos",player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
-            CreatePlayer("Elvir",player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
-            CreatePlayer("Markus",player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true, collision: true, isCaged: true, cageId: cageId);
+
+            CreatePlayer("Carlos", player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true,
+                collision: true, isCaged: true, cageId: cageId);
+            CreatePlayer("Elvir", player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
+                collision: true, isCaged: true, cageId: cageId);
+            CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
+                collision: true, isCaged: true, cageId: cageId);
         }
 
         //The multitude of options here is for easy debug purposes
-        public void CreatePlayer(string name, int entityId, ActionBindings actionBindings, Vector2 position = default(Vector2), bool movable = true, bool useDefaultMoveComponent = true, MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false, bool disabled = false, bool isCaged = false, int cageId = 0)
+        public void CreatePlayer(string name, int entityId, ActionBindings actionBindings,
+            Vector2 position = default(Vector2), bool movable = true, bool useDefaultMoveComponent = true,
+            MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false,
+            bool disabled = false, bool isCaged = false, int cageId = 0)
         {
             if (disabled) return;
-            if(position == default(Vector2)) position = new Vector2(150, 150);
+            if (position == default(Vector2)) position = new Vector2(150, 150);
             //Initializing first, movable, entity
             //var renderComponent = new RenderComponentBuilder()
             //    //.Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
@@ -434,17 +424,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 },
 
                 Radius = 60
-                
             };
 
-            var positionComponent = new PositionComponent() { Position = position, ZIndex = 10 };
+            var positionComponent = new PositionComponent() {Position = position, ZIndex = 10};
 
 
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "topDownSoldier",
                 Scale = 1
-
             };
             var light = new LightComponent()
             {
@@ -461,15 +449,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var sound = new SoundComponent()
             {
                 SoundEffectName = "walking"
-       
             };
 
             var animation = new SpriteAnimationComponent()
             {
-
                 Spritesheet = Content.Load<Texture2D>("blood"),
-                SpritesheetSize = new Point(3,3),
-                MillisecondsPerFrame = 30              
+                SpritesheetSize = new Point(3, 3),
+                MillisecondsPerFrame = 30
             };
             ComponentManager.Instance.AddComponentToEntity(animation, entityId);
 
@@ -541,17 +527,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             video = Content.Load<Video>("ZEngine-intro");
 
             player = new VideoPlayer();
-           // musicTest = Content.Load<Song>("assassins");
+            // musicTest = Content.Load<Song>("assassins");
             LoadContentSystem.LoadContent(this.Content);
             penumbraComponent = LightSystems.Initialize(_gameDependencies);
             //MediaPlayer.Play(musicTest);
-           
+
             if (player.State == MediaState.Stopped)
             {
                 player.Play(video);
             }
-
-
         }
 
         protected override void UnloadContent()
@@ -563,22 +547,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             if (player.State == MediaState.Stopped)
             {
-                EnemyCollisionSystem.GameTime = gameTime;
-                InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
+                EnemyCollisionSystem.GameTime = gameTime; //TODO system dependency
+                _<InputHandler>().HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
 
-                AISystem.Update(gameTime);
-                MoveSystem.Move(gameTime);
-                AnimationSystem.RunAnimations(gameTime);
-                spriteAnimationSystem.Update(gameTime);
-                CollisionSystem.DetectCollisions();
-                CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
+                _<AISystem>().Update(gameTime);
+                _<AnimationSystem>().RunAnimations(gameTime);
+                _<SpriteAnimationSystem>().Update(gameTime);
+                _<CollisionSystem>().DetectCollisions();
+                _<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents,
+                    gameTime);
 
-                CameraFollowSystem.Update(gameTime);
-                LightSystems.Update(gameTime, viewportDimensions);
-               // HealthSystem.TempEndGameIfDead(TempGameEnder);
-                HealthSystem.Update();
-               entityRemovalSystem.Update(gameTime);
+                _<CameraSceneSystem>().Update(gameTime);
+                _<FlashlightSystem>().Update(gameTime, viewportDimensions);
+                _<HealthSystem>().Update();
+                _<EntityRemovalSystem>().Update(gameTime);
+                _<InertiaDampenerSystem>().Apply(gameTime);
+                _<BackwardsPenaltySystem>().Apply();
+                MoveSystem.Move(gameTime);
 
                 if (TempGameEnder.Score > 0)
                 {
@@ -599,17 +585,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (videoTexture != null)
             {
                 spriteBatch.Begin();
-                spriteBatch.Draw(videoTexture, new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y), Color.White);
+                spriteBatch.Draw(videoTexture,
+                    new Rectangle(0, 0, (int) viewportDimensions.X, (int) viewportDimensions.Y), Color.White);
                 spriteBatch.End();
             }
-            if (player.State == MediaState.Stopped) {
-
+            if (player.State == MediaState.Stopped)
+            {
                 LightSystems.BeginDraw(penumbraComponent);
                 RenderSystem.Render(_gameDependencies); // lowers FPS by half (2000)
                 LightSystems.EndDraw(penumbraComponent, gameTime);
                 TitlesafeRenderSystem.Draw(_gameDependencies); // not noticable
             }
             base.Draw(gameTime);
+        }
+
+        private T _<T>() where T : class, ISystem
+        {
+            return SystemManager.Instance.GetSystem(typeof(T)) as T;
         }
     }
 }

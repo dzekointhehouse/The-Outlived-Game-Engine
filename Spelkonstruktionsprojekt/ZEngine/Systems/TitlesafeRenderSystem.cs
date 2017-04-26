@@ -42,7 +42,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             var titlesafearea = graphics.Viewport.TitleSafeArea;
 
-            var playerComponents = ComponentManager.Instance.GetEntitiesWithComponent<PlayerComponent>();
+            var playerComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent));
 
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
@@ -54,7 +54,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             foreach (var playerInstance in playerComponents)
             {
-                string text = playerInstance.Value.Name;
+                var playerComponent = playerInstance.Value as PlayerComponent;
+                var text = playerComponent.Name;
                 // Adding the health component to text.
                 if (ComponentManager.Instance.EntityHasComponent<HealthComponent>(playerInstance.Key))
                 {

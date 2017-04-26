@@ -26,22 +26,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // intented to be used so that the entities show a splash of blood when they die.
         private void DeathAnimation(GameTime gameTime)
         {
-            var animationComponents = ComponentManager.Instance.GetEntitiesWithComponent<SpriteAnimationComponent>();
+            var animationComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpriteAnimationComponent));
 
             foreach (var animation in animationComponents)
             {
-                var currentFrame = animation.Value.CurrentFrame;
-                var sheetSize = animation.Value.SpritesheetSize;
-                var frameSize = animation.Value.FrameSize;
+                var animationComponent = animation.Value as SpriteAnimationComponent;
+                var currentFrame = animationComponent.CurrentFrame;
+                var sheetSize = animationComponent.SpritesheetSize;
+                var frameSize = animationComponent.FrameSize;
 
                 if (frameSize == default(Point))
                 {
-                    animation.Value.FrameSize = new Point(
-                        animation.Value.Spritesheet.Width / animation.Value.SpritesheetSize.X,
-                        animation.Value.Spritesheet.Height / animation.Value.SpritesheetSize.Y
+                    animationComponent.FrameSize = new Point(
+                        animationComponent.Spritesheet.Width / animationComponent.SpritesheetSize.X,
+                        animationComponent.Spritesheet.Height / animationComponent.SpritesheetSize.Y
                     );
 
-                    frameSize = animation.Value.FrameSize;
+                    frameSize = animationComponent.FrameSize;
                 }
 
                 // We get the health component to check if the entity is alive, and
@@ -56,19 +57,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                     if (!health.Alive)
                     {
-                        animation.Value.TimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+                        animationComponent.TimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
 
-                        if (animation.Value.TimeSinceLastFrame > animation.Value.MillisecondsPerFrame)
+                        if (animationComponent.TimeSinceLastFrame > animationComponent.MillisecondsPerFrame)
                         {
-                            animation.Value.TimeSinceLastFrame -= animation.Value.MillisecondsPerFrame;
+                            animationComponent.TimeSinceLastFrame -= animationComponent.MillisecondsPerFrame;
                             ++currentFrame.X;
-                        
-                            if (currentFrame.X >= animation.Value.SpritesheetSize.X)
+
+                            if (currentFrame.X >= animationComponent.SpritesheetSize.X)
                             {
                                 currentFrame.X = 0;
                                 ++currentFrame.Y;
 
-                                if (currentFrame.Y >= animation.Value.SpritesheetSize.Y)
+                                if (currentFrame.Y >= animationComponent.SpritesheetSize.Y)
                                 {
                                     currentFrame.Y = 3;
 
@@ -77,11 +78,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         }
 
                         // Insert the new values in the component
-                        animation.Value.CurrentFrame = new Point(currentFrame.X, currentFrame.Y);
+                        animationComponent.CurrentFrame = new Point(currentFrame.X, currentFrame.Y);
 
                         sprite.Scale = 2;
 
-                        sprite.Sprite = animation.Value.Spritesheet;
+                        sprite.Sprite = animationComponent.Spritesheet;
                         
 
                         // This will calculate the sourceRectangel

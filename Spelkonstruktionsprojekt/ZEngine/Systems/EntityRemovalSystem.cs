@@ -27,12 +27,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // They will ned to have the SpriteAnimationComponent.
         private void DeadEntities(GameTime gameTime)
         {
-            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent<HealthComponent>();
+            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
             foreach (var entity in healthEntities)
             {
                 // Better yet would be to use a component to determine if they should be deleted
                 // then when they should be deleted, and be able to get the associated components.
-                if (!entity.Value.Alive)
+                var healthComponent = entity.Value as HealthComponent;
+                if (!healthComponent.Alive)
                 {
                     // We want to remove all the components for the entity except for the 
                     // spriteComponent and health, we need them still yet.

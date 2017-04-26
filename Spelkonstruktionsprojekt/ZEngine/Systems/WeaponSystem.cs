@@ -38,26 +38,25 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // origion to the direction of the entities moveComponent.
         public void HandleFireWeapon(InputEvent inputEvent)
         {
-            if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
-            {
-                var weaponComponent =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
-                if (weaponComponent == default(WeaponComponent)) return;
+            if (inputEvent.KeyEvent != ActionBindings.KeyEvent.KeyPressed) return;
 
-                var renderComponent =
-                                    ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(inputEvent.EntityId);
-                var positionComponent =
-                                    ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
+            var weaponComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
+            if (weaponComponent == default(WeaponComponent)) return;
 
-                var moveComponent =
-                                    ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(inputEvent.EntityId);
+            var renderComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(inputEvent.EntityId);
+            var positionComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
 
-                var bulletSpriteEntities = ComponentManager.Instance.GetEntitiesWithComponent<BulletFlyweightComponent>();
-                if (bulletSpriteEntities.Count <= 0) return;
-                var bulletSpriteComponent =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(bulletSpriteEntities.First().Key);
-                CreateBullet(inputEvent, bulletSpriteComponent, weaponComponent, moveComponent, renderComponent, positionComponent);
-            }
+            var moveComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(inputEvent.EntityId);
+
+            var bulletSpriteEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
+            if (bulletSpriteEntities.Count <= 0) return;
+            var bulletSpriteComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(bulletSpriteEntities.First().Key);
+            CreateBullet(inputEvent, bulletSpriteComponent, weaponComponent, moveComponent, renderComponent, positionComponent);
         }
 
         // This method is called in the handleFireWeapon method to create the bullet

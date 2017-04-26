@@ -26,42 +26,45 @@ namespace ZEngine.Systems
 
         private void UpdateFixedRenderables()
         {
-            var camera = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>().First();
+            var camera = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
 
-            var fixedRenderables = 
-                ComponentManager.GetEntitiesWithComponent<RenderComponent>()
-                    .Where(entity => 
-                        entity.Value.Fixed
-                        && ComponentManager.Instance.EntityHasComponent<RenderOffsetComponent>(entity.Key)
-                    );
+            var fixedRenderables =
+                ComponentManager.GetEntitiesWithComponent(typeof(RenderComponent))
+                    .Where(entity =>
+                    {
+                        var renderComponent = entity.Value as RenderComponent;
+                        return renderComponent.Fixed
+                               && ComponentManager.Instance.EntityHasComponent<RenderOffsetComponent>(entity.Key);
+                    });
 
             foreach (var fixedEntity in fixedRenderables)
             {
-                var offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(fixedEntity.Key);
-                var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(fixedEntity.Key);
+                var offsetComponent =
+                    ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(fixedEntity.Key);
+                var positionComponent =
+                    ComponentManager.GetEntityComponentOrDefault<PositionComponent>(fixedEntity.Key);
 
 
                 var position = positionComponent.Position;
-                position.X = camera.Value.View.X + offsetComponent.Offset.X;
-                position.Y = camera.Value.View.Y + offsetComponent.Offset.Y;
+                var cameraViewComponent = camera.Value as CameraViewComponent;
+                position.X = cameraViewComponent.View.X + offsetComponent.Offset.X;
+                position.Y = cameraViewComponent.View.Y + offsetComponent.Offset.Y;
             }
         }
 
         private void UpdateCameraPosition(GameTime gameTime)
         {
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
-            var followEntities = ComponentManager.GetEntitiesWithComponent<CameraFollowComponent>();
-            var cameras = ComponentManager.GetEntitiesWithComponent<CameraViewComponent>();
+            var followEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraFollowComponent));
+            var cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
             Vector2 averagePosition = new Vector2(0, 0);
 
             foreach (var entity in followEntities)
             {
-//                    var comp = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(entity.Key);
-                    var pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
-                    averagePosition += pos.Position;
+                var pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                averagePosition += pos.Position;
             }
-
 
             averagePosition /= followEntities.Count;
 
@@ -70,26 +73,24 @@ namespace ZEngine.Systems
 
             foreach (var cameraEntity in cameras)
             {
-                var camera = cameraEntity.Value;
+                var camera = cameraEntity.Value as CameraViewComponent;
                 Point screenCenter = camera.View.Center;
-                var cameraRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(cameraEntity.Key);
-                var cameraPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(cameraEntity.Key);
-
+                var cameraPositionComponent =
+                    ComponentManager.GetEntityComponentOrDefault<PositionComponent>(cameraEntity.Key);
 
                 //Setting the position of the red dot (for debugging camera follow of multiple entities)
                 cameraPositionComponent.Position = averagePosition;
 
                 var centerVector = new Vector2(screenCenter.X, screenCenter.Y);
                 var direction = averagePosition - centerVector;
-                float cameraSpeed = (float)(5 * delta);
-                var ratioY = (float)camera.View.Width / (float)camera.View.Height;
-                var ratioX = (float)camera.View.Height / (float)camera.View.Width;
+                float cameraSpeed = (float) (5 * delta);
+                var ratioY = (float) camera.View.Width / (float) camera.View.Height;
+                var ratioX = (float) camera.View.Height / (float) camera.View.Width;
                 Vector2 speed = new Vector2(cameraSpeed * ratioX, cameraSpeed * ratioY);
                 var oldPosition = new Vector2(camera.View.X, camera.View.Y);
                 var newPosition = oldPosition + direction * speed;
-                camera.View = new Rectangle((int)Math.Ceiling(newPosition.X), (int)Math.Ceiling(newPosition.Y), camera.View.Width, camera.View.Height);
-
-                
+                camera.View = new Rectangle((int) Math.Ceiling(newPosition.X), (int) Math.Ceiling(newPosition.Y),
+                    camera.View.Width, camera.View.Height);
 
                 //Debug.WriteLine("CAMERA POSITION " + new Vector2(camera.View.X, camera.View.Y));
             }

@@ -27,10 +27,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // except for the light will be.
                 AmbientColor = new Color(new Vector3(0.5f))
             };
-            var lights = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
+            var lights = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
             foreach (var instance in lights)
             {
-                penumbra.Lights.Add(instance.Value.Light);
+                var lightComponent = instance.Value as LightComponent;
+                penumbra.Lights.Add(lightComponent.Light);
             }
 
             penumbra.Initialize();
@@ -41,22 +42,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // attached to an moving entity.
         public void Update(GameTime gameTime, Vector2 gameDimensions)
         {
-            var camera = ComponentManager.Instance.GetEntitiesWithComponent<CameraViewComponent>().First();
-            var cameraView = camera.Value.View;
-            var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent<LightComponent>();
+            var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
+            var cameraViewComponent = camera.Value as CameraViewComponent;
+            var cameraView = cameraViewComponent.View;
+            var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
             foreach (var lightEntity in lightEntities)
             {
+                var lightComponent = lightEntity.Value as LightComponent;
                 if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(lightEntity.Key))
                 {
                     var moveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(lightEntity.Key);
-                    lightEntity.Value.Light.Rotation = (float)moveComponent.Direction;
+                    lightComponent.Light.Rotation = (float)moveComponent.Direction;
                 }
 
                 if (ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
                 {
                     var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(lightEntity.Key);
 
-                    lightEntity.Value.Light.Position =
+                    lightComponent.Light.Position =
                         new Vector2(
                             positionComponent.Position.X - cameraView.X,
                             positionComponent.Position.Y - cameraView.Y

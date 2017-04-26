@@ -17,24 +17,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public void Update()
         {
-            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent<HealthComponent>();
-            foreach (int key in healthEntities.Keys)
+            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
+            foreach (var entity in healthEntities)
             {
-                var healthComponent = healthEntities[key];
+                var entityId = entity.Key;
+                var healthComponent = entity.Value as HealthComponent;
                 if (healthComponent.CurrentHealth <= 0 && healthComponent.Alive)
                 {
                     healthComponent.CurrentHealth = 0;
                     healthComponent.Alive = false;
-                    Debug.WriteLine("Entity " + key + " has fallen");
+                    Debug.WriteLine("Entity " + entityId + " has fallen");
                 }
-                while (healthComponent.Damage.Count>0)
+                while (healthComponent.Damage.Count > 0)
                 {
-                    int damage = healthComponent.Damage.First();
+                    var damage = healthComponent.Damage.First();
                     healthComponent.CurrentHealth -= damage;
                     healthComponent.Damage.Remove(damage);
                     Debug.WriteLine("HP: " + healthComponent.CurrentHealth);
                 }
-
             }
         }
     }

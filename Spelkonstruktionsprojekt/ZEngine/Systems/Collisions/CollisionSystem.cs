@@ -22,20 +22,20 @@ namespace ZEngine.Systems
 
         public void DetectCollisions()
         {
-            var collisionEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
+            var collisionEntities = ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent));
 
             var movingEntities = collisionEntities.Where(entity => ComponentManager.EntityHasComponent<MoveComponent>(entity.Key));
             foreach (var movingEntity in movingEntities)
             {
                 var movingEntityId = movingEntity.Key;
-                CollisionComponent movingEntityCollisionComponent = movingEntity.Value;
+                var movingEntityCollisionComponent = movingEntity.Value as CollisionComponent;
 
                 foreach (var stillEntity in collisionEntities)
                 {
                     var stillEntityId = stillEntity.Key;
                     if (movingEntityId == stillEntityId) continue;
 
-                    CollisionComponent stillEntityCollisionComponent = stillEntity.Value;
+                    var stillEntityCollisionComponent = stillEntity.Value as CollisionComponent;
 
                     if (stillEntityCollisionComponent.IsCage)
                     {

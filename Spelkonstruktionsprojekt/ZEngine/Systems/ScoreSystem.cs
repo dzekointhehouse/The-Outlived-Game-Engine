@@ -6,37 +6,31 @@ using System.Text;
 using System.Threading.Tasks;
 using ZEngine.Managers;
 
-namespace Spelkonstruktionsprojekt.ZEngine.Systems
+namespace ZEngine.Systems
 {
-    class ScoreSystem : ISystem
+    public class ScoreSystem : ISystem
     {
-        public void increaseEntityScore(int entityId, int points)
+        public void IncreaseEntityScore(int entityId, int points)
         {
             var scoreComponent = (ScoreComponent) ComponentManager.Instance.GetEntityComponentOrDefault(typeof(ScoreComponent), entityId);
             scoreComponent.score += points;
         }
 
-        public int totalScore()
+        public int TotalScore()
         {
-            int total = 0;
-            var scoreEntities = ComponentManager.Instance.GetEntitiesWithComponent<ScoreComponent>();
-            foreach (int key in scoreEntities.Keys)
-            {
-                total += scoreEntities[key].score;
-            }
-            return total;
+            var scoreEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(ScoreComponent));
+            return scoreEntities
+                .Select(entity => entity.Value)
+                .OfType<ScoreComponent>()
+                .Sum(scoreComponent => scoreComponent.score);
         }
 
-        public int totalScore(TeamComponent team)
+        public int TotalScore(TeamComponent team)
         {
-            int total = 0;
-            foreach(int member in team.members)
-            {
-                if (ComponentManager.Instance.EntityHasComponent(typeof(ScoreComponent), member)){
-                    total += ComponentManager.Instance.GetEntityComponentOrDefault<ScoreComponent>(member).score;
-                }
-            }
-            return total;
+            return team.members
+                .Where(member =>
+                    ComponentManager.Instance.EntityHasComponent(typeof(ScoreComponent), member))
+                .Sum(member => ComponentManager.Instance.GetEntityComponentOrDefault<ScoreComponent>(member).score);
         }
 
     }
