@@ -76,7 +76,7 @@
     <Compile Include="ZEngine\EventBus\TypedEventBus.cs" />
     <Compile Include="ZEngine\EventBus\EventBus.cs" />
     <Compile Include="ZEngine\EventBus\ParameterlessEventBuss.cs" />
-    <Compile Include="ZEngine\GameTest\MapPack.cs" />
+    <Compile Include="ZEngine\Helpers\DefaultMaps\MapPack.cs" />
     <Compile Include="ZEngine\GameTest\TestChaseGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
