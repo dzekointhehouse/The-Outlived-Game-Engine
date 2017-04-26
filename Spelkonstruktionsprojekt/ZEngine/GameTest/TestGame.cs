@@ -34,25 +34,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private readonly GameDependencies _gameDependencies = new GameDependencies();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
-        private RenderSystem RenderSystem;
-        private LoadContentSystem LoadContentSystem;
-        private MoveSystem MoveSystem;
-        private TankMovementSystem TankMovementSystem;
-        private TitlesafeRenderSystem TitlesafeRenderSystem;
-        private FlashlightSystem LightSystems;
-        private WallCollisionSystem WallCollisionSystem;
-        private EnemyCollisionSystem EnemyCollisionSystem;
-        private BulletCollisionSystem BulletCollisionSystem;
-        private AISystem AISystem;
-        private AbilitySystem AbilitySystem;
-        private SoundSystem SoundSystem;
         private Video video;
-        private VideoPlayer player;
-        private WeaponSystem WeaponSystem;
 
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
-        private TempGameEnder TempGameEnder;
 
         // testing
         private FPS fps;
@@ -82,31 +67,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Initialize()
         {
-            //Get Systems
-            RenderSystem = SystemManager.Instance.GetSystem<RenderSystem>();
-            LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
-            TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
-            TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
-            LightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
-            MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
-            WallCollisionSystem = SystemManager.Instance.GetSystem<WallCollisionSystem>();
-            AISystem = SystemManager.Instance.GetSystem<AISystem>();
-            EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
-            AbilitySystem = SystemManager.Instance.GetSystem<AbilitySystem>();
-            SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
-            WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
-            BulletCollisionSystem = SystemManager.Instance.GetSystem<BulletCollisionSystem>();
-
-            TempGameEnder = new TempGameEnder();
-
             //Init systems that require initialization
-            TankMovementSystem.Start();
-            AbilitySystem.Start();
-            WallCollisionSystem.Start();
-            SoundSystem.Start();
-            WeaponSystem.Start();
-            EnemyCollisionSystem.Start(TempGameEnder);
-            BulletCollisionSystem.Start();
+            _<TankMovementSystem>().Start();
+            _<AbilitySystem>().Start();
+            _<WallCollisionSystem>().Start();
+            _<SoundSystem>().Start();
+            _<WeaponSystem>().Start();
+            _<EnemyCollisionSystem>().Start(TempGameEnder);
+            _<BulletCollisionSystem>().Start();
 
             _gameDependencies.GameContent = this.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -528,14 +496,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             player = new VideoPlayer();
             // musicTest = Content.Load<Song>("assassins");
-            LoadContentSystem.LoadContent(this.Content);
-            penumbraComponent = LightSystems.Initialize(_gameDependencies);
+            _<LoadContentSystem>().LoadContent(this.Content);
+            penumbraComponent = _<FlashlightSystem>().Initialize(_gameDependencies);
             //MediaPlayer.Play(musicTest);
 
-            if (player.State == MediaState.Stopped)
-            {
-                player.Play(video);
-            }
+//            if (player.State == MediaState.Stopped)
+//            {
+//                player.Play(video);
+//            }
         }
 
         protected override void UnloadContent()
@@ -547,7 +515,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             if (player.State == MediaState.Stopped)
             {
-                EnemyCollisionSystem.GameTime = gameTime; //TODO system dependency
+                _<EnemyCollisionSystem>().GameTime = gameTime; //TODO system dependency
                 _<InputHandler>().HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
 
@@ -564,13 +532,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 _<EntityRemovalSystem>().Update(gameTime);
                 _<InertiaDampenerSystem>().Apply(gameTime);
                 _<BackwardsPenaltySystem>().Apply();
-                MoveSystem.Move(gameTime);
-
-                if (TempGameEnder.Score > 0)
-                {
-                    Debug.WriteLine("YOUR SCORE WAS: " + TempGameEnder.Score);
-                    while (true) ;
-                }
+                _<MoveSystem>().Move(gameTime);
             }
             base.Update(gameTime);
         }
@@ -591,10 +553,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             }
             if (player.State == MediaState.Stopped)
             {
-                LightSystems.BeginDraw(penumbraComponent);
-                RenderSystem.Render(_gameDependencies); // lowers FPS by half (2000)
-                LightSystems.EndDraw(penumbraComponent, gameTime);
-                TitlesafeRenderSystem.Draw(_gameDependencies); // not noticable
+                _<FlashlightSystem>().BeginDraw(penumbraComponent);
+                _<RenderSystem>().Render(_gameDependencies); // lowers FPS by half (2000)
+                _<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
+                _<TitlesafeRenderSystem>().Draw(_gameDependencies); // not noticable
             }
             base.Draw(gameTime);
         }

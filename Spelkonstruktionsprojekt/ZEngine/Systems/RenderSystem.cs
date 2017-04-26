@@ -86,7 +86,7 @@ namespace ZEngine.Systems
             foreach (var entity in renderableEntities)
             {
                 var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
-                if(positionComponent == null) continue
+                if (positionComponent == null) continue;
                 var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
                 if (sprite == null) continue;
 
@@ -118,7 +118,7 @@ namespace ZEngine.Systems
 
                 // render the sprite only if it's visible (sourceRectangle) intersects
                 // with the viewport.
-                var camera = ComponentManager.Instance.GetEntitiesWithComponent(CameraViewComponent).First();
+                var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
                 var cameraViewComponent = camera.Value as CameraViewComponent;
                 if (cameraViewComponent.View.Intersects(destinationRectangle))
                 {
