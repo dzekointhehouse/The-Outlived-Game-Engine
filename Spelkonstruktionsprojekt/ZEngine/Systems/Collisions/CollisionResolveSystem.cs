@@ -7,6 +7,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
 using ZEngine.Managers;
 using static ZEngine.Systems.CollisionEvents;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 
 namespace ZEngine.Systems
 {
@@ -84,15 +85,17 @@ namespace ZEngine.Systems
             Wall = 0,
             Bullet,
             Enemy,
-            Neutral
+            Neutral,
+            Pickup
         }
 
         public static Dictionary<string, CollisionEvent> EventTypes = new Dictionary<string, CollisionEvent>()
         {
-            {"WallCollision", CollisionEvent.Wall},
-            {"BulletCollision", CollisionEvent.Bullet},
-            {"EnemyCollision", CollisionEvent.Enemy},
+            {EventConstants.WallCollision, CollisionEvent.Wall},
+            {EventConstants.BulletCollision, CollisionEvent.Bullet},
+            {EventConstants.EnemyCollision, CollisionEvent.Enemy},
             {"NeutralCollision", CollisionEvent.Neutral},
+            {EventConstants.PickupCollision, CollisionEvent.Pickup}
         };
 
         public static CollisionEvent FromCollisionEventName(string collisionEventName)
@@ -160,6 +163,22 @@ namespace ZEngine.Systems
                         }
                     },
                     CollisionEvent.Enemy
+                },
+                 {
+                    new CollisionRequirement()
+                    {
+                        MovingEntityRequirements = new List<Type>()
+                        {
+                            typeof(MoveComponent),
+                            typeof(PlayerComponent)
+                        },
+                        TargetEntityRequirements = new List<Type>()
+                        {
+                            typeof(CollisionComponent),
+                            typeof(PickupComponent)
+                        }
+                    },
+                    CollisionEvent.Pickup
                 },
                 {
                     new CollisionRequirement()
