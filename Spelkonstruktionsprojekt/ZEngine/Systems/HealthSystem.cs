@@ -35,6 +35,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     healthComponent.Damage.Remove(damage);
                     Debug.WriteLine("HP: " + healthComponent.CurrentHealth);
                 }
+
+                //Option 1
+       /*         if (healthComponent.CurrentHealth > healthComponent.MaxHealth)
+                    healthComponent.CurrentHealth = healthComponent.MaxHealth;
+       */
+                //Option 2
+                healthComponent.CurrentHealth = MathHelper.Min(healthComponent.CurrentHealth, healthComponent.MaxHealth);
+
             }
         }
     }
