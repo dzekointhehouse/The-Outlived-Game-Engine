@@ -34,18 +34,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     {
         private readonly GameDependencies _gameDependencies = new GameDependencies();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
-
         private Video video;
         private VideoPlayer player;
-
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
 
         // testing
         private FPS fps;
-
         public SpriteBatch spriteBatch;
-
         private Song musicTest;
 
         public TestGame()
@@ -173,27 +169,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             return cameraCage;
         }
 
-        public void SetupBackground()
-        {
-            var entityId3 = EntityManager.GetEntityManager().NewEntity();
-            //var renderComponent3 = new RenderComponentBuilder()
-            //    .Position(0, 0, 1)
-            //    .Dimensions(1000, 1000).Build();
-            var position = new PositionComponent() {Position = new Vector2(0, 0), ZIndex = 1};
-            ComponentManager.Instance.AddComponentToEntity(position, entityId3);
-
-
-            var renderComponent3 = new RenderComponent()
-            {
-                DimensionsComponent = new DimensionsComponent() {Height = 1000, Width = 1000}
-            };
-            ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
-            var spriteComponent3 = new SpriteComponent()
-            {
-                SpriteName = "Grass"
-            };
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
-        }
 
         public void SetupBackgroundTiles(int width, int height)
         {
@@ -207,7 +182,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             MapHelper mapcreator = new MapHelper(tileTypes);
 
-            mapcreator.CreateMapTiles(MapPack.Happyworld, 64);
+            mapcreator.CreateMapTiles(MapPack.Happyworld, 50);
         }
 
         public void SetupCamera()
@@ -217,40 +192,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 View = new Rectangle(0, 0, (int) viewportDimensions.X, (int) viewportDimensions.Y)
             };
-            ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
-            //var cameraRenderable = new RenderComponentBuilder()
-            //    .Position(0, 0, 500)
-            //    .Dimensions(10, 10).Build();
-
-            var cameraRenderable = new RenderComponent()
-            {
-                DimensionsComponent = new DimensionsComponent()
-                {
-                    Height = 10,
-                    Width = 10
-                }
-            };
 
             var position = new PositionComponent() {Position = new Vector2(0, 0), ZIndex = 500};
 
-
-            var cameraSprite = new SpriteComponent()
-            {
-                SpriteName = "dot"
-            };
-            var light = new LightComponent()
-            {
-                Light = new PointLight()
-                {
-                    Position = new Vector2(150, 150),
-                    Scale = new Vector2(500f),
-                    ShadowType = ShadowType.Solid // Will not lit hulls themselves
-                }
-            };
-            //ComponentManager.Instance.AddComponentToEntity(light, cameraEntity);
-            ComponentManager.Instance.AddComponentToEntity(cameraRenderable, cameraEntity);
+            ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity); 
             ComponentManager.Instance.AddComponentToEntity(position, cameraEntity);
-            //ComponentManager.Instance.AddComponentToEntity(cameraSprite, cameraEntity);
         }
 
         public void SetupEnemy()
@@ -259,10 +205,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var y = new Random(DateTime.Now.Millisecond).Next(0, 5000);
 
             var entityId = EntityManager.GetEntityManager().NewEntity();
-            //var renderComponent = new RenderComponentBuilder()
-            //    .Position(x, y, 20)
-            //    .Dimensions(300, 300)
-            //    .Build();
             var renderComponent = new RenderComponent()
             {
                 DimensionsComponent = new DimensionsComponent()
@@ -357,11 +299,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .Build();
 
             CreatePlayer("Carlos", player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId);
+                collision: true, isCaged: false, cageId: cageId);
             CreatePlayer("Elvir", player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId);
+                collision: true, isCaged: false, cageId: cageId);
             CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId);
+                collision: true, isCaged: false, cageId: cageId);
         }
 
         //The multitude of options here is for easy debug purposes

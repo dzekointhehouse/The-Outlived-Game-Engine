@@ -37,19 +37,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     int positionNumber = map[y, x];
 
                     // where to place it.
-                    var position = new PositionComponent() { Position = new Vector2(x * size, y * size), ZIndex = 1 };
-
-
-                    var renderComponent = new RenderComponent()
-                    {
-                        DimensionsComponent = new DimensionsComponent() { Height = size, Width = size }
-                    };
+                    var position = new PositionComponent{ Position = new Vector2(x * size, y * size), ZIndex = 1 };
+                    var renderComponent = new RenderComponent{ DimensionsComponent = new DimensionsComponent() { Height = size, Width = size }};
 
                     // We use the positionNumber from the MapPack in the dictionary so
                     // we can find which tile to use there that the user specifies.
-                    var spriteComponent = new SpriteComponent() { SpriteName = tileTypes[positionNumber] };
+                    var spriteComponent = new SpriteComponent{ SpriteName = tileTypes[positionNumber] };
 
                     var id = EntityManager.GetEntityManager().NewEntity();
+
+                    if (positionNumber == 4)
+                    {
+                        var collisionComponent = new CollisionComponent
+                        {spriteBoundingRectangle = new Rectangle(x * size, y * size, x * size + size, y * size + size) };
+                        ComponentManager.Instance.AddComponentToEntity(collisionComponent, id);
+                    }
                     ComponentManager.Instance.AddComponentToEntity(position, id);
                     ComponentManager.Instance.AddComponentToEntity(renderComponent, id);
                     ComponentManager.Instance.AddComponentToEntity(spriteComponent, id);
