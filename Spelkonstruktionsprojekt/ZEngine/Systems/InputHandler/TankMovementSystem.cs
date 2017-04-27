@@ -41,11 +41,11 @@ namespace ZEngine.Systems
             {
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    moveComponent.Speed = 1;
+                    moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
                 }
                 else if(moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
                 {
-                    moveComponent.Speed = 0;
+                    moveComponent.CurrentAcceleration = 0;
                 }
             });
         }
@@ -55,11 +55,11 @@ namespace ZEngine.Systems
             {
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    moveComponent.Speed = -1;
+                    moveComponent.CurrentAcceleration = -moveComponent.AccelerationSpeed;
                 }
                 else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
                 {
-                    moveComponent.Speed = 0;
+                    moveComponent.CurrentAcceleration = 0;
                 }
             });
         }

@@ -42,19 +42,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             var titlesafearea = graphics.Viewport.TitleSafeArea;
 
-            var playerComponents = ComponentManager.Instance.GetEntitiesWithComponent<PlayerComponent>();
+            var playerComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent));
 
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
             var previousHeight = 5f;
 
-            var g = _gameDependencies.GameContent as ContentManager;         
+            var contentManager = _gameDependencies.GameContent as ContentManager;         
             // Maybe let the user decide?
-            var spriteFont = g.Load<SpriteFont>("ZEone");
+            var spriteFont = contentManager.Load<SpriteFont>("ZEone");
 
             foreach (var playerInstance in playerComponents)
             {
-                string text = playerInstance.Value.Name;
+                var playerComponent = playerInstance.Value as PlayerComponent;
+                var text = playerComponent.Name;
                 // Adding the health component to text.
                 if (ComponentManager.Instance.EntityHasComponent<HealthComponent>(playerInstance.Key))
                 {

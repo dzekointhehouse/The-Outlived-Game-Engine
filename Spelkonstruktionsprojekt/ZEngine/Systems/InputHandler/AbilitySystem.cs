@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -19,8 +20,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private string TurnAroundEventName = "entityTurnAround";
-        private string RunEventName = "entityRun";
+        private string TurnAroundEventName = EventConstants.TurnAround;
+        private string RunEventName = EventConstants.Running;
 
         //Temp thing for demo
         private float VelocityBonus = 400;

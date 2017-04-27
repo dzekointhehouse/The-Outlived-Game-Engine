@@ -44,6 +44,7 @@
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
     <Compile Include="ZEngine\Components\AIComponent.cs" />
     <Compile Include="ZEngine\Components\AnimationComponent.cs" />
+    <Compile Include="ZEngine\Components\BackwardsPenaltyComponent.cs" />
     <Compile Include="ZEngine\Components\BulletComponent.cs" />
     <Compile Include="ZEngine\Components\BulletFlyweightComponent.cs" />
     <Compile Include="ZEngine\Components\CageComponent.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="ZEngine\Components\CollisionComponent.cs" />
     <Compile Include="ZEngine\Components\HealthComponent.cs" />
     <Compile Include="ZEngine\Components\AmmoComponent.cs" />
+    <Compile Include="ZEngine\Components\InertiaDampeningComponent.cs" />
     <Compile Include="ZEngine\Components\LightComponent.cs" />
     <Compile Include="ZEngine\Components\MoveComponent.cs" />
     <Compile Include="ZEngine\Components\PickupComponent.cs" />
@@ -62,19 +64,25 @@
     <Compile Include="ZEngine\Components\RenderComponent\RenderComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderOffsetComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderPaintComponent.cs" />
+    <Compile Include="ZEngine\Components\ScoreComponent.cs" />
     <Compile Include="ZEngine\Components\SoundComponent.cs" />
+    <Compile Include="ZEngine\Components\SpriteAnimationComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteComponent.cs" />
+    <Compile Include="ZEngine\Components\TeamComponent.cs" />
     <Compile Include="ZEngine\Components\TempPlayerDeadSpriteComponent.cs" />
     <Compile Include="ZEngine\Components\WeaponComponent.cs" />
     <Compile Include="ZEngine\Constants\EventConstants.cs" />
+    <Compile Include="ZEngine\Constants\SystemConstants.cs" />
     <Compile Include="ZEngine\EventBus\IEventBus.cs" />
     <Compile Include="ZEngine\EventBus\TypedEventBus.cs" />
     <Compile Include="ZEngine\EventBus\EventBus.cs" />
     <Compile Include="ZEngine\EventBus\ParameterlessEventBuss.cs" />
+    <Compile Include="ZEngine\Helpers\DefaultMaps\MapPack.cs" />
     <Compile Include="ZEngine\GameTest\TestChaseGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
     <Compile Include="ZEngine\Helpers\FullZengineBundle.cs" />
+    <Compile Include="ZEngine\Helpers\MapHelper.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +95,7 @@
     <Compile Include="ZEngine\Systems\Collisions\CollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\EnemyCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
+    <Compile Include="ZEngine\Systems\EntityRemovalSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\AbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
@@ -95,7 +104,10 @@
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
-    <Compile Include="ZEngine\Systems\MoveSystem.cs" />
+    <Compile Include="ZEngine\Systems\Motion\BackwardsPenaltySystem.cs" />
+    <Compile Include="ZEngine\Systems\Motion\InertiaDampenerSystem.cs" />
+    <Compile Include="ZEngine\Systems\Motion\MoveSystem.cs" />
+    <Compile Include="ZEngine\Systems\ScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\SoundSystem.cs" />
     <Compile Include="ZEngine\Systems\SpriteAnimationSystem.cs" />
     <Compile Include="ZEngine\Systems\TitlesafeRenderSystem.cs" />
@@ -126,9 +138,6 @@
     <None Include="app.manifest" />
     <None Include="Iteration1.cd" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ZEngine\Testing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

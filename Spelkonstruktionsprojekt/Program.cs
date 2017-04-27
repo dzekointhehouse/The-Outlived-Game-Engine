@@ -15,7 +15,7 @@ namespace Spelkonstruktionsprojekt
         [STAThread]
         static void Main()
         {
-            using (var game = new ZEngine.GameTest.TestChaseGame())
+            using (var game = new ZEngine.GameTest.TestGame())
                 game.Run();
         }
     }

@@ -15,15 +15,17 @@ namespace ZEngine.Systems
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void ResolveCollisions(Dictionary<CollisionRequirement, CollisionEvent> collisionEvents, GameTime gameTime)
+        public void ResolveCollisions(Dictionary<CollisionRequirement, CollisionEvent> collisionEvents,
+            GameTime gameTime)
         {
-            var collidableEntities = ComponentManager.GetEntitiesWithComponent<CollisionComponent>();
+            var collidableEntities = ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent));
 
             //For each collidable entity
             foreach (var entity in collidableEntities)
             {
                 var collisions = new List<int>();
-                entity.Value.collisions.ForEach(c => collisions.Add(c));
+                var collisionComponent = entity.Value as CollisionComponent;
+                collisionComponent.collisions.ForEach(c => collisions.Add(c));
 
                 //Check every occured collision
                 foreach (var collisionTarget in collisions)
@@ -59,7 +61,7 @@ namespace ZEngine.Systems
                             EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
                         }
                     }
-                    entity.Value.collisions.Remove(collisionTarget);
+                    collisionComponent.collisions.Remove(collisionTarget);
                 }
             }
         }
@@ -68,10 +70,10 @@ namespace ZEngine.Systems
         {
             return collisionRequirements.MovingEntityRequirements
                        .Count(componentType => ComponentManager.EntityHasComponent(componentType, movingEntityId))
-                            == collisionRequirements.MovingEntityRequirements.Count
+                   == collisionRequirements.MovingEntityRequirements.Count
                    && collisionRequirements.TargetEntityRequirements
                        .Count(componentType => ComponentManager.EntityHasComponent(componentType, targetId))
-                            == collisionRequirements.TargetEntityRequirements.Count;
+                   == collisionRequirements.TargetEntityRequirements.Count;
         }
     }
 
@@ -86,12 +88,12 @@ namespace ZEngine.Systems
         }
 
         public static Dictionary<string, CollisionEvent> EventTypes = new Dictionary<string, CollisionEvent>()
-            {
-                { "WallCollision", CollisionEvent.Wall },
-                { "BulletCollision", CollisionEvent.Bullet },
-                { "EnemyCollision", CollisionEvent.Enemy },
-                { "NeutralCollision", CollisionEvent.Neutral },
-            };
+        {
+            {"WallCollision", CollisionEvent.Wall},
+            {"BulletCollision", CollisionEvent.Bullet},
+            {"EnemyCollision", CollisionEvent.Enemy},
+            {"NeutralCollision", CollisionEvent.Neutral},
+        };
 
         public static CollisionEvent FromCollisionEventName(string collisionEventName)
         {
@@ -125,7 +127,8 @@ namespace ZEngine.Systems
     //This is a preset. The user may setup its own component requirements.
     public class ZEngineCollisionEventPresets
     {
-        public static Dictionary<CollisionRequirement, CollisionEvent> StandardCollisionEvents { get; } = new Dictionary<CollisionRequirement, CollisionEvent>()
+        public static Dictionary<CollisionRequirement, CollisionEvent> StandardCollisionEvents { get; } =
+            new Dictionary<CollisionRequirement, CollisionEvent>()
             {
                 {
                     new CollisionRequirement()

@@ -16,7 +16,6 @@ using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
 using ZEngine.Wrappers;
-using System.Collections.Generic;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -106,7 +105,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             WallCollisionSystem.Start();
             SoundSystem.Start();
             WeaponSystem.Start();
-            EnemyCollisionSystem.Start(TempGameEnder);
+            EnemyCollisionSystem.Start();
             BulletCollisionSystem.Start();
 
             _gameDependencies.GameContent = this.Content;
@@ -165,11 +164,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public int SetupCameraCage()
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
-            var renderComponentCage = new RenderComponentBuilder()
-//                .Position((int)((int)viewportDimensions.X * 0.5), (int)(viewportDimensions.Y * 0.5), 2)
-                .Position(0, 0, 2)
-                .Dimensions((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8))
-                .Fixed(true).Build();
+//            var renderComponentCage = new RenderComponentBuilder()
+////                .Position((int)((int)viewportDimensions.X * 0.5), (int)(viewportDimensions.Y * 0.5), 2)
+//                .Position(0, 0, 2)
+//                .Dimensions((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8))
+//                .Fixed(true).Build();
             var cageSprite = new SpriteComponent()
             {
                 SpriteName = "dot"
@@ -182,7 +181,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 Offset = new Vector2((float) (viewportDimensions.X * 0.25), (float) (viewportDimensions.Y * 0.25))
             };
-            ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
+  //          ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
 //            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
@@ -192,15 +191,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public void SetupBackground()
         {
             var entityId3 = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent3 = new RenderComponentBuilder()
-                .Position(0, 0, 1)
-                .Dimensions(1000, 1000).Build();
-            ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
+            //var renderComponent3 = new RenderComponentBuilder()
+            //    .Position(0, 0, 1)
+            //    .Dimensions(1000, 1000).Build();
+            //ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
+
+            var renderComponent3 = new RenderComponent() {DimensionsComponent = new DimensionsComponent() {Height = 1000, Width = 1000} };
+            var positionComponent3 = new PositionComponent() {Position = new Vector2(0,0), ZIndex = 1};
+
             var spriteComponent3 = new SpriteComponent()
             {
                 SpriteName = "Grass"
             };
             ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
+            ComponentManager.Instance.AddComponentToEntity(positionComponent3, entityId3);
+            ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
         }
 
         public void SetupBackgroundTiles(int width, int height)
@@ -210,14 +215,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 for (var y = 0; y < height; y++)
                 {
                     var entityId3 = EntityManager.GetEntityManager().NewEntity();
-                    var renderComponent3 = new RenderComponentBuilder()
-                        .Position(x * 1000, y * 1000, 1)
-                        .Dimensions(1000, 1000).Build();
-                    ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
+                    //var renderComponent3 = new RenderComponentBuilder()
+                    //    .Position(x * 1000, y * 1000, 1)
+                    //    .Dimensions(1000, 1000).Build();
+                    //  ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
+                    var renderComponent3 = new RenderComponent() { DimensionsComponent = new DimensionsComponent() { Height = 1000, Width = 1000 } };
+                    var positionComponent3 = new PositionComponent() { Position = new Vector2(x*1000, y*1000), ZIndex = 1 };
+
                     var spriteComponent3 = new SpriteComponent()
                     {
                         SpriteName = "Grass"
                     };
+                    ComponentManager.Instance.AddComponentToEntity(positionComponent3, entityId3);
+                    ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId3);
                     ComponentManager.Instance.AddComponentToEntity(spriteComponent3, entityId3);
                 }
             }
@@ -231,9 +241,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y)
             };
             ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
-            var cameraRenderable = new RenderComponentBuilder()
-                .Position(0, 0, 500)
-                .Dimensions(10, 10).Build();
+            //var cameraRenderable = new RenderComponentBuilder()
+            //    .Position(0, 0, 500)
+            //    .Dimensions(10, 10).Build();
+
+            var renderComponent3 = new RenderComponent() { DimensionsComponent = new DimensionsComponent() { Height = 10, Width = 10 } };
+            var positionComponent3 = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 500 };
+
+
             var cameraSprite = new SpriteComponent()
             {
                 SpriteName = "dot"
@@ -247,8 +262,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     ShadowType = ShadowType.Solid // Will not lit hulls themselves
                 }
             };
+
+            ComponentManager.Instance.AddComponentToEntity(positionComponent3, cameraEntity);
+            ComponentManager.Instance.AddComponentToEntity(renderComponent3, cameraEntity);
             //ComponentManager.Instance.AddComponentToEntity(light, cameraEntity);
-            ComponentManager.Instance.AddComponentToEntity(cameraRenderable, cameraEntity);
+            //ComponentManager.Instance.AddComponentToEntity(cameraRenderable, cameraEntity);
             //ComponentManager.Instance.AddComponentToEntity(cameraSprite, cameraEntity);
         }
 
@@ -258,10 +276,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var y = new Random(DateTime.Now.Millisecond).Next(0, 5000);
 
             var entityId = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent = new RenderComponentBuilder()
-                .Position(x, y, 20)
-                .Dimensions(300, 300)
-                .Build();
+            //var renderComponent = new RenderComponentBuilder()
+            //    .Position(x, y, 20)
+            //    .Dimensions(300, 300)
+            //    .Build();
+
+            var renderComponent3 = new RenderComponent() { DimensionsComponent = new DimensionsComponent() { Height = 300, Width = 300 } };
+            var positionComponent3 = new PositionComponent() { Position = new Vector2(x, y), ZIndex = 20 };
+            ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId);
+            ComponentManager.Instance.AddComponentToEntity(positionComponent3, entityId);
+
+
+
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "zombieSquare"
@@ -292,7 +318,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
             };
             var aiComponent = new AIComponent();
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+           //ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             //ComponentManager.Instance.AddComponentToEntity(light, entityId);
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
@@ -354,12 +380,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             if (disabled) return;
             if(position == default(Vector2)) position = new Vector2(150, 150);
             //Initializing first, movable, entity
-            var renderComponent = new RenderComponentBuilder()
-                //.Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
-                .Position(position.X, position.Y, 10)
-                //.Radius(60)
-                .Dimensions(100, 100)
-                .Build();
+            //var renderComponent = new RenderComponentBuilder()
+            //    //.Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
+            //    .Position(position.X, position.Y, 10)
+            //    //.Radius(60)
+            //    .Dimensions(100, 100)
+            //    .Build();
+
+            var renderComponent3 = new RenderComponent() { DimensionsComponent = new DimensionsComponent() { Height = 100, Width = 100 }, Radius = 60};
+            var positionComponent3 = new PositionComponent() { Position = position, ZIndex = 10 };
+            ComponentManager.Instance.AddComponentToEntity(renderComponent3, entityId);
+            ComponentManager.Instance.AddComponentToEntity(positionComponent3, entityId);
+
+
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "topDownSoldier"
@@ -383,7 +416,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
 
             ComponentManager.Instance.AddComponentToEntity(sound, entityId);
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+           // ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
             ComponentManager.Instance.AddComponentToEntity(light, entityId);
@@ -466,7 +499,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         }
 
         public void ToUpdate(GameTime gameTime)
-        {            
+        {
                 EnemyCollisionSystem.GameTime = gameTime;
                 InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
                 _oldKeyboardState = Keyboard.GetState();
@@ -501,66 +534,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            ToUpdate(gameTime);
+            ToUpdate(gameTime);                        
             base.Update(gameTime);
         }
 
         public void MainMenu()
         {
-            MoveToOption();
             MainMenuDisplay();
             ContinueButton();
             BackToMenu();
             ExitButton();
         }
 
-        public void MoveToOption()
-        {
-            List<Vector2> soldierPositions = new List<Vector2>();
-
-            Texture2D soldier = Content.Load<Texture2D>("Reso");
-
-            soldierPositions.Add(new Vector2(330, 320));
-            soldierPositions.Add(new Vector2(330, 390));
-
-            //int size = 3;
-            //int start = 0;
-            //int end = 2;
-
-            spriteBatch.Begin();
-
-            //spriteBatch.Draw(soldier, soldierPositions[1], Color.SaddleBrown);
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) || GamePad.GetState(PlayerIndex.One).DPad.Up == ButtonState.Pressed)
-            {
-                GraphicsDevice.Clear(Color.Black);
-                spriteBatch.Draw(soldier, soldierPositions[0], Color.SaddleBrown);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Down) || GamePad.GetState(PlayerIndex.One).DPad.Down == ButtonState.Pressed)
-            {
-                GraphicsDevice.Clear(Color.Black);
-                spriteBatch.Draw(soldier, soldierPositions[1], Color.SaddleBrown);
-
-            } else if (Keyboard.GetState().IsKeyUp(Keys.Down))
-            {
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || Keyboard.GetState().IsKeyDown(Keys.Enter)) currentGameState = GameState.InGame;
-            }
-
-            spriteBatch.End();
-        }
-
         public void ContinueButton()
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || Keyboard.GetState().IsKeyDown(Keys.A)) currentGameState = GameState.InGame;
+                || Keyboard.GetState().IsKeyDown(Keys.Enter)) currentGameState = GameState.InGame;
         }
 
         public void ExitButton()
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                       Keyboard.GetState().IsKeyDown(Keys.S)) Exit();
+            if ((GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                       Keyboard.GetState().IsKeyDown(Keys.S)) && currentGameState == GameState.Menu) Exit();
         }
 
         public void BackToMenu()
@@ -573,17 +568,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             SpriteFont font = Content.Load<SpriteFont>("Score");
 
-            String textCursor = "USE THE UP / DOWN ARROW-KEYS TO CHOOSE - ENTER: select option";
-            String textEscape = "ESC: BACK TO THE MAIN MENU / PAUSE THE GAME";
-            String textContinue = "START / CONTINUE";
-            String textExit = "EXIT THE GAME";
+            String textEscape = "ESCAPE: BACK TO THE MAIN MENU / PAUSE THE GAME";
+            String textContinue = "ENTER: CONTINUE";
+            String textExit = "S: EXIT THE GAME";
 
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(font, textCursor, new Vector2(400, 200), Color.SaddleBrown);
-            spriteBatch.DrawString(font, textEscape, new Vector2(400, 280), Color.SaddleBrown);
-            spriteBatch.DrawString(font, textContinue, new Vector2(400, 350), Color.SaddleBrown);
-            spriteBatch.DrawString(font, textExit, new Vector2(400, 420), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textContinue, new Vector2(400, 170), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textEscape, new Vector2(400, 200), Color.SaddleBrown);
+            spriteBatch.DrawString(font, textExit, new Vector2(400, 230), Color.SaddleBrown);
 
             spriteBatch.End();
         }

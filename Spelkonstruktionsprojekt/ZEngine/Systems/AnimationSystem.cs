@@ -14,15 +14,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public void RunAnimations(GameTime gameTime)
         {
-            var entities = ComponentManager.Instance.GetEntitiesWithComponent<AnimationComponent>();
+            var entities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
             foreach (var entity in entities)
             {
                 var doneAnimations = new List<int>();
                 var usedUniqueAnimationTypes = new List<string>();
-
-                for (var i = 0; i < entity.Value.Animations.Count; i++)
+                var animationComponent = entity.Value as AnimationComponent;
+                for (var i = 0; i < animationComponent.Animations.Count; i++)
                 {
-                    var animationWrapper = entity.Value.Animations[i];
+                    var animationWrapper = animationComponent.Animations[i];
                     if (animationWrapper.Unique && usedUniqueAnimationTypes.Contains(animationWrapper.AnimationType))
                     {
                         doneAnimations.Add(i);
@@ -36,8 +36,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 foreach (int animationIndex in doneAnimations)
                 {
-                    if (entity.Value.Animations.ElementAtOrDefault<GeneralAnimation>(animationIndex) != null)
-                        entity.Value.Animations.RemoveAt(animationIndex);
+                    if (animationComponent.Animations.ElementAtOrDefault<GeneralAnimation>(animationIndex) != null)
+                        animationComponent.Animations.RemoveAt(animationIndex);
                 }
             }
         }
