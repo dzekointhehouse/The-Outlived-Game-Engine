@@ -72,6 +72,7 @@
     <Compile Include="ZEngine\Components\TempPlayerDeadSpriteComponent.cs" />
     <Compile Include="ZEngine\Components\WeaponComponent.cs" />
     <Compile Include="ZEngine\Constants\EventConstants.cs" />
+    <Compile Include="ZEngine\Constants\SystemConstants.cs" />
     <Compile Include="ZEngine\EventBus\IEventBus.cs" />
     <Compile Include="ZEngine\EventBus\TypedEventBus.cs" />
     <Compile Include="ZEngine\EventBus\EventBus.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="ZEngine\Systems\Collisions\CollisionResolveSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\EnemyCollisionSystem.cs" />
+    <Compile Include="ZEngine\Systems\Collisions\PickupCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\EntityRemovalSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />

@@ -141,13 +141,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 DimensionsComponent = new DimensionsComponent()
                 {
-                    Height = (int) (viewportDimensions.X * 0.8),
-                    Width = (int) (viewportDimensions.Y * 0.8)
+                    Width = (int) (viewportDimensions.X * 0.8),
+                    Height = (int) (viewportDimensions.Y * 0.8)
                 },
                 Fixed = true
             };
 
-            var position = new PositionComponent() {Position = new Vector2(0, 0), ZIndex = 2};
+            var position = new PositionComponent()
+            {
+                Position = new Vector2(0,0),
+                ZIndex = 2
+            };
 
             var cageSprite = new SpriteComponent()
             {
@@ -330,8 +334,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     Height = 100,
                     Width = 100
                 },
-
-                Radius = 60
             };
 
             var positionComponent = new PositionComponent() {Position = position, ZIndex = 10};

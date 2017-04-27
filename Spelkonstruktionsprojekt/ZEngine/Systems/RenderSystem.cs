@@ -90,31 +90,20 @@ namespace ZEngine.Systems
                 var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
                 if (sprite == null) continue;
 
+                var renderComponent = entity.Value as RenderComponent;
+                var offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
+                var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
 
                 var zIndex = positionComponent.ZIndex;
-                var renderComponent = entity.Value as RenderComponent;
-                var renderBox = new Rectangle((int) positionComponent.Position.X,
-                    (int) positionComponent.Position.Y,
-                    RenderComponentHelper.GetDimensions(renderComponent).Width,
-                    RenderComponentHelper.GetDimensions(renderComponent).Height);
-
-                double angle = sprite.Angle;
-                if (ComponentManager.EntityHasComponent<MoveComponent>(entity.Key))
-                {
-                    var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-                    angle = moveComponent.Direction;
-                }
-
-                var offset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(entity.Key)
-                    ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key).Offset
-                    : default(Vector2);
-
-                //var offset = Vector2.Zero;
-                var destinationRectangle = new Rectangle(
-                    new Point((int) (renderBox.X + offset.X), (int) (renderBox.Y + offset.Y)),
-                    new Point((int) (renderBox.Width * sprite.Scale), (int) (renderBox.Height * sprite.Scale))
-                );
-
+                var offset = offsetComponent?.Offset ?? default(Vector2);
+                var angle = moveComponent?.Direction ?? sprite.Angle;
+                var destinationRectangle =
+                    new Rectangle(
+                        (int) (positionComponent.Position.X + offset.X),
+                        (int) (positionComponent.Position.Y + offset.Y),
+                        (int) (RenderComponentHelper.GetDimensions(renderComponent).Width * sprite.Scale),
+                        (int) (RenderComponentHelper.GetDimensions(renderComponent).Height * sprite.Scale)
+                    );
 
                 // render the sprite only if it's visible (sourceRectangle) intersects
                 // with the viewport.
@@ -136,10 +125,6 @@ namespace ZEngine.Systems
                     if (sprite.SpriteColor == default(Color))
                         spriteColor = Color.White;
 
-                    // limit can be changed in SystemConstants
-                    var zIndexMaxLimit = 1;
-
-
                     spriteBatch.Draw(
                         texture: sprite.Sprite,
                         destinationRectangle: destinationRectangle,
@@ -148,7 +133,7 @@ namespace ZEngine.Systems
                         rotation: (float) angle,
                         origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2),
                         effects: SpriteEffects.None,
-                        layerDepth: (float) zIndex / zIndexMaxLimit
+                        layerDepth: (float) zIndex / SystemConstants.LayerDepthMaxLimit
                         //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
                     );
                 }
