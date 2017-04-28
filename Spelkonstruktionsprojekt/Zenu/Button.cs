@@ -9,19 +9,19 @@
 //using ZEngine.Components;
 //using ZEngine.Managers;
 //using static Spelkonstruktionsprojekt.ZEngine.GameTest.TestChaseGame;
-
+//
 //namespace Spelkonstruktionsprojekt.Zenu
 //{
-
+//
 //    public interface ButtonLink
 //    {
 //        void Click();
 //    }
-
+//
 //    public class Menu
 //    {
 //        public List<Button> buttons = new List<Button>();
-
+//
 //        public static int Create()
 //        {
 //            var entityId = EntityManager.GetEntityManager().NewEntity();
@@ -34,8 +34,8 @@
 //                .SetAction(Keys.E, EventConstants.FireWeapon)
 //                .SetAction(Keys.LeftShift, EventConstants.Running)
 //                .Build();
-
-
+//
+//
 //            var renderComponent = new RenderComponentBuilder()
 //                .Position(500, 500, 20)
 //                .Dimensions(300, 60)
@@ -54,40 +54,37 @@
 //                    ShadowType = ShadowType.Solid // Will not lit hulls themselves
 //                }
 //            };
-
+//
 //            var sound = new SoundComponent()
 //            {
 //                SoundEffectName = "zombiewalking",
 //                Volume = 1f
-
+//
 //            };
 //            ComponentManager.Instance.AddComponentToEntity(sound, entityId);
-
+//
 //            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
 //            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
 //            ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
 //            ComponentManager.Instance.AddComponentToEntity(light, entityId);
-
+//
 //            return entityId;
 //        }
-
+//
 //        public void AddButton(string text, ButtonLink link)
 //        {
-//            buttons.Add(new Button());
 //        }
-
-//        public void AddButton()
-
+//
 //        public void Show()
 //        {
-
+//
 //        }
-
+//
 //        public void Hide()
 //        {
-
+//
 //        }
-
+//
 //    }
 //    public class Button
 //    {
@@ -103,8 +100,8 @@
 //                .SetAction(Keys.E, EventConstants.FireWeapon)
 //                .SetAction(Keys.LeftShift, EventConstants.Running)
 //                .Build();
-
-
+//
+//
 //            var renderComponent = new RenderComponentBuilder()
 //                .Position(500, 500, 20)
 //                .Dimensions(300, 60)
@@ -123,15 +120,15 @@
 //                    ShadowType = ShadowType.Solid // Will not lit hulls themselves
 //                }
 //            };
-
+//
 //            var sound = new SoundComponent()
 //            {
 //                SoundEffectName = "zombiewalking",
 //                Volume = 1f
-
+//
 //            };
 //            ComponentManager.Instance.AddComponentToEntity(sound, entityId);
-
+//
 //            var moveComponent = new MoveComponent()
 //            {
 //                MaxVelocitySpeed = 205,

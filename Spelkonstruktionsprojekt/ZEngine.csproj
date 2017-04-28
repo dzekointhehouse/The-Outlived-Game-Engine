@@ -119,6 +119,12 @@
     <Compile Include="ZEngine\Systems\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
     <Compile Include="Zenu\Button.cs" />
+    <Compile Include="Zenu\components\ButtonComponent.cs" />
+    <Compile Include="Zenu\components\MenuComponent.cs" />
+    <Compile Include="Zenu\components\MenuManagerComponent.cs" />
+    <Compile Include="Zenu\factories\ButtonFactory.cs" />
+    <Compile Include="Zenu\factories\MenuBuilder.cs" />
+    <Compile Include="Zenu\templates\ZenuButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
