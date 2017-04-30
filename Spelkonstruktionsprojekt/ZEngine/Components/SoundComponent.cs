@@ -21,14 +21,4 @@ namespace ZEngine.Components
 
     }
 
-    public class ZEngineSoundBank
-    {
-        public enum Sounds
-        {
-            WalkingForward
-
-        }
-    }
-
-
 }

@@ -20,17 +20,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (dampeningComponent == null) return;
 
                 if (moveComponent == null) return;
-                var notAccelerating = moveComponent.CurrentAcceleration > -0.01 &&
-                                      moveComponent.CurrentAcceleration < 0.01;
-                if (notAccelerating && moveComponent.Speed < 0)
+                                      ;
+                if (moveComponent.CurrentAcceleration > -0.01 && moveComponent.Speed < 0)
                 {
                     Debug.WriteLine("damp up");
                     moveComponent.Speed += (float)(dampeningComponent.StabilisingSpeed * delta);
+                    if (moveComponent.Speed > 0)
+                    {
+                        moveComponent.Speed = 0;
+                    }
                 }
-                else if (notAccelerating && moveComponent.Speed > 0)
+                else if (moveComponent.CurrentAcceleration < 0.01 && moveComponent.Speed > 0)
                 {
                     Debug.WriteLine("damp down");
                     moveComponent.Speed -= (float) (dampeningComponent.StabilisingSpeed * delta);
+                    if (moveComponent.Speed < 0)
+                    {
+                        moveComponent.Speed = 0;
+                    }
                 }
             }
         }

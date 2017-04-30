@@ -12,13 +12,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class AnimationSystem : ISystem
     {
+        List<int> doneAnimations = new List<int>();
+        List<string> usedUniqueAnimationTypes = new List<string>();
         public void RunAnimations(GameTime gameTime)
         {
-            var entities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
-            foreach (var entity in entities)
+            var animations = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
+            foreach (var entity in animations)
             {
-                var doneAnimations = new List<int>();
-                var usedUniqueAnimationTypes = new List<string>();
+
                 var animationComponent = entity.Value as AnimationComponent;
                 for (var i = 0; i < animationComponent.Animations.Count; i++)
                 {

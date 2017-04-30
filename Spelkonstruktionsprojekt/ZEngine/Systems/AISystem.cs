@@ -23,6 +23,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var firstPlayerPositionComponent = componentManager.GetEntitiesWithComponent(typeof(PositionComponent)).First().Value as PositionComponent;
                 if (firstPlayerPositionComponent == null) return;
 
+
+             //   var playerFlashlightComponent = componentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+
+
+
                 var aiMoveComponent = componentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 var aiPositionComponent = componentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
 

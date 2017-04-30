@@ -12,6 +12,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 var backwardsPenaltyComponent = entity.Value as BackwardsPenaltyComponent;
                 var moveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                if (moveComponent == null) return;
+
                 var isMovingBackwards = moveComponent.CurrentAcceleration < -0.01;
                 if (isMovingBackwards && backwardsPenaltyComponent.PreProcessingAcceleration == 0)
                 {

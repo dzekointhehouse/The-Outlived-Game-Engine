@@ -65,7 +65,7 @@ namespace ZEngine.Systems
                             Matrix.CreateScale(1);
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
-            DrawEntities(spriteBatch, cameraEntities.View);
+            DrawEntities(spriteBatch);
             spriteBatch.End();
         }
 
@@ -73,15 +73,10 @@ namespace ZEngine.Systems
         // with the render component. 1. we use our Component manager instance
         // to get all the entities with RenderComponent and then we render them.
         // we use the spritebach to draw all the entities.
-        private void DrawEntities(SpriteBatch spriteBatch, Rectangle subsetView)
+        private void DrawEntities(SpriteBatch spriteBatch)
         {
             var renderableEntities =
-                ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderComponent))
-                    .Where(e =>
-                    {
-                        var renderComponent = e.Value as RenderComponent;
-                        return InsideView(renderComponent, subsetView);
-                    });
+                ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderComponent));
 
             foreach (var entity in renderableEntities)
             {

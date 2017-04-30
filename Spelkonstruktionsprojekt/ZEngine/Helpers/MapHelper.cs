@@ -48,9 +48,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
                     if (positionNumber == 4)
                     {
-                        var collisionComponent = new CollisionComponent
-                        {spriteBoundingRectangle = new Rectangle(x * size, y * size, x * size + size, y * size + size) };
-                        ComponentManager.Instance.AddComponentToEntity(collisionComponent, id);
+                        //var collisionComponent = new CollisionComponent
+                        //{spriteBoundingRectangle = new Rectangle(x * size, y * size, x * size + size, y * size + size) };
+                        //ComponentManager.Instance.AddComponentToEntity(collisionComponent, id);
                     }
                     ComponentManager.Instance.AddComponentToEntity(position, id);
                     ComponentManager.Instance.AddComponentToEntity(renderComponent, id);

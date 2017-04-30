@@ -76,8 +76,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // then we check if the entity has the right components.
         public void WalkingSounds(InputEvent moveEvent)
         {
-            if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
-            {
+            if (moveEvent.KeyEvent != ActionBindings.KeyEvent.KeyPressed || moveEvent.KeyEvent != ActionBindings.KeyEvent.KeyReleased)
+                return;
+            
                 var moveComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(moveEvent.EntityId);
 
@@ -93,36 +94,43 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     ComponentManager.Instance.AddComponentToEntity(animationComponent, moveEvent.EntityId);
                 }
 
-                var animation = new GeneralAnimation()
-                {
-                    StartOfAnimation = moveEvent.EventTime,
-                    Length = 2000
-                };
+                //var animation = new GeneralAnimation()
+                //{
+                //    StartOfAnimation = moveEvent.EventTime,
+                //    Length = 2000
+                //};
 
                 var sound = soundComponent.SoundEffect.CreateInstance();
-                sound.Play();
-                var animationAction = NewWalkingSoundAnimation(animation, sound, moveComponent);
-                animation.Animation = animationAction;
-                animationComponent.Animations.Add(animation);
+
+                if (sound.State == SoundState.Stopped)
+                    sound.Play();
+            if (moveComponent.Speed > -0.01 && moveComponent.Speed < 0.01)
+            {
+                sound.Stop();
             }
+
+            // var animationAction = NewWalkingSoundAnimation(animation, sound, moveComponent);
+                //animation.Animation = animationAction;
+                //animationComponent.Animations.Add(animation);
+
         }
 
-        // This one is fascinating. We add this to our entitys animation component instance which
-        // contains a list of GeneralAnimations, this method is the action that is stored in the
-        // general animation. This action will then be performed in another system and can do it's
-        // own stuff independently of this system later on. Good for when we maybe trigger something
-        // that will go on for a while until a set tim
-        public Action<double> NewWalkingSoundAnimation(GeneralAnimation animation, SoundEffectInstance sound, MoveComponent moveComponent)
-        {
-            return delegate (double elapsedTime)
-            {
-                if (moveComponent.Speed > -0.01 && moveComponent.Speed < 0.01)
-                {
-                    sound.Stop();
-                    animation.IsDone = true;
-                }
-            };
-        }
+        //// This one is fascinating. We add this to our entitys animation component instance which
+        //// contains a list of GeneralAnimations, this method is the action that is stored in the
+        //// general animation. This action will then be performed in another system and can do it's
+        //// own stuff independently of this system later on. Good for when we maybe trigger something
+        //// that will go on for a while until a set tim
+        //public Action<double> NewWalkingSoundAnimation(GeneralAnimation animation, SoundEffectInstance sound, MoveComponent moveComponent)
+        //{
+        //    return delegate (double elapsedTime)
+        //    {
+        //        if (moveComponent.Speed > -0.01 && moveComponent.Speed < 0.01)
+        //        {
+        //            sound.Stop();
+        //            animation.IsDone = true;
+        //        }
+        //    };
+        //}
     }
 }
 
