@@ -14,6 +14,7 @@ using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
+using ZEngine.Systems.InputHandler;
 using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
@@ -34,7 +35,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         private EnemyCollisionSystem EnemyCollisionSystem;
         private BulletCollisionSystem BulletCollisionSystem;
         private AISystem AISystem;
-        private AbilitySystem AbilitySystem;
         private AnimationSystem AnimationSystem;
         private SoundSystem SoundSystem;
         private WeaponSystem WeaponSystem;
@@ -61,7 +61,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             WallCollisionSystem = SystemManager.Instance.GetSystem<WallCollisionSystem>();
             AISystem = SystemManager.Instance.GetSystem<AISystem>();
             EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
-            AbilitySystem = SystemManager.Instance.GetSystem<AbilitySystem>();
             AnimationSystem = SystemManager.Instance.GetSystem<AnimationSystem>();
             SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
             WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
@@ -76,7 +75,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             _gameDependencies.Game = game;
 
             TankMovementSystem.Start();
-            AbilitySystem.Start();
             WallCollisionSystem.Start();
             SoundSystem.Start();
             WeaponSystem.Start();

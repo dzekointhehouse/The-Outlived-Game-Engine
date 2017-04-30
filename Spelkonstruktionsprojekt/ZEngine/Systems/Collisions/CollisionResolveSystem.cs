@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -19,16 +20,22 @@ namespace ZEngine.Systems
         public void ResolveCollisions(Dictionary<CollisionRequirement, CollisionEvent> collisionEvents,
             GameTime gameTime)
         {
-            var collidableEntities = ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent));
+            var collidableEntities = ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent))
+                .Select(pair => new KeyValuePair<int, IComponent>(pair.Key, pair.Value));
 
-            //For each collidable entity
+            var nEntriesBefore = 0;
+            var nEntriesAfter = 0;
+            var nEntriesBetween = 0;
+
+//For each collidable entity
             foreach (var entity in collidableEntities)
             {
+                nEntriesBefore = collidableEntities.Count();
                 var collisions = new List<int>();
                 var collisionComponent = entity.Value as CollisionComponent;
                 collisionComponent.collisions.ForEach(c => collisions.Add(c));
 
-                //Check every occured collision
+//Check every occured collision
                 foreach (var collisionTarget in collisions)
                 {
                     //If the collision matches any valid collision event
@@ -36,7 +43,7 @@ namespace ZEngine.Systems
                     {
                         if (collisionEvent.Value == CollisionEvent.Bullet)
                         {
-                            Debug.WriteLine("");
+//                            Debug.WriteLine("");
                         }
                         //Collision events are made up from requirement of each party
                         //If both entities (parties) fulfil the component requirements
@@ -48,6 +55,10 @@ namespace ZEngine.Systems
 //                        Debug.WriteLine("Testing match for " + FromCollisionEventType(collisionEventType));
                         if (MatchesCollisionEvent(collisionRequirements, movingEntityId, collisionTarget))
                         {
+                            if (ComponentManager.EntityHasComponent<BulletComponent>(entity.Key))
+                            {
+                                Debug.WriteLine("");
+                            }
 //                            Debug.WriteLine("Matched with " + FromCollisionEventType(collisionEventType));
                             //When there is a match for a collision-event, an event is published
                             // for any system to pickup and resolve
@@ -67,7 +78,8 @@ namespace ZEngine.Systems
             }
         }
 
-        private bool MatchesCollisionEvent(CollisionRequirement collisionRequirements, int movingEntityId, int targetId)
+        private bool MatchesCollisionEvent(CollisionRequirement collisionRequirements, int movingEntityId,
+            int targetId)
         {
             return collisionRequirements.MovingEntityRequirements
                        .Count(componentType => ComponentManager.EntityHasComponent(componentType, movingEntityId))
@@ -164,7 +176,7 @@ namespace ZEngine.Systems
                     },
                     CollisionEvent.Enemy
                 },
-                 {
+                {
                     new CollisionRequirement()
                     {
                         MovingEntityRequirements = new List<Type>()

@@ -15,22 +15,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (moveComponent == null) return;
 
                 var isMovingBackwards = moveComponent.CurrentAcceleration < -0.01;
-                if (isMovingBackwards && backwardsPenaltyComponent.PreProcessingAcceleration == 0)
+
+                // Enters first block on the first run through this system
+                // So we dont't apply penalty factor more than once on the initial acceleration.
+                if (isMovingBackwards && backwardsPenaltyComponent.AccelerationBeforeBackwardsPenaltyApplied == 0)
                 {
-                    Debug.WriteLine("1");
-                    backwardsPenaltyComponent.PreProcessingAcceleration = moveComponent.CurrentAcceleration;
+                    backwardsPenaltyComponent.AccelerationBeforeBackwardsPenaltyApplied = moveComponent.CurrentAcceleration;
                     moveComponent.CurrentAcceleration *= moveComponent.BackwardsPenaltyFactor;
                 }
                 else if (isMovingBackwards)
                 {
-                    Debug.WriteLine("2");
-                    moveComponent.CurrentAcceleration = backwardsPenaltyComponent.PreProcessingAcceleration *
+                    moveComponent.CurrentAcceleration = backwardsPenaltyComponent.AccelerationBeforeBackwardsPenaltyApplied *
                                                         backwardsPenaltyComponent.BackwardsPenaltyFactor;
                 }
                 else
                 {
-                    Debug.WriteLine("3");
-                    backwardsPenaltyComponent.PreProcessingAcceleration = 0;
+                    backwardsPenaltyComponent.AccelerationBeforeBackwardsPenaltyApplied = 0;
                 }
             }
         }

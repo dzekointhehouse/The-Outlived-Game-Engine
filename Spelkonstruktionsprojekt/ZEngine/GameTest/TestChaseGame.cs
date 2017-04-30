@@ -15,6 +15,7 @@ using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
+using ZEngine.Systems.InputHandler;
 using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
@@ -41,7 +42,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private EnemyCollisionSystem EnemyCollisionSystem;
         private BulletCollisionSystem BulletCollisionSystem;
         private AISystem AISystem;
-        private AbilitySystem AbilitySystem;
         private AnimationSystem AnimationSystem;
         private SoundSystem SoundSystem;
         private Video video;
@@ -90,7 +90,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             WallCollisionSystem = SystemManager.Instance.GetSystem<WallCollisionSystem>();
             AISystem = SystemManager.Instance.GetSystem<AISystem>();
             EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
-            AbilitySystem = SystemManager.Instance.GetSystem<AbilitySystem>();
             AnimationSystem = SystemManager.Instance.GetSystem<AnimationSystem>();
             SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
             WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
@@ -101,7 +100,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             //Init systems that require initialization
             TankMovementSystem.Start();
-            AbilitySystem.Start();
             WallCollisionSystem.Start();
             SoundSystem.Start();
             WeaponSystem.Start();

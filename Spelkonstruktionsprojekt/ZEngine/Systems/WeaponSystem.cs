@@ -1,6 +1,7 @@
 ﻿using Spelkonstruktionsprojekt.ZEngine.Components;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -97,6 +98,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             };
             var bulletCollisionComponent = new CollisionComponent();
             var animationComponent = new AnimationComponent();
+            var tagComponent = new TagComponent();
 
             ComponentManager.AddComponentToEntity(bulletPositionComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletComponent, bulletEntityId);
@@ -105,6 +107,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(animationComponent, bulletEntityId);
+            ComponentManager.AddComponentToEntity(tagComponent, bulletEntityId);
 
             var animation = new GeneralAnimation()
             {
@@ -125,7 +128,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
                 {
-                    ComponentManager.DeleteEntity(entityId);
+                    var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(entityId);
+                    if (tagComponent == null)
+                    {
+                        throw new Exception(
+                            "Entity does not have a tag component which is needed to remove the entity.");
+                    }
+                    tagComponent.Tags.Add(Tag.Delete);
                     generalAnimation.IsDone = true;
                 }
             };

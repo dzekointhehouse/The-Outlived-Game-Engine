@@ -11,7 +11,7 @@ namespace ZEngine.Components
     {
         public Vector2 Target;
 
-        public float FollowDistance { get; set; } = 20;
+        public float FollowDistance { get; set; } = 500;
     }
 }
     

@@ -22,6 +22,7 @@ using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
+using ZEngine.Systems.InputHandler;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
 
@@ -67,14 +68,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             //Init systems that require initialization
             _<TankMovementSystem>().Start();
-            _<AbilitySystem>().Start();
             _<WallCollisionSystem>().Start();
             _<SoundSystem>().Start();
             _<WeaponSystem>().Start();
             _<EnemyCollisionSystem>().Start();
             _<BulletCollisionSystem>().Start();
 
-            _gameDependencies.GameContent = this.Content;
+            _gameDependencies.GameContent = Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
             // just quickly done for FPS testing
             spriteBatch = _gameDependencies.SpriteBatch;
@@ -90,10 +90,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             // var button = new Button();
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
-            //SetupBackground();
             SetupBackgroundTiles(5, 5);
             SetupCamera();
-//            SetupEnemy();
+            SetupEnemy();
             CreateGlobalBulletSpriteEntity();
             SetupTempPlayerDeadSpriteFlyweight();
         }
@@ -205,8 +204,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public void SetupEnemy()
         {
-            var x = new Random(DateTime.Now.Millisecond).Next(0, 5000);
-            var y = new Random(DateTime.Now.Millisecond).Next(0, 5000);
+            var x = new Random(DateTime.Now.Millisecond).Next(0, 2000);
+            var y = new Random(DateTime.Now.Millisecond).Next(0, 2000);
 
             var entityId = EntityManager.GetEntityManager().NewEntity();
             var renderComponent = new RenderComponent()
@@ -245,7 +244,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var moveComponent = new MoveComponent()
             {
                 MaxVelocitySpeed = 205,
-                AccelerationSpeed = 5,
+                AccelerationSpeed = 50,
                 RotationSpeed = 4,
                 Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
             };
@@ -302,12 +301,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
 
-            CreatePlayer("Carlos", player1, actionBindings1, position: new Vector2(200, 200), cameraFollow: true,
-                collision: true, isCaged: false, cageId: cageId);
+            CreatePlayer(name: "Carlos", entityId: player1, actionBindings: actionBindings1, position: new Vector2(200, 200), cameraFollow: true,
+                collision: true, isCaged: true, cageId: cageId);
             CreatePlayer("Elvir", player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
-                collision: true, isCaged: false, cageId: cageId);
+                collision: true, isCaged: true, cageId: cageId, disabled: false);
             CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
-                collision: true, isCaged: false, cageId: cageId);
+                collision: true, isCaged: false, cageId: cageId, disabled: true);
         }
 
         //The multitude of options here is for easy debug purposes

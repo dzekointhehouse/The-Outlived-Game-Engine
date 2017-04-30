@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -17,10 +18,25 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class EntityRemovalSystem : ISystem
     {
-
         public void Update(GameTime gameTime)
         {
             DeadEntities(gameTime);
+            ImmediateRemoval();
+        }
+
+        private void ImmediateRemoval()
+        {
+            ComponentManager.Instance.GetEntitiesWithComponent(typeof(TagComponent))
+                .Where(e =>
+                {
+                    var tagComponent = e.Value as TagComponent;
+                    if (tagComponent == null) return false;
+                    var isTaggedForDeletion = tagComponent.Tags.Contains(Tag.Delete);
+                    return isTaggedForDeletion;
+                })
+                .Select(e => e.Key) //Get only entityIds that are to be removed
+                .ToList()
+                .ForEach(ComponentManager.Instance.DeleteEntity);
         }
 
         // Used for animating blood when entities die.
@@ -36,7 +52,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (!healthComponent.Alive)
                 {
                     // We want to remove all the components for the entity except for the 
-                    // spriteComponent and health, we need them still yet.
+                    // spriteComponent and health, we need them still.
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(CameraFollowComponent), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(SoundComponent), entity.Key);
@@ -44,7 +60,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(ActionBindings), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(CollisionComponent), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entity.Key);
-
+                    //TODO reinsert removals
                     var lightComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
                     lightComponent.Light.Scale = Vector2.Zero;
@@ -67,7 +83,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         StartOfAnimation = gameTime.TotalGameTime.TotalMilliseconds,
                         Length = 6000,
                         Unique = true
-
                     };
 
                     // Now we add it.
@@ -76,10 +91,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     animationComponent.Animations.Add(animation);
                 }
             }
-
-
-
         }
+
         // This one is fascinating. We add this to our entitys animation component instance which
         // contains a list of GeneralAnimations, this method is the action that is stored in the
         // general animation. This action will then be performed in another system and can do it's
@@ -87,7 +100,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // later on.
         public Action<double> NewDeathFadeAwayAnimation(GeneralAnimation animation, int entityKey)
         {
-            return delegate (double currentTime)
+            return delegate(double currentTime)
             {
                 // if more time has passed since the start of the animation
                 // then the specified lenght that we want it to run
@@ -107,17 +120,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         return;
                     }
 
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entityKey);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteComponent), entityKey);
+//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
+//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entityKey);
+//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteComponent), entityKey);
 
                     animation.IsDone = true;
                 }
             };
         }
-
-
     }
 }
-
-

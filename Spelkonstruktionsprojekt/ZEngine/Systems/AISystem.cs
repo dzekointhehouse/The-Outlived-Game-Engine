@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using MoreLinq;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
 using ZEngine.Managers;
@@ -20,74 +21,61 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
             foreach (var entity in componentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
-
-
                 var aiMoveComponent = componentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 var aiPositionComponent = componentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                var aiComponent = entity.Value as AIComponent;
+                var aiPosition = aiPositionComponent.Position;
 
-
-                // We should be getting all the players and check so the ai (monster) should
-                // follow the closest player
-                var playerComponent = componentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
-                if (playerComponent == null) return;
-
-                float distance;
-
-                foreach (var player in playerComponent)
-                {
-                    // We cannot follow a player without a position
-                    var playerPositionComponent = componentManager.GetEntityComponentOrDefault<PositionComponent>(player.Key);
-                    if (playerPositionComponent == null) return;
-
-
-
-                    // distance = playerPositionComponent.Position - aiPositionComponent.Position;
-
-                    AIComponent aiComponent = entity.Value as AIComponent;
-
-
-                    // If The player is within the distance that the AI will follow then we start moving 
-                    // the ai towards that player. We also want to check so that the AI follows the closest
-                    // player, and not just the first player within the distance...but maybe, we'll check how it looks first.
-
-                    var position = playerPositionComponent.Position;
-                    var vector2 = aiPositionComponent.Position;
-
-                    // Gives us a float distance that we can use for the Ai
-                    // to see if it should follow the player. 
-                    Vector2.Distance(ref position, ref vector2,
-                        out distance);
-
-                    // Follow the player if distance is within accepted range
-                    if (distance < aiComponent.FollowDistance)
+                //Get closest players that
+                //    - Has position component
+                //    - Has a flashlight turned on
+                var playerEntities = componentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
+                var closestPlayer = playerEntities
+                    .Where(e =>
                     {
-                        // We need the players lightComponent because we only want 
-                        // to follow players that have flashligt on.
-                        var playerLightComponent = componentManager.GetEntityComponentOrDefault<LightComponent>(player.Key);
-                        if (playerLightComponent == null) return;
+                        var hasPositionComponent =
+                            ComponentManager.Instance.EntityHasComponent<PositionComponent>(e.Key);
+                        if (!hasPositionComponent) return false;
 
-                        if (playerLightComponent.Light.Enabled)
-                        {
-                            Vector2 playerPos = playerPositionComponent.Position;
-                            Vector2 aiPos = aiPositionComponent.Position;
+                        var lightComponent =
+                            ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(e.Key);
+                        if (lightComponent == null) return false;
 
-                            var dir = playerPos - aiPos;
-                            dir.Normalize();
-                            var newDirection = Math.Atan2(dir.Y, dir.X);
+                        var hasFlashlightEnabled = lightComponent.Light.Enabled;
+                        if (hasFlashlightEnabled) return true;
+                        else return false;
+                    })
+                    .Select(e =>
+                    {
+                        var positionComponent =
+                            ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(e.Key);
+                        var distance = Vector2.Distance(positionComponent.Position, aiPosition);
 
-                            aiMoveComponent.Direction = (float) newDirection;
-                            if (aiMoveComponent.Speed < 1)
-                            {
-                                aiMoveComponent.Speed = 1;
-                            }
-                        }
-                    }
-                    
+                        return (
+                            entityId: e.Key,
+                            distance: distance,
+                            positionComponent: positionComponent
+                            );
+                    })
+                    .MinBy(e => e.distance);
+
+                // If The player is within the distance that the AI will follow then we start moving
+                // the ai towards that player.
+                if (closestPlayer.distance < aiComponent.FollowDistance)
+                {
+                    var playerPosition = closestPlayer.positionComponent.Position;
+                    var dir = playerPosition - aiPosition;
+                    dir.Normalize();
+                    var newDirection = Math.Atan2(dir.Y, dir.X);
+
+                    aiMoveComponent.Direction = (float) newDirection;
+
+                    aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
                 }
-
-
-
-
+                else
+                {
+                    aiMoveComponent.CurrentAcceleration = 0;
+                }
             }
         }
     }

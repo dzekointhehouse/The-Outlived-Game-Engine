@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MoreLinq\MoreEnumerable.MinBy.cs" />
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
     <Compile Include="ZEngine\Components\AIComponent.cs" />
     <Compile Include="ZEngine\Components\AnimationComponent.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="ZEngine\Components\SoundComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteAnimationComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteComponent.cs" />
+    <Compile Include="ZEngine\Components\TagComponent.cs" />
     <Compile Include="ZEngine\Components\TeamComponent.cs" />
     <Compile Include="ZEngine\Components\TempPlayerDeadSpriteComponent.cs" />
     <Compile Include="ZEngine\Components\WeaponComponent.cs" />
@@ -98,9 +100,10 @@
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\EntityRemovalSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />
-    <Compile Include="ZEngine\Systems\InputHandler\AbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
+    <Compile Include="ZEngine\Systems\InputHandler\QuickTurnAbilitySystem.cs" />
+    <Compile Include="ZEngine\Systems\InputHandler\SprintAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
@@ -135,6 +138,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

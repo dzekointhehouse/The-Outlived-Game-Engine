@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
@@ -41,6 +42,7 @@ namespace ZEngine.Systems
             {
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
+                    Debug.WriteLine("WALKING FORWARDS");
                     moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
                 }
                 else if(moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)

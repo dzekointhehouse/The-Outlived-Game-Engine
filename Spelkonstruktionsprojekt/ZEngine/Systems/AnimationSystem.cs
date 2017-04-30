@@ -19,7 +19,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var animations = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
             foreach (var entity in animations)
             {
-
                 var animationComponent = entity.Value as AnimationComponent;
                 for (var i = 0; i < animationComponent.Animations.Count; i++)
                 {
@@ -37,7 +36,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 foreach (int animationIndex in doneAnimations)
                 {
-                    if (animationComponent.Animations.ElementAtOrDefault<GeneralAnimation>(animationIndex) != null)
+                    if (animationComponent.Animations.ElementAtOrDefault(animationIndex) != null)
                         animationComponent.Animations.RemoveAt(animationIndex);
                 }
             }

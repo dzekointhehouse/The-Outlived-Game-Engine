@@ -6,6 +6,7 @@ using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
+using ZEngine.Systems.InputHandler;
 
 namespace ZEngine.Managers
 {
@@ -36,7 +37,6 @@ namespace ZEngine.Managers
             { typeof(EnemyCollisionSystem), new EnemyCollisionSystem() },
             { typeof(CameraSceneSystem), new CameraSceneSystem() },
             { typeof(AISystem), new AISystem() },
-            { typeof(AbilitySystem), new AbilitySystem() },
             { typeof(AnimationSystem), new AnimationSystem() },
             { typeof(SoundSystem), new SoundSystem() },
             { typeof(WeaponSystem), new WeaponSystem() },

@@ -49,14 +49,14 @@ namespace ZEngine.Systems
                 moveComponent.PreviousPosition = positionComponent.Position;
                 positionComponent.Position = MoveVector(ref valuePosition, ref velocity, delta);
 
-                //System.Diagnostics.Debug.WriteLine(
-                //    "moment " + moveComponent.RotationMomentum
-                //    + " direction " + moveComponent.Direction
-                //    + " velocity " + moveComponent.Velocity.ToString()
-                //    + " delta " + delta
-                //    + "  maxVelocity " + moveComponent.MaxVelocity.ToString()
-                //    + "  velocitySpeed " + moveComponent.VelocitySpeed
-                //);
+                System.Diagnostics.Debug.WriteLine(
+                    "moment " + moveComponent.RotationMomentum
+                    + " direction " + moveComponent.Direction
+                    + " delta " + delta
+                    + "  maxVelocity " + moveComponent.MaxVelocitySpeed.ToString()
+                    + "  velocitySpeed " + moveComponent.Speed
+                    + "  position " + positionComponent.Position
+                );
             }
         }
 
