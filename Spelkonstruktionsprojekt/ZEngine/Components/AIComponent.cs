@@ -10,5 +10,8 @@ namespace ZEngine.Components
     class AIComponent : IComponent
     {
         public Vector2 Target;
+
+        public float FollowDistance { get; set; } = 20;
     }
 }
+    
