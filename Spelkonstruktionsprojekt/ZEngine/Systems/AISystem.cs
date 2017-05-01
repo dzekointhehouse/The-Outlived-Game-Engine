@@ -51,24 +51,29 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(e.Key);
                         var distance = Vector2.Distance(positionComponent.Position, aiPosition);
 
-                        return (
-                            entityId: e.Key,
-                            distance: distance,
-                            positionComponent: positionComponent
+                        return new Tuple<float, PositionComponent>(
+                            distance,
+                            positionComponent
                             );
                     })
-                    .MinBy(e => e.distance);
+                    .MinBy(e =>
+                    {
+                        var distance = e.Item2;
+                        return distance;
+                    });
 
+
+                var closestPlayerDistance = closestPlayer.Item1;
+                var closestPlayerPosition = closestPlayer.Item2.Position;
                 // If The player is within the distance that the AI will follow then we start moving
                 // the ai towards that player.
-                if (closestPlayer.distance < aiComponent.FollowDistance)
+                if (closestPlayerDistance < aiComponent.FollowDistance)
                 {
-                    var playerPosition = closestPlayer.positionComponent.Position;
-                    var dir = playerPosition - aiPosition;
+                    var dir = closestPlayerPosition - aiPosition;
                     dir.Normalize();
                     var newDirection = Math.Atan2(dir.Y, dir.X);
 
-                    aiMoveComponent.Direction = (float) newDirection;
+                    aiMoveComponent.Direction = (float)newDirection;
 
                     aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
                 }
