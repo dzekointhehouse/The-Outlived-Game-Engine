@@ -1,7 +1,9 @@
 ﻿using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         //Pickup Values, should be moved to components later
         private int HealingAmount = 50;
+        private int AmmoAmount = 10;
 
 
         public void Start()
@@ -28,38 +31,47 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
-            var pickupComponent = (PickupComponent)ComponentManager.GetEntityComponentOrDefault(typeof(PickupComponent), collisionEvent.Entity);
-
-            if (pickupComponent.PickupType == EventConstants.HealthPickup)
+            if (ComponentManager.EntityHasComponent(typeof(HealthPickupComponent), collisionEvent.Target))
             {
-                HandleHealthPickup(collisionEvent.Target, collisionEvent.Entity);
+                HandleHealthPickup(collisionEvent.Entity, collisionEvent.Target);
+            }
+            else if (ComponentManager.EntityHasComponent(typeof(AmmoPickupComponent), collisionEvent.Target))
+            {
+                HandleAmmoPickup(collisionEvent.Entity, collisionEvent.Target);
             }
 
         }
 
         private void HandleHealthPickup(int player, int pickup)
         {
-            var HealthComponent = (HealthComponent)ComponentManager.GetEntityComponentOrDefault(typeof(HealthComponent), pickup);
+            var HealthComponent = (HealthComponent)ComponentManager.GetEntityComponentOrDefault(typeof(HealthComponent), player);
             if (HealthComponent.CurrentHealth < HealthComponent.MaxHealth)
             {
                 HealthComponent.Damage.Add(-HealingAmount);
-                ComponentManager.DeleteEntity(pickup);
+                DeletePickup(pickup);
             }
-
-
-            /*
-            if (HealthComponent.MaxHealth < (HealthComponent.CurrentHealth += HealingAmount))
-            { 
-                HealthComponent.CurrentHealth = HealthComponent.MaxHealth;
-                //Remove Component
-                ComponentManager.DeleteEntity(pickup);
-            }
-            */
-
-
-
-
         }
+
+
+        private void HandleAmmoPickup(int player, int pickup)
+        {
+            var AmmoComponent = (AmmoComponent)ComponentManager.GetEntityComponentOrDefault(typeof(AmmoComponent), player);
+            AmmoComponent.Amount += AmmoAmount;
+            DeletePickup(pickup);
+        }
+
+        private void DeletePickup(int pickup)
+        {
+            var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(pickup);
+
+            if (tagComponent == null)
+            {
+                tagComponent = new TagComponent();
+                ComponentManager.AddComponentToEntity(tagComponent, pickup);
+            }
+            tagComponent.Tags.Add(Tag.Delete);
+        }
+
     }
 }
 
