@@ -109,6 +109,7 @@
     <Compile Include="ZEngine\Systems\InputHandler\SprintAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
+    <Compile Include="ZEngine\Systems\LightAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
     <Compile Include="ZEngine\Systems\Motion\BackwardsPenaltySystem.cs" />
@@ -116,13 +117,13 @@
     <Compile Include="ZEngine\Systems\Motion\MoveSystem.cs" />
     <Compile Include="ZEngine\Systems\ScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\SoundSystem.cs" />
-    <Compile Include="ZEngine\Systems\SpriteAnimationSystem.cs" />
-    <Compile Include="ZEngine\Systems\TitlesafeRenderSystem.cs" />
+    <Compile Include="ZEngine\Systems\Rendering\SpriteAnimationSystem.cs" />
+    <Compile Include="ZEngine\Systems\Rendering\TitlesafeRenderSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
     <Compile Include="ZEngine\Systems\VideoPlayerSystem.cs" />
     <Compile Include="ZEngine\Systems\WeaponSystem.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
-    <Compile Include="ZEngine\Systems\RenderSystem.cs" />
+    <Compile Include="ZEngine\Systems\Rendering\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
     <Compile Include="Zenu\Button.cs" />
     <Compile Include="Zenu\components\ButtonComponent.cs" />
