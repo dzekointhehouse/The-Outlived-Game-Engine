@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using ZEngine.Components;
+ using Spelkonstruktionsprojekt.ZEngine.Managers;
+ using ZEngine.Components;
 using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers

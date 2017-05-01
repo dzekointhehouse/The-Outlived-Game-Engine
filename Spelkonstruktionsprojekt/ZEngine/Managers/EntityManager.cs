@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 
 namespace ZEngine.Managers

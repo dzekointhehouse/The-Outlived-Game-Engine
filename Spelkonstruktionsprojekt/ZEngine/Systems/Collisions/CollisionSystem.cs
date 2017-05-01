@@ -13,6 +13,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Runtime.Remoting;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 
 namespace ZEngine.Systems
 {
