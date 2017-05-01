@@ -10,26 +10,28 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class AISystem : ISystem
     {
-        private ComponentManager componentManager = ComponentManager.Instance;
+        private ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void Update(GameTime gameTime)
         {
+            double newDirection = 0;
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (var entity in componentManager.GetEntitiesWithComponent(typeof(AIComponent)))
+            foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
-                var aiMoveComponent = componentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-                var aiPositionComponent = componentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                var aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                var aiPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                 var aiComponent = entity.Value as AIComponent;
                 var aiPosition = aiPositionComponent.Position;
 
 
 
-                var playerEntities = componentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
+                var playerEntities = ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
                 if (playerEntities.Count == 0)
                 {
                     aiMoveComponent.CurrentAcceleration = 0;
@@ -88,17 +90,62 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                     var dir = closestPlayerPosition - aiPosition;
                     dir.Normalize();
-                    var newDirection = Math.Atan2(dir.Y, dir.X);
+                    newDirection = Math.Atan2(dir.Y, dir.X);
 
                     aiMoveComponent.Direction = (float)newDirection;
 
                     aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
                 }
-                else
+                else if(!aiComponent.Wander)
                 {
-                    aiMoveComponent.CurrentAcceleration = 0;
+                    aiComponent.Wander = true;
+                    Wander(gameTime, entity.Key,aiComponent,aiMoveComponent);
                 }
             }
+        }
+
+        public void Wander(GameTime gameTime, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
+        {
+            var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
+            if(animationComponent == null)
+            {
+                animationComponent = new AnimationComponent();
+                ComponentManager.AddComponentToEntity(animationComponent, entityId);
+            }
+            var animation = new GeneralAnimation()
+            {
+                AnimationType = "Wander",
+                StartOfAnimation = gameTime.TotalGameTime.Milliseconds,
+                Length = new Random().Next(1000, 4000),
+                Unique = true
+            };
+            NewWanderAnimation(animation, entityId, aiComponent, aiMoveComponent);
+            animationComponent.Animations.Add(animation);
+        }
+
+
+        // Animation for when the bullet should be deleted.
+        public void NewWanderAnimation(GeneralAnimation generalAnimation, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
+        {
+            generalAnimation.Animation = delegate (double currentTimeInMilliseconds)
+            {
+                if (!aiComponent.Wander)
+                {
+                    generalAnimation.IsDone = true;
+                }
+                if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
+                {
+                    generalAnimation.StartOfAnimation = currentTimeInMilliseconds;
+                    generalAnimation.Length = new Random().Next(1000, 4000);
+
+                    Random rnd = new Random();
+                    float randX = (float)rnd.NextDouble();
+                    float randY = (float)rnd.NextDouble();
+                    var newDirection = Math.Atan2(randX, randY);
+
+                    aiMoveComponent.Speed = 30f;
+                }
+            };
         }
     }
 }
