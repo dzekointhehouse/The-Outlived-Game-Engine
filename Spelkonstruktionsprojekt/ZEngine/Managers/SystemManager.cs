@@ -82,5 +82,10 @@ namespace ZEngine.Managers
         {
             return _systems.Count(system => system.Value.GetType() == typeof(T)) == 1;
         }
+
+        public T Get<T>() where T : class, ISystem
+        {
+            return SystemManager.Instance.GetSystem(typeof(T)) as T;
+        }
     }
 }

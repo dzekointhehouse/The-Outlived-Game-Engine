@@ -25,6 +25,7 @@ using ZEngine.Systems.Collisions;
 using ZEngine.Systems.InputHandler;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -33,56 +34,47 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     /// </summary>
     public class TestGame : Game
     {
-        private readonly GameDependencies _gameDependencies = new GameDependencies();
+        // private readonly GameDependencies _gameDependencies = new GameDependencies();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
         private Video video;
         private VideoPlayer player;
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
-
         // testing
-        private FPS fps;
+       //rivate FPS fps;
         public SpriteBatch spriteBatch;
         private Song musicTest;
+        private SystemManager manager = SystemManager.Instance;
+
+        private readonly FullZengineBundle gameBundle;
 
         public TestGame()
         {
-            _gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            gameBundle = new FullZengineBundle();
+
+            gameBundle._gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = (int) viewportDimensions.X,
-                PreferredBackBufferHeight = (int) viewportDimensions.Y
+                PreferredBackBufferWidth = (int)viewportDimensions.X,
+                PreferredBackBufferHeight = (int)viewportDimensions.Y
             };
             Content.RootDirectory = "Content";
 
             // Create an instance of the FPS GameComponent
-            fps = new FPS(this);
+          //  fps = new FPS(this);
 
             // Turn off the fixed time step
             // and the synchronization with the vertical retrace
             // so the game's FPS can be measured
             IsFixedTimeStep = false;
-            _gameDependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
+            gameBundle._gameDependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
         }
 
         protected override void Initialize()
         {
             //Init systems that require initialization
-            _<TankMovementSystem>().Start();
-            _<WallCollisionSystem>().Start();
-            _<SoundSystem>().Start();
-            _<WeaponSystem>().Start();
-            _<EnemyCollisionSystem>().Start();
-            _<BulletCollisionSystem>().Start();
-            _<LightAbilitySystem>().Start();
-
-            _gameDependencies.GameContent = Content;
-            _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            // just quickly done for FPS testing
-            spriteBatch = _gameDependencies.SpriteBatch;
-            _gameDependencies.Game = this;
+            gameBundle.InitializeSystems(this);
 
             CreateTestEntities();
-
             base.Initialize();
         }
 
@@ -141,15 +133,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 DimensionsComponent = new DimensionsComponent()
                 {
-                    Width = (int) (viewportDimensions.X * 0.8),
-                    Height = (int) (viewportDimensions.Y * 0.8)
+                    Width = (int)(viewportDimensions.X * 0.8),
+                    Height = (int)(viewportDimensions.Y * 0.8)
                 },
                 Fixed = true
             };
 
             var position = new PositionComponent()
             {
-                Position = new Vector2(0,0),
+                Position = new Vector2(0, 0),
                 ZIndex = 2
             };
 
@@ -163,10 +155,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
             var offsetComponent = new RenderOffsetComponent()
             {
-                Offset = new Vector2((float) (viewportDimensions.X * 0.25), (float) (viewportDimensions.Y * 0.25))
+                Offset = new Vector2((float)(viewportDimensions.X * 0.25), (float)(viewportDimensions.Y * 0.25))
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
-//            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
+            //            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(position, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
@@ -176,7 +168,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public void SetupBackgroundTiles(int width, int height)
         {
-           var tileTypes = new Dictionary<int, string>();
+            var tileTypes = new Dictionary<int, string>();
 
             tileTypes.Add(0, "blue64");
             tileTypes.Add(1, "green64");
@@ -194,12 +186,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
             var cameraViewComponent = new CameraViewComponent()
             {
-                View = new Rectangle(0, 0, (int) viewportDimensions.X, (int) viewportDimensions.Y)
+                View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y)
             };
 
-            var position = new PositionComponent() {Position = new Vector2(0, 0), ZIndex = 500};
+            var position = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 500 };
 
-            ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity); 
+            ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
             ComponentManager.Instance.AddComponentToEntity(position, cameraEntity);
         }
 
@@ -218,7 +210,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 }
             };
 
-            var position = new PositionComponent() {Position = new Vector2(x, y), ZIndex = 20};
+            var position = new PositionComponent() { Position = new Vector2(x, y), ZIndex = 20 };
 
 
             var spriteComponent = new SpriteComponent()
@@ -336,7 +328,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 },
             };
 
-            var positionComponent = new PositionComponent() {Position = position, ZIndex = 10};
+            var positionComponent = new PositionComponent() { Position = position, ZIndex = 10 };
 
             var dampeningComponent = new InertiaDampeningComponent();
             var backwardsPenaltyComponent = new BackwardsPenaltyComponent();
@@ -354,8 +346,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 {
                     Position = new Vector2(150, 150),
                     Scale = new Vector2(850f),
-                    Radius = (float) 0.0001,
-                    Intensity = (float) 0.6,
+                    Radius = (float)0.0001,
+                    Intensity = (float)0.6,
                     ShadowType = ShadowType.Solid // Will not lit hulls themselves
                 }
             };
@@ -441,15 +433,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             video = Content.Load<Video>("ZEngine-intro");
 
             player = new VideoPlayer();
-            // musicTest = Content.Load<Song>("assassins");
-            _<LoadContentSystem>().LoadContent(this.Content);
-            penumbraComponent = _<FlashlightSystem>().Initialize(_gameDependencies);
             //MediaPlayer.Play(musicTest);
 
-//            if (player.State == MediaState.Stopped)
-//            {
-//                player.Play(video);
-//            }
+            //            if (player.State == MediaState.Stopped)
+            //            {
+            //                player.Play(video);
+            //            }
+
+            //BUNDLE
+            gameBundle.LoadContent();
         }
 
         protected override void UnloadContent()
@@ -459,27 +451,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            if (player.State == MediaState.Stopped)
-            {
-                _<EnemyCollisionSystem>().GameTime = gameTime; //TODO system dependency
-                _<InputHandler>().HandleInput(_oldKeyboardState, gameTime);
-                _oldKeyboardState = Keyboard.GetState();
+            //if (player.State == MediaState.Stopped)
+            //{
+            //    manager.Get<EnemyCollisionSystem>().GameTime = gameTime; //TODO system dependency
+            //    manager.Get<InputHandler>().HandleInput(_oldKeyboardState, gameTime);
+            //    _oldKeyboardState = Keyboard.GetState();
 
-                _<AISystem>().Update(gameTime);
-                _<AnimationSystem>().RunAnimations(gameTime);
-                _<SpriteAnimationSystem>().Update(gameTime);
-                _<CollisionSystem>().DetectCollisions();
-                _<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents,
-                    gameTime);
+            //    manager.Get<AISystem>().Update(gameTime);
+            //    manager.Get<AnimationSystem>().RunAnimations(gameTime);
+            //    manager.Get<SpriteAnimationSystem>().Update(gameTime);
+            //    manager.Get<CollisionSystem>().DetectCollisions();
+            //    manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents,
+            //        gameTime);
 
-                _<CameraSceneSystem>().Update(gameTime);
-                _<FlashlightSystem>().Update(gameTime, viewportDimensions);
-                _<HealthSystem>().Update();
-                _<EntityRemovalSystem>().Update(gameTime);
-                _<InertiaDampenerSystem>().Apply(gameTime);
-                _<BackwardsPenaltySystem>().Apply();
-                _<MoveSystem>().Move(gameTime);
-            }
+            //    manager.Get<CameraSceneSystem>().Update(gameTime);
+            //    manager.Get<FlashlightSystem>().Update(gameTime, viewportDimensions);
+            //    manager.Get<HealthSystem>().Update();
+            //    manager.Get<EntityRemovalSystem>().Update(gameTime);
+            //    manager.Get<InertiaDampenerSystem>().Apply(gameTime);
+            //    manager.Get<BackwardsPenaltySystem>().Apply();
+            //    manager.Get<MoveSystem>().Move(gameTime);
+            //}
+            gameBundle.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -494,22 +487,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 spriteBatch.Begin();
                 spriteBatch.Draw(videoTexture,
-                    new Rectangle(0, 0, (int) viewportDimensions.X, (int) viewportDimensions.Y), Color.White);
+                    new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y), Color.White);
                 spriteBatch.End();
             }
             if (player.State == MediaState.Stopped)
             {
-                _<FlashlightSystem>().BeginDraw(penumbraComponent);
-                _<RenderSystem>().Render(_gameDependencies); // lowers FPS by half (2000)
-                _<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
-                _<TitlesafeRenderSystem>().Draw(_gameDependencies); // not noticable
+                //manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
+                //manager.Get<RenderSystem>().Render(_gameDependencies); // lowers FPS by half (2000)
+                //manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
+                //manager.Get<TitlesafeRenderSystem>().Draw(_gameDependencies); // not noticable
+                gameBundle.Draw(gameTime);
             }
             base.Draw(gameTime);
         }
 
-        private T _<T>() where T : class, ISystem
-        {
-            return SystemManager.Instance.GetSystem(typeof(T)) as T;
-        }
+
     }
 }

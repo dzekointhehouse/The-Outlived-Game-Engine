@@ -10,6 +10,7 @@ namespace ZEngine.Components
     class AIComponent : IComponent
     {
         public Vector2 Target;
+        public bool Wander { get; set; } = false;
 
         public float FollowDistance { get; set; } = 500;
     }

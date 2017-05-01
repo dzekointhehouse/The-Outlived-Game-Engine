@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization.Formatters;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
 

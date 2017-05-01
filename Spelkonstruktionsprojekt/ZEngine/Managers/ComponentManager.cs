@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using ZEngine.Components;
 
-namespace ZEngine.Managers
+namespace Spelkonstruktionsprojekt.ZEngine.Managers
 {
     public class ComponentManager
     {

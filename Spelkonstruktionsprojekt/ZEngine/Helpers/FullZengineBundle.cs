@@ -12,6 +12,7 @@ using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Managers;
+
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
 using ZEngine.Systems.InputHandler;
@@ -21,90 +22,67 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
     class FullZengineBundle
     {
-        private RenderSystem RenderSystem;
-        private LoadContentSystem LoadContentSystem;
-        private InputHandler InputHandlerSystem;
-        private MoveSystem MoveSystem;
-        private TankMovementSystem TankMovementSystem;
-        private TitlesafeRenderSystem TitlesafeRenderSystem;
-        private CollisionSystem CollisionSystem;
-        private CameraSceneSystem CameraFollowSystem;
-        private FlashlightSystem LightSystems;
-        private CollisionResolveSystem CollisionResolveSystem;
-        private WallCollisionSystem WallCollisionSystem;
-        private EnemyCollisionSystem EnemyCollisionSystem;
-        private BulletCollisionSystem BulletCollisionSystem;
-        private AISystem AISystem;
-        private AnimationSystem AnimationSystem;
-        private SoundSystem SoundSystem;
-        private WeaponSystem WeaponSystem;
-        private HealthSystem HealthSystem;
+        private SystemManager manager = SystemManager.Instance;
 
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
 
-        private readonly GameDependencies _gameDependencies = new GameDependencies();
+        public GameDependencies _gameDependencies = new GameDependencies();
 
-        public void Initialize()
-        {
-            RenderSystem = SystemManager.Instance.GetSystem<RenderSystem>();
-            LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
-            InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
-            TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
-            TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
-            CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
-            CameraFollowSystem = SystemManager.Instance.GetSystem<CameraSceneSystem>();
-            LightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
-            MoveSystem = SystemManager.Instance.GetSystem<MoveSystem>();
-            CollisionResolveSystem = SystemManager.Instance.GetSystem<CollisionResolveSystem>();
-            WallCollisionSystem = SystemManager.Instance.GetSystem<WallCollisionSystem>();
-            AISystem = SystemManager.Instance.GetSystem<AISystem>();
-            EnemyCollisionSystem = SystemManager.Instance.GetSystem<EnemyCollisionSystem>();
-            AnimationSystem = SystemManager.Instance.GetSystem<AnimationSystem>();
-            SoundSystem = SystemManager.Instance.GetSystem<SoundSystem>();
-            WeaponSystem = SystemManager.Instance.GetSystem<WeaponSystem>();
-            BulletCollisionSystem = SystemManager.Instance.GetSystem<BulletCollisionSystem>();
-            HealthSystem = SystemManager.Instance.GetSystem<HealthSystem>();
-        }
 
-        public void LoadSystems(Game game)
+        public void InitializeSystems(Game game)
         {
             _gameDependencies.GameContent = game.Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(game.GraphicsDevice);
             _gameDependencies.Game = game;
 
-            TankMovementSystem.Start();
-            WallCollisionSystem.Start();
-            SoundSystem.Start();
-            WeaponSystem.Start();
-            BulletCollisionSystem.Start();
+            //Init systems that require initialization
+            manager.Get<TankMovementSystem>().Start();
+            manager.Get<WallCollisionSystem>().Start();
+            manager.Get<SoundSystem>().Start();
+            manager.Get<WeaponSystem>().Start();
+            manager.Get<EnemyCollisionSystem>().Start();
+            manager.Get<BulletCollisionSystem>().Start();
+            manager.Get<LightAbilitySystem>().Start();
+
+        }
+
+        public void LoadContent()
+        {
+            manager.Get<LoadContentSystem>().LoadContent(this._gameDependencies.Game.Content);
+            // Want to initialize penumbra after loading all the game content.
+            penumbraComponent = manager.Get<FlashlightSystem>().Initialize(_gameDependencies);
         }
 
         public void Update(GameTime gameTime)
         {
-            EnemyCollisionSystem.GameTime = gameTime;
-            InputHandlerSystem.HandleInput(_oldKeyboardState, gameTime);
+            manager.Get<EnemyCollisionSystem>().GameTime = gameTime; //TODO system dependency
+            manager.Get<InputHandler>().HandleInput(_oldKeyboardState, gameTime);
             _oldKeyboardState = Keyboard.GetState();
 
-            AISystem.Update(gameTime);
-            MoveSystem.Move(gameTime);
-            AnimationSystem.RunAnimations(gameTime);
+            manager.Get<AISystem>().Update(gameTime);
+            manager.Get<AnimationSystem>().RunAnimations(gameTime);
+            manager.Get<SpriteAnimationSystem>().Update(gameTime);
+            manager.Get<CollisionSystem>().DetectCollisions();
+            manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents,
+                gameTime);
 
-            CollisionSystem.DetectCollisions();
-            CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
-
-            CameraFollowSystem.Update(gameTime);
-            LightSystems.Update(gameTime, viewportDimensions);
-           // HealthSystem.TempEndGameIfDead(TempGameEnder);
+            manager.Get<CameraSceneSystem>().Update(gameTime);
+            manager.Get<FlashlightSystem>().Update(gameTime, viewportDimensions);
+            manager.Get<HealthSystem>().Update();
+            manager.Get<EntityRemovalSystem>().Update(gameTime);
+            manager.Get<InertiaDampenerSystem>().Apply(gameTime);
+            manager.Get<BackwardsPenaltySystem>().Apply();
+            manager.Get<MoveSystem>().Move(gameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
-            LightSystems.BeginDraw(penumbraComponent);
-            RenderSystem.Render(_gameDependencies);
-            LightSystems.EndDraw(penumbraComponent, gameTime);
-            TitlesafeRenderSystem.Draw(_gameDependencies);
+            manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
+            manager.Get<RenderSystem>().Render(_gameDependencies); // lowers FPS by half (2000)
+            manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
+            manager.Get<TitlesafeRenderSystem>().Draw(_gameDependencies); // not noticable
         }
     }
 }
