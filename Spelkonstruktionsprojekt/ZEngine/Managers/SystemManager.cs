@@ -46,7 +46,8 @@ namespace ZEngine.Managers
             { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
             { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
             { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
-            { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() }
+            { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
+            { typeof(LightAbilitySystem), new LightAbilitySystem() }
 
         };
 

@@ -73,6 +73,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             _<WeaponSystem>().Start();
             _<EnemyCollisionSystem>().Start();
             _<BulletCollisionSystem>().Start();
+            _<LightAbilitySystem>().Start();
 
             _gameDependencies.GameContent = Content;
             _gameDependencies.SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -276,7 +277,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.D, EventConstants.TurnRight)
                 .SetAction(Keys.Q, EventConstants.TurnAround)
                 .SetAction(Keys.E, EventConstants.FireWeapon)
-                .SetAction(Keys.LeftShift, EventConstants.Running)
+                .SetAction(Keys.LeftShift, EventConstants.LightStatus)
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();

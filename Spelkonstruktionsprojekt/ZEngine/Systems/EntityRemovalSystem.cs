@@ -63,7 +63,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     //TODO reinsert removals
                     var lightComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
-                    lightComponent.Light.Scale = Vector2.Zero;
+                    lightComponent.Light.Enabled = false;
 
                     var animationComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
