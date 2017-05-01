@@ -26,10 +26,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var aiComponent = entity.Value as AIComponent;
                 var aiPosition = aiPositionComponent.Position;
 
+
+
+                var playerEntities = componentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
+                if (playerEntities.Count == 0)
+                {
+                    aiMoveComponent.CurrentAcceleration = 0;
+                    continue;
+                }
+
                 //Get closest players that
                 //    - Has position component
+                //    - Has flashlight component.
                 //    - Has a flashlight turned on
-                var playerEntities = componentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
+                // We want to get all the players that achieve this criteria above.
+                // We do this by using linq. The first where clause gets the players that have
+                // that criteria, select clause selects the player properties that we need, and
+                // minby compares the distances and gives us the player with the smallest distance 
+                // to the player.
                 var closestPlayer = playerEntities
                     .Where(e =>
                     {
@@ -58,13 +72,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     })
                     .MinBy(e =>
                     {
-                        var distance = e.Item2;
+                        // item1 is the distance
+                        var distance = e.Item1;
                         return distance;
                     });
 
 
                 var closestPlayerDistance = closestPlayer.Item1;
                 var closestPlayerPosition = closestPlayer.Item2.Position;
+
                 // If The player is within the distance that the AI will follow then we start moving
                 // the ai towards that player.
                 if (closestPlayerDistance < aiComponent.FollowDistance)
