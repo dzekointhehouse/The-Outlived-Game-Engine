@@ -26,9 +26,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.
-                AmbientColor = new Color(new Vector3(0.5f))
+                AmbientColor = new Color(new Vector3(0.5f)) // should be an entity?
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
+
             foreach (var instance in lights)
             {
                 var lightComponent = instance.Value as LightComponent;
@@ -49,15 +50,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
             foreach (var lightEntity in lightEntities)
             {
-                var lightComponent = lightEntity.Value as LightComponent;
-                if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(lightEntity.Key))
-                {
-                    var moveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(lightEntity.Key);
-                    lightComponent.Light.Rotation = (float)moveComponent.Direction;
-                }
 
-                if (ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
-                {
+                var lightComponent = lightEntity.Value as LightComponent;
+
+                // If it has no render component than we should skip this entity.
+                if (!ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
+                    continue;
+               
                     var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(lightEntity.Key);
 
                     lightComponent.Light.Position =
@@ -65,7 +64,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             positionComponent.Position.X - cameraView.X,
                             positionComponent.Position.Y - cameraView.Y
                             );
+             
+                if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(lightEntity.Key))
+                {
+                    var moveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(lightEntity.Key);
+                    lightComponent.Light.Rotation = (float)moveComponent.Direction;
                 }
+
+
             }
         }
 

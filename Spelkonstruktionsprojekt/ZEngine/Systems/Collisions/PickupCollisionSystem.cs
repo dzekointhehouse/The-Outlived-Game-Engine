@@ -29,9 +29,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         {
             EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.PickupCollision, Handle);
         }
+        
 
+        /*
+         * Target is the pickup, entity is the player
+         * This function determines what kind of pickup type it is, and calls the appropriate method.
+         */
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
+
             if (ComponentManager.EntityHasComponent(typeof(HealthPickupComponent), collisionEvent.Target))
             {
                 HandleHealthPickup(collisionEvent.Entity, collisionEvent.Target);
@@ -61,6 +67,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
             DeletePickup(pickup);
         }
 
+        /*
+         This function tags the pickup for deletion. 
+         Should only be called when the pickup was actually used up.
+        */
         private void DeletePickup(int pickup)
         {
             var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(pickup);

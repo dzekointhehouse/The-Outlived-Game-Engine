@@ -23,12 +23,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 var entityId = entity.Key;
                 var healthComponent = entity.Value as HealthComponent;
-                if (healthComponent.CurrentHealth <= 0 && healthComponent.Alive)
-                {
-                    healthComponent.CurrentHealth = 0;
-                    healthComponent.Alive = false;
-                    Debug.WriteLine("Entity " + entityId + " has fallen");
-                }
+
                 while (healthComponent.Damage.Count > 0)
                 {
                     var damage = healthComponent.Damage.First();
@@ -37,14 +32,25 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     Debug.WriteLine("HP: " + healthComponent.CurrentHealth);
                 }
 
-                //Option 1
-       /*         if (healthComponent.CurrentHealth > healthComponent.MaxHealth)
-                    healthComponent.CurrentHealth = healthComponent.MaxHealth;
-       */
-                //Option 2
-                healthComponent.CurrentHealth = MathHelper.Min(healthComponent.CurrentHealth, healthComponent.MaxHealth);
 
+                //Option 1
+                /*         if (healthComponent.CurrentHealth > healthComponent.MaxHealth)
+                               healthComponent.CurrentHealth = healthComponent.MaxHealth;
+                Option 2*/
+                healthComponent.CurrentHealth = MathHelper.Min(healthComponent.CurrentHealth, healthComponent.MaxHealth);
+                CheckIfDead(healthComponent);
             }
         }
+
+        private void CheckIfDead(HealthComponent healthComponent)
+        {
+            if (healthComponent.CurrentHealth <= 0 && healthComponent.Alive)
+            {
+                healthComponent.CurrentHealth = 0;
+                healthComponent.Alive = false;
+                //Debug.WriteLine("Entity " + entityId + " has fallen");
+            }
+        }
+
     }
 }
