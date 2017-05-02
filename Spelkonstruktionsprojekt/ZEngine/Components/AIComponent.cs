@@ -12,7 +12,7 @@ namespace ZEngine.Components
         public Vector2 Target;
         public bool Wander { get; set; } = false;
 
-        public float FollowDistance { get; set; } = 500;
+        public float FollowDistance { get; set; } = 250;
     }
 }
     

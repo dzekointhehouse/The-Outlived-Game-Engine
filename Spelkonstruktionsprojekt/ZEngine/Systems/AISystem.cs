@@ -60,9 +60,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(e.Key);
                         if (lightComponent == null) return false;
 
-                        var hasFlashlightEnabled = lightComponent.Light.Enabled;
-                        if (hasFlashlightEnabled) return true;
-                        else return false;
+                        //var hasFlashlightEnabled = lightComponent.Light.Enabled;
+                        //if (hasFlashlightEnabled) return true;
+                        else return true;
                     })
                     .Select(e =>
                     {
@@ -81,28 +81,55 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         var distance = e.Item1;
                         return distance;
                     });
+                // WE NEED TO HANDLE situation when false == (null players)
+                float closestPlayerDistance;
+                Vector2 closestPlayerPosition;
+                if (closestPlayer != null)
+                {
+                    closestPlayerDistance = closestPlayer.Item1;
+                    closestPlayerPosition = closestPlayer.Item2.Position;
+                }
+                else
+                {
+                    closestPlayerDistance = 1000;
+                    closestPlayerPosition = Vector2.Zero;
 
-
-                var closestPlayerDistance = closestPlayer.Item1;
-                var closestPlayerPosition = closestPlayer.Item2.Position;
+                }
 
                 // If The player is within the distance that the AI will follow then we start moving
                 // the ai towards that player.
-                if (closestPlayerDistance < aiComponent.FollowDistance)
-                {
+                foreach (var player in ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent))) {
+                    LightComponent light = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(player.Key);
+                    bool hasFlashlightOn = light.Light.Enabled;
+                    if (!hasFlashlightOn)
+                    {
+                    if (closestPlayerDistance < aiComponent.FollowDistance)
+                    {
+                        var dir = closestPlayerPosition - aiPosition;
+                        dir.Normalize();
+                        newDirection = Math.Atan2(dir.Y, dir.X);
+
+                        aiMoveComponent.Direction = (float)newDirection;
+
+                        aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+                    }
+                    else if (!aiComponent.Wander)
+                    {
+                        aiComponent.Wander = true;
+                        InitTimer();
+                        //Wander(gameTime, entity.Key,aiComponent,aiMoveComponent);
+                    }
+                    }
+                    else
+                    {
                     var dir = closestPlayerPosition - aiPosition;
-                    dir.Normalize();
-                    newDirection = Math.Atan2(dir.Y, dir.X);
+                        dir.Normalize();
+                        newDirection = Math.Atan2(dir.Y, dir.X);
 
-                    aiMoveComponent.Direction = (float)newDirection;
+                        aiMoveComponent.Direction = (float)newDirection;
 
-                    aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
-                }
-                else if(!aiComponent.Wander)
-                {
-                    aiComponent.Wander = true;
-                    InitTimer();
-                    //Wander(gameTime, entity.Key,aiComponent,aiMoveComponent);
+                        aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+                    }
                 }
             }
         }
@@ -125,51 +152,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             aiMoveComponent.Speed = 10f;
         }
 
-        public void Wander(GameTime gameTime, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
-        {
-            var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
-            if(animationComponent == null)
-            {
-                animationComponent = new AnimationComponent();
-                ComponentManager.AddComponentToEntity(animationComponent, entityId);
-            }
-            var animation = new GeneralAnimation()
-            {
-                AnimationType = "Wander",
-                StartOfAnimation = gameTime.TotalGameTime.Milliseconds,
-                Length = new Random().Next(1000, 4000),
-                Unique = true
-            };
-            NewWanderAnimation(animation, entityId, aiComponent, aiMoveComponent);
-            animationComponent.Animations.Add(animation);
-        }
 
-
-        // Animation for when the bullet should be deleted.
-        public void NewWanderAnimation(GeneralAnimation generalAnimation, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
-        {
-            generalAnimation.Animation = delegate (double currentTimeInMilliseconds)
-            {
-                if (!aiComponent.Wander)
-                {
-                    generalAnimation.IsDone = true;
-                }
-                if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
-                {
-                    generalAnimation.StartOfAnimation = currentTimeInMilliseconds;
-                    generalAnimation.Length = new Random().Next(1000, 4000);
-
-                    Random rnd = new Random();
-                    float randX = (float)rnd.NextDouble();
-                    float randY = (float)rnd.NextDouble();
-                    var newDirection = Math.Atan2(randX, randY);
-                    aiMoveComponent.Direction = (float)newDirection;
-
-                    aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
-
-                    //aiMoveComponent.Speed = 30f;
-                }
-            };
         }
     }
-}
