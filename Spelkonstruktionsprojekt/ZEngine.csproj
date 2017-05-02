@@ -60,7 +60,8 @@
     <Compile Include="ZEngine\Components\InertiaDampeningComponent.cs" />
     <Compile Include="ZEngine\Components\LightComponent.cs" />
     <Compile Include="ZEngine\Components\MoveComponent.cs" />
-    <Compile Include="ZEngine\Components\PickupComponent.cs" />
+    <Compile Include="ZEngine\Components\PickupComponents\AmmoPickupComponent.cs" />
+    <Compile Include="ZEngine\Components\PickupComponents\HealthPickupComponent.cs" />
     <Compile Include="ZEngine\Components\PlayerComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\DimensionsComponent.cs" />
     <Compile Include="ZEngine\Components\IComponent.cs" />

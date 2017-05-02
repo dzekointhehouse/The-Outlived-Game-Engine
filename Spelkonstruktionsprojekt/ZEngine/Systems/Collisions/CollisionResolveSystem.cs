@@ -9,6 +9,7 @@ using ZEngine.Components;
 using ZEngine.Managers;
 using static ZEngine.Systems.CollisionEvents;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
+using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 
 namespace ZEngine.Systems
@@ -188,7 +189,23 @@ namespace ZEngine.Systems
                         TargetEntityRequirements = new List<Type>()
                         {
                             typeof(CollisionComponent),
-                            typeof(PickupComponent)
+                            typeof(AmmoPickupComponent)
+                        }
+                    },
+                    CollisionEvent.Pickup
+                },
+                {
+                    new CollisionRequirement()
+                    {
+                        MovingEntityRequirements = new List<Type>()
+                        {
+                            typeof(MoveComponent),
+                            typeof(PlayerComponent)
+                        },
+                        TargetEntityRequirements = new List<Type>()
+                        {
+                            typeof(CollisionComponent),
+                            typeof(HealthPickupComponent)
                         }
                     },
                     CollisionEvent.Pickup
