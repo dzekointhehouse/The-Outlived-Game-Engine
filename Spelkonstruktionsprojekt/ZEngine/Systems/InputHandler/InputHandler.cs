@@ -25,6 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         {
             var keyboardState = Keyboard.GetState();
             var entitiesWithActionBindings = ComponentManager.GetEntitiesWithComponent(typeof(ActionBindings));
+
             foreach (var entity in entitiesWithActionBindings)
             {
                 var actionBindingsComponent = entity.Value as ActionBindings;
