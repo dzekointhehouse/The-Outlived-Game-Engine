@@ -291,18 +291,6 @@
 /processorParam:TextureFormat=Color
 /build:moving_soldier1.png
 
-#begin walking.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:walking.png
-
 #begin shooting_soldier1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -314,4 +302,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:shooting_soldier1.png
+
+#begin walkingimg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:walkingimg.png
 

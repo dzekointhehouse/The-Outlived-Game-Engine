@@ -151,6 +151,10 @@
       <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnityEngine.1.0.0\lib\UnityEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
