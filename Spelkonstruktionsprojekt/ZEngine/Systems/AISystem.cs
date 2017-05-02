@@ -109,67 +109,80 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void InitTimer()
         {
+            Random r = new Random();
+            var rand = r.Next(2000,4000);
+
             Timer timer = new Timer();
             timer.Elapsed += new ElapsedEventHandler(Wandering);
-            timer.Interval = 2000;
+            timer.Interval = rand;
             timer.Start();
         }
 
         public void Wandering(object sender, EventArgs e)
         {
             Random rnd = new Random();
+
+            var prevPos = aiMoveComponent.Direction;            
+
             float randX = (float)rnd.NextDouble();
             float randY = (float)rnd.NextDouble();
+
             var newDirection = Math.Atan2(randX, randY);
-            aiMoveComponent.Direction = (float)newDirection;
+
+            if (newDirection < prevPos)
+            {
+                aiMoveComponent.RotationMomentum = 0.5;
+            }
+            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
+            
             aiMoveComponent.Speed = 10f;
         }
 
-        public void Wander(GameTime gameTime, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
-        {
-            var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
-            if(animationComponent == null)
-            {
-                animationComponent = new AnimationComponent();
-                ComponentManager.AddComponentToEntity(animationComponent, entityId);
-            }
-            var animation = new GeneralAnimation()
-            {
-                AnimationType = "Wander",
-                StartOfAnimation = gameTime.TotalGameTime.Milliseconds,
-                Length = new Random().Next(1000, 4000),
-                Unique = true
-            };
-            NewWanderAnimation(animation, entityId, aiComponent, aiMoveComponent);
-            animationComponent.Animations.Add(animation);
-        }
+        //public void Wander(GameTime gameTime, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
+        //{
+        //    var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
+        //    if(animationComponent == null)
+        //    {
+        //        animationComponent = new AnimationComponent();
+        //        ComponentManager.AddComponentToEntity(animationComponent, entityId);
+        //    }
+        //    var animation = new GeneralAnimation()
+        //    {
+        //        AnimationType = "Wander",
+        //        StartOfAnimation = gameTime.TotalGameTime.Milliseconds,
+        //        Length = new Random().Next(1000, 4000),
+        //        Unique = true
+        //    };
+        //    NewWanderAnimation(animation, entityId, aiComponent, aiMoveComponent);
+        //    animationComponent.Animations.Add(animation);
+        //}
 
 
-        // Animation for when the bullet should be deleted.
-        public void NewWanderAnimation(GeneralAnimation generalAnimation, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
-        {
-            generalAnimation.Animation = delegate (double currentTimeInMilliseconds)
-            {
-                if (!aiComponent.Wander)
-                {
-                    generalAnimation.IsDone = true;
-                }
-                if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
-                {
-                    generalAnimation.StartOfAnimation = currentTimeInMilliseconds;
-                    generalAnimation.Length = new Random().Next(1000, 4000);
+        //// Animation for when the bullet should be deleted.
+        //public void NewWanderAnimation(GeneralAnimation generalAnimation, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
+        //{
+        //    generalAnimation.Animation = delegate (double currentTimeInMilliseconds)
+        //    {
+        //        if (!aiComponent.Wander)
+        //        {
+        //            generalAnimation.IsDone = true;
+        //        }
+        //        if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
+        //        {
+        //            generalAnimation.StartOfAnimation = currentTimeInMilliseconds;
+        //            generalAnimation.Length = new Random().Next(1000, 4000);
 
-                    Random rnd = new Random();
-                    float randX = (float)rnd.NextDouble();
-                    float randY = (float)rnd.NextDouble();
-                    var newDirection = Math.Atan2(randX, randY);
-                    aiMoveComponent.Direction = (float)newDirection;
+        //            Random rnd = new Random();
+        //            float randX = (float)rnd.NextDouble();
+        //            float randY = (float)rnd.NextDouble();
+        //            var newDirection = Math.Atan2(randX, randY);
+        //            aiMoveComponent.Direction = (float)newDirection;
 
-                    aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+        //            aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
 
-                    //aiMoveComponent.Speed = 30f;
-                }
-            };
-        }
+        //            //aiMoveComponent.Speed = 30f;
+        //        }
+        //    };
+        //}
     }
 }
