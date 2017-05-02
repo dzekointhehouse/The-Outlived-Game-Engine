@@ -136,19 +136,33 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void InitTimer()
         {
+            Random r = new Random();
+            var rand = r.Next(2000, 4000);
+
             Timer timer = new Timer();
             timer.Elapsed += new ElapsedEventHandler(Wandering);
-            timer.Interval = 2000;
+            timer.Interval = rand;
             timer.Start();
         }
 
         public void Wandering(object sender, EventArgs e)
         {
             Random rnd = new Random();
+
+            var prevPos = aiMoveComponent.Direction;
+
             float randX = (float)rnd.NextDouble();
             float randY = (float)rnd.NextDouble();
+
             var newDirection = Math.Atan2(randX, randY);
-            aiMoveComponent.Direction = (float)newDirection;
+
+            if (newDirection < prevPos)
+            {
+                aiMoveComponent.RotationMomentum = 0.5;
+            }
+            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
+
+
             aiMoveComponent.Speed = 10f;
         }
 
