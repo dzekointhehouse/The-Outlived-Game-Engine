@@ -11,12 +11,14 @@ using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using System.Timers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class AISystem : ISystem
     {
         private ComponentManager ComponentManager = ComponentManager.Instance;
+        private MoveComponent aiMoveComponent;
 
         public void Update(GameTime gameTime)
         {
@@ -24,7 +26,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
-                var aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 var aiPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                 var aiComponent = entity.Value as AIComponent;
                 var aiPosition = aiPositionComponent.Position;
@@ -99,9 +101,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 else if(!aiComponent.Wander)
                 {
                     aiComponent.Wander = true;
-                    Wander(gameTime, entity.Key,aiComponent,aiMoveComponent);
+                    InitTimer();
+                    //Wander(gameTime, entity.Key,aiComponent,aiMoveComponent);
                 }
             }
+        }
+
+        public void InitTimer()
+        {
+            Timer timer = new Timer();
+            timer.Elapsed += new ElapsedEventHandler(Wandering);
+            timer.Interval = 2000;
+            timer.Start();
+        }
+
+        public void Wandering(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            float randX = (float)rnd.NextDouble();
+            float randY = (float)rnd.NextDouble();
+            var newDirection = Math.Atan2(randX, randY);
+            aiMoveComponent.Direction = (float)newDirection;
+            aiMoveComponent.Speed = 10f;
         }
 
         public void Wander(GameTime gameTime, int entityId, AIComponent aiComponent, MoveComponent aiMoveComponent)
@@ -142,8 +163,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     float randX = (float)rnd.NextDouble();
                     float randY = (float)rnd.NextDouble();
                     var newDirection = Math.Atan2(randX, randY);
+                    aiMoveComponent.Direction = (float)newDirection;
 
-                    aiMoveComponent.Speed = 30f;
+                    aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+
+                    //aiMoveComponent.Speed = 30f;
                 }
             };
         }
