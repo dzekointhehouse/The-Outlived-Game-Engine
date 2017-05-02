@@ -34,10 +34,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         /*
          * Target is the pickup, entity is the player
          * This function determines what kind of pickup type it is, and calls the appropriate method.
+         * First it checks if it has already been used(has the delete tag), in case 2 players touched it in the same frame.
          */
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
-
+            if (ComponentManager.GetEntityComponentOrDefault<TagComponent>(collisionEvent.Target).Tags.Contains(Tag.Delete))
+            {
+                return;
+            }
             if (ComponentManager.EntityHasComponent(typeof(HealthPickupComponent), collisionEvent.Target))
             {
                 HandleHealthPickup(collisionEvent.Entity, collisionEvent.Target);
