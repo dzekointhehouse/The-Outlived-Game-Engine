@@ -61,10 +61,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(ActionBindings), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(CollisionComponent), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(AIComponent), entity.Key);
                     //TODO reinsert removals
                     var lightComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
-                    lightComponent.Light.Enabled = false;
+                    if (lightComponent != null)
+                        lightComponent.Light.Enabled = false;
 
                     var animationComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
