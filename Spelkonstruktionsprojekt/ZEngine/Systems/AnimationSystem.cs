@@ -8,18 +8,26 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class AnimationSystem : ISystem
     {
-        public void RunAnimations(GameTime gameTime)
+        // FPS higher if kept outside.
+        private List<int> doneAnimations = new List<int>(50);
+        private List<string> usedUniqueAnimationTypes = new List<string>(50);
+
+        // Will be updatin the animations that unfortunately
+        // other systems use, which makes them dependent on this
+        // system. But that's a design choice that we live by.
+        public void UpdateAnimations(GameTime gameTime)
         {
-            var animations = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
+            Dictionary<int, IComponent> animations = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
             foreach (var entity in animations)
             {
-                var doneAnimations = new List<int>();
-                var usedUniqueAnimationTypes = new List<string>();
+                doneAnimations.Clear();
+                usedUniqueAnimationTypes.Clear();
 
                 var animationComponent = entity.Value as AnimationComponent;
                 for (var i = 0; i < animationComponent.Animations.Count; i++)
@@ -41,7 +49,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     if (animationComponent.Animations.ElementAtOrDefault(animationIndex) != null)
                         animationComponent.Animations.RemoveAt(animationIndex);
                 }
-            }
+           }
         }
     }
 }

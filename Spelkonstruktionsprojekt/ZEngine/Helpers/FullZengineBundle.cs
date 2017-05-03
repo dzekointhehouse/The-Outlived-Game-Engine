@@ -62,7 +62,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             _oldKeyboardState = Keyboard.GetState();
 
             manager.Get<AISystem>().Update(gameTime);
-            manager.Get<AnimationSystem>().RunAnimations(gameTime);
+            manager.Get<AnimationSystem>().UpdateAnimations(gameTime);
             manager.Get<SpriteAnimationSystem>().Update(gameTime);
             manager.Get<CollisionSystem>().DetectCollisions();
             manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents,

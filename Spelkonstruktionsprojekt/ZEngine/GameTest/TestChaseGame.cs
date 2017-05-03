@@ -505,7 +505,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
                 AISystem.Update(gameTime);
                 MoveSystem.Move(gameTime);
-                AnimationSystem.RunAnimations(gameTime);
+                AnimationSystem.UpdateAnimations(gameTime);
 
                 CollisionSystem.DetectCollisions();
                 CollisionResolveSystem.ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
