@@ -52,7 +52,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         var hasPositionComponent =
                             ComponentManager.Instance.EntityHasComponent<PositionComponent>(e.Key);
                         if (!hasPositionComponent) return false;
-
+                        
                        else return true;
                     })
                     .Select(e =>
