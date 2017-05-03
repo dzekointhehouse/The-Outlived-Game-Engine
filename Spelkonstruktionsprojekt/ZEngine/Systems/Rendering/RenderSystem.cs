@@ -29,16 +29,19 @@ namespace ZEngine.Systems
         private ComponentManager ComponentManager = ComponentManager.Instance;
         private GraphicsDevice graphics;
 
+        private RenderComponent renderComponent;
+        private MoveComponent moveComponent;
+        private RenderOffsetComponent offsetComponent;
+        private CameraViewComponent cameraViewComponent;
         // _____________________________________________________________________________________________________________________ //
 
 
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
-        public void Render(GameDependencies gm)
+        public void Render(GameDependencies gameDependencies)
         {
-            graphics = gm.GraphicsDeviceManager.GraphicsDevice;
-            SpriteBatch spriteBatch = gm.SpriteBatch;
+            graphics = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
 
             CameraViewComponent cameraEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First().Value as CameraViewComponent;
 
@@ -65,9 +68,9 @@ namespace ZEngine.Systems
                             Matrix.CreateRotationZ(0) *
                             Matrix.CreateScale(1);
 
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
-            DrawEntities(spriteBatch);
-            spriteBatch.End();
+            gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
+            DrawEntities(gameDependencies.SpriteBatch);
+            gameDependencies.SpriteBatch.End();
         }
 
         // This method will render all the entities that are associated 
@@ -87,9 +90,9 @@ namespace ZEngine.Systems
                 SpriteComponent sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
                 if (sprite == null) continue;
 
-                RenderComponent renderComponent = entity.Value as RenderComponent;
-                RenderOffsetComponent offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
-                MoveComponent moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                renderComponent = entity.Value as RenderComponent;
+                offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
+                moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
 
                 int zIndex = positionComponent.ZIndex;
                 Vector2 offset = offsetComponent?.Offset ?? default(Vector2);
@@ -105,7 +108,7 @@ namespace ZEngine.Systems
                 // render the sprite only if it's visible (sourceRectangle) intersects
                 // with the viewport.
                 KeyValuePair<int, IComponent> camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
-                CameraViewComponent cameraViewComponent = camera.Value as CameraViewComponent;
+                cameraViewComponent = camera.Value as CameraViewComponent;
                 if (cameraViewComponent.View.Intersects(destinationRectangle))
                 {
                     var spriteCrop = new Rectangle(

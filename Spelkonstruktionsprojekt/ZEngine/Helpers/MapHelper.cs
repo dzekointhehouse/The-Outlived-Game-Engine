@@ -38,12 +38,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     int positionNumber = map[y, x];
 
                     // where to place it.
-                    var position = new PositionComponent{ Position = new Vector2(x * size, y * size), ZIndex = 1 };
-                    var renderComponent = new RenderComponent{ DimensionsComponent = new DimensionsComponent() { Height = size, Width = size }};
+                    PositionComponent position = new PositionComponent{ Position = new Vector2(x * size, y * size), ZIndex = 1 };
+                    RenderComponent renderComponent = new RenderComponent{ DimensionsComponent = new DimensionsComponent() { Height = size, Width = size }};
 
                     // We use the positionNumber from the MapPack in the dictionary so
                     // we can find which tile to use there that the user specifies.
-                    var spriteComponent = new SpriteComponent{ SpriteName = tileTypes[positionNumber] };
+                    SpriteComponent spriteComponent = new SpriteComponent{ SpriteName = tileTypes[positionNumber] };
 
                     var id = EntityManager.GetEntityManager().NewEntity();
 
