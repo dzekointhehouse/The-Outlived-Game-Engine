@@ -54,7 +54,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 //            ComponentManager.Instance.EntityHasComponent<PositionComponent>(e.Key);
                 //        if (!hasPositionComponent) return false;
 
-                //       else return true;
+                //        else return true;
                 //    })
                 //    .Select(e =>
                 //    {
@@ -76,26 +76,25 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var testplayer = ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
                 foreach (var player in ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent)))
                 {
-                  //  Tuple<float, PositionComponent> test;
-                    //Vector2 closestPlayerPosition;
-                    //float closestPlayerDistance;
-                    if (ComponentManager.Instance.EntityHasComponent<PositionComponent>(player.Key)) {
-                       
+                    if (ComponentManager.Instance.EntityHasComponent<PositionComponent>(player.Key))
+                    {
+
                         var positionComponent =
                             ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(player.Key);
                         var distance = Vector2.Distance(positionComponent.Position, aiPosition);
                         float olddistance = 999.9f;
-                        if (distance < olddistance) {
+                        if (distance < olddistance)
+                        {
                             closestPlayerDistance = distance;
                             closestPlayerPosition = positionComponent.Position;
 
                         }
-                        
+
                         closestPlayerDistance = olddistance;
                         closestPlayerPosition = positionComponent.Position;
                         olddistance = distance;
                     }
-                  
+
                     LightComponent light = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(player.Key);
                     bool hasFlashlightOn = light.Light.Enabled;
                     if (!hasFlashlightOn)
@@ -119,7 +118,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             BeginWander(entity.Key, gameTime.TotalGameTime.TotalMilliseconds);
                         }
                     }
-                    else {
+                    else
+                    {
 
                         aiComponent.Wander = false;
                         var dir = closestPlayerPosition - aiPosition;
@@ -156,7 +156,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             double start = moveComponent.Direction;
             double target = Random.NextDouble() * MathHelper.TwoPi % MathHelper.TwoPi;
 
-            generalAnimation.Animation = delegate(double currentTime)
+            generalAnimation.Animation = delegate (double currentTime)
             {
                 if (!aiComponent.Wander)
                 {
@@ -178,37 +178,37 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             };
         }
 
-//        public void InitTimer()
-//        {
-//            Random r = new Random();
-//            var rand = r.Next(2000, 4000);
-//
-//            Timer timer = new Timer();
-//            timer.Elapsed += new ElapsedEventHandler(Wandering);
-//            timer.Interval = rand;
-//            timer.Start();
-//        }
+        //        public void InitTimer()
+        //        {
+        //            Random r = new Random();
+        //            var rand = r.Next(2000, 4000);
+        //
+        //            Timer timer = new Timer();
+        //            timer.Elapsed += new ElapsedEventHandler(Wandering);
+        //            timer.Interval = rand;
+        //            timer.Start();
+        //        }
 
-//        public void Wandering(object sender, EventArgs e)
-//        {
-//            Random rnd = new Random();
-//
-//            var prevPos = aiMoveComponent.Direction;
-//
-//            float randX = (float) rnd.NextDouble();
-//            float randY = (float) rnd.NextDouble();
-//
-//            var newDirection = Math.Atan2(randX, randY);
-//
-//            if (newDirection < prevPos)
-//            {
-//                aiMoveComponent.RotationMomentum = 0.5;
-//            }
-//            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
-//
-//
-//            aiMoveComponent.Speed = 10f;
-//        }
+        //        public void Wandering(object sender, EventArgs e)
+        //        {
+        //            Random rnd = new Random();
+        //
+        //            var prevPos = aiMoveComponent.Direction;
+        //
+        //            float randX = (float) rnd.NextDouble();
+        //            float randY = (float) rnd.NextDouble();
+        //
+        //            var newDirection = Math.Atan2(randX, randY);
+        //
+        //            if (newDirection < prevPos)
+        //            {
+        //                aiMoveComponent.RotationMomentum = 0.5;
+        //            }
+        //            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
+        //
+        //
+        //            aiMoveComponent.Speed = 10f;
+        //        }
 
         private AnimationComponent GetOrCreateDefault(int entityId)
         {
