@@ -78,11 +78,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         var distance = e.Item1;
                         return distance;
                     });
-                // WE NEED TO HANDLE situation when false == (null players)
                 var closestPlayerDistance = closestPlayer.Item1;
                 var closestPlayerPosition = closestPlayer.Item2.Position;
 
-                if (closestPlayerDistance != null && closestPlayerDistance < aiComponent.FollowDistance)
+                if (closestPlayer.Item2 != null && closestPlayerDistance < aiComponent.FollowDistance)
                 {
                     aiComponent.Wander = false;
                     var dir = closestPlayerPosition - aiPosition;
