@@ -36,7 +36,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     aiMoveComponent.CurrentAcceleration = 0;
                     continue;
                 }
-
                 //Get closest players that
                 //    - Has position component
                 //    - Has flashlight component.
@@ -46,38 +45,49 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // that criteria, select clause selects the player properties that we need, and
                 // minby compares the distances and gives us the player with the smallest distance
                 // to the player.
-                var closestPlayer = playerEntities
-                    .Where(e =>
-                    {
-                        var hasPositionComponent =
-                            ComponentManager.Instance.EntityHasComponent<PositionComponent>(e.Key);
-                        if (!hasPositionComponent) return false;
+                //var closestPlayer = playerEntities
+                //    .Where(e =>
+                //    {
+                //        var hasPositionComponent =
+                //            ComponentManager.Instance.EntityHasComponent<PositionComponent>(e.Key);
+                //        if (!hasPositionComponent) return false;
                         
-                       else return true;
-                    })
-                    .Select(e =>
-                    {
+                //       else return true;
+                //    })
+                //    .Select(e =>
+                //    {
+                //        var positionComponent =
+                //            ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(e.Key);
+                //        var distance = Vector2.Distance(positionComponent.Position, aiPosition);
+
+                //        return new Tuple<float, PositionComponent>(
+                //            distance,
+                //            positionComponent
+                //        );
+                //    })
+                //    .MinBy(e =>
+                //    {
+                //        // item1 is the distance
+                //        var distance = e.Item1;
+                //        return distance;
+                //    });
+
+                var testplayer = ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
+                foreach (var player in ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent)))
+                {
+                    if (ComponentManager.Instance.EntityHasComponent<PositionComponent>(player.Key)) {
                         var positionComponent =
-                            ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(e.Key);
+                            ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(player.Key);
                         var distance = Vector2.Distance(positionComponent.Position, aiPosition);
 
-                        return new Tuple<float, PositionComponent>(
+                        Tuple<float, PositionComponent> test = new Tuple<float, PositionComponent>(
                             distance,
                             positionComponent
                         );
-                    })
-                    .MinBy(e =>
-                    {
-                        // item1 is the distance
-                        var distance = e.Item1;
-                        return distance;
-                    });
-
-                var closestPlayerDistance = closestPlayer.Item1;
-                var closestPlayerPosition = closestPlayer.Item2.Position;
-
-                foreach (var player in ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent)))
-                {
+                        var closestPlayerDistance = test.Item1;
+                        var closestPlayerPosition = test.Item2.Position;
+                    }
+                  
                     LightComponent light = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(player.Key);
                     bool hasFlashlightOn = light.Light.Enabled;
                     if (!hasFlashlightOn)
