@@ -42,7 +42,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
         // testing
-       //rivate FPS fps;
+        private FPS fps;
         public SpriteBatch spriteBatch;
         private Song musicTest;
         private SystemManager manager = SystemManager.Instance;
@@ -61,11 +61,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             Content.RootDirectory = "Content";
 
             // Create an instance of the FPS GameComponent
-          //  fps = new FPS(this);
+
 
             // Turn off the fixed time step
             // and the synchronization with the vertical retrace
             // so the game's FPS can be measured
+            fps = new FPS(this);
+        
+
             IsFixedTimeStep = false;
             gameBundle._gameDependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
         }
@@ -74,6 +77,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             //Init systems that require initialization
             gameBundle.InitializeSystems(this);
+            spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
             CreateTestEntities();
             base.Initialize();
@@ -124,11 +128,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public int SetupCameraCage()
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
-            //            var renderComponentCage = new RenderComponentBuilder()
-            ////                .Position((int)((int)viewportDimensions.X * 0.5), (int)(viewportDimensions.Y * 0.5), 2)
-            //                .Position(0, 0, 2)
-            //                .Dimensions((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8))
-            //                .Fixed(true).Build();
 
             var renderComponentCage = new RenderComponent()
             {
@@ -311,13 +310,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             if (disabled) return;
             if (position == default(Vector2)) position = new Vector2(150, 150);
-            //Initializing first, movable, entity
-            //var renderComponent = new RenderComponentBuilder()
-            //    //.Position(150 + new Random(DateTime.Now.Millisecond).Next(0, 500), 150, 10)
-            //    .Position(position.X, position.Y, 10)
-            //    //.Radius(60)
-            //    .Dimensions(100, 100)
-            //    .Build();
 
 
             var renderComponent = new RenderComponent()
@@ -465,28 +457,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-            //if (player.State == MediaState.Stopped)
-            //{
-            //    manager.Get<EnemyCollisionSystem>().GameTime = gameTime; //TODO system dependency
-            //    manager.Get<InputHandler>().HandleInput(_oldKeyboardState, gameTime);
-            //    _oldKeyboardState = Keyboard.GetState();
 
-            //    manager.Get<AISystem>().Update(gameTime);
-            //    manager.Get<AnimationSystem>().RunAnimations(gameTime);
-            //    manager.Get<SpriteAnimationSystem>().Update(gameTime);
-            //    manager.Get<CollisionSystem>().DetectCollisions();
-            //    manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents,
-            //        gameTime);
-
-            //    manager.Get<CameraSceneSystem>().Update(gameTime);
-            //    manager.Get<FlashlightSystem>().Update(gameTime, viewportDimensions);
-            //    manager.Get<HealthSystem>().Update();
-            //    manager.Get<EntityRemovalSystem>().Update(gameTime);
-            //    manager.Get<InertiaDampenerSystem>().Apply(gameTime);
-            //    manager.Get<BackwardsPenaltySystem>().Apply();
-            //    manager.Get<MoveSystem>().Move(gameTime);
-            //}
             gameBundle.Update(gameTime);
+            fps.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -506,11 +479,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             }
             if (player.State == MediaState.Stopped)
             {
-                //manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
-                //manager.Get<RenderSystem>().Render(_gameDependencies); // lowers FPS by half (2000)
-                //manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
-                //manager.Get<TitlesafeRenderSystem>().Draw(_gameDependencies); // not noticable
+                //BUNDLE
                 gameBundle.Draw(gameTime);
+                fps.Draw(gameTime);
             }
             base.Draw(gameTime);
         }
