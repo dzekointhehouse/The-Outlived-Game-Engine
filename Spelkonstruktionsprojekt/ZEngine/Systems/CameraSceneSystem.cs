@@ -27,9 +27,9 @@ namespace ZEngine.Systems
 
         private void UpdateFixedRenderables()
         {
-            var camera = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
+            KeyValuePair<int, IComponent> camera = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
 
-            var fixedRenderables =
+            IEnumerable<KeyValuePair<int, IComponent>> fixedRenderables =
                 ComponentManager.GetEntitiesWithComponent(typeof(RenderComponent))
                     .Where(entity =>
                     {
@@ -56,15 +56,15 @@ namespace ZEngine.Systems
 
         private void UpdateCameraPosition(GameTime gameTime)
         {
-            var delta = gameTime.ElapsedGameTime.TotalSeconds;
-            var followEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraFollowComponent));
-            var cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
+            double delta = gameTime.ElapsedGameTime.TotalSeconds;
+            Dictionary<int, IComponent> followEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraFollowComponent));
+            Dictionary<int, IComponent> cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
             Vector2 averagePosition = new Vector2(0, 0);
 
             foreach (var entity in followEntities)
             {
-                var pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                PositionComponent pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                 averagePosition += pos.Position;
             }
 
@@ -75,22 +75,22 @@ namespace ZEngine.Systems
 
             foreach (var cameraEntity in cameras)
             {
-                var camera = cameraEntity.Value as CameraViewComponent;
+                CameraViewComponent camera = cameraEntity.Value as CameraViewComponent;
                 Point screenCenter = camera.View.Center;
-                var cameraPositionComponent =
+                PositionComponent cameraPositionComponent =
                     ComponentManager.GetEntityComponentOrDefault<PositionComponent>(cameraEntity.Key);
 
                 //Setting the position of the red dot (for debugging camera follow of multiple entities)
                 cameraPositionComponent.Position = averagePosition;
 
-                var centerVector = new Vector2(screenCenter.X, screenCenter.Y);
-                var direction = averagePosition - centerVector;
+                Vector2 centerVector = new Vector2(screenCenter.X, screenCenter.Y);
+                Vector2 direction = averagePosition - centerVector;
                 float cameraSpeed = (float) (5 * delta);
-                var ratioY = (float) camera.View.Width / (float) camera.View.Height;
-                var ratioX = (float) camera.View.Height / (float) camera.View.Width;
+                float ratioY = camera.View.Width / (float) camera.View.Height;
+                float ratioX = camera.View.Height / (float) camera.View.Width;
                 Vector2 speed = new Vector2(cameraSpeed * ratioX, cameraSpeed * ratioY);
-                var oldPosition = new Vector2(camera.View.X, camera.View.Y);
-                var newPosition = oldPosition + direction * speed;
+                Vector2 oldPosition = new Vector2(camera.View.X, camera.View.Y);
+                Vector2 newPosition = oldPosition + direction * speed;
                 camera.View = new Rectangle((int) Math.Ceiling(newPosition.X), (int) Math.Ceiling(newPosition.Y),
                     camera.View.Width, camera.View.Height);
 
