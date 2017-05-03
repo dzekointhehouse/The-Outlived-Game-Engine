@@ -19,12 +19,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var dampeningComponent = ComponentManager.Instance
                     .GetEntityComponentOrDefault<InertiaDampeningComponent>(entity.Key);
                 if (dampeningComponent == null) return;
-
                 if (moveComponent == null) return;
-                                      ;
+
                 if (moveComponent.CurrentAcceleration > -0.01 && moveComponent.Speed < 0)
                 {
-                    Debug.WriteLine("damp up");
                     moveComponent.Speed += (float)(dampeningComponent.StabilisingSpeed * delta);
                     if (moveComponent.Speed > 0)
                     {
@@ -33,7 +31,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 }
                 else if (moveComponent.CurrentAcceleration < 0.01 && moveComponent.Speed > 0)
                 {
-                    Debug.WriteLine("damp down");
                     moveComponent.Speed -= (float) (dampeningComponent.StabilisingSpeed * delta);
                     if (moveComponent.Speed < 0)
                     {

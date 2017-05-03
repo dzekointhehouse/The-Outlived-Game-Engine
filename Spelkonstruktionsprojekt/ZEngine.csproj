@@ -72,7 +72,9 @@
     <Compile Include="ZEngine\Components\ScoreComponent.cs" />
     <Compile Include="ZEngine\Components\SoundComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteAnimationComponent.cs" />
+    <Compile Include="ZEngine\Components\SpriteAnimation\SpriteAnimationBindings.cs" />
     <Compile Include="ZEngine\Components\SpriteComponent.cs" />
+    <Compile Include="ZEngine\Components\StateComponent.cs" />
     <Compile Include="ZEngine\Components\TagComponent.cs" />
     <Compile Include="ZEngine\Components\TeamComponent.cs" />
     <Compile Include="ZEngine\Components\TempPlayerDeadSpriteComponent.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="ZEngine\Constants\EventConstants.cs" />
     <Compile Include="ZEngine\Constants\SystemConstants.cs" />
     <Compile Include="ZEngine\EventBus\IEventBus.cs" />
+    <Compile Include="ZEngine\EventBus\StateChangeEvent.cs" />
     <Compile Include="ZEngine\EventBus\TypedEventBus.cs" />
     <Compile Include="ZEngine\EventBus\EventBus.cs" />
     <Compile Include="ZEngine\EventBus\ParameterlessEventBuss.cs" />
@@ -142,11 +145,13 @@
       <HintPath>..\packages\MonoGame.Penumbra.WindowsDX.1.3.2\lib\net45\MonoGame.Penumbra.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoreLinq, Version=2.0.20029.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+    <Reference Include="MoreLinq, Version=2.0.20029.0, Culture=neutral, PublicKeyToken=384d532d7e88985d">
       <HintPath>..\packages\MoreLinq.2.4.0\lib\net40\MoreLinq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
       <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>

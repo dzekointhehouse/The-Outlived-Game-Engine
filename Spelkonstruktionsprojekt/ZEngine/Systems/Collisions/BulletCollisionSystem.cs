@@ -36,11 +36,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
                         var damage = bulletComponent.Damage;
                         healthComponent.Damage.Add(damage);
                     }
-                    else
-                    {
-//                        healthComponent.Damage.Add(5);
-                        Debug.WriteLine("Entity " + collisionEvent.Entity + " does not have the bullet component");
-                    }
                 }
             }
             StopBulletAnimation(collisionEvent.EventTime, collisionEvent.Entity);

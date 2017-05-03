@@ -11,18 +11,16 @@ namespace ZEngine.Components
 {
     class SpriteComponent : IComponent
     {
-        public int Width { get; set; } = 0;
-        public int Height { get; set; } = 0;
+        public int TileWidth { get; set; } = 0;
+        public int TileHeight { get; set; } = 0;
         public Point Position { get; set; } = new Point(0,0);
-        public float Angle { get; set; } = 0;
+
         public bool SpriteIsLoaded { get; set; } = false;
         public Texture2D Sprite { get; set; }
         public string SpriteName { get; set; }
-        public Rectangle SourceRectangle { get; set; }
 
         // Added to be used for gradient transparency when an entity
         // dies, but can be used in other cases also.
-        public Color SpriteColor { get; set; } = default(Color);
         public float Scale { get; set; } = 1;
         public float Alpha { get; set; } = 1;
     }

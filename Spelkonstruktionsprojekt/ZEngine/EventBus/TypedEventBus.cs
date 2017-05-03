@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,8 @@ namespace ZEngine.EventBus
 {
     public class TypedEventBus
     {
-        private readonly Dictionary<Type, Dictionary<string, ICollection<object>>> _actions = new Dictionary<Type, Dictionary<string, ICollection<object>>>();
+        private readonly Dictionary<Type, Dictionary<string, ICollection<object>>> _actions =
+            new Dictionary<Type, Dictionary<string, ICollection<object>>>();
 
         /**
          *  When publishing a message and a value of certain type
@@ -46,7 +48,6 @@ namespace ZEngine.EventBus
             {
                 _actions[typeof(T)][message].Add(callback);
             }
-
         }
 
         public void Unsubscribe<T>(string message, Action<T> callback)

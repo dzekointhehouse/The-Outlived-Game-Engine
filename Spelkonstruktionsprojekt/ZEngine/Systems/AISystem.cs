@@ -18,20 +18,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     class AISystem : ISystem
     {
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        private MoveComponent aiMoveComponent;
+        private Random Random = new Random();
 
         public void Update(GameTime gameTime)
         {
-            double newDirection = 0;
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
-                aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                var aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 var aiPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                 var aiComponent = entity.Value as AIComponent;
                 var aiPosition = aiPositionComponent.Position;
-
-
 
                 var playerEntities = ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
                 if (playerEntities.Count == 0)
@@ -47,7 +44,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // We want to get all the players that achieve this criteria above.
                 // We do this by using linq. The first where clause gets the players that have
                 // that criteria, select clause selects the player properties that we need, and
-                // minby compares the distances and gives us the player with the smallest distance 
+                // minby compares the distances and gives us the player with the smallest distance
                 // to the player.
                 var closestPlayer = playerEntities
                     .Where(e =>
@@ -60,9 +57,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(e.Key);
                         if (lightComponent == null) return false;
 
-                        //var hasFlashlightEnabled = lightComponent.Light.Enabled;
-                        //if (hasFlashlightEnabled) return true;
-                        else return true;
+                        var hasFlashlightEnabled = lightComponent.Light.Enabled;
+                        if (hasFlashlightEnabled) return true;
+                        else return false;
                     })
                     .Select(e =>
                     {
@@ -73,7 +70,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         return new Tuple<float, PositionComponent>(
                             distance,
                             positionComponent
-                            );
+                        );
                     })
                     .MinBy(e =>
                     {
@@ -82,90 +79,113 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         return distance;
                     });
                 // WE NEED TO HANDLE situation when false == (null players)
-                float closestPlayerDistance;
-                Vector2 closestPlayerPosition;
-                if (closestPlayer != null)
+                var closestPlayerDistance = closestPlayer.Item1;
+                var closestPlayerPosition = closestPlayer.Item2.Position;
+
+                if (closestPlayerDistance != null && closestPlayerDistance < aiComponent.FollowDistance)
                 {
-                    closestPlayerDistance = closestPlayer.Item1;
-                    closestPlayerPosition = closestPlayer.Item2.Position;
-                }
-                else
-                {
-                    closestPlayerDistance = 1000;
-                    closestPlayerPosition = Vector2.Zero;
-
-                }
-
-                // If The player is within the distance that the AI will follow then we start moving
-                // the ai towards that player.
-                foreach (var player in ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent))) {
-                    LightComponent light = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(player.Key);
-                    bool hasFlashlightOn = light.Light.Enabled;
-                    if (!hasFlashlightOn)
-                    {
-                    if (closestPlayerDistance < aiComponent.FollowDistance)
-                    {
-                        var dir = closestPlayerPosition - aiPosition;
-                        dir.Normalize();
-                        newDirection = Math.Atan2(dir.Y, dir.X);
-
-                        aiMoveComponent.Direction = (float)newDirection;
-
-                        aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
-                    }
-                    else if (!aiComponent.Wander)
-                    {
-                        aiComponent.Wander = true;
-                        InitTimer();
-                        //Wander(gameTime, entity.Key,aiComponent,aiMoveComponent);
-                    }
-                    }
-                    else
-                    {
+                    aiComponent.Wander = false;
                     var dir = closestPlayerPosition - aiPosition;
-                        dir.Normalize();
-                        newDirection = Math.Atan2(dir.Y, dir.X);
+                    dir.Normalize();
+                    var newDirection = Math.Atan2(dir.Y, dir.X);
 
-                        aiMoveComponent.Direction = (float)newDirection;
+                    aiMoveComponent.Direction = (float) newDirection;
 
-                        aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
-                    }
+                    aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+                }
+                else if (!aiComponent.Wander)
+                {
+                    aiComponent.Wander = true;
+                    aiMoveComponent.CurrentAcceleration = 3;
+//                    InitTimer();
+                    BeginWander(entity.Key, gameTime.TotalGameTime.TotalMilliseconds);
                 }
             }
         }
 
-        public void InitTimer()
+        public void BeginWander(int entityId, double startTime)
         {
-            Random r = new Random();
-            var rand = r.Next(2000, 4000);
-
-            Timer timer = new Timer();
-            timer.Elapsed += new ElapsedEventHandler(Wandering);
-            timer.Interval = rand;
-            timer.Start();
-        }
-
-        public void Wandering(object sender, EventArgs e)
-        {
-            Random rnd = new Random();
-
-            var prevPos = aiMoveComponent.Direction;
-
-            float randX = (float)rnd.NextDouble();
-            float randY = (float)rnd.NextDouble();
-
-            var newDirection = Math.Atan2(randX, randY);
-
-            if (newDirection < prevPos)
+            var animationComponent = GetOrCreateDefault(entityId);
+            var animation = new GeneralAnimation
             {
-                aiMoveComponent.RotationMomentum = 0.5;
-            }
-            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
-
-
-            aiMoveComponent.Speed = 10f;
+                AnimationType = "AiWander",
+                StartOfAnimation = startTime,
+                Unique = true,
+                Length = 5000
+            };
+            NewWanderAnimation(entityId, animation);
+            animationComponent.Animations.Add(animation);
         }
 
+        public void NewWanderAnimation(int entityId, GeneralAnimation generalAnimation)
+        {
+            var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
+            var aiComponent = ComponentManager.GetEntityComponentOrDefault<AIComponent>(entityId);
+            double start = moveComponent.Direction;
+            double target = Random.NextDouble() * MathHelper.TwoPi % MathHelper.TwoPi;
 
+            generalAnimation.Animation = delegate(double currentTime)
+            {
+                if (!aiComponent.Wander)
+                {
+                    generalAnimation.IsDone = true;
+                    return;
+                }
+
+                var elapsedTime = currentTime - generalAnimation.StartOfAnimation;
+                if (elapsedTime > generalAnimation.Length)
+                {
+                    target = Random.NextDouble() * MathHelper.TwoPi % MathHelper.TwoPi;
+                    start = moveComponent.Direction;
+                    generalAnimation.StartOfAnimation = currentTime;
+                }
+                //Algorithm for turning stepwise on each iteration
+                //Modulus is for when the direction makes a whole turn
+                moveComponent.Direction = (float)
+                    ((start + (target - start) / generalAnimation.Length * elapsedTime) % MathHelper.TwoPi);
+            };
+        }
+
+//        public void InitTimer()
+//        {
+//            Random r = new Random();
+//            var rand = r.Next(2000, 4000);
+//
+//            Timer timer = new Timer();
+//            timer.Elapsed += new ElapsedEventHandler(Wandering);
+//            timer.Interval = rand;
+//            timer.Start();
+//        }
+
+//        public void Wandering(object sender, EventArgs e)
+//        {
+//            Random rnd = new Random();
+//
+//            var prevPos = aiMoveComponent.Direction;
+//
+//            float randX = (float) rnd.NextDouble();
+//            float randY = (float) rnd.NextDouble();
+//
+//            var newDirection = Math.Atan2(randX, randY);
+//
+//            if (newDirection < prevPos)
+//            {
+//                aiMoveComponent.RotationMomentum = 0.5;
+//            }
+//            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
+//
+//
+//            aiMoveComponent.Speed = 10f;
+//        }
+
+        private AnimationComponent GetOrCreateDefault(int entityId)
+        {
+            var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
+            if (animationComponent != null) return animationComponent;
+
+            animationComponent = new AnimationComponent();
+            ComponentManager.AddComponentToEntity(animationComponent, entityId);
+            return animationComponent;
         }
     }
+}

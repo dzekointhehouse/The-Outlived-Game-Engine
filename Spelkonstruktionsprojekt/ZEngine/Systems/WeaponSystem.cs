@@ -99,7 +99,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             };
             var bulletCollisionComponent = new CollisionComponent();
             var animationComponent = new AnimationComponent();
-            var tagComponent = new TagComponent();
 
             ComponentManager.AddComponentToEntity(bulletPositionComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletComponent, bulletEntityId);
@@ -108,27 +107,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(animationComponent, bulletEntityId);
-            ComponentManager.AddComponentToEntity(tagComponent, bulletEntityId);
 
             var animation = new GeneralAnimation()
             {
+                AnimationType = "BulletAnimation",
                 StartOfAnimation = inputEvent.EventTime,
-                Length = 2000
+                Length = 2000,
+                Unique = true
             };
-            var animationAction = NewBulletAnimation(animation, bulletEntityId);
-            animation.Animation = animationAction;
-
+            NewBulletAnimation(animation, bulletEntityId);
             animationComponent.Animations.Add(animation);
         }
 
 
         // Animation for when the bullet should be deleted.
-        public Action<double> NewBulletAnimation(GeneralAnimation generalAnimation, int entityId)
+        public void NewBulletAnimation(GeneralAnimation generalAnimation, int entityId)
         {
-            return delegate(double currentTimeInMilliseconds)
+            generalAnimation.Animation = delegate(double currentTimeInMilliseconds)
             {
+                Debug.WriteLine("Bullet " + entityId + " currTime:" + currentTimeInMilliseconds + ", startTime:" + generalAnimation.StartOfAnimation + ", length:" + generalAnimation.Length);
                 if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
                 {
+                    Debug.WriteLine("Remove bullet.");
                     var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(entityId);
                     if (tagComponent == null)
                     {

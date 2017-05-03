@@ -37,7 +37,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 })
                 .Select(e => e.Key) //Get only entityIds that are to be removed
                 .ToList()
-                .ForEach(ComponentManager.Instance.DeleteEntity);
+                .ForEach(entityId =>
+                {
+                    var lightComponent = ComponentManager.Instance
+                        .GetEntityComponentOrDefault<LightComponent>(entityId);
+                    if (lightComponent != null)
+                    {
+                        lightComponent.Light.Enabled = false;
+                    }
+                    ComponentManager.Instance.DeleteEntity(entityId);
+                });
         }
 
         // Used for animating blood when entities die.
@@ -70,7 +79,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                     var animationComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
-
                     if (animationComponent == null)
                     {
                         animationComponent = new AnimationComponent();
@@ -83,14 +91,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     // every time we come to this system. Also the gametime is needed.
                     var animation = new GeneralAnimation()
                     {
+                        AnimationType = "BloodPool",
                         StartOfAnimation = gameTime.TotalGameTime.TotalMilliseconds,
                         Length = 6000,
                         Unique = true
                     };
 
                     // Now we add it.
-                    var animationAction = NewDeathFadeAwayAnimation(animation, entity.Key);
-                    animation.Animation = animationAction;
+                    AttachNewDeathFadeAwayAnimation(animation, entity.Key);
                     animationComponent.Animations.Add(animation);
                 }
             }
@@ -101,16 +109,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // general animation. This action will then be performed in another system and can do it's
         // own stuff independently of this system later on. Good for when we want to delete the sprite
         // later on.
-        public Action<double> NewDeathFadeAwayAnimation(GeneralAnimation animation, int entityKey)
+        public void AttachNewDeathFadeAwayAnimation(GeneralAnimation animation, int entityKey)
         {
-            return delegate(double currentTime)
+            animation.Animation = delegate(double currentTime)
             {
                 // if more time has passed since the start of the animation
                 // then the specified lenght that we want it to run
                 var elapsedTime = currentTime - animation.StartOfAnimation;
 
                 var sprite = ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(entityKey);
-
                 if (sprite == null) return;
 
                 // This will make the blood disappear in a fading fashion.

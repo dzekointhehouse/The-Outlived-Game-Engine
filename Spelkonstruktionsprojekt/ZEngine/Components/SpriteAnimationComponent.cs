@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
@@ -19,5 +20,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public Point SpritesheetSize { get; set; }     // number of frames (X * Y)
         public int TimeSinceLastFrame { get; set; } = 0;     // elapsed time since last animation frame
         public int MillisecondsPerFrame { get; set; }= 50;  // time to show each animation frame
+
+        public double AnimationStarted { get; set; } = 0;
+        public SpriteAnimationBinding CurrentAnimatedState { get; set; } = null;
+        public SpriteAnimationBinding NextAnimatedState { get; set; } = null;
     }
 }

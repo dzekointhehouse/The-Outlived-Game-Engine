@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
+using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps;
@@ -212,7 +213,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var position = new PositionComponent() { Position = new Vector2(x, y), ZIndex = 20 };
 
-
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "zombieSquare"
@@ -294,7 +294,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
 
-            CreatePlayer(name: "Carlos", entityId: player1, actionBindings: actionBindings1, position: new Vector2(200, 200), cameraFollow: true,
+            CreatePlayer(name: "Carlos", entityId: player1, actionBindings: actionBindings1,
+                position: new Vector2(200, 200), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId);
             CreatePlayer("Elvir", player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId, disabled: false);
@@ -357,13 +358,25 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 SoundEffectName = "walking"
             };
 
-            var animation = new SpriteAnimationComponent()
-            {
-                Spritesheet = Content.Load<Texture2D>("blood"),
-                SpritesheetSize = new Point(3, 3),
-                MillisecondsPerFrame = 30
-            };
-            ComponentManager.Instance.AddComponentToEntity(animation, entityId);
+//            var animation = new SpriteAnimationComponent()
+//            {
+////                Spritesheet = Content.Load<Texture2D>("blood"),
+////                SpritesheetSize = new Point(3, 3),
+////                MillisecondsPerFrame = 30,
+//                AnimationStarted = 0,
+//                CurrentAnimatedState =
+//            };
+//            ComponentManager.Instance.AddComponentToEntity(animation, entityId);
+
+            var animationBindings = new SpriteAnimationBindingsBuilder()
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(1000, 1000))
+                        .StateConditions(State.WalkingForward)
+                        .Length(30)
+                        .Build()
+                )
+                .Build();
 
             ComponentManager.Instance.AddComponentToEntity(sound, entityId);
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
@@ -371,6 +384,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
             ComponentManager.Instance.AddComponentToEntity(light, entityId);
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, entityId);
 
             if (movable && useDefaultMoveComponent)
             {
@@ -500,7 +514,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             }
             base.Draw(gameTime);
         }
-
-
     }
 }

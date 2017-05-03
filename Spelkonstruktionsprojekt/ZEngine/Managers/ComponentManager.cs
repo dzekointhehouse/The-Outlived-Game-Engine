@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Runtime.InteropServices;
 using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Managers
@@ -70,6 +73,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
             var entityComponents = GetEntitiesWithComponent(componentType);
             if (!entityComponents.ContainsKey(entityId)) return null;
             return entityComponents[entityId];
+        }
+
+        public bool ContainsAllComponents(int entityId, params Type[] componentTypes)
+        {
+            var containsAll = true;
+            foreach (var componentType in componentTypes)
+            {
+                if (!_components.ContainsKey(componentType)
+                    || !_components[componentType].ContainsKey(entityId))
+                {
+                    containsAll = false;
+                }
+            }
+            return containsAll;
         }
 
         //public void AddComponentToEntity<TComponentType>(int entityId) where TComponentType : IComponent, new()

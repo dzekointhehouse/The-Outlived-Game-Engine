@@ -29,14 +29,14 @@ namespace ZEngine.Systems
                 if (string.IsNullOrEmpty(spriteComponent.SpriteName)) continue;
                 spriteComponent.Sprite = contentManager.Load<Texture2D>(spriteComponent.SpriteName);
                 spriteComponent.SpriteIsLoaded = true;
-                spriteComponent.Width = spriteComponent.Sprite.Width;
-                spriteComponent.Height = spriteComponent.Sprite.Height;
+                if (spriteComponent.TileWidth == 0) spriteComponent.TileWidth = spriteComponent.Sprite.Width;
+                if (spriteComponent.TileHeight == 0) spriteComponent.TileHeight = spriteComponent.Sprite.Height;
             }
 
             var soundEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SoundComponent));
             foreach (var entity in soundEntities)
             {
-                SoundComponent soundComponent = (SoundComponent)entity.Value;
+                SoundComponent soundComponent = (SoundComponent) entity.Value;
                 soundComponent.SoundEffect = contentManager.Load<SoundEffect>(soundComponent.SoundEffectName);
             }
         }

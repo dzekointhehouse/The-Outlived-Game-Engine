@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
-using ZEngine.Components;
 
 namespace ZEngine.Managers
 {
@@ -55,8 +53,17 @@ namespace ZEngine.Managers
         public int NewEntity()
         {
             _existingEntities.Add(_nextEntityId);
-            //ComponentManager.Instance.AddEntity(_nextEntityId);
-            return _nextEntityId++;
+            var entityId = _nextEntityId++;
+            AddMandatoryComponents(entityId);
+            return entityId;
+        }
+
+        private void AddMandatoryComponents(int entityId)
+        {
+            var stateComponent = new StateComponent();
+            var tagComponent = new TagComponent();
+            ComponentManager.Instance.AddComponentToEntity(stateComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(tagComponent, entityId);
         }
 
         // Completely deletes the entity and all components

@@ -45,13 +45,16 @@ namespace ZEngine.Systems
                 {
                     Debug.WriteLine("WALKING FORWARDS");
                     moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
+                    StateManager.TryAddState(moveEvent.EntityId, State.WalkingForward, moveEvent.EventTime);
                 }
                 else if(moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
                 {
                     moveComponent.CurrentAcceleration = 0;
+                    StateManager.TryRemoveState(moveEvent.EntityId, State.WalkingForward, moveEvent.EventTime);
                 }
             });
         }
+
         public void WalkBackwards(InputEvent moveEvent)
         {
             UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
@@ -59,10 +62,12 @@ namespace ZEngine.Systems
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
                     moveComponent.CurrentAcceleration = -moveComponent.AccelerationSpeed;
+                    StateManager.TryAddState(moveEvent.EntityId, State.WalkingBackwards, moveEvent.EventTime);
                 }
                 else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
                 {
                     moveComponent.CurrentAcceleration = 0;
+                    StateManager.TryRemoveState(moveEvent.EntityId, State.WalkingBackwards, moveEvent.EventTime);
                 }
             });
         }

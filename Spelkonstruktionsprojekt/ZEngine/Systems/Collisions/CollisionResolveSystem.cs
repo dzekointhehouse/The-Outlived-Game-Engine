@@ -57,10 +57,6 @@ namespace ZEngine.Systems
 //                        Debug.WriteLine("Testing match for " + FromCollisionEventType(collisionEventType));
                         if (MatchesCollisionEvent(collisionRequirements, movingEntityId, collisionTarget))
                         {
-                            if (ComponentManager.EntityHasComponent<BulletComponent>(entity.Key))
-                            {
-                                Debug.WriteLine("");
-                            }
 //                            Debug.WriteLine("Matched with " + FromCollisionEventType(collisionEventType));
                             //When there is a match for a collision-event, an event is published
                             // for any system to pickup and resolve

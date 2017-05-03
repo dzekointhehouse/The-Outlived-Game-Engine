@@ -92,7 +92,7 @@ namespace ZEngine.Systems
 
                 var zIndex = positionComponent.ZIndex;
                 var offset = offsetComponent?.Offset ?? default(Vector2);
-                var angle = moveComponent?.Direction ?? sprite.Angle;
+                var angle = moveComponent?.Direction ?? 0;
                 var destinationRectangle =
                     new Rectangle(
                         (int) (positionComponent.Position.X + offset.X),
@@ -107,27 +107,18 @@ namespace ZEngine.Systems
                 var cameraViewComponent = camera.Value as CameraViewComponent;
                 if (cameraViewComponent.View.Intersects(destinationRectangle))
                 {
-                    var spriteCrop = sprite.SourceRectangle;
-                    if (spriteCrop == default(Rectangle))
-                    {
-                        spriteCrop = new Rectangle(
-                            sprite.Position,
-                            new Point(sprite.Width, sprite.Height)
-                        );
-                    }
-
-                    // We have color so we can use transparency for instance.
-                    var spriteColor = sprite.SpriteColor;
-                    if (sprite.SpriteColor == default(Color))
-                        spriteColor = Color.White;
+                    var spriteCrop = new Rectangle(
+                        sprite.Position,
+                        new Point(sprite.TileWidth, sprite.TileHeight)
+                    );
 
                     spriteBatch.Draw(
                         texture: sprite.Sprite,
                         destinationRectangle: destinationRectangle,
                         sourceRectangle: spriteCrop,
-                        color: spriteColor * sprite.Alpha,
+                        color: Color.White * sprite.Alpha,
                         rotation: (float) angle,
-                        origin: new Vector2(x: sprite.Width / 2, y: sprite.Height / 2),
+                        origin: new Vector2(x: sprite.TileWidth / 2, y: sprite.TileHeight / 2),
                         effects: SpriteEffects.None,
                         layerDepth: (float) zIndex / SystemConstants.LayerDepthMaxLimit
                         //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
