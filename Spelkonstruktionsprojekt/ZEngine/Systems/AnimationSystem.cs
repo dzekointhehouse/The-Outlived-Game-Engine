@@ -29,10 +29,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 doneAnimations.Clear();
                 usedUniqueAnimationTypes.Clear();
 
-                var animationComponent = entity.Value as AnimationComponent;
+                AnimationComponent animationComponent = entity.Value as AnimationComponent;
                 for (var i = 0; i < animationComponent.Animations.Count; i++)
                 {
-                    var animationWrapper = animationComponent.Animations[i];
+                    GeneralAnimation animationWrapper = animationComponent.Animations[i];
                     if (animationWrapper.Unique && usedUniqueAnimationTypes.Contains(animationWrapper.AnimationType))
                     {
                         doneAnimations.Add(i);
