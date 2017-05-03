@@ -38,13 +38,13 @@ namespace ZEngine.Systems
         public void Render(GameDependencies gm)
         {
             graphics = gm.GraphicsDeviceManager.GraphicsDevice;
-            var spriteBatch = gm.SpriteBatch;
+            SpriteBatch spriteBatch = gm.SpriteBatch;
 
-            var cameraEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First().Value as CameraViewComponent;
+            CameraViewComponent cameraEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First().Value as CameraViewComponent;
 
             graphics.Clear(Color.Black); // Maybe done outside
 
-            var cameraView = cameraEntities.View;
+            Rectangle cameraView = cameraEntities.View;
 
             //    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
             // Using a matrix makes it easier for us to move the camera
@@ -60,7 +60,7 @@ namespace ZEngine.Systems
             // We won't be having any rotation.
             // Our zoom effect will be doing its jobb here,
             // as this matrix will easily help us achieve it.
-            var transform = Matrix.Identity *
+            Matrix transform = Matrix.Identity *
                             Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
                             Matrix.CreateRotationZ(0) *
                             Matrix.CreateScale(1);
@@ -76,24 +76,25 @@ namespace ZEngine.Systems
         // we use the spritebach to draw all the entities.
         private void DrawEntities(SpriteBatch spriteBatch)
         {
-            var renderableEntities =
+            Dictionary<int, IComponent> renderableEntities =
                 ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderComponent));
 
             foreach (var entity in renderableEntities)
             {
-                var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                PositionComponent positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                 if (positionComponent == null) continue;
-                var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
+
+                SpriteComponent sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
                 if (sprite == null) continue;
 
-                var renderComponent = entity.Value as RenderComponent;
-                var offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
-                var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                RenderComponent renderComponent = entity.Value as RenderComponent;
+                RenderOffsetComponent offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
+                MoveComponent moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
 
-                var zIndex = positionComponent.ZIndex;
-                var offset = offsetComponent?.Offset ?? default(Vector2);
-                var angle = moveComponent?.Direction ?? 0;
-                var destinationRectangle =
+                int zIndex = positionComponent.ZIndex;
+                Vector2 offset = offsetComponent?.Offset ?? default(Vector2);
+                float angle = moveComponent?.Direction ?? 0;
+                Rectangle destinationRectangle =
                     new Rectangle(
                         (int) (positionComponent.Position.X + offset.X),
                         (int) (positionComponent.Position.Y + offset.Y),
@@ -103,8 +104,8 @@ namespace ZEngine.Systems
 
                 // render the sprite only if it's visible (sourceRectangle) intersects
                 // with the viewport.
-                var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
-                var cameraViewComponent = camera.Value as CameraViewComponent;
+                KeyValuePair<int, IComponent> camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
+                CameraViewComponent cameraViewComponent = camera.Value as CameraViewComponent;
                 if (cameraViewComponent.View.Intersects(destinationRectangle))
                 {
                     var spriteCrop = new Rectangle(
@@ -127,11 +128,5 @@ namespace ZEngine.Systems
             }
         }
 
-        private bool InsideView(RenderComponent entity, Rectangle view)
-        {
-            return true;
-            //var renderBox = new Rectangle((int)entity.positionComponent.Position.X, (int)entity.PositionComponent.Position.Y, RenderComponentHelper.GetDimensions(entity).Width, RenderComponentHelper.GetDimensions(entity).Height);
-            //return view.Intersects(renderBox);
-        }
     }
 }
