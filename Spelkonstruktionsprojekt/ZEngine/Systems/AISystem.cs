@@ -53,13 +53,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                             ComponentManager.Instance.EntityHasComponent<PositionComponent>(e.Key);
                         if (!hasPositionComponent) return false;
 
-                        var lightComponent =
-                            ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(e.Key);
-                        if (lightComponent == null) return false;
-
-                        var hasFlashlightEnabled = lightComponent.Light.Enabled;
-                        if (hasFlashlightEnabled) return true;
-                        else return false;
+                       else return true;
                     })
                     .Select(e =>
                     {
@@ -78,26 +72,48 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         var distance = e.Item1;
                         return distance;
                     });
+
                 var closestPlayerDistance = closestPlayer.Item1;
                 var closestPlayerPosition = closestPlayer.Item2.Position;
 
-                if (closestPlayer.Item2 != null && closestPlayerDistance < aiComponent.FollowDistance)
+                foreach (var player in ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent)))
                 {
-                    aiComponent.Wander = false;
-                    var dir = closestPlayerPosition - aiPosition;
-                    dir.Normalize();
-                    var newDirection = Math.Atan2(dir.Y, dir.X);
+                    LightComponent light = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(player.Key);
+                    bool hasFlashlightOn = light.Light.Enabled;
+                    if (!hasFlashlightOn)
+                    {
 
-                    aiMoveComponent.Direction = (float) newDirection;
+                        if (closestPlayer.Item2 != null && closestPlayerDistance < aiComponent.FollowDistance)
+                        {
+                            aiComponent.Wander = false;
+                            var dir = closestPlayerPosition - aiPosition;
+                            dir.Normalize();
+                            var newDirection = Math.Atan2(dir.Y, dir.X);
 
-                    aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
-                }
-                else if (!aiComponent.Wander)
-                {
-                    aiComponent.Wander = true;
-                    aiMoveComponent.CurrentAcceleration = 3;
-//                    InitTimer();
-                    BeginWander(entity.Key, gameTime.TotalGameTime.TotalMilliseconds);
+                            aiMoveComponent.Direction = (float)newDirection;
+
+                            aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+                        }
+                        else if (!aiComponent.Wander)
+                        {
+                            aiComponent.Wander = true;
+                            aiMoveComponent.CurrentAcceleration = 3;
+                            //InitTimer();
+                            BeginWander(entity.Key, gameTime.TotalGameTime.TotalMilliseconds);
+                        }
+                    }
+                    else {
+
+                        aiComponent.Wander = false;
+                        var dir = closestPlayerPosition - aiPosition;
+                        dir.Normalize();
+                        var newDirection = Math.Atan2(dir.Y, dir.X);
+
+                        aiMoveComponent.Direction = (float)newDirection;
+
+                        aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+
+                    }
                 }
             }
         }
