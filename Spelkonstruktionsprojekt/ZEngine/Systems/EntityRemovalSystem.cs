@@ -54,6 +54,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private void DeadEntities(GameTime gameTime)
         {
             var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
+
             foreach (var entity in healthEntities)
             {
                 // Better yet would be to use a component to determine if they should be deleted

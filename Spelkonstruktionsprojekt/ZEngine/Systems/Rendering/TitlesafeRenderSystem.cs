@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 
@@ -22,6 +23,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public static string SystemName = "TitlesafeRender";
         private GameDependencies _gameDependencies;
+        private StringBuilder gameHUD = new StringBuilder(0, 50);
 
         // This draw method is used to start the system process.
         // it uses DrawTitleSafe to draw the components.
@@ -29,9 +31,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             this._gameDependencies = gameDependencies;
 
-            _gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
+           // _gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
             DrawTitleSafe();
-            _gameDependencies.SpriteBatch.End();
+           // _gameDependencies.SpriteBatch.End();
         }
 
 
@@ -40,58 +42,76 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // have it's own row, and each component will be sorted by column.
         private void DrawTitleSafe()
         {
-            var graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
-            var titlesafearea = graphics.Viewport.TitleSafeArea;
+            GraphicsDevice graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
+            Rectangle titlesafearea = graphics.Viewport.TitleSafeArea;
 
-            var playerComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent));
+            Dictionary<int, IComponent> playerComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent));
 
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
-            var previousHeight = 5f;
+            float previousHeight = 5f;
 
-            var contentManager = _gameDependencies.GameContent as ContentManager;         
+            ContentManager contentManager = _gameDependencies.GameContent as ContentManager;         
             // Maybe let the user decide?
-            var spriteFont = contentManager.Load<SpriteFont>("ZEone");
+            SpriteFont spriteFont = contentManager.Load<SpriteFont>("ZEone");
+
+            Vector2 position = Vector2.Zero;
+
+            gameHUD.Clear();
 
             foreach (var playerInstance in playerComponents)
             {
                 var playerComponent = playerInstance.Value as PlayerComponent;
-                var text = playerComponent.Name;
+                gameHUD.AppendLine();
+                gameHUD.Append(playerComponent.Name);
+
                 // Adding the health component to text.
                 if (ComponentManager.Instance.EntityHasComponent<HealthComponent>(playerInstance.Key))
                 {
-                    var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(playerInstance.Key);
+                    HealthComponent health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(playerInstance.Key);
 
                     if (health.Alive)
                     {
                         var currentHealth = health.MaxHealth - health.Damage.Sum();
-                        text = text + ": " + currentHealth + "HP";
+                        gameHUD.Append(":");
+                        gameHUD.Append(currentHealth);
+                        gameHUD.Append("HP");
+
+                        //text = text + ": " + currentHealth + "HP";
                     }
                     else
                     {
-                        text = text + ": Rest in peace";                      
+                        //text = text + ": Rest in peace";  
+                        gameHUD.Append(": Rest in peace");
                     }
 
                     // adding ammo here the same way.
                     if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(playerInstance.Key) && health.Alive)
                     {
-                        var ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(playerInstance.Key);
-                        text = text + " Ammo: " + ammo.Amount;
+                        AmmoComponent ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(playerInstance.Key);
+                        //text = text + " Ammo: " + ammo.Amount;
+                        gameHUD.Append(" Ammo: ");
+                        gameHUD.Append(ammo.Amount);
+
                     }
                 }
 
                 // this call gives us the height of the text,
                 // so now we are able to stack them on top of each other.
-                var textHeight = spriteFont.MeasureString(text).Y;
+                float textHeight = spriteFont.MeasureString(gameHUD).Y;
 
-                var xPosition = titlesafearea.Width - spriteFont.MeasureString(text).X - 10;
-                var yPosition = titlesafearea.Height - (textHeight + previousHeight);
+                float xPosition = titlesafearea.Width - spriteFont.MeasureString(gameHUD).X - 10;
+                float yPosition = titlesafearea.Height - (textHeight + previousHeight);
                 previousHeight += textHeight;
 
-                var position = new Vector2(xPosition, yPosition);
-                _gameDependencies.SpriteBatch.DrawString(spriteFont, text, position, Color.BlueViolet);
+                position = new Vector2(xPosition, yPosition);
+                
 
             }
+
+            _gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
+            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, Color.BlueViolet);
+            _gameDependencies.SpriteBatch.End();
         }
     }
 }
