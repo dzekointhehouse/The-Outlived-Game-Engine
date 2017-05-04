@@ -50,6 +50,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             {
                Alpha = alpha,
               // Position = position,
+              TileHeight = tileHeight,
+              TileWidth = tileWidth,
                Scale = scale,
                SpriteName = spriteName,
             };
@@ -93,7 +95,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         {
             PlayerComponent component = new PlayerComponent()
             {
-                Name = "player name",
+                Name = name,
             };
             components.Add(component);
             return this;

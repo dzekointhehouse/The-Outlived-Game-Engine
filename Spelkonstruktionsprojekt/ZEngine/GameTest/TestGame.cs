@@ -248,18 +248,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
 
-            CreatePlayer(name: "Carlos", entityId: player1, actionBindings: actionBindings1,
+            CreatePlayer(name: "Carlos", actionBindings: actionBindings1,
                 position: new Vector2(200, 200), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId);
-            CreatePlayer("Elvir", player2, actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
+            CreatePlayer("Elvir", actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId, disabled: false);
-            CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
-                collision: true, isCaged: false, cageId: cageId, disabled: true);
+            //CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
+            //    collision: true, isCaged: false, cageId: cageId, disabled: true);
         }
 
         //The multitude of options here is for easy debug purposes
-        public void CreatePlayer(string name, int entityId, ActionBindings actionBindings,
-            Vector2 position = default(Vector2), bool movable = true, bool useDefaultMoveComponent = true,
+        public void CreatePlayer(string name, ActionBindings actionBindings,
+            Vector2 position = default(Vector2), bool movable = true,
             MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false,
             bool disabled = false, bool isCaged = false, int cageId = 0)
         {
@@ -267,7 +267,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var light = new Spotlight()
             {
-                Position = new Vector2(150, 150),
+                Position = position,
                 Scale = new Vector2(850f),
                 Radius = (float) 0.0001,
                 Intensity = (float) 0.6,
