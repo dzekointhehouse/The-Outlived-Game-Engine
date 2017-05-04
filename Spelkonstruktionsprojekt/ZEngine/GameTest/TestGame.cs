@@ -353,7 +353,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     new SpriteAnimationBindingBuilder()
                         .Positions(new Point(0, 0), new Point(1561, 313))
                         .StateConditions(State.WalkingForward)
-                        .Length(60)
+                        .Length(30)
                         .Build()
                 )
                 .Build();
