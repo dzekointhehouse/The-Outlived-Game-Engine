@@ -10,7 +10,7 @@ namespace ZEngine.Components
 {
     class CollisionComponent : IComponent
     {
-        public Rectangle spriteBoundingRectangle { get; set; }
+        public Rectangle SpriteBoundingRectangle { get; set; }
 
         public bool IsCage = false;
 

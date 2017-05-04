@@ -19,7 +19,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public int MaxHealth { get; set; } = 100;
         public int CurrentHealth { get; set; } = 100;
 
-        public List<int> Damage { get; set; } = new List<int>();
+        public List<int> Damage { get; set; } = new List<int>(30);
 
         public bool Alive { get; set; } = true;
 

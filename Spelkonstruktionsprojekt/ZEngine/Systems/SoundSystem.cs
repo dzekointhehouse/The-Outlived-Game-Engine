@@ -18,6 +18,7 @@ using ZEngine.Systems;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
+    // Optimus prime
     public class SoundSystem : ISystem
     {
         private readonly EventBus EventBus = EventBus.Instance;
@@ -95,13 +96,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     ComponentManager.Instance.AddComponentToEntity(animationComponent, moveEvent.EntityId);
                 }
 
-                //var animation = new GeneralAnimation()
-                //{
-                //    StartOfAnimation = moveEvent.EventTime,
-                //    Length = 2000
-                //};
+            var animation = new GeneralAnimation()
+            {
+                StartOfAnimation = moveEvent.EventTime,
+                Length = 2000
+            };
 
-                var sound = soundComponent.SoundEffect.CreateInstance();
+            var sound = soundComponent.SoundEffect.CreateInstance();
 
                 if (sound.State == SoundState.Stopped)
                     sound.Play();
@@ -110,28 +111,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 sound.Stop();
             }
 
-            // var animationAction = NewWalkingSoundAnimation(animation, sound, moveComponent);
-                //animation.Animation = animationAction;
-                //animationComponent.Animations.Add(animation);
+            var animationAction = NewWalkingSoundAnimation(animation, sound, moveComponent);
+            animation.Animation = animationAction;
+            animationComponent.Animations.Add(animation);
 
         }
 
-        //// This one is fascinating. We add this to our entitys animation component instance which
-        //// contains a list of GeneralAnimations, this method is the action that is stored in the
-        //// general animation. This action will then be performed in another system and can do it's
-        //// own stuff independently of this system later on. Good for when we maybe trigger something
-        //// that will go on for a while until a set tim
-        //public Action<double> NewWalkingSoundAnimation(GeneralAnimation animation, SoundEffectInstance sound, MoveComponent moveComponent)
-        //{
-        //    return delegate (double elapsedTime)
-        //    {
-        //        if (moveComponent.Speed > -0.01 && moveComponent.Speed < 0.01)
-        //        {
-        //            sound.Stop();
-        //            animation.IsDone = true;
-        //        }
-        //    };
-        //}
+        // This one is fascinating. We add this to our entitys animation component instance which
+        // contains a list of GeneralAnimations, this method is the action that is stored in the
+        // general animation. This action will then be performed in another system and can do it's
+        // own stuff independently of this system later on. Good for when we maybe trigger something
+        // that will go on for a while until a set tim
+        public Action<double> NewWalkingSoundAnimation(GeneralAnimation animation, SoundEffectInstance sound, MoveComponent moveComponent)
+        {
+            return delegate (double elapsedTime)
+            {
+                if (moveComponent.Speed > -0.01 && moveComponent.Speed < 0.01)
+                {
+                    sound.Stop();
+                    animation.IsDone = true;
+                }
+            };
+        }
     }
 }
 

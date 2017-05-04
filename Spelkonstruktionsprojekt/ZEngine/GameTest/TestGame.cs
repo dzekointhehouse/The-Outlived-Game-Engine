@@ -112,7 +112,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var bulletSprite = EntityManager.GetEntityManager().NewEntity();
             var bulletSpriteSprite = new SpriteComponent()
             {
-                SpriteName = "dot2"
+                SpriteName = "dot"
             };
             var bulletSpriteComponent = new BulletFlyweightComponent();
             var soundComponent = new SoundComponent()
@@ -249,7 +249,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(aiComponent, entityId);
             var collisionComponent = new CollisionComponent()
             {
-                //spriteBoundingRectangle = new Rectangle(50, 50, 200, 200)
+                //SpriteBoundingRectangle = new Rectangle(50, 50, 200, 200)
             };
             ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
             //if (collision)
@@ -279,7 +279,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.L, EventConstants.TurnRight)
                 .SetAction(Keys.O, EventConstants.FireWeapon)
                 .SetAction(Keys.U, EventConstants.TurnAround)
-                .SetAction(Keys.H, EventConstants.Running)
+                .SetAction(Keys.H, EventConstants.LightStatus)
                 .Build();
 
             var player3 = EntityManager.GetEntityManager().NewEntity();
@@ -398,7 +398,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 var collisionComponent = new CollisionComponent()
                 {
-                    spriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
+                    SpriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
                 };
                 ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
             }

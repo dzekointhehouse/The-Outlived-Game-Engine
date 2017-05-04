@@ -45,6 +45,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ZEngine\Helpers\IEntityCreator.cs" />
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
     <Compile Include="ZEngine\Components\AIComponent.cs" />
     <Compile Include="ZEngine\Components\AnimationComponent.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="ZEngine\GameTest\TestChaseGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
+    <Compile Include="ZEngine\Helpers\EntityBuilder.cs" />
     <Compile Include="ZEngine\Helpers\FullZengineBundle.cs" />
     <Compile Include="ZEngine\Helpers\MapHelper.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />

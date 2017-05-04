@@ -20,6 +20,7 @@ using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
+    // Optimus prime
     class FullZengineBundle
     {
         private SystemManager manager = SystemManager.Instance;
@@ -75,6 +76,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();
             manager.Get<MoveSystem>().Move(gameTime);
+            
         }
 
         public void Draw(GameTime gameTime)
