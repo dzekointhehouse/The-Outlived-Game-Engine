@@ -13,6 +13,7 @@ using UnityEngine;
 using ZEngine.Components;
 using ZEngine.Managers;
 using Light = Penumbra.Light;
+using Random = System.Random;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
@@ -26,7 +27,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // added to the new entity, whiltst creating it's id.
         private readonly List<IComponent> components = new List<IComponent>();
 
-        public EntityBuilder AddPosition(Vector2 position, int layerDepth = 400)
+        public EntityBuilder SetPosition(Vector2 position, int layerDepth = 400)
         {
             PositionComponent component = new PositionComponent()
             {
@@ -37,12 +38,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder AddSprite(Point position, string spriteName,float scale = 1f, float alpha = 1f)
+        public EntityBuilder SetSprite(string spriteName,float scale = 1f, float alpha = 1f)
         {
             SpriteComponent component = new SpriteComponent()
             {
                Alpha = alpha,
-               Position = position,
+              // Position = position,
                Scale = scale,
                SpriteName = spriteName,
             };
@@ -92,7 +93,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetCollision(Rectangle boundingRectangle, bool isCage = false)
+        public EntityBuilder SetCollision(Rectangle boundingRectangle = default(Rectangle), bool isCage = false)
         {
             CollisionComponent component = new CollisionComponent()
             {
@@ -117,11 +118,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public EntityBuilder SetTeam(int maxhealth = 100, int currentHealth = 100, bool alive = true)
         {
-            HealthComponent component = new HealthComponent()
+            TeamComponent component = new TeamComponent()
             {
-                Alive = alive,
-                CurrentHealth = currentHealth,
-                MaxHealth = maxhealth
             };
             components.Add(component);
             return this;
@@ -138,16 +136,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetRendering(int width, int height, bool isVisible = true)
+        public EntityBuilder SetRendering(int width, int height)
         {
             RenderComponent component = new RenderComponent()
             {
-                IsVisible =  isVisible,
                 DimensionsComponent = new DimensionsComponent()
                 {
                     Height = width,
                     Width = height
                 }
+            };
+            components.Add(component);
+            return this;
+        }
+
+        public EntityBuilder SetMovement(float maxVelocity, float acceleration, float rotationSpeed, float direction)
+        {
+            MoveComponent component = new MoveComponent()
+            {
+                MaxVelocitySpeed = 205,
+                AccelerationSpeed = 5,
+                RotationSpeed = 4,
+                Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
             };
             components.Add(component);
             return this;

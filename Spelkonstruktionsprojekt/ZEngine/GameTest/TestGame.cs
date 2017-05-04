@@ -201,52 +201,58 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var x = new Random(DateTime.Now.Millisecond).Next(0, 2000);
             var y = new Random(DateTime.Now.Millisecond).Next(0, 2000);
 
-            //var monster = new EntityBuilder()
-            //    .AddPosition(new Vector2(x, y), layerDepth:20)
-            //    .SetDimensions(300, 300);
+            var monster = new EntityBuilder()
+                .SetPosition(new Vector2(x, y), layerDepth: 20)
+                .SetRendering(200, 200)
+                .SetSprite("zombieSquare")
+                .SetSound("zombiewalking")
+                .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
+                .SetArtificialIntelligence()
+                .SetCollision(new Rectangle(50, 50, 200, 200))
+                .Build();
 
-            var entityId = EntityManager.GetEntityManager().NewEntity();
-            var renderComponent = new RenderComponent()
-            {
-                DimensionsComponent = new DimensionsComponent()
-                {
-                    Height = 200,
-                    Width = 200
-                }
-            };
+            //var entityId = EntityManager.GetEntityManager().NewEntity();
+            //var renderComponent = new RenderComponent()
+            //{
+            //    DimensionsComponent = new DimensionsComponent()
+            //    {
+            //        Height = 200,
+            //        Width = 200
+            //    }
+            //};
 
-            var position = new PositionComponent() { Position = new Vector2(x, y), ZIndex = 20 };
+           // var position = new PositionComponent() { Position = new Vector2(x, y), ZIndex = 20 };
 
-            var spriteComponent = new SpriteComponent()
-            {
-                SpriteName = "zombieSquare"
-            };
+            //var spriteComponent = new SpriteComponent()
+            //{
+            //    SpriteName = "zombieSquare"
+            //};
 
-            var sound = new SoundComponent()
-            {
-                SoundEffectName = "zombiewalking",
-                Volume = 1f
-            };
-            ComponentManager.Instance.AddComponentToEntity(sound, entityId);
+            //var sound = new SoundComponent()
+            //{
+            //    SoundEffectName = "zombiewalking",
+            //    Volume = 1f
+            //};
+            //ComponentManager.Instance.AddComponentToEntity(sound, entityId);
 
-            var moveComponent = new MoveComponent()
-            {
-                MaxVelocitySpeed = 205,
-                AccelerationSpeed = 5,
-                RotationSpeed = 4,
-                Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
-            };
-            var aiComponent = new AIComponent();
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(position, entityId);
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(aiComponent, entityId);
-            var collisionComponent = new CollisionComponent
-            {
-                //SpriteBoundingRectangle = new Rectangle(50, 50, 200, 200)
-            };
-            ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
+            //var moveComponent = new MoveComponent()
+            //{
+            //    MaxVelocitySpeed = 205,
+            //    AccelerationSpeed = 5,
+            //    RotationSpeed = 4,
+            //    Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
+            //};
+            //var aiComponent = new AIComponent();
+            //ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
+            //ComponentManager.Instance.AddComponentToEntity(position, entityId);
+            //ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
+            //ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
+            //ComponentManager.Instance.AddComponentToEntity(aiComponent, entityId);
+            //var collisionComponent = new CollisionComponent
+            //{
+            //    //SpriteBoundingRectangle = new Rectangle(50, 50, 200, 200)
+            //};
+            //ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
         }
 
         public void InitPlayers(int cageId)

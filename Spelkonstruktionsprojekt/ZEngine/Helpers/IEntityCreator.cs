@@ -7,11 +7,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
     public interface IEntityCreator
     {
-        EntityBuilder AddPosition(Vector2 position, int layerDepth = 400);
-        EntityBuilder AddSprite(Point position, string spriteName, float scale = 1, float alpha = 1);
+        EntityBuilder SetPosition(Vector2 position, int layerDepth = 400);
+        EntityBuilder SetSprite(string spriteName, float scale = 1, float alpha = 1);
         List<IComponent> Build();
         EntityBuilder SetArtificialIntelligence(float followingDistance = 250, bool isWandering = true);
-        EntityBuilder SetCollision(Rectangle boundingRectangle, bool isCage = false);
+        EntityBuilder SetCollision(Rectangle boundingRectangle = default(Rectangle), bool isCage = false);
         EntityBuilder SetCreatedComponents(List<IComponent> alreadyCreatedComponents);
         EntityBuilder SetDimensions(int width, int height);
         EntityBuilder SetHealth(int maxhealth = 100, int currentHealth = 100, bool alive = true);
@@ -20,6 +20,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         EntityBuilder SetTeam(int maxhealth = 100, int currentHealth = 100, bool alive = true);
         EntityBuilder SetSound(string soundname, float volume = 1f);
         EntityBuilder SetRendering(int width, int height);
+        EntityBuilder SetMovement(float maxVelocity, float acceleration, float rotationSpeed, float direction);
+
+
 
 
     }
