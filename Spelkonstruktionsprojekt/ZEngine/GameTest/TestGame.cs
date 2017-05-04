@@ -210,8 +210,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 DimensionsComponent = new DimensionsComponent()
                 {
-                    Height = 300,
-                    Width = 300
+                    Height = 200,
+                    Width = 200
                 }
             };
 
@@ -220,15 +220,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var spriteComponent = new SpriteComponent()
             {
                 SpriteName = "zombieSquare"
-            };
-            var light = new LightComponent()
-            {
-                Light = new Spotlight()
-                {
-                    Position = new Vector2(150, 150),
-                    Scale = new Vector2(500f),
-                    ShadowType = ShadowType.Solid // Will not lit hulls themselves
-                }
             };
 
             var sound = new SoundComponent()
@@ -241,7 +232,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var moveComponent = new MoveComponent()
             {
                 MaxVelocitySpeed = 205,
-                AccelerationSpeed = 50,
+                AccelerationSpeed = 5,
                 RotationSpeed = 4,
                 Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
             };
@@ -249,18 +240,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(position, entityId);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
-            //ComponentManager.Instance.AddComponentToEntity(light, entityId);
             ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(aiComponent, entityId);
-            var collisionComponent = new CollisionComponent()
+            var collisionComponent = new CollisionComponent
             {
                 //SpriteBoundingRectangle = new Rectangle(50, 50, 200, 200)
             };
             ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
-            //if (collision)
-            //{
-            //
-            //}
         }
 
         public void InitPlayers(int cageId)
@@ -335,7 +321,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var spriteComponent = new SpriteComponent()
             {
-                SpriteName = "topDownSoldier",
+                SpriteName = "moving_soldier1",
+                TileWidth = 260,
+                TileHeight = 156,
                 Scale = 1
             };
             var light = new LightComponent()
@@ -368,7 +356,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var animationBindings = new SpriteAnimationBindingsBuilder()
                 .Binding(
                     new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(1000, 1000))
+                        .Positions(new Point(0, 0), new Point(1561, 313))
                         .StateConditions(State.WalkingForward)
                         .Length(30)
                         .Build()

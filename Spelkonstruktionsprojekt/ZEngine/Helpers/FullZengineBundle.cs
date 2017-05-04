@@ -46,6 +46,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<EnemyCollisionSystem>().Start();
             manager.Get<BulletCollisionSystem>().Start();
             manager.Get<LightAbilitySystem>().Start();
+            manager.Get<SpriteAnimationSystem>().Start();
 
         }
 

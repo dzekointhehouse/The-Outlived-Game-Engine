@@ -12,9 +12,11 @@ using MoreLinq;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using UnityEngine;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
+using Debug = System.Diagnostics.Debug;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -57,6 +59,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 .FirstOrDefault(e => BindingsMatch(e.StateConditions, stateChangeEvent.NewState));
             if (binding == null)
             {
+                Debug.WriteLine("SETTING NEXT ANIMATION TO NULL");
                 spriteAnimation.NextAnimatedState = null;
             }
             else
@@ -94,12 +97,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             //Incremenet the x position by one tile width.
             var newX = spriteComponent.Position.X + spriteComponent.TileWidth;
             var newY = spriteComponent.Position.Y;
+
+            var tolerance = 50;
             //Check if the new positions exceeds the end position of the animation loop
-            if (newY > binding.EndPosition.Y || newY == binding.EndPosition.Y && newX >= binding.EndPosition.X)
+            if (newY > binding.EndPosition.Y || binding.EndPosition.Y - newY < tolerance && binding.EndPosition.X - newX < tolerance)
             {
                 newX = binding.StartPosition.X;
                 newY = binding.StartPosition.Y;
                 spriteAnimation.CurrentAnimatedState = spriteAnimation.NextAnimatedState;
+                Debug.WriteLine("END OF ANIMATION");
             }
             //Check if new sprite crop bounds exceeds the sprites actual bounds
             else if (newX + spriteComponent.TileWidth > spriteComponent.Sprite.Width)
