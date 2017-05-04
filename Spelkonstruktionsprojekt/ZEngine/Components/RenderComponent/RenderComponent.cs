@@ -13,6 +13,7 @@ namespace ZEngine.Components
 {
     public class RenderComponent : IComponent
     {
+        //public PositionComponent PositionComponent = null;
 
         public DimensionsComponent DimensionsComponent = null;
 
@@ -33,5 +34,5 @@ namespace ZEngine.Components
                 Height = (int) renderComponent.Radius * 2
             };
         }
-}
+    }
 }

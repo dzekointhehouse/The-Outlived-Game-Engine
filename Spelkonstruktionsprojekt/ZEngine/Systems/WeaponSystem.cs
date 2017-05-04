@@ -46,25 +46,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
             if (weaponComponent == default(WeaponComponent)) return;
 
-            var renderComponent =
-                ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(inputEvent.EntityId);
+            var bulletSpriteEntities =
+                ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
+            if (bulletSpriteEntities.Count <= 0) return;
+            var bulletSpriteComponent =
+                ComponentManager.Instance
+                    .GetEntityComponentOrDefault<SpriteComponent>(bulletSpriteEntities.First().Key);
+
+            CreateBullet(inputEvent, bulletSpriteComponent, weaponComponent);
+        }
+
+        // This method is called in the handleFireWeapon method to create the bullet
+        // that is fired from the entity. It will give the bullet all the necessary components.
+        public void CreateBullet(InputEvent inputEvent, SpriteComponent bulletSpriteComponent,
+            WeaponComponent weaponComponent)
+        {
             var positionComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
 
             var moveComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(inputEvent.EntityId);
-
-            var bulletSpriteEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
-            if (bulletSpriteEntities.Count <= 0) return;
-            var bulletSpriteComponent =
-                ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(bulletSpriteEntities.First().Key);
-            CreateBullet(inputEvent, bulletSpriteComponent, weaponComponent, moveComponent, renderComponent, positionComponent);
-        }
-
-        // This method is called in the handleFireWeapon method to create the bullet
-        // that is fired from the entity. It will give the bullet all the necessary components.
-        public void CreateBullet(InputEvent inputEvent, SpriteComponent bulletSpriteComponent, WeaponComponent weaponComponent, MoveComponent moveComponent, RenderComponent renderComponent, PositionComponent positionComponent)
-        {
             // We create an new position instance for the bullet that starts from the player but should
             // not be the same as the players, as we found out when we did our test, otherwise the player
             // will follow the same way ass the bullet.
@@ -73,7 +74,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 Position = new Vector2(positionComponent.Position.X, positionComponent.Position.Y),
                 ZIndex = positionComponent.ZIndex
             };
-            
+
 
             int bulletEntityId = EntityManager.GetEntityManager().NewEntity();
 
@@ -98,7 +99,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 ShooterEntityId = inputEvent.EntityId
             };
             var bulletCollisionComponent = new CollisionComponent();
-            var animationComponent = new AnimationComponent();
 
             ComponentManager.AddComponentToEntity(bulletPositionComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletComponent, bulletEntityId);
@@ -106,6 +106,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             ComponentManager.AddComponentToEntity(bulletMoveComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
+
+            var animationComponent = new AnimationComponent();
             ComponentManager.AddComponentToEntity(animationComponent, bulletEntityId);
 
             var animation = new GeneralAnimation()
@@ -125,10 +127,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             generalAnimation.Animation = delegate(double currentTimeInMilliseconds)
             {
-                Debug.WriteLine("Bullet " + entityId + " currTime:" + currentTimeInMilliseconds + ", startTime:" + generalAnimation.StartOfAnimation + ", length:" + generalAnimation.Length);
                 if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
                 {
-                    Debug.WriteLine("Remove bullet.");
                     var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(entityId);
                     if (tagComponent == null)
                     {

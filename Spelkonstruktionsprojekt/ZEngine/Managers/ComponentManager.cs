@@ -32,10 +32,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
             {
                 return new Dictionary<int, IComponent>();
             }
-            else
-            {
-                return _components[componentType];
-            }
+            return _components[componentType];
         }
 
         // This method returns true if the entity has an association
@@ -70,9 +67,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
 
         public IComponent GetEntityComponentOrDefault(Type componentType, int entityId)
         {
-            var entityComponents = GetEntitiesWithComponent(componentType);
-            if (!entityComponents.ContainsKey(entityId)) return null;
-            return entityComponents[entityId];
+            //Compacted for efficiency
+            Dictionary<int, IComponent> entityComponents;
+            if (!_components.TryGetValue(componentType, out entityComponents)) return null; //Checks if component type exists
+            IComponent component;
+            if (!entityComponents.TryGetValue(entityId, out component)) return null; //Checks if entity has component
+            return component; //returns component if it was found
         }
 
         public bool ContainsAllComponents(int entityId, params Type[] componentTypes)
