@@ -20,7 +20,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
     // Amazingly this builder was not created by August,
     // ... the creator is....EL Optimus Prime Dzeko
-    public class EntityBuilder : IEntityCreator
+    public class EntityBuilder : IEntityBuilder
     {
         // We store a list of all the components that we add,
         // later when we call build all the components will be 

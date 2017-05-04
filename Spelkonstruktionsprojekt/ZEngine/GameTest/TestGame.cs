@@ -273,7 +273,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 Intensity = (float) 0.6,
                 ShadowType = ShadowType.Solid // Will not lit hulls themselves
             };
-            var player = new EntityBuilder()
+            IEntityBuilder playerEntity = new EntityBuilder()
                 .SetPosition(position, 10)
                 .SetRendering(100, 100)
                 .SetInertiaDampening()
@@ -299,8 +299,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 )
                 .Build();
 
-            ComponentManager.Instance.AddComponentToEntity(actionBindings, player.GetEntityKey());
-            ComponentManager.Instance.AddComponentToEntity(animationBindings, player.GetEntityKey());
+            ComponentManager.Instance.AddComponentToEntity(actionBindings, playerEntity.GetEntityKey());
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, playerEntity.GetEntityKey());
 
 
             if (isCaged)
@@ -309,14 +309,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 {
                     CageId = cageId
                 };
-                ComponentManager.Instance.AddComponentToEntity(cageComponent, player.GetEntityKey());
+                ComponentManager.Instance.AddComponentToEntity(cageComponent, playerEntity.GetEntityKey());
             }
 
             var weaponComponent = new WeaponComponent()
             {
                 Damage = 10
             };
-            ComponentManager.Instance.AddComponentToEntity(weaponComponent, player.GetEntityKey());
+            ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
         }
 
         protected override void LoadContent()
