@@ -211,48 +211,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetCollision(new Rectangle(50, 50, 200, 200))
                 .Build();
 
-            //var entityId = EntityManager.GetEntityManager().NewEntity();
-            //var renderComponent = new RenderComponent()
-            //{
-            //    DimensionsComponent = new DimensionsComponent()
-            //    {
-            //        Height = 200,
-            //        Width = 200
-            //    }
-            //};
-
-           // var position = new PositionComponent() { Position = new Vector2(x, y), ZIndex = 20 };
-
-            //var spriteComponent = new SpriteComponent()
-            //{
-            //    SpriteName = "zombieSquare"
-            //};
-
-            //var sound = new SoundComponent()
-            //{
-            //    SoundEffectName = "zombiewalking",
-            //    Volume = 1f
-            //};
-            //ComponentManager.Instance.AddComponentToEntity(sound, entityId);
-
-            //var moveComponent = new MoveComponent()
-            //{
-            //    MaxVelocitySpeed = 205,
-            //    AccelerationSpeed = 5,
-            //    RotationSpeed = 4,
-            //    Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
-            //};
-            //var aiComponent = new AIComponent();
-            //ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
-            //ComponentManager.Instance.AddComponentToEntity(position, entityId);
-            //ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
-            //ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
-            //ComponentManager.Instance.AddComponentToEntity(aiComponent, entityId);
-            //var collisionComponent = new CollisionComponent
-            //{
-            //    //SpriteBoundingRectangle = new Rectangle(50, 50, 200, 200)
-            //};
-            //ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
         }
 
         public void InitPlayers(int cageId)
@@ -306,58 +264,30 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             bool disabled = false, bool isCaged = false, int cageId = 0)
         {
             if (disabled) return;
-            if (position == default(Vector2)) position = new Vector2(150, 150);
 
-
-            var renderComponent = new RenderComponent()
+            var light = new Spotlight()
             {
-                DimensionsComponent = new DimensionsComponent()
-                {
-                    Height = 100,
-                    Width = 100
-                },
+                Position = new Vector2(150, 150),
+                Scale = new Vector2(850f),
+                Radius = (float) 0.0001,
+                Intensity = (float) 0.6,
+                ShadowType = ShadowType.Solid // Will not lit hulls themselves
             };
-
-            var positionComponent = new PositionComponent() { Position = position, ZIndex = 10 };
-
-            var dampeningComponent = new InertiaDampeningComponent();
-            var backwardsPenaltyComponent = new BackwardsPenaltyComponent();
-            ComponentManager.Instance.AddComponentToEntity(dampeningComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(backwardsPenaltyComponent, entityId);
-
-            var spriteComponent = new SpriteComponent()
-            {
-                SpriteName = "moving_soldier1",
-                TileWidth = 260,
-                TileHeight = 156,
-                Scale = 1
-            };
-            var light = new LightComponent()
-            {
-                Light = new Spotlight()
-                {
-                    Position = new Vector2(150, 150),
-                    Scale = new Vector2(850f),
-                    Radius = (float)0.0001,
-                    Intensity = (float)0.6,
-                    ShadowType = ShadowType.Solid // Will not lit hulls themselves
-                }
-            };
-
-            var sound = new SoundComponent()
-            {
-                SoundEffectName = "walking"
-            };
-
-//            var animation = new SpriteAnimationComponent()
-//            {
-////                Spritesheet = Content.Load<Texture2D>("blood"),
-////                SpritesheetSize = new Point(3, 3),
-////                MillisecondsPerFrame = 30,
-//                AnimationStarted = 0,
-//                CurrentAnimatedState =
-//            };
-//            ComponentManager.Instance.AddComponentToEntity(animation, entityId);
+            var player = new EntityBuilder()
+                .SetPosition(position, 10)
+                .SetRendering(100, 100)
+                .SetInertiaDampening()
+                .SetBackwardsPenalty()
+                .SetSprite("moving_soldier1", 260, 156)
+                .SetLight(light)
+                .SetSound("walking")
+                .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
+                .SetCollision(new Rectangle(30, 20, 70, 60))
+                .SetCameraFollow()
+                .SetPlayer(name)
+                .SetHealth()
+                .Build();
+                
 
             var animationBindings = new SpriteAnimationBindingsBuilder()
                 .Binding(
@@ -369,43 +299,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 )
                 .Build();
 
-            ComponentManager.Instance.AddComponentToEntity(sound, entityId);
-            ComponentManager.Instance.AddComponentToEntity(renderComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(positionComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent, entityId);
-            ComponentManager.Instance.AddComponentToEntity(actionBindings, entityId);
-            ComponentManager.Instance.AddComponentToEntity(light, entityId);
-            ComponentManager.Instance.AddComponentToEntity(animationBindings, entityId);
+            ComponentManager.Instance.AddComponentToEntity(actionBindings, player.GetEntityKey());
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, player.GetEntityKey());
 
-            if (movable && useDefaultMoveComponent)
-            {
-                var moveComponent = new MoveComponent()
-                {
-                    MaxVelocitySpeed = 200,
-                    AccelerationSpeed = 380,
-                    RotationSpeed = 4,
-                    Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
-                };
-                ComponentManager.Instance.AddComponentToEntity(moveComponent, entityId);
-            }
-            else if (movable && customMoveComponent != null)
-            {
-                ComponentManager.Instance.AddComponentToEntity(customMoveComponent, entityId);
-            }
-
-            if (collision)
-            {
-                var collisionComponent = new CollisionComponent()
-                {
-                    SpriteBoundingRectangle = new Rectangle(30, 20, 70, 60)
-                };
-                ComponentManager.Instance.AddComponentToEntity(collisionComponent, entityId);
-            }
-            if (cameraFollow)
-            {
-                var cameraFollowComponent = new CameraFollowComponent();
-                ComponentManager.Instance.AddComponentToEntity(cameraFollowComponent, entityId);
-            }
 
             if (isCaged)
             {
@@ -413,24 +309,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 {
                     CageId = cageId
                 };
-                ComponentManager.Instance.AddComponentToEntity(cageComponent, entityId);
+                ComponentManager.Instance.AddComponentToEntity(cageComponent, player.GetEntityKey());
             }
 
-            var playerComponent = new PlayerComponent()
-            {
-                Name = name
-            };
-            ComponentManager.Instance.AddComponentToEntity(playerComponent, entityId);
-            var healthComponent = new HealthComponent()
-            {
-                CurrentHealth = new Random().Next(0, 100)
-            };
-            ComponentManager.Instance.AddComponentToEntity(healthComponent, entityId);
             var weaponComponent = new WeaponComponent()
             {
                 Damage = 10
             };
-            ComponentManager.Instance.AddComponentToEntity(weaponComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(weaponComponent, player.GetEntityKey());
         }
 
         protected override void LoadContent()

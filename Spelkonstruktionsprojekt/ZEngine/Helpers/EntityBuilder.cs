@@ -26,6 +26,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // later when we call build all the components will be 
         // added to the new entity, whiltst creating it's id.
         private readonly List<IComponent> components = new List<IComponent>();
+        private readonly int _key = EntityManager.GetEntityManager().NewEntity();
+
+        public int GetEntityKey()
+        {
+            return _key;
+        }
 
         public EntityBuilder SetPosition(Vector2 position, int layerDepth = 400)
         {
@@ -38,7 +44,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetSprite(string spriteName,float scale = 1f, float alpha = 1f)
+        public EntityBuilder SetSprite(string spriteName, int tileWidth = 0, int tileHeight = 0, float scale = 1f, float alpha = 1f)
         {
             SpriteComponent component = new SpriteComponent()
             {
@@ -154,11 +160,32 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         {
             MoveComponent component = new MoveComponent()
             {
-                MaxVelocitySpeed = 205,
-                AccelerationSpeed = 5,
-                RotationSpeed = 4,
-                Direction = new Random(DateTime.Now.Millisecond).Next(0, 40) / 10
+                MaxVelocitySpeed = maxVelocity,
+                AccelerationSpeed = acceleration,
+                RotationSpeed = rotationSpeed,
+                Direction = direction
             };
+            components.Add(component);
+            return this;
+        }
+
+        public EntityBuilder SetInertiaDampening()
+        {
+            InertiaDampeningComponent component = new InertiaDampeningComponent();
+            components.Add(component);
+            return this;
+        }
+
+        public EntityBuilder SetBackwardsPenalty()
+        {
+            BackwardsPenaltyComponent component = new BackwardsPenaltyComponent();
+            components.Add(component);
+            return this;
+        }
+
+        public EntityBuilder SetCameraFollow()
+        {
+            CameraFollowComponent component = new CameraFollowComponent();
             components.Add(component);
             return this;
         }
@@ -166,15 +193,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // The list with all the components is returned
         // now the user doesn't need to redo the whole process
         // and is able to create an entity that is almost the same.
-        public List<IComponent> Build()
+        public EntityBuilder Build()
         {
-            int key = EntityManager.GetEntityManager().NewEntity();
 
             foreach (var component in components)
             {
-                ComponentManager.Instance.AddComponentToEntity(component, key);
+                ComponentManager.Instance.AddComponentToEntity(component, _key);
             }
-            return components;
+            return this;
         }
 
         // Here you can set the same components from a previous build
