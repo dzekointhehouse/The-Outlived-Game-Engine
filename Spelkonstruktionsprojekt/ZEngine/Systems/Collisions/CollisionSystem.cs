@@ -78,10 +78,10 @@ namespace ZEngine.Systems
 
 
 
-            var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity).spriteBoundingRectangle;
+            var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity).SpriteBoundingRectangle;
             var stillRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(stillEntity);
             var stillPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(stillEntity);
-            var stillCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity).spriteBoundingRectangle;
+            var stillCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity).SpriteBoundingRectangle;
 
             var movingEntityOffset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(movingEntity)
                 ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(movingEntity).Offset
@@ -113,12 +113,12 @@ namespace ZEngine.Systems
         {
             var cageRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(cageId);
             var cagePositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(cageId);
-            var cageCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(cageId).spriteBoundingRectangle;
+            var cageCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(cageId).SpriteBoundingRectangle;
 
 
             var movingEntityComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(movingEntity);
             var movingEntityPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(movingEntity);
-            var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity).spriteBoundingRectangle;
+            var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity).SpriteBoundingRectangle;
 
             var movingEntityOffset = ComponentManager.EntityHasComponent<RenderOffsetComponent>(movingEntity)
                 ? ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(movingEntity).Offset

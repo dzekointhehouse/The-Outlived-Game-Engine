@@ -10,6 +10,7 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
+    // Optimus prime
     public class MapHelper
     {
         private readonly Dictionary<int, string> tileTypes;
@@ -50,7 +51,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     if (positionNumber == 4)
                     {
                         //var collisionComponent = new CollisionComponent
-                        //{spriteBoundingRectangle = new Rectangle(x * size, y * size, x * size + size, y * size + size) };
+                        //{SpriteBoundingRectangle = new Rectangle(x * size, y * size, x * size + size, y * size + size) };
                         //ComponentManager.Instance.AddComponentToEntity(collisionComponent, id);
                     }
                     ComponentManager.Instance.AddComponentToEntity(position, id);

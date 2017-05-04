@@ -17,6 +17,7 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
+    // Optimus prime
     class EntityRemovalSystem : ISystem
     {
         public void Update(GameTime gameTime)
