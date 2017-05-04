@@ -15,8 +15,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     class AnimationSystem : ISystem
     {
         // FPS higher if kept outside.
-        private List<int> doneAnimations = new List<int>(50);
-        private List<string> usedUniqueAnimationTypes = new List<string>(50);
+        private List<int> doneAnimations = new List<int>(5);
+        private List<string> usedUniqueAnimationTypes = new List<string>(5);
 
         // Will be updatin the animations that unfortunately
         // other systems use, which makes them dependent on this
