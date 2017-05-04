@@ -127,6 +127,32 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
+        public EntityBuilder SetSound(string soundname, float volume = 1)
+        {
+            SoundComponent component = new SoundComponent()
+            {
+                SoundEffectName = soundname,
+                Volume = volume
+            };
+            components.Add(component);
+            return this;
+        }
+
+        public EntityBuilder SetRendering(int width, int height, bool isVisible = true)
+        {
+            RenderComponent component = new RenderComponent()
+            {
+                IsVisible =  isVisible,
+                DimensionsComponent = new DimensionsComponent()
+                {
+                    Height = width,
+                    Width = height
+                }
+            };
+            components.Add(component);
+            return this;
+        }
+
         // The list with all the components is returned
         // now the user doesn't need to redo the whole process
         // and is able to create an entity that is almost the same.

@@ -18,5 +18,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         EntityBuilder SetLight(Light light);
         EntityBuilder SetPlayer(string name);
         EntityBuilder SetTeam(int maxhealth = 100, int currentHealth = 100, bool alive = true);
+        EntityBuilder SetSound(string soundname, float volume = 1f);
+        EntityBuilder SetRendering(int width, int height);
+
+
     }
+
 }

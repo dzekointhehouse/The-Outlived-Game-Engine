@@ -16,6 +16,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps;
+using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
@@ -199,6 +200,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             var x = new Random(DateTime.Now.Millisecond).Next(0, 2000);
             var y = new Random(DateTime.Now.Millisecond).Next(0, 2000);
+
+            //var monster = new EntityBuilder()
+            //    .AddPosition(new Vector2(x, y), layerDepth:20)
+            //    .SetDimensions(300, 300);
 
             var entityId = EntityManager.GetEntityManager().NewEntity();
             var renderComponent = new RenderComponent()
