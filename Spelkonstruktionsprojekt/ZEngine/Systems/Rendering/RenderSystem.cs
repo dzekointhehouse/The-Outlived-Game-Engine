@@ -109,7 +109,7 @@ namespace ZEngine.Systems
                 // with the viewport.
                 KeyValuePair<int, IComponent> camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
                 cameraViewComponent = camera.Value as CameraViewComponent;
-                if (cameraViewComponent.View.Intersects(destinationRectangle))
+                if (true || cameraViewComponent.View.Intersects(destinationRectangle))
                 {
                     var spriteCrop = new Rectangle(
                         sprite.Position,
