@@ -18,7 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private VideoPlayer _videoPlayer;
 
         // We instantiate our player when we create our system.
-        public VideoPlayerSystem()
+        public void Start()
         {
             _videoPlayer = new VideoPlayer();
         }
