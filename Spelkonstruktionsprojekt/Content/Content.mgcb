@@ -255,3 +255,8 @@
 /processorParam:TextureFormat=Color
 /build:grass.png
 
+#begin intro2.mp4
+/importer:H264Importer
+/processor:VideoProcessor
+/build:intro2.mp4
+
