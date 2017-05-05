@@ -68,7 +68,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             // and the synchronization with the vertical retrace
             // so the game's FPS can be measured
             fps = new FPS(this);
-        
+
 
             IsFixedTimeStep = false;
             gameBundle._gameDependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
@@ -289,7 +289,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetPlayer(name)
                 .SetHealth()
                 .Build();
-                
+
 
             var animationBindings = new SpriteAnimationBindingsBuilder()
                 .Binding(
