@@ -16,7 +16,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class HealthSystem : ISystem
     {
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
             foreach (var entity in healthEntities)
@@ -38,17 +38,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                                healthComponent.CurrentHealth = healthComponent.MaxHealth;
                 Option 2*/
                 healthComponent.CurrentHealth = MathHelper.Min(healthComponent.CurrentHealth, healthComponent.MaxHealth);
-                CheckIfDead(healthComponent);
+                CheckIfDead(entityId, healthComponent, gameTime);
             }
         }
 
-        private void CheckIfDead(HealthComponent healthComponent)
+        private void CheckIfDead(int entityId, HealthComponent healthComponent, GameTime gameTime)
         {
             if (healthComponent.CurrentHealth <= 0 && healthComponent.Alive)
             {
                 healthComponent.CurrentHealth = 0;
                 healthComponent.Alive = false;
-                //Debug.WriteLine("Entity " + entityId + " has fallen");
+                StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
+                Debug.WriteLine("Entity has fallen");
             }
         }
 

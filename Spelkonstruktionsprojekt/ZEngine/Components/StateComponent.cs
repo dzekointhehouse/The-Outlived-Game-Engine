@@ -25,6 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public static void TryAddState(int entityId, State state, double currentTime)
         {
+            System.Diagnostics.Debug.WriteLine("Adding state: " + state);
             var stateComponent = ComponentManager.Instance.GetEntityComponentOrDefault<StateComponent>(entityId);
             stateComponent?.State.Add(state);
             PublishStateChangeEvent(entityId, currentTime);

@@ -45,6 +45,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Helpers\IEntityBuilder.cs" />
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
     <Compile Include="ZEngine\Components\AIComponent.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="ZEngine\EventBus\ParameterlessEventBuss.cs" />
     <Compile Include="ZEngine\Helpers\DefaultMaps\MapPack.cs" />
     <Compile Include="ZEngine\GameTest\TestChaseGame.cs" />
-    <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
     <Compile Include="ZEngine\Helpers\EntityBuilder.cs" />
     <Compile Include="ZEngine\Helpers\FullZengineBundle.cs" />
