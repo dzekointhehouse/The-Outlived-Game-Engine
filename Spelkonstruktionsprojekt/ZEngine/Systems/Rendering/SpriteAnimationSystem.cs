@@ -56,14 +56,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
 
             var binding = animationBindings.Bindings
-                .FirstOrDefault(e => BindingsMatch(e.StateConditions, stateChangeEvent.NewState));
+                .FirstOrDefault(e => BindingsMatch(stateChangeEvent.NewState.ToList(), e.StateConditions));
             if (binding == null)
             {
-                Debug.WriteLine("SETTING NEXT ANIMATION TO NULL");
-                spriteAnimation.NextAnimatedState = null;
+                Debug.WriteLine("Binding is null for " + stateChangeEvent.NewState);
+                var stateComponent = ComponentManager.Instance.GetEntityComponentOrDefault<StateComponent>(entityId);
+                if (stateComponent == null) return;
+
+                if (!stateComponent.State.Contains(State.Dead))
+                {
+                    Debug.WriteLine("SETTING NEXT ANIMATION TO NULL");
+                    spriteAnimation.NextAnimatedState = null;
+                }
             }
             else
             {
+                Debug.WriteLine("SETTING NEXT ANIMATION TO " + stateChangeEvent.NewState[0]);
                 spriteAnimation.NextAnimatedState = binding;
             }
         }
@@ -178,10 +186,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             return false;
         }
 
-        private bool BindingsMatch(List<State> source, ImmutableList<State> target)
+        private bool BindingsMatch(List<State> source, List<State> target)
         {
-            return source.All(target.Contains)
-                   && source.Count == target.Count;
+            return source.Contains(target[0]);
+//            return source.All(target.Contains);
+//                   && source.Count == target.Count;
         }
 
         // DeathAnimation as it states in the method name is used for entities that
