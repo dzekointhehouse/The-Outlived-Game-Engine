@@ -105,9 +105,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetSprite("XboxController")
                 .Build();
 
+            // Health Icons
             new EntityBuilder()
                 .SetHUD(true)
-                .SetPosition(new Vector2(1600, 1100))
+                .SetPosition(new Vector2(1680, 1150))
+                .SetSprite("health3_small")
+                .Build();
+            new EntityBuilder()
+                .SetHUD(true)
+                .SetPosition(new Vector2(1680, 1210))
                 .SetSprite("health3_small")
                 .Build();
         }

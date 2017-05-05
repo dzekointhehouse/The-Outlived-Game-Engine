@@ -82,14 +82,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         HealthComponent health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(instance.Key);
                         if (health == null) return;
 
-                        gameHUD.Append(player.Name);
+                       // gameHUD.Append(player.Name);
 
                         if (health.Alive)
                         {
                             var currentHealth = health.MaxHealth - health.Damage.Sum();
-                            gameHUD.Append(":");
+                            //gameHUD.Append(":");
                             gameHUD.Append(currentHealth);
-                            gameHUD.Append("HP");
+                            //gameHUD.Append("HP");
 
                         }
                         else
@@ -110,7 +110,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         // so now we are able to stack them on top of each other.
                         float textHeight = spriteFont.MeasureString(gameHUD).Y;
 
-                        float xPosition = titlesafearea.Width - spriteFont.MeasureString(gameHUD).X - 15;
+                        float xPosition = titlesafearea.Width - spriteFont.MeasureString(gameHUD).X - 20;
                         float yPosition = titlesafearea.Height - (textHeight + previousHeight);
                         previousHeight += textHeight;
 
