@@ -92,8 +92,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             SetupBackgroundTiles(5, 5);
             SetupCamera();
             SetupEnemy();
+            SetupHUD();
             CreateGlobalBulletSpriteEntity();
             SetupTempPlayerDeadSpriteFlyweight();
+        }
+
+        private void SetupHUD()
+        {
+            new EntityBuilder()
+                .SetHUD(true)
+                .SetPosition(new Vector2(10, 1100))
+                .SetSprite("XboxController")
+                .Build();
+
+            new EntityBuilder()
+                .SetHUD(true)
+                .SetPosition(new Vector2(1600, 1100))
+                .SetSprite("health3_small")
+                .Build();
         }
 
         private void SetupTempPlayerDeadSpriteFlyweight()
@@ -201,7 +217,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var x = new Random(DateTime.Now.Millisecond).Next(0, 2000);
             var y = new Random(DateTime.Now.Millisecond).Next(0, 2000);
 
-            var monster = new EntityBuilder()
+            new EntityBuilder()
                 .SetPosition(new Vector2(x, y), layerDepth: 20)
                 .SetRendering(200, 200)
                 .SetSprite("zombieSquare")
@@ -210,6 +226,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetArtificialIntelligence()
                 .SetCollision(new Rectangle(50, 50, 200, 200))
                 .SetHealth()
+                //.SetHUD("hello")
                 .Build();
 
         }
@@ -250,17 +267,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
 
-            CreatePlayer(name: "Carlos", actionBindings: actionBindings1,
+            CreatePlayer(new Vector2(1650, 1100), name: "Carlos", actionBindings: actionBindings1,
                 position: new Vector2(200, 200), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId);
-            CreatePlayer("Elvir", actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
+            CreatePlayer(new Vector2(1650, 1100), "Elvir", actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId, disabled: false);
             //CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
             //    collision: true, isCaged: false, cageId: cageId, disabled: true);
         }
 
         //The multitude of options here is for easy debug purposes
-        public void CreatePlayer(string name, ActionBindings actionBindings,
+        public void CreatePlayer(Vector2 HUDposition, string name, ActionBindings actionBindings,
             Vector2 position = default(Vector2), bool movable = true,
             MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false,
             bool disabled = false, bool isCaged = false, int cageId = 0)
@@ -288,6 +305,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetCameraFollow()
                 .SetPlayer(name)
                 .SetHealth()
+                .SetHUD(false, showStats:true)
                 .Build();
 
 

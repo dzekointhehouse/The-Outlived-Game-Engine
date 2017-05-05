@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using UnityEngine;
 using ZEngine.Components;
@@ -39,6 +40,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             {
                 Position = position,
                 ZIndex = layerDepth
+            };
+            components.Add(component);
+            return this;
+        }
+
+        public EntityBuilder SetHUD(bool isOnlyHUD,string text = null, bool showStats = false)
+        {
+            RenderHUDComponent component = new RenderHUDComponent()
+            {
+                HUDtext = text,
+                ShowStats = showStats,
+                IsOnlyHUD = isOnlyHUD
             };
             components.Add(component);
             return this;

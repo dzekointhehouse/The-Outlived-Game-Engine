@@ -10,6 +10,7 @@ using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 
@@ -22,7 +23,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         readonly GameDependencies gameDependencies = new GameDependencies();
         private FlashlightSystem lightSystems;
         private PenumbraComponent penumbraComponent;
-        private TitlesafeRenderSystem titleSafeSystem;
+        private RenderHUDSystem _titleSafeHudSystem;
 
         public TestGame2()
         {
@@ -37,7 +38,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             // TODO: Add your initialization logic here
             lightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
-            titleSafeSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
+            _titleSafeHudSystem = SystemManager.Instance.GetSystem<RenderHUDSystem>();
 
             base.Initialize();
         }
@@ -78,7 +79,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            titleSafeSystem.Draw(gameDependencies);
+            _titleSafeHudSystem.Draw(gameDependencies);
            // lightSystems.BeginDraw(penumbraComponent);
 
 

@@ -11,6 +11,7 @@ using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
 using ZEngine.Managers;
 
 using ZEngine.Systems;
@@ -87,7 +88,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
             manager.Get<RenderSystem>().Render(_gameDependencies); // lowers FPS by half (2000)
             manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
-            manager.Get<TitlesafeRenderSystem>().Draw(_gameDependencies); // not noticable
+            manager.Get<RenderHUDSystem>().Draw(_gameDependencies); // not noticable
         }
     }
 }

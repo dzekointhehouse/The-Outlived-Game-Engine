@@ -4,6 +4,7 @@ using System.Linq;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
 using ZEngine.Systems.InputHandler;
@@ -29,7 +30,7 @@ namespace ZEngine.Managers
             { typeof(InputHandler), new InputHandler() },
             { typeof(MoveSystem), new MoveSystem() },
             { typeof(TankMovementSystem), new TankMovementSystem() },
-            { typeof(TitlesafeRenderSystem), new TitlesafeRenderSystem()},
+            { typeof(RenderHUDSystem), new RenderHUDSystem()},
             { typeof(FlashlightSystem), new FlashlightSystem()},
             { typeof(CollisionSystem), new CollisionSystem() },
             { typeof(CollisionResolveSystem), new CollisionResolveSystem() },

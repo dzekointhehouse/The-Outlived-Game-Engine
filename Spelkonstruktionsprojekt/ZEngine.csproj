@@ -45,6 +45,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Helpers\IEntityBuilder.cs" />
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="ZEngine\Systems\ScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\SoundSystem.cs" />
     <Compile Include="ZEngine\Systems\Rendering\SpriteAnimationSystem.cs" />
-    <Compile Include="ZEngine\Systems\Rendering\TitlesafeRenderSystem.cs" />
+    <Compile Include="ZEngine\Systems\Rendering\RenderHUDSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
     <Compile Include="ZEngine\Systems\VideoPlayerSystem.cs" />
     <Compile Include="ZEngine\Systems\WeaponSystem.cs" />

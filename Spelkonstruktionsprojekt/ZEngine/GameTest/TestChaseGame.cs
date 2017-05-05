@@ -12,6 +12,7 @@ using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
@@ -34,7 +35,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private InputHandler InputHandlerSystem;
         private MoveSystem MoveSystem;
         private TankMovementSystem TankMovementSystem;
-        private TitlesafeRenderSystem TitlesafeRenderSystem;
+        private RenderHUDSystem _renderHudSystem;
         private CollisionSystem CollisionSystem;
         private CameraSceneSystem CameraFollowSystem;
         private FlashlightSystem LightSystems;
@@ -82,7 +83,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             LoadContentSystem = SystemManager.Instance.GetSystem<LoadContentSystem>();
             InputHandlerSystem = SystemManager.Instance.GetSystem<InputHandler>();
             TankMovementSystem = SystemManager.Instance.GetSystem<TankMovementSystem>();
-            TitlesafeRenderSystem = SystemManager.Instance.GetSystem<TitlesafeRenderSystem>();
+            _renderHudSystem = SystemManager.Instance.GetSystem<RenderHUDSystem>();
             CollisionSystem = SystemManager.Instance.GetSystem<CollisionSystem>();
             CameraFollowSystem = SystemManager.Instance.GetSystem<CameraSceneSystem>();
             LightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
@@ -601,7 +602,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 LightSystems.BeginDraw(penumbraComponent);
                 RenderSystem.Render(_gameDependencies);
                 LightSystems.EndDraw(penumbraComponent, gameTime);
-                TitlesafeRenderSystem.Draw(_gameDependencies);
+                _renderHudSystem.Draw(_gameDependencies);
 
                 BackToMenu();
                 ContinueButton();
