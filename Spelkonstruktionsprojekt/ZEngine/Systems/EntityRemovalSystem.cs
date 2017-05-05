@@ -22,7 +22,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         public void Update(GameTime gameTime)
         {
-            DeadEntities(gameTime);
+//            DeadEntities(gameTime);
+            _DeadEntities(gameTime);
             ImmediateRemoval();
         }
 
@@ -48,6 +49,69 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     }
                     ComponentManager.Instance.DeleteEntity(entityId);
                 });
+        }
+
+        private void _DeadEntities(GameTime gameTime)
+        {
+            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
+
+            foreach (var entity in healthEntities)
+            {
+                // Better yet would be to use a component to determine if they should be deleted
+                // then when they should be deleted, and be able to get the associated components.
+                var healthComponent = entity.Value as HealthComponent;
+                if (!healthComponent.Alive)
+                {
+                    // We want to remove all the components for the entity except for the 
+                    // spriteComponent and health, we need them still.
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(CameraFollowComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SoundComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(WeaponComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(ActionBindings), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(CollisionComponent), entity.Key);
+//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entity.Key);
+                    var moveComponent = ComponentManager.Instance
+                        .GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                    if (moveComponent != null)
+                    {
+                        moveComponent.CurrentAcceleration = 0;
+                        moveComponent.AccelerationSpeed = 0;
+                        moveComponent.RotationMomentum = 0;
+                        moveComponent.RotationSpeed = 0;
+                    }
+                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(AIComponent), entity.Key);
+
+                    var lightComponent =
+                        ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
+                    if (lightComponent != null)
+                        lightComponent.Light.Enabled = false;
+
+                    var animationComponent =
+                        ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
+                    if (animationComponent == null)
+                    {
+                        animationComponent = new AnimationComponent();
+                        ComponentManager.Instance.AddComponentToEntity(animationComponent, entity.Key);
+                    }
+
+
+                    // For this animation we need the lenght (to when we'll start fading the blood)
+                    // this animation also needs to be unique, which means we won't create it 
+                    // every time we come to this system. Also the gametime is needed.
+                    var animation = new GeneralAnimation()
+                    {
+                        AnimationType = "BloodPool",
+                        StartOfAnimation = gameTime.TotalGameTime.TotalMilliseconds,
+                        Length = 6000,
+                        Unique = true
+                    };
+
+                    // Now we add it.
+                    AttachNewDeathFadeAwayAnimation(animation, entity.Key);
+                    animationComponent.Animations.Add(animation);
+                }
+            }
         }
 
         // Used for animating blood when entities die.
@@ -131,6 +195,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         sprite.Alpha -= 0.0001f;
                         return;
                     }
+
+
 
 //                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
 //                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entityKey);

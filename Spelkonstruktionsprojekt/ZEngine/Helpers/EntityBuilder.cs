@@ -44,16 +44,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetSprite(string spriteName, int tileWidth = 0, int tileHeight = 0, float scale = 1f, float alpha = 1f)
+        public EntityBuilder SetSprite(string spriteName, Point startPosition = default(Point), int tileWidth = 0,
+            int tileHeight = 0, float scale = 1f, float alpha = 1f)
         {
             SpriteComponent component = new SpriteComponent()
             {
-               Alpha = alpha,
-              // Position = position,
-              TileHeight = tileHeight,
-              TileWidth = tileWidth,
-               Scale = scale,
-               SpriteName = spriteName,
+                Alpha = alpha,
+                Position = startPosition,
+                Scale = scale,
+                SpriteName = spriteName,
+                TileHeight = tileHeight,
+                TileWidth = tileWidth
             };
             components.Add(component);
             return this;

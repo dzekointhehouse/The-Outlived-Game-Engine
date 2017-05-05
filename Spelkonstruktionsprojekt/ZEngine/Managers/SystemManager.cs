@@ -48,8 +48,9 @@ namespace ZEngine.Managers
             { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
             { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
             { typeof(LightAbilitySystem), new LightAbilitySystem() },
-            { typeof(PickupCollisionSystem), new PickupCollisionSystem() }
-
+            { typeof(PickupCollisionSystem), new PickupCollisionSystem() },
+            { typeof(SprintAbilitySystem), new SprintAbilitySystem() },
+            { typeof(QuickTurnAbilitySystem), new QuickTurnAbilitySystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

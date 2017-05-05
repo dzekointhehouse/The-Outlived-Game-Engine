@@ -84,39 +84,81 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             if (spriteAnimation.CurrentAnimatedState == null && spriteAnimation.NextAnimatedState != null)
             {
+                Debug.WriteLine("SWITCHING TO NEXT ANIMATION STATE");
                 spriteAnimation.CurrentAnimatedState = spriteAnimation.NextAnimatedState;
+//                spriteComponent.Position = new Point(
+//                        spriteAnimation.CurrentAnimatedState.StartPosition.X,
+//                        spriteAnimation.CurrentAnimatedState.StartPosition.Y
+//                    );
+//                return;
             }
             else if (spriteAnimation.CurrentAnimatedState == null)
             {
                 return;
             }
 
-            var binding = spriteAnimation.CurrentAnimatedState;
-            if (!timeEnoughToFlipFrame(gameTime, spriteAnimation, binding)) return;
+            var currentAnimation = spriteAnimation.CurrentAnimatedState;
+            if (!timeEnoughToFlipFrame(gameTime, spriteAnimation, currentAnimation)) return;
 
+            var currentPosition = spriteComponent.Position.Y * spriteComponent.Sprite.Width +
+                                  spriteComponent.Position.X;
+            var startPosition = currentAnimation.StartPosition.Y * spriteComponent.Sprite.Width +
+                                currentAnimation.StartPosition.X;
+            var endPosition = currentAnimation.EndPosition.Y * spriteComponent.Sprite.Width +
+                              currentAnimation.EndPosition.X;
+            if (currentPosition < startPosition || currentPosition > endPosition)
+            {
+                spriteComponent.Position = new Point(currentAnimation.StartPosition.X,
+                    currentAnimation.StartPosition.Y);
+                return;
+            }
             //Incremenet the x position by one tile width.
             var newX = spriteComponent.Position.X + spriteComponent.TileWidth;
             var newY = spriteComponent.Position.Y;
 
-            var tolerance = 50;
-            //Check if the new positions exceeds the end position of the animation loop
-            if (newY > binding.EndPosition.Y || binding.EndPosition.Y - newY < tolerance && binding.EndPosition.X - newX < tolerance)
+            var tolerance = 5; //For margin of error due to lack of uneven pixel positions
+            if (spriteComponent.Sprite.Width - newX < tolerance)
             {
-                newX = binding.StartPosition.X;
-                newY = binding.StartPosition.Y;
-                spriteAnimation.CurrentAnimatedState = spriteAnimation.NextAnimatedState;
-                Debug.WriteLine("END OF ANIMATION");
+                newX = 0;
+                newY += spriteComponent.TileHeight;
+            }
+
+            //Check if the new positions exceeds the end position of the animation loop
+            if (newY > currentAnimation.EndPosition.Y || currentAnimation.EndPosition.Y - newY < tolerance &&
+                currentAnimation.EndPosition.X - newX < tolerance)
+            {
+                if (currentAnimation.IsTransition)
+                {
+                    Debug.WriteLine("IS TRANSITION");
+                    newX = currentAnimation.EndPosition.X;
+                    newY = currentAnimation.EndPosition.Y;
+                }
+                else
+                {
+                    Debug.WriteLine("END OF ANIMATION, endX:" + currentAnimation.EndPosition.X + " endY:" +
+                                    currentAnimation.EndPosition.Y);
+                    Debug.WriteLine("newX:" + newX + " newY:" + newY);
+                    Debug.WriteLine("sprite width " + spriteComponent.Sprite.Width);
+                    spriteAnimation.CurrentAnimatedState = spriteAnimation.NextAnimatedState;
+                    if (spriteAnimation.CurrentAnimatedState == null) return;
+                    else
+                    {
+                        newX = spriteAnimation.CurrentAnimatedState.StartPosition.X;
+                        newY = spriteAnimation.CurrentAnimatedState.StartPosition.Y;
+                    }
+                }
             }
             //Check if new sprite crop bounds exceeds the sprites actual bounds
             else if (newX + spriteComponent.TileWidth > spriteComponent.Sprite.Width)
             {
-                newX = binding.StartPosition.X;
+                newX = currentAnimation.StartPosition.X;
                 newY = spriteComponent.Position.Y + spriteComponent.TileHeight;
                 if (newY + spriteComponent.TileHeight > spriteComponent.Sprite.Height)
                 {
-                    newY = binding.StartPosition.Y;
+                    newY = currentAnimation.StartPosition.Y;
                 }
             }
+
             spriteComponent.Position = new Point(newX, newY);
             spriteAnimation.AnimationStarted = gameTime.TotalGameTime.TotalMilliseconds;
         }
@@ -145,7 +187,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // intented to be used so that the entities show a splash of blood when they die.
         private void DeathAnimation(GameTime gameTime)
         {
-            var animationComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpriteAnimationComponent));
+            var animationComponents =
+                ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpriteAnimationComponent));
 
             foreach (var animation in animationComponents)
             {
@@ -190,7 +233,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                                 if (currentFrame.Y >= animationComponent.SpritesheetSize.Y)
                                 {
                                     currentFrame.Y = 3;
-
                                 }
                             }
                         }
@@ -201,7 +243,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         sprite.Scale = 2;
 
                         sprite.Sprite = animationComponent.Spritesheet;
-                        
+
 
                         // This will calculate the sourceRectangel
                         // from the spritesheet (which sprite is used).

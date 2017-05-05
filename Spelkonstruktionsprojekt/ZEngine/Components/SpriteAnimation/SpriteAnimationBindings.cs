@@ -18,6 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation
         public Point StartPosition { get; set; }= default(Point);
         public Point EndPosition { get; set; }= default(Point);
         public double FrameLength { get; set; } = 16;
+        public bool IsTransition { get; set; } = false;
     }
 
     public class SpriteAnimationBindingBuilder
@@ -30,7 +31,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation
             return this;
         }
 
-        public SpriteAnimationBindingBuilder Positions(Point startPosition, Point endPosition)
+        public SpriteAnimationBindingBuilder Positions(Point startPosition = default(Point), Point endPosition = default(Point))
         {
             _spriteAnimationBinding.StartPosition = startPosition;
             _spriteAnimationBinding.EndPosition = endPosition;
@@ -46,6 +47,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation
         public SpriteAnimationBinding Build()
         {
             return _spriteAnimationBinding;
+        }
+
+        public SpriteAnimationBindingBuilder IsTransition(bool shouldEndAndStayOnFinalFrame)
+        {
+            _spriteAnimationBinding.IsTransition = shouldEndAndStayOnFinalFrame;
+            return this;
         }
     }
 

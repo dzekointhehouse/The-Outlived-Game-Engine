@@ -209,6 +209,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetCollision(new Rectangle(50, 50, 200, 200))
+                .SetHealth()
                 .Build();
 
         }
@@ -224,6 +225,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.Q, EventConstants.TurnAround)
                 .SetAction(Keys.E, EventConstants.FireWeapon)
                 .SetAction(Keys.LeftShift, EventConstants.LightStatus)
+                .SetAction(Keys.R, EventConstants.Running)
                 .Build();
 
             var player2 = EntityManager.GetEntityManager().NewEntity();
@@ -278,7 +280,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetRendering(100, 100)
                 .SetInertiaDampening()
                 .SetBackwardsPenalty()
-                .SetSprite("moving_soldier1", 260, 156)
+                .SetSprite("player_sprites", new Point(1252, 206), 313, 206)
                 .SetLight(light)
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
@@ -292,9 +294,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var animationBindings = new SpriteAnimationBindingsBuilder()
                 .Binding(
                     new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(1561, 313))
+                        .Positions(new Point(1252, 206), new Point(0, 1030))
                         .StateConditions(State.WalkingForward)
                         .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(startPosition: new Point(1565, 0), endPosition: new Point(939, 206))
+                        .StateConditions(State.Dead)
+                        .IsTransition(true)
+                        .Length(1000)
                         .Build()
                 )
                 .Build();
