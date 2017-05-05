@@ -14,6 +14,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
     public class MapHelper
     {
         private readonly Dictionary<int, string> tileTypes;
+        private readonly List<int> collisions = new List<int>(10);
 
         // the user defines which tiles to be used in the MapPack 
         // here, the key will be used as the position in the matrix
@@ -22,6 +23,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         {
             this.tileTypes = tileTypes;
         }
+
+
+        public void AddNumberToCollisionList(int number)
+        {
+            collisions.Add(number);
+        }
+
 
         // This method takes a matrix that represents a MapPack and
         // the size the tiles should be, then it creates all the entities
@@ -47,6 +55,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     if(positionNumber == 1) continue;
                     if(positionNumber == 2) continue;
 
+
+
                     // We use the positionNumber from the MapPack in the dictionary so
                     // we can find which tile to use there that the user specifies.
                     SpriteComponent spriteComponent = new SpriteComponent{ SpriteName = tileTypes[positionNumber] };
@@ -56,6 +66,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     ComponentManager.Instance.AddComponentToEntity(position, id);
                     ComponentManager.Instance.AddComponentToEntity(renderComponent, id);
                     ComponentManager.Instance.AddComponentToEntity(spriteComponent, id);
+
+                    // If the position number is contained in our
+                    // defined list of which tiles should have the
+                    // collision component (for walls or other obstacles)
+                    if (collisions.Contains(positionNumber))
+                    {
+                        var collision = new CollisionComponent();
+                        ComponentManager.Instance.AddComponentToEntity(collision, id);
+                    }
                 }
             }
 
