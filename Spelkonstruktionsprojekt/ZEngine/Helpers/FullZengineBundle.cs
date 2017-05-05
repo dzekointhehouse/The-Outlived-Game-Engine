@@ -47,6 +47,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<BulletCollisionSystem>().Start();
             manager.Get<LightAbilitySystem>().Start();
             manager.Get<SpriteAnimationSystem>().Start();
+            manager.Get<QuickTurnAbilitySystem>().Start();
+            manager.Get<SprintAbilitySystem>().Start();
 
         }
 
@@ -72,7 +74,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
             manager.Get<CameraSceneSystem>().Update(gameTime);
             manager.Get<FlashlightSystem>().Update(gameTime, viewportDimensions);
-            manager.Get<HealthSystem>().Update();
+            manager.Get<HealthSystem>().Update(gameTime);
             manager.Get<EntityRemovalSystem>().Update(gameTime);
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();
