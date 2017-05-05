@@ -9,7 +9,7 @@ using ZEngine.Components;
 
 namespace ZEngine.Components
 {
-    class SpriteComponent : IComponent
+    public class SpriteComponent : IComponent
     {
         public int TileWidth { get; set; } = 0;
         public int TileHeight { get; set; } = 0;

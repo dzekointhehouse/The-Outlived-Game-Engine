@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ZEngine.Components
 {
-    class CollisionComponent : IComponent
+    public class CollisionComponent : IComponent
     {
         public Rectangle SpriteBoundingRectangle { get; set; }
 

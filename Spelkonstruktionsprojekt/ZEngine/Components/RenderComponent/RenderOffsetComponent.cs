@@ -8,7 +8,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent
 {
-    class RenderOffsetComponent : IComponent
+    public class RenderOffsetComponent : IComponent
     {
         public Vector2 Offset = default(Vector2);
     }

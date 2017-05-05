@@ -22,7 +22,7 @@ using ZEngine.Wrappers;
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
     // Optimus prime
-    class FullZengineBundle
+    public class FullZengineBundle
     {
         private SystemManager manager = SystemManager.Instance;
 

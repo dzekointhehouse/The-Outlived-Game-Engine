@@ -1,6 +1,6 @@
 ﻿namespace Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps
 {
-    static class MapPack
+    public static class MapPack
     {
         public static int[,] TheWallMap = new int[,]
         {

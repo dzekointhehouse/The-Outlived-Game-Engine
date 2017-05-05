@@ -8,7 +8,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class CameraViewComponent : IComponent
+    public class CameraViewComponent : IComponent
     {
         // We store the cameras dimension in
         // this view rectangle.
