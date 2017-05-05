@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -83,30 +84,22 @@ namespace Game
             SetupBackgroundTiles(5, 5);
             SetupCamera();
             SetupEnemy();
-            SetupHUD();
+            SetupHUD(TypeHUD.Xbox);
             CreateGlobalBulletSpriteEntity();
             SetupTempPlayerDeadSpriteFlyweight();
         }
 
-        private void SetupHUD()
+        private void SetupHUD(TypeHUD type)
         {
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(10, 1100))
-                .SetSprite("XboxController")
-                .Build();
+            GameHUD HUD = new GameHUD();
 
-            // Health Icons
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(1680, 1150))
-                .SetSprite("health3_small")
-                .Build();
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(1680, 1210))
-                .SetSprite("health3_small")
-                .Build();
+            switch (type)
+            {
+                case TypeHUD.Xbox:
+                    HUD.CreateXboxHUD();
+                    break;
+                default: break;
+            }
         }
 
         private void SetupTempPlayerDeadSpriteFlyweight()
@@ -182,17 +175,9 @@ namespace Game
 
         public void SetupBackgroundTiles(int width, int height)
         {
-            var tileTypes = new Dictionary<int, string>();
+             GameMap map = new GameMap();
 
-            //tileTypes.Add(0, "blue64");
-            tileTypes.Add(1, "grass");
-            //tileTypes.Add(2, "red64");
-            //tileTypes.Add(4, "yellowwall64");
-
-
-            MapHelper mapcreator = new MapHelper(tileTypes);
-
-            mapcreator.CreateMapTiles(MapPack.Minimap, 500);
+            map.SetupGameMap(MapType.BlockWorld);
         }
 
         public void SetupCamera()
