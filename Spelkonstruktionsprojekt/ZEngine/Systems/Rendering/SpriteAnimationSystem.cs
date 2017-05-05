@@ -106,10 +106,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                                 currentAnimation.StartPosition.X;
             var endPosition = currentAnimation.EndPosition.Y * spriteComponent.Sprite.Width +
                               currentAnimation.EndPosition.X;
-            if (currentPosition < startPosition || currentPosition > endPosition)
+            var isFirstRunOfAnimation = currentPosition < startPosition || currentPosition > endPosition;
+            if (isFirstRunOfAnimation)
             {
                 spriteComponent.Position = new Point(currentAnimation.StartPosition.X,
                     currentAnimation.StartPosition.Y);
+                spriteAnimation.AnimationStarted = gameTime.TotalGameTime.TotalMilliseconds;
                 return;
             }
             //Incremenet the x position by one tile width.
@@ -117,17 +119,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var newY = spriteComponent.Position.Y;
 
             var tolerance = 5; //For margin of error due to lack of uneven pixel positions
-            if (spriteComponent.Sprite.Width - newX < tolerance)
+            var xPositionIsOverEdge = spriteComponent.Sprite.Width - newX < tolerance;
+            if (xPositionIsOverEdge)
             {
                 newX = 0;
                 newY += spriteComponent.TileHeight;
             }
 
             //Check if the new positions exceeds the end position of the animation loop
-            if (newY > currentAnimation.EndPosition.Y || currentAnimation.EndPosition.Y - newY < tolerance &&
-                currentAnimation.EndPosition.X - newX < tolerance)
+            var yPositionIsOverEdge = newY > currentAnimation.EndPosition.Y;
+            var endYPositionExceeded = currentAnimation.EndPosition.Y - newY < tolerance;
+            var endXPositionExceeded = currentAnimation.EndPosition.X - newX < tolerance;
+            if (yPositionIsOverEdge || endYPositionExceeded && endXPositionExceeded)
             {
-                if (currentAnimation.IsTransition)
+                if (currentAnimation.IsTransition) //TODO REMOVE AFTER DEMO
                 {
                     Debug.WriteLine("IS TRANSITION");
                     newX = currentAnimation.EndPosition.X;
@@ -141,22 +146,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     Debug.WriteLine("sprite width " + spriteComponent.Sprite.Width);
                     spriteAnimation.CurrentAnimatedState = spriteAnimation.NextAnimatedState;
                     if (spriteAnimation.CurrentAnimatedState == null) return;
-                    else
-                    {
-                        newX = spriteAnimation.CurrentAnimatedState.StartPosition.X;
-                        newY = spriteAnimation.CurrentAnimatedState.StartPosition.Y;
-                    }
+                    newX = spriteAnimation.CurrentAnimatedState.StartPosition.X;
+                    newY = spriteAnimation.CurrentAnimatedState.StartPosition.Y;
                 }
             }
             //Check if new sprite crop bounds exceeds the sprites actual bounds
-            else if (newX + spriteComponent.TileWidth > spriteComponent.Sprite.Width)
+            if (newX + spriteComponent.TileWidth > spriteComponent.Sprite.Width)
             {
                 newX = currentAnimation.StartPosition.X;
                 newY = spriteComponent.Position.Y + spriteComponent.TileHeight;
-                if (newY + spriteComponent.TileHeight > spriteComponent.Sprite.Height)
-                {
-                    newY = currentAnimation.StartPosition.Y;
-                }
+            }
+            if (newY + spriteComponent.TileHeight > spriteComponent.Sprite.Height)
+            {
+                newY = currentAnimation.StartPosition.Y;
             }
 
             spriteComponent.Position = new Point(newX, newY);

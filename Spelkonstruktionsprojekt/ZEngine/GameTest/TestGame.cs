@@ -301,10 +301,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 )
                 .Binding(
                     new SpriteAnimationBindingBuilder()
-                        .Positions(startPosition: new Point(1565, 0), endPosition: new Point(939, 206))
+                        .Positions(new Point(0, 0), new Point(939, 206))
                         .StateConditions(State.Dead)
                         .IsTransition(true)
-                        .Length(1000)
+                        .Length(30)
                         .Build()
                 )
                 .Build();
