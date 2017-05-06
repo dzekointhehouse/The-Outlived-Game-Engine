@@ -303,6 +303,22 @@ namespace Game
                 .Binding(
                     new SpriteAnimationBindingBuilder()
                         .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead, State.WalkingForward)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead, State.WalkingBackwards)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
                         .StateConditions(State.Dead)
                         .IsTransition(true)
                         .Length(30)
