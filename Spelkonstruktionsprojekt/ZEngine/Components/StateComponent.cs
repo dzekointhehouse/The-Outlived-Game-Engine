@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.EventBus;
@@ -27,8 +28,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         {
 //            System.Diagnostics.Debug.WriteLine("Adding state: " + state);
             var stateComponent = ComponentManager.Instance.GetEntityComponentOrDefault<StateComponent>(entityId);
-            stateComponent?.State.Add(state);
-            PublishStateChangeEvent(entityId, currentTime);
+            if (!stateComponent.State.Contains(state)) //TODO effectives so that StateChange dont get called so often. This might be from the GamePad systems!
+            {
+                stateComponent?.State.Add(state);
+                PublishStateChangeEvent(entityId, currentTime);
+            }
         }
 
         public static void TryRemoveState(int entityId, State state, double currentTime)
@@ -45,7 +49,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
                 "StateChanged",
                 new StateChangeEventBuilder()
                     .Entity(entityId)
-                    .Time(currentTime).Build()
+                    .Time(currentTime)
+                    .Build()
             );
         }
     }

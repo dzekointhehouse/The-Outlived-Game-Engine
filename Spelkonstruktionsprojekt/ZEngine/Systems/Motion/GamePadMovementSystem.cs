@@ -43,11 +43,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Motion
                     Debug.WriteLine("X:" + leftStickPosition.X + " Y:" + leftStickPosition.Y + " D:" +
                                     moveComponent.Direction);
                     moveComponent.CurrentAcceleration = 0;
-                    if (moveComponent.Speed > 0.01 && moveComponent.Speed < -0.01)
-                    {
-                        StateManager.TryRemoveState(entity.Key, State.WalkingForward,
-                            gameTime.TotalGameTime.TotalMilliseconds);
-                    }
+                    StateManager.TryRemoveState(entity.Key, State.WalkingForward,
+                        gameTime.TotalGameTime.TotalMilliseconds);
                 }
             }
         }
