@@ -22,7 +22,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
     // of his player. (everything drawn here is and should be titlesafe) 
     class RenderHUDSystem : ISystem
     {
-        public static string SystemName = "TitlesafeRender";
+        public static string SystemName = "RenderHUDSystem";
         private GameDependencies _gameDependencies;
         private StringBuilder gameHUD = new StringBuilder(0, 50);
 
