@@ -81,10 +81,11 @@ namespace Game
         {
             // var button = new Button();
             var cameraCageId = SetupCameraCage();
-            InitPlayers(cameraCageId);
+//            InitPlayers(cameraCageId);
+            InitTestPlayer();
             SetupBackgroundTiles(5, 5);
             SetupCamera();
-            SetupEnemy();
+//            SetupEnemy();
             SetupHUD(TypeHUD.Xbox);
             CreateGlobalBulletSpriteEntity();
             SetupTempPlayerDeadSpriteFlyweight();
@@ -252,12 +253,93 @@ namespace Game
 
             CreatePlayer(new Vector2(1650, 1100), name: "Carlos", actionBindings: actionBindings1,
                 position: new Vector2(200, 200), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId, gamePadIndex: 0);
+                collision: true, isCaged: true, cageId: cageId, gamePadIndex: 0, disabled: true);
             CreatePlayer(new Vector2(1650, 1100), "Elvir", actionBindings2, position: new Vector2(400, 400),
                 cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId, disabled: false);
             //CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
             //    collision: true, isCaged: false, cageId: cageId, disabled: true);
+        }
+
+        public void InitTestPlayer()
+        {
+            var actionBindings = new ActionBindingsBuilder()
+                .SetAction(Keys.Up, EventConstants.WalkForward)
+                .SetAction(Keys.Down, EventConstants.WalkBackward)
+                .SetAction(Keys.Left, EventConstants.TurnLeft)
+                .SetAction(Keys.Right, EventConstants.TurnRight)
+                .SetAction(Keys.PageDown, EventConstants.FireWeapon)
+                .SetAction(Keys.PageUp, EventConstants.TurnAround)
+                .SetAction(Keys.RightControl, EventConstants.Running)
+                .Build();
+
+            var position = new Vector2(300, 300);
+            var light = new Spotlight()
+            {
+                Position = position,
+                Scale = new Vector2(850f),
+                Radius = (float) 0.0001,
+                Intensity = (float) 0.6,
+                ShadowType = ShadowType.Solid // Will not lit hulls themselves
+            };
+            IEntityBuilder playerEntity = new EntityBuilder()
+                .SetPosition(position, 10)
+                .SetRendering(100, 100)
+                .SetInertiaDampening()
+                .SetBackwardsPenalty()
+                .SetSprite("dot")
+                .SetLight(light)
+                .SetSound("walking")
+                .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
+                .SetCollision(new Rectangle(30, 20, 70, 60))
+                .SetCameraFollow()
+                .SetPlayer("MrTest")
+                .SetHealth()
+                .SetHUD(false, showStats: true)
+                .Build();
+
+            var animationBindings = new SpriteAnimationBindingsBuilder()
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(1252, 206), new Point(0, 1030))
+                        .StateConditions(State.WalkingForward)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead, State.WalkingForward)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead, State.WalkingBackwards)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Build();
+
+            ComponentManager.Instance.AddComponentToEntity(actionBindings, playerEntity.GetEntityKey());
+//            ComponentManager.Instance.AddComponentToEntity(animationBindings, playerEntity.GetEntityKey());
+
+            var weaponComponent = new WeaponComponent()
+            {
+                Damage = 10
+            };
+            ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
         }
 
         //The multitude of options here is for easy debug purposes
