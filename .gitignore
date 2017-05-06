@@ -247,5 +247,3 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-/Spelkonstruktionsprojekt/ZEngine/Components/LightComponent.cs
-*.cs
