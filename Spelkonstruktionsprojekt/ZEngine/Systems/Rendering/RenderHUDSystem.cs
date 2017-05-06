@@ -51,7 +51,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
-            float previousHeight = 50f;
+            float previousHeightHealth = 50f;
+            float previousHeightAmmo = 50f;
 
             ContentManager contentManager = _gameDependencies.GameContent as ContentManager;
 
@@ -84,37 +85,55 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                        // gameHUD.Append(player.Name);
 
-                        if (health.Alive)
-                        {
-                            var currentHealth = health.MaxHealth - health.Damage.Sum();
-                            //gameHUD.Append(":");
-                            gameHUD.Append(currentHealth);
-                            //gameHUD.Append("HP");
+                        float textHeight;
 
-                        }
-                        else
+                        float xPosition;
+                        float yPosition;
+
+                        if (health != null)
                         {
-                            gameHUD.Append(": Rest in peace");
+                            gameHUD.Clear();
+                            var currentHealth = health.CurrentHealth;
+
+                            // for formating and adding the amount to the HUD.
+                            gameHUD.AppendLine();
+                            gameHUD.Append(currentHealth);
+
+                            // this call gives us the height of the text,
+                            // so now we are able to stack them on top of each other.
+                            textHeight = spriteFont.MeasureString(gameHUD).Y;
+
+                            xPosition = titlesafearea.Width - spriteFont.MeasureString(gameHUD).X - 20;
+                            yPosition = titlesafearea.Height - (textHeight + previousHeightHealth);
+                            previousHeightHealth += textHeight;
+
+                            position = new Vector2(xPosition, yPosition);
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);
+
                         }
 
                         // adding ammo here the same way.
                         if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(instance.Key) && health.Alive)
                         {
+                            gameHUD.Clear();
                             AmmoComponent ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(instance.Key);
-                            gameHUD.Append(" Ammo: ");
+                            
+                            // for formating and adding the amount to the HUD.
+                            gameHUD.AppendLine();
                             gameHUD.Append(ammo.Amount);
 
+
+                            // this call gives us the height of the text,
+                            // so now we are able to stack them on top of each other.
+                            textHeight = spriteFont.MeasureString(gameHUD).Y;
+                            xPosition = titlesafearea.X + 20;
+                            yPosition = titlesafearea.Height - (textHeight + previousHeightAmmo);
+                            previousHeightAmmo += textHeight;
+
+                            position = new Vector2(xPosition, yPosition);
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);
+
                         }
-
-                        // this call gives us the height of the text,
-                        // so now we are able to stack them on top of each other.
-                        float textHeight = spriteFont.MeasureString(gameHUD).Y;
-
-                        float xPosition = titlesafearea.Width - spriteFont.MeasureString(gameHUD).X - 20;
-                        float yPosition = titlesafearea.Height - (textHeight + previousHeight);
-                        previousHeight += textHeight;
-
-                        position = new Vector2(xPosition, yPosition);
                     }
                 }
 

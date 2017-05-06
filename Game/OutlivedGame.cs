@@ -96,7 +96,7 @@ namespace Game
             switch (type)
             {
                 case TypeHUD.Xbox:
-                    HUD.CreateXboxHUD();
+                    HUD.CreateInGameHUD();
                     break;
                 default: break;
             }

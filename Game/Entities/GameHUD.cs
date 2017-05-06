@@ -16,19 +16,25 @@ namespace Game.Entities
             //switch (type)
             //{
             //    case TypeHUD.Xbox:
-            //        CreateXboxHUD();
+            //        CreateInGameHUD();
             //        break;
             //    default: break;
             //}
-            
+
         }
 
-        public void CreateXboxHUD()
+        public void CreateInGameHUD()
         {
             new EntityBuilder()
                 .SetHUD(true)
-                .SetPosition(new Vector2(10, 1100))
-                .SetSprite("XboxController")
+                .SetPosition(new Vector2(10, 1150))
+                .SetSprite("ak-47", scale: 0.3f)
+                .Build();
+
+            new EntityBuilder()
+                .SetHUD(true)
+                .SetPosition(new Vector2(10, 1210))
+                .SetSprite("ak-47", scale: 0.3f)
                 .Build();
 
             // Health Icons
