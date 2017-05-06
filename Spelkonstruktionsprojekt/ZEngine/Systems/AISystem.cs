@@ -75,7 +75,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     aiMoveComponent.Direction = (float) newDirection;
                     aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
                 }
-                else if(aiComponent.Wander == false)
+                else if (aiComponent.Wander == false)
                 {
                     aiComponent.Wander = true;
                     aiMoveComponent.CurrentAcceleration = 3;
@@ -102,13 +102,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
             var aiComponent = ComponentManager.GetEntityComponentOrDefault<AIComponent>(entityId);
+            var turnRange = MathHelper.TwoPi * 0.8;
             double start = moveComponent.Direction;
-            double target = Random.NextDouble() * MathHelper.TwoPi % MathHelper.TwoPi;
+            double target = (moveComponent.Direction - turnRange * 0.5)
+                                     + Random.NextDouble() * turnRange;
 
+            var originalMaxVelocity = moveComponent.MaxVelocitySpeed;
+            moveComponent.MaxVelocitySpeed = 25;
             generalAnimation.Animation = delegate(double currentTime)
             {
                 if (!aiComponent.Wander)
                 {
+                    moveComponent.MaxVelocitySpeed = originalMaxVelocity;
                     generalAnimation.IsDone = true;
                     return;
                 }
@@ -116,48 +121,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var elapsedTime = currentTime - generalAnimation.StartOfAnimation;
                 if (elapsedTime > generalAnimation.Length)
                 {
-                    target = Random.NextDouble() * MathHelper.TwoPi % MathHelper.TwoPi;
                     start = moveComponent.Direction;
+                    target = (moveComponent.Direction - turnRange * 0.5)
+                                    + Random.NextDouble() * turnRange;
                     generalAnimation.StartOfAnimation = currentTime;
                 }
-                //Algorithm for turning stepwise on each iteration
-                //Modulus is for when the direction makes a whole turn
-                moveComponent.Direction = (float)
-                    ((start + (target - start) / generalAnimation.Length * elapsedTime) % MathHelper.TwoPi);
+
+                var turnAroundTime = generalAnimation.Length * 0.3;
+                if (elapsedTime < turnAroundTime)
+                {
+                    //Algorithm for turning stepwise on each iteration
+                    //Modulus is for when the direction makes a whole turn
+                    moveComponent.Direction = (float)
+                        (start + (target - start) / turnAroundTime * elapsedTime);
+                }
             };
         }
-
-        //        public void InitTimer()
-        //        {
-        //            Random r = new Random();
-        //            var rand = r.Next(2000, 4000);
-        //
-        //            Timer timer = new Timer();
-        //            timer.Elapsed += new ElapsedEventHandler(Wandering);
-        //            timer.Interval = rand;
-        //            timer.Start();
-        //        }
-
-        //        public void Wandering(object sender, EventArgs e)
-        //        {
-        //            Random rnd = new Random();
-        //
-        //            var prevPos = aiMoveComponent.Direction;
-        //
-        //            float randX = (float) rnd.NextDouble();
-        //            float randY = (float) rnd.NextDouble();
-        //
-        //            var newDirection = Math.Atan2(randX, randY);
-        //
-        //            if (newDirection < prevPos)
-        //            {
-        //                aiMoveComponent.RotationMomentum = 0.5;
-        //            }
-        //            else if (newDirection > prevPos) aiMoveComponent.RotationMomentum = -0.5;
-        //
-        //
-        //            aiMoveComponent.Speed = 10f;
-        //        }
 
         private AnimationComponent GetOrCreateDefault(int entityId)
         {

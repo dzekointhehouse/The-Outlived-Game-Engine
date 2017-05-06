@@ -205,7 +205,7 @@ namespace Game
                 .SetSprite("zombieSquare")
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetArtificialIntelligence()
+                .SetArtificialIntelligence(600f)
                 .SetCollision(new Rectangle(50, 50, 200, 200))
                 .SetHealth()
                 //.SetHUD("hello")
