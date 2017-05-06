@@ -29,14 +29,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     var damage = healthComponent.Damage.First();
                     healthComponent.CurrentHealth -= damage;
                     healthComponent.Damage.Remove(damage);
-                    Debug.WriteLine("HP: " + healthComponent.CurrentHealth);
                 }
 
-
-                //Option 1
-                /*         if (healthComponent.CurrentHealth > healthComponent.MaxHealth)
-                               healthComponent.CurrentHealth = healthComponent.MaxHealth;
-                Option 2*/
                 healthComponent.CurrentHealth = MathHelper.Min(healthComponent.CurrentHealth, healthComponent.MaxHealth);
                 CheckIfDead(entityId, healthComponent, gameTime);
             }
@@ -48,8 +42,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 healthComponent.CurrentHealth = 0;
                 healthComponent.Alive = false;
+                var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(entityId);
+                if (positionComponent != null)
+                {
+                    positionComponent.ZIndex = 2;
+                }
                 StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
-                Debug.WriteLine("Entity has fallen");
             }
         }
 
