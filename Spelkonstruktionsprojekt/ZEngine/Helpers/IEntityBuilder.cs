@@ -50,7 +50,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <param name="followingDistance"> distance for when the AI will start follow players </param>
         /// <param name="isWandering"> if the AI is wandering or standing still </param>
         /// <returns></returns>
-        EntityBuilder SetArtificialIntelligence(float followingDistance = 250, bool isWandering = true);
+        EntityBuilder SetArtificialIntelligence(float followingDistance = 250);
 
         /// <summary>
         /// This call will add the collision component, this will make the entity

@@ -201,7 +201,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             MapHelper mapcreator = new MapHelper(tileTypes);
 
-            mapcreator.CreateMapTiles(MapPack.Minimap, 500);
+            mapcreator.CreateMapTiles(MapPack.Minimap, 2000);
         }
 
         public void SetupCamera()
@@ -220,21 +220,56 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public void SetupEnemy()
         {
-            var x = new Random(DateTime.Now.Millisecond).Next(0, 2000);
-            var y = new Random(DateTime.Now.Millisecond).Next(0, 2000);
+            var x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
+            var y = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
 
-            new EntityBuilder()
+            var monster = new EntityBuilder()
                 .SetPosition(new Vector2(x, y), layerDepth: 20)
                 .SetRendering(200, 200)
-                .SetSprite("zombieSquare")
+                .SetSprite("player_sprites", new Point(1252, 206), 313, 206)
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetCollision(new Rectangle(50, 50, 200, 200))
                 .SetHealth()
                 //.SetHUD("hello")
+                .BuildAndReturnId();
+
+            var animationBindings = new SpriteAnimationBindingsBuilder()
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(1252, 206), new Point(0, 1030))
+                        .StateConditions(State.WalkingForward)
+                        .Length(40)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead, State.WalkingForward)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead, State.WalkingBackwards)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
                 .Build();
 
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
         }
 
         public void InitPlayers(int cageId)
@@ -320,6 +355,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     new SpriteAnimationBindingBuilder()
                         .Positions(new Point(1252, 206), new Point(0, 1030))
                         .StateConditions(State.WalkingForward)
+                        .Length(40)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead, State.WalkingForward)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .StateConditions(State.Dead, State.WalkingBackwards)
+                        .IsTransition(true)
                         .Length(30)
                         .Build()
                 )
@@ -376,7 +427,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Update(GameTime gameTime)
         {
-
             gameBundle.Update(gameTime);
             fps.Update(gameTime);
             base.Update(gameTime);

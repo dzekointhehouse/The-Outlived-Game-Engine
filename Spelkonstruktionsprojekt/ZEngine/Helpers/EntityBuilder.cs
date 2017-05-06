@@ -38,7 +38,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         {
             PositionComponent component = new PositionComponent()
             {
-                Position = position,
+                Position = new Vector2(position.X, position.Y),
                 ZIndex = layerDepth
             };
             components.Add(component);
@@ -94,12 +94,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetArtificialIntelligence(float followingDistance = 250, bool isWandering = true)
+        public EntityBuilder SetArtificialIntelligence(float followingDistance = 250)
         {
             AIComponent component = new AIComponent()
             {
                 FollowDistance = followingDistance,
-                Wander = isWandering
             };
             components.Add(component);
             return this;
@@ -217,6 +216,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                 ComponentManager.Instance.AddComponentToEntity(component, _key);
             }
             return this;
+        }
+
+        public int BuildAndReturnId()
+        {
+            return Build()
+                .GetEntityKey();
         }
 
         // Here you can set the same components from a previous build

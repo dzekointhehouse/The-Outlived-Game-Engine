@@ -56,7 +56,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
 
             var binding = animationBindings.Bindings
-                .FirstOrDefault(e => BindingsMatch(stateChangeEvent.NewState.ToList(), e.StateConditions));
+                .FirstOrDefault(e => BindingsMatch(e.StateConditions, stateChangeEvent.NewState.ToList()));
             if (binding == null)
             {
                 Debug.WriteLine("Binding is null for " + stateChangeEvent.NewState);
@@ -71,7 +71,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
             else
             {
-                Debug.WriteLine("SETTING NEXT ANIMATION TO " + stateChangeEvent.NewState[0]);
+                if (stateChangeEvent.NewState.Count > 1)
+                {
+                    Debug.WriteLine("SETTING NEXT ANIMATION TO " + stateChangeEvent.NewState[1]);
+                }
                 spriteAnimation.NextAnimatedState = binding;
             }
         }
@@ -188,9 +191,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         private bool BindingsMatch(List<State> source, List<State> target)
         {
-            return source.Contains(target[0]);
-//            return source.All(target.Contains);
-//                   && source.Count == target.Count;
+//            return source.Contains(target[0]);
+            return source.All(target.Contains)
+                   && source.Count == target.Count;
         }
 
         // DeathAnimation as it states in the method name is used for entities that
