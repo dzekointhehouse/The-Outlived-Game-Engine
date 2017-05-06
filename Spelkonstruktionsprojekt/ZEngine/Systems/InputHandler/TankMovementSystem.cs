@@ -43,7 +43,7 @@ namespace ZEngine.Systems
             {
                 if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
                 {
-                    Debug.WriteLine("WALKING FORWARDS");
+//                    Debug.WriteLine("WALKING FORWARDS");
                     moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
                     StateManager.TryAddState(moveEvent.EntityId, State.WalkingForward, moveEvent.EventTime);
                 }
@@ -109,20 +109,6 @@ namespace ZEngine.Systems
                 var component = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
                 updateAction(component);
             }
-        }
-    }
-
-    public class MoveEvent
-    {
-        public double CurrentTimeMilliseconds = 0;
-        public int EntityId { get; set; }
-        public ActionBindings.KeyEvent KeyEvent { get; set; }
-
-        public MoveEvent(int entityId, ActionBindings.KeyEvent keyEvent, double currentTimeMilliseconds)
-        {
-            CurrentTimeMilliseconds = currentTimeMilliseconds;
-            EntityId = entityId;
-            KeyEvent = keyEvent;
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
@@ -251,7 +252,7 @@ namespace Game
 
             CreatePlayer(new Vector2(1650, 1100), name: "Carlos", actionBindings: actionBindings1,
                 position: new Vector2(200, 200), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId);
+                collision: true, isCaged: true, cageId: cageId, gamePadIndex: 0);
             CreatePlayer(new Vector2(1650, 1100), "Elvir", actionBindings2, position: new Vector2(400, 400),
                 cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId, disabled: false);
@@ -263,7 +264,7 @@ namespace Game
         public void CreatePlayer(Vector2 HUDposition, string name, ActionBindings actionBindings,
             Vector2 position = default(Vector2), bool movable = true,
             MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false,
-            bool disabled = false, bool isCaged = false, int cageId = 0)
+            bool disabled = false, bool isCaged = false, int cageId = 0, int gamePadIndex = -1)
         {
             if (disabled) return;
 
@@ -291,7 +292,6 @@ namespace Game
                 .SetHUD(false, showStats: true)
                 .Build();
 
-
             var animationBindings = new SpriteAnimationBindingsBuilder()
                 .Binding(
                     new SpriteAnimationBindingBuilder()
@@ -313,7 +313,14 @@ namespace Game
             ComponentManager.Instance.AddComponentToEntity(actionBindings, playerEntity.GetEntityKey());
             ComponentManager.Instance.AddComponentToEntity(animationBindings, playerEntity.GetEntityKey());
 
-
+            if (gamePadIndex >= 0)
+            {
+                var gamePadComponent = new GamePadComponent
+                {
+                    GamePadPlayerIndex = gamePadIndex
+                };
+                ComponentManager.Instance.AddComponentToEntity(gamePadComponent, playerEntity.GetEntityKey());
+            }
             if (isCaged)
             {
                 var cageComponent = new CageComponent()
@@ -353,7 +360,6 @@ namespace Game
 
         protected override void Update(GameTime gameTime)
         {
-
             gameBundle.Update(gameTime);
             fps.Update(gameTime);
             base.Update(gameTime);

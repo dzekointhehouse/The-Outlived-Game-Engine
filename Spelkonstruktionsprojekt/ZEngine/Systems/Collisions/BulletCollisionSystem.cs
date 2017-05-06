@@ -24,7 +24,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
             if (ComponentManager.EntityHasComponent<HealthComponent>(collisionEvent.Target))
             {
-                Debug.WriteLine("Added damage");
+//                Debug.WriteLine("Added damage");
                 var healthComponent =
                     ComponentManager.GetEntityComponentOrDefault<HealthComponent>(collisionEvent.Target);
                 if (healthComponent != null)

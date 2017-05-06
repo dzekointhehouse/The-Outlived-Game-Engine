@@ -11,6 +11,7 @@ using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Motion;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
 using ZEngine.Managers;
 
@@ -64,7 +65,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         {
             manager.Get<EnemyCollisionSystem>().GameTime = gameTime; //TODO system dependency
             manager.Get<InputHandler>().HandleInput(_oldKeyboardState, gameTime);
+            manager.Get<InputHandler>().HandleGamePadInput(gameTime);
             _oldKeyboardState = Keyboard.GetState();
+            manager.Get<GamePadMovementSystem>().WalkForwards(gameTime);
 
             manager.Get<AISystem>().Update(gameTime);
             manager.Get<AnimationSystem>().UpdateAnimations(gameTime);

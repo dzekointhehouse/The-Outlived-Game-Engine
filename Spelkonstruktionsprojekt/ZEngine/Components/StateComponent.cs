@@ -25,7 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public static void TryAddState(int entityId, State state, double currentTime)
         {
-            System.Diagnostics.Debug.WriteLine("Adding state: " + state);
+//            System.Diagnostics.Debug.WriteLine("Adding state: " + state);
             var stateComponent = ComponentManager.Instance.GetEntityComponentOrDefault<StateComponent>(entityId);
             stateComponent?.State.Add(state);
             PublishStateChangeEvent(entityId, currentTime);
@@ -33,7 +33,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public static void TryRemoveState(int entityId, State state, double currentTime)
         {
-            System.Diagnostics.Debug.WriteLine("Removing state: " + state);
+//            System.Diagnostics.Debug.WriteLine("Removing state: " + state);
             var stateComponent = ComponentManager.Instance.GetEntityComponentOrDefault<StateComponent>(entityId);
             stateComponent?.State.Remove(state);
             PublishStateChangeEvent(entityId, currentTime);

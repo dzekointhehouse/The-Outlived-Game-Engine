@@ -28,14 +28,14 @@ namespace ZEngine.Systems.Collisions
 
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
-            Debug.WriteLine("Added damage");
+//            Debug.WriteLine("Added damage");
             var healthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(collisionEvent.Entity);
             if (healthComponent != null)
             {
                 healthComponent.Damage.Add(1000);
             }
 
-            Debug.WriteLine("Handle enemy collision");
+//            Debug.WriteLine("Handle enemy collision");
 //            GameEnder.Score = GameTime.TotalGameTime.TotalSeconds;
         }
     }

@@ -45,7 +45,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ZEngine\Components\Input\GamePadComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
+    <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Helpers\IEntityBuilder.cs" />
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
     <Compile Include="ZEngine\Systems\Motion\BackwardsPenaltySystem.cs" />
+    <Compile Include="ZEngine\Systems\Motion\GamePadMovementSystem.cs" />
     <Compile Include="ZEngine\Systems\Motion\InertiaDampenerSystem.cs" />
     <Compile Include="ZEngine\Systems\Motion\MoveSystem.cs" />
     <Compile Include="ZEngine\Systems\ScoreSystem.cs" />

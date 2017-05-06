@@ -4,6 +4,7 @@ using System.Linq;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Motion;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
@@ -51,7 +52,8 @@ namespace ZEngine.Managers
             { typeof(LightAbilitySystem), new LightAbilitySystem() },
             { typeof(PickupCollisionSystem), new PickupCollisionSystem() },
             { typeof(SprintAbilitySystem), new SprintAbilitySystem() },
-            { typeof(QuickTurnAbilitySystem), new QuickTurnAbilitySystem() }
+            { typeof(QuickTurnAbilitySystem), new QuickTurnAbilitySystem() },
+            { typeof(GamePadMovementSystem), new GamePadMovementSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //
