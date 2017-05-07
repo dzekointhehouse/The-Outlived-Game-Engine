@@ -264,13 +264,14 @@ namespace Game
         public void InitTestPlayer()
         {
             var actionBindings = new ActionBindingsBuilder()
-                .SetAction(Keys.Up, EventConstants.WalkForward)
-                .SetAction(Keys.Down, EventConstants.WalkBackward)
-                .SetAction(Keys.Left, EventConstants.TurnLeft)
-                .SetAction(Keys.Right, EventConstants.TurnRight)
-                .SetAction(Keys.PageDown, EventConstants.FireWeapon)
-                .SetAction(Keys.PageUp, EventConstants.TurnAround)
-                .SetAction(Keys.RightControl, EventConstants.Running)
+                .SetAction(Keys.W, EventConstants.WalkForward)
+                .SetAction(Keys.S, EventConstants.WalkBackward)
+                .SetAction(Keys.A, EventConstants.TurnLeft)
+                .SetAction(Keys.D, EventConstants.TurnRight)
+                .SetAction(Keys.E, EventConstants.FireWeapon)
+                .SetAction(Keys.Q, EventConstants.TurnAround)
+                .SetAction(Keys.R, EventConstants.Running)
+                .SetAction(Keys.LeftShift, EventConstants.LightStatus)
                 .Build();
 
             var position = new Vector2(300, 300);
