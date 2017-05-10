@@ -24,6 +24,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     public class SoundSystem : ISystem
     {
         private readonly EventBus EventBus = EventBus.Instance;
+        private AudioEmitter emitter = new AudioEmitter();
+        private AudioListener listener = new AudioListener();
 
         public ISystem Start()
         {
@@ -55,6 +57,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // that is associated with this event "entityFireWeapon"
             if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
+
                 // To play the bullet sound the entity needs to have
                 // the BulletFlyweightComponent
                 var bulletFlyweightComponent =
@@ -69,6 +72,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 // We create a SoundEffectInstance which gives us more control
                 var soundInstance = sound.SoundEffect.CreateInstance();
+
+
+                var positionComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
+                
+                // it's logical that the sound comes from the weapon which is the source of the
+                // sound and the location where the sound will be the strongest.
+                emitter.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
+                listener.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
+
+                // Applying the 3d sound effect to the sound instance
+                soundInstance.Apply3D(listener, emitter);
 
                 // If it is not already playing then play it
                 if (soundInstance.State != SoundState.Playing)
@@ -159,7 +174,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public Action<double> NewWalkingSoundAnimation(GeneralAnimation animation, SoundEffectInstance sound,
             MoveComponent moveComponent)
         {
-            return delegate(double currentTime)
+            return delegate (double currentTime)
             {
                 var elapsedTime = currentTime - animation.StartOfAnimation;
                 if (elapsedTime > animation.Length && moveComponent.Speed > -5 && moveComponent.Speed < 5)

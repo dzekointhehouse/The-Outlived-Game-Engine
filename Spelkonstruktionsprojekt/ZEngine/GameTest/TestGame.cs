@@ -36,7 +36,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
     /// </summary>
     public class TestGame : Game
     {
-        // private readonly GameDependencies _gameDependencies = new GameDependencies();
+        // private readonly GameDependencies Dependencies = new GameDependencies();
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
         private Video video;
         private VideoPlayer player;
@@ -54,7 +54,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             gameBundle = new FullZengineBundle();
 
-            gameBundle._gameDependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            gameBundle.Dependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = (int)viewportDimensions.X,
                 PreferredBackBufferHeight = (int)viewportDimensions.Y
@@ -71,7 +71,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
 
             IsFixedTimeStep = false;
-            gameBundle._gameDependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
+            gameBundle.Dependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
         }
 
         protected override void Initialize()

@@ -43,6 +43,11 @@
   <ItemGroup>
     <Compile Include="Entities\GameHUD.cs" />
     <Compile Include="Entities\GameMap.cs" />
+    <Compile Include="Factory\EntityFactory.cs" />
+    <Compile Include="Menu\GameModeMenu.cs" />
+    <Compile Include="Menu\MainMenu.cs" />
+    <Compile Include="Menu\Menu.cs" />
+    <Compile Include="Menu\GameManager.cs" />
     <Compile Include="OutlivedGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

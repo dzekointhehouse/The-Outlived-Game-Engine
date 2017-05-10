@@ -31,14 +31,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
 
-        public GameDependencies _gameDependencies = new GameDependencies();
+        public GameDependencies Dependencies = GameDependencies.Instance;
 
 
         public void InitializeSystems(Game game)
         {
-            _gameDependencies.GameContent = game.Content;
-            _gameDependencies.SpriteBatch = new SpriteBatch(game.GraphicsDevice);
-            _gameDependencies.Game = game;
+            Dependencies.GameContent = game.Content;
+            Dependencies.SpriteBatch = new SpriteBatch(game.GraphicsDevice);
+            Dependencies.Game = game;
 
             //Init systems that require initialization
             manager.Get<TankMovementSystem>().Start();
@@ -56,9 +56,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public void LoadContent()
         {
-            manager.Get<LoadContentSystem>().LoadContent(this._gameDependencies.Game.Content);
+            manager.Get<LoadContentSystem>().LoadContent(this.Dependencies.Game.Content);
             // Want to initialize penumbra after loading all the game content.
-            penumbraComponent = manager.Get<FlashlightSystem>().Initialize(_gameDependencies);
+            penumbraComponent = manager.Get<FlashlightSystem>().Initialize(Dependencies);
         }
 
         public void Update(GameTime gameTime)
@@ -89,9 +89,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         public void Draw(GameTime gameTime)
         {
             manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
-            manager.Get<RenderSystem>().Render(_gameDependencies); // lowers FPS by half (2000)
+            manager.Get<RenderSystem>().Render(Dependencies); // lowers FPS by half (2000)
             manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
-            manager.Get<RenderHUDSystem>().Draw(_gameDependencies); // not noticable
+            manager.Get<RenderHUDSystem>().Draw(Dependencies); // not noticable
         }
     }
 }
