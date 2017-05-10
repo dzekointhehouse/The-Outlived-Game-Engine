@@ -12,8 +12,6 @@ namespace Game.Menu
 {
     class MainMenu : IMenu
     {
-        private SpriteFont font;
-        private Texture2D background;
         private Microsoft.Xna.Framework.Game game;
         private GameManager gameManager;
 
@@ -23,11 +21,11 @@ namespace Game.Menu
             game = this.gameManager.engine.Dependencies.Game;
         }
 
-        private void LoadMenu()
-        {
-            font = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
-            background = game.Content.Load<Texture2D>("Images/mainmenu");
-        }
+        //private void LoadMenu()
+        //{
+        //    font = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
+        //    background = game.Content.Load<Texture2D>("Images/mainmenu");
+        //}
         private void ContinueButton()
         {
             // get the newest state
@@ -54,7 +52,6 @@ namespace Game.Menu
             {
                 gameManager.CurrentGameState = GameManager.GameState.MainMenu;
                 gameManager.OldState = newState;
-
             }
         }
         private void ExitButton()
@@ -68,25 +65,24 @@ namespace Game.Menu
             {
                 game.Exit();
                 gameManager.OldState = newState;
-
             }
         }
 
         private void MainMenuDisplay()
         {
             SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-            LoadMenu();
-            String textEscape = "ESCAPE: BACK TO THE MAIN MENU / PAUSE THE GAME";
-            String textContinue = "ENTER: CONTINUE";
-            String textExit = "S: EXIT THE GAME";
+            //LoadMenu();
+            String textEscape = "BACK TO THE MAIN MENU / PAUSE THE GAME";
+            String textContinue = "CONTINUE";
+            String textExit = "EXIT THE GAME";
             var viewport = game.GraphicsDevice.Viewport;
 
             sb.Begin();
 
-            sb.Draw(background, viewport.Bounds, Color.White);
-            sb.DrawString(font, textContinue, new Vector2(400, viewport.Height * 0.45f), Color.White);
-            sb.DrawString(font, textEscape, new Vector2(400, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(font, textExit, new Vector2(400, viewport.Height * 0.65f), Color.White);
+            sb.Draw(gameManager.GameContent.MainBackground, viewport.Bounds, Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textContinue, new Vector2(400, viewport.Height * 0.45f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textEscape, new Vector2(400, viewport.Height * 0.55f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(400, viewport.Height * 0.65f), Color.White);
 
             sb.End();
         }

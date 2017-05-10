@@ -34,14 +34,14 @@ namespace Game.Menu
             game = this.gameManager.engine.Dependencies.Game;
         }
 
-        private void LoadMenu()
-        {
-            font = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
-            background = game.Content.Load<Texture2D>("gamemodesv2");
-            esc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
-            enter = game.Content.Load<Texture2D>("Images/Keyboard/enter");
-            back = game.Content.Load<Texture2D>("Images/Keyboard/left");
-        }
+        //private void LoadMenu()
+        //{
+        //    font = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
+        //    background = game.Content.Load<Texture2D>("gamemodesv2");
+        //    esc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
+        //    enter = game.Content.Load<Texture2D>("Images/Keyboard/enter");
+        //    back = game.Content.Load<Texture2D>("Images/Keyboard/left");
+        //}
         private void ContinueButton()
         {
             // get the newest state
@@ -86,21 +86,21 @@ namespace Game.Menu
         private void MainMenuDisplay()
         {
             SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-            LoadMenu();
+            //LoadMenu();
 
 
             var viewport = game.GraphicsDevice.Viewport;
             sb.Begin();
 
-            sb.Draw(background, viewport.Bounds, Color.White);
-            sb.Draw(enter, new Vector2(250, viewport.Height * 0.30f), Color.White);
-            sb.Draw(enter, new Vector2(250, viewport.Height * 0.50f), Color.White);
-            sb.Draw(enter, new Vector2(250, viewport.Height * 0.70f), Color.White);
+            sb.Draw(gameManager.GameContent.GameModeBackground, viewport.Bounds, Color.White);
+            sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.30f), Color.White);
+            sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.50f), Color.White);
+            sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.70f), Color.White);
 
-            sb.DrawString(font, textBlockworld, new Vector2(400, viewport.Height * 0.35f), Color.White);
-            sb.DrawString(font, textSurvival, new Vector2(400, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(font, textDeathmatch, new Vector2(400, viewport.Height * 0.75f), Color.White);
-            sb.DrawString(font, textExit, new Vector2(viewport.Width * 0.5f, viewport.Height * 0.9f), Color.Gray);
+            sb.DrawString(gameManager.GameContent.MenuFont, textBlockworld, new Vector2(400, viewport.Height * 0.35f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textSurvival, new Vector2(400, viewport.Height * 0.55f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textDeathmatch, new Vector2(400, viewport.Height * 0.75f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(viewport.Width * 0.5f, viewport.Height * 0.9f), Color.Gray);
 
             sb.End();
         }

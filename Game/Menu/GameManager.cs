@@ -23,8 +23,8 @@ namespace Game
         SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         // Here we just say that the first state is the Intro
         protected internal GameState CurrentGameState = GameState.MainMenu;
-
         protected internal KeyboardState OldState;
+        protected internal GameContent GameContent;
         // Game states
         private IMenu mainMenu;
         private IMenu gameModesMenu;
@@ -32,8 +32,11 @@ namespace Game
         public GameManager(FullZengineBundle gameBundle)
         {
             engine = gameBundle;
+            GameContent = new GameContent(gameBundle.Dependencies.Game);
+
             mainMenu = new MainMenu(this);
             gameModesMenu = new GameModeMenu(this);
+
         }
         // Game states
         public enum GameState
