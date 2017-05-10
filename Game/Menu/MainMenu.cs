@@ -83,7 +83,7 @@ namespace Game.Menu
 
             sb.Begin();
 
-            sb.Draw(background, Vector2.Zero, Color.White);
+            sb.Draw(background, viewport.Bounds, Color.White);
             sb.DrawString(font, textContinue, new Vector2(400, viewport.Height * 0.45f), Color.White);
             sb.DrawString(font, textEscape, new Vector2(400, viewport.Height * 0.55f), Color.White);
             sb.DrawString(font, textExit, new Vector2(400, viewport.Height * 0.65f), Color.White);

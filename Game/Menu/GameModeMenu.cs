@@ -16,8 +16,12 @@ namespace Game.Menu
 
         private SpriteFont font;
         private Texture2D background;
+        private Texture2D esc;
+        private Texture2D enter;
+        private Texture2D back;
         private readonly Microsoft.Xna.Framework.Game game;
         private readonly GameManager gameManager;
+
 
         String textDeathmatch = "Deathmatch";
         String textBlockworld = "Blockworld";
@@ -34,6 +38,9 @@ namespace Game.Menu
         {
             font = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
             background = game.Content.Load<Texture2D>("gamemodesv2");
+            esc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
+            enter = game.Content.Load<Texture2D>("Images/Keyboard/enter");
+            back = game.Content.Load<Texture2D>("Images/Keyboard/left");
         }
         private void ContinueButton()
         {
@@ -85,7 +92,11 @@ namespace Game.Menu
             var viewport = game.GraphicsDevice.Viewport;
             sb.Begin();
 
-            sb.Draw(background, Vector2.Zero, Color.White);
+            sb.Draw(background, viewport.Bounds, Color.White);
+            sb.Draw(enter, new Vector2(250, viewport.Height * 0.30f), Color.White);
+            sb.Draw(enter, new Vector2(250, viewport.Height * 0.50f), Color.White);
+            sb.Draw(enter, new Vector2(250, viewport.Height * 0.70f), Color.White);
+
             sb.DrawString(font, textBlockworld, new Vector2(400, viewport.Height * 0.35f), Color.White);
             sb.DrawString(font, textSurvival, new Vector2(400, viewport.Height * 0.55f), Color.White);
             sb.DrawString(font, textDeathmatch, new Vector2(400, viewport.Height * 0.75f), Color.White);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Game.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,7 +30,7 @@ namespace Game
         private readonly GameDependencies _gameDependencies = GameDependencies.Instance;
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
 
-        private Vector2 viewportDimensions = new Vector2(1800, 1300);
+        private Vector2 viewportDimensions = new Vector2(1920, 1080); // HD baby!
         public SpriteBatch spriteBatch;
 
         private readonly FullZengineBundle gameBundle;
