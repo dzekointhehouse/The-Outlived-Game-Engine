@@ -15,7 +15,7 @@ namespace Game.Menu
         private Microsoft.Xna.Framework.Game game;
         private GameManager gameManager;
         private ControlConfiguration controls;
-        private OptionsState currentPosition = OptionsState.Exit;
+        private OptionsState currentPosition = OptionsState.Continue;
         Viewport viewport;
 
         private enum OptionsState
@@ -54,13 +54,13 @@ namespace Game.Menu
             switch (currentPosition)
             {
                 case OptionsState.Continue:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.45f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.40f), Color.White);
                     break;
                 case OptionsState.Pause:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.55f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
                     break;
                 case OptionsState.Exit:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.65f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.60f), Color.White);
                     break;
             }
 

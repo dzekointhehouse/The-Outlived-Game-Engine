@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Game
 {
@@ -12,7 +14,7 @@ namespace Game
         public Texture2D MainBackground;
         public Texture2D GameModeBackground;
         public Texture2D ButtonEsc;
-        public Texture2D ButtonEnter;
+        public Texture2D ButtonContinue;
         public Texture2D ButtonBack;
         public Texture2D CharacterBackground;
 
@@ -30,8 +32,17 @@ namespace Game
             GameModeBackground = game.Content.Load<Texture2D>("gamemodesv2");
             CharacterBackground = game.Content.Load<Texture2D>("Images/zombieCharacter");
             ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
-            ButtonEnter = game.Content.Load<Texture2D>("Images/Keyboard/enter");
+
             ButtonBack = game.Content.Load<Texture2D>("Images/Keyboard/left");
+
+            if (GamePad.GetState(PlayerIndex.One).IsConnected)
+            {
+                ButtonContinue = game.Content.Load<Texture2D>("Images/GamePad/X");
+            }
+            else
+            {
+                ButtonContinue = game.Content.Load<Texture2D>("Images/Keyboard/enter");
+            }
 
         }
     }

@@ -17,7 +17,7 @@ namespace Game.Menu
         private readonly Microsoft.Xna.Framework.Game game;
         private readonly GameManager gameManager;
         private readonly ControlConfiguration controls;
-        private OptionsState currentPosition = OptionsState.Exit;
+        private OptionsState currentPosition = OptionsState.Extinction;
 
 
 
@@ -60,16 +60,16 @@ namespace Game.Menu
             switch (currentPosition)
             {
                 case OptionsState.Extinction:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.35f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.30f), Color.White);
                     break;
                 case OptionsState.Survival:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.55f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
                     break;
                 case OptionsState.Exit:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.75f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
                     break;
                 case OptionsState.Blockworld:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.75f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
                     break;
             }
 

@@ -57,16 +57,16 @@ namespace Game.Menu.States
             switch (currentPosition)
             {
                 case OptionsState.FirstCharacter:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.35f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.35f), Color.White);
                     break;
                 case OptionsState.SecondCharacter:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.45f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.45f), Color.White);
                     break;
                 case OptionsState.ThirdCharacter:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.55f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.55f), Color.White);
                     break;
                 case OptionsState.FourthCharacter:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.65f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.65f), Color.White);
                     break;
 
             }
