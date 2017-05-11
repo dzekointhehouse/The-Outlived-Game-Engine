@@ -36,7 +36,6 @@ namespace Game.Menu
         // is moved accordingly, or kept the same.
         public int GetMenuOptionPosition(int currentPosition)
         {
-            SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
             // get the newest state
             KeyboardState newState = Keyboard.GetState();
 

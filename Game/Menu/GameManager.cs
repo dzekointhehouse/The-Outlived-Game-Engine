@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Game.Menu;
+using Game.Menu.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -28,14 +29,19 @@ namespace Game
         // Game states
         private IMenu mainMenu;
         private IMenu gameModesMenu;
+        private IMenu characterMenu;
 
         public GameManager(FullZengineBundle gameBundle)
         {
             engine = gameBundle;
             GameContent = new GameContent(gameBundle.Dependencies.Game);
 
+            // initializing the states, remember:
+            // all the states need to exist in the 
+            // manager.
             mainMenu = new MainMenu(this);
             gameModesMenu = new GameModeMenu(this);
+            characterMenu = new CharacterMenu(this);
 
         }
         // Game states
@@ -45,6 +51,7 @@ namespace Game
             MainMenu,
             Play,
             GameModesMenu,
+            CharacterMenu,
             InGame,
             GameOver,
 
@@ -113,6 +120,9 @@ namespace Game
                 case GameState.GameModesMenu:
                     gameModesMenu.Draw(sb);
                     break;
+                case GameState.CharacterMenu:
+                    characterMenu.Draw(sb);
+                    break;
             }
         }
 
@@ -138,6 +148,9 @@ namespace Game
                     break;
                 case GameState.GameModesMenu:
                     gameModesMenu.Update(gameTime);
+                    break;
+                case GameState.CharacterMenu:
+                    characterMenu.Update(gameTime);
                     break;
             }
         }

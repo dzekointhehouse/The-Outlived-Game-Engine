@@ -5,13 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using ZEngine.Wrappers;
 
-namespace Game.Menu
+namespace Game.Menu.States
 {
-    class GameModeMenu : IMenu
+    class CharacterMenu : IMenu
     {
 
         private readonly Microsoft.Xna.Framework.Game game;
@@ -21,10 +19,10 @@ namespace Game.Menu
 
 
 
-        String textDeathmatch = "Deathmatch";
-        String textBlockworld = "Blockworld";
-        String textSurvival = "Survival";
-        String textExit = "Escape: EXIT THE GAME";
+        String textOne = "Carlos";
+        String textTwo = "Elvir";
+        String textThree = "Markus";
+        String textFour = "Escape: EXIT THE GAME";
 
         private enum OptionsState
         {
@@ -34,7 +32,7 @@ namespace Game.Menu
             Exit
         }
 
-        public GameModeMenu(GameManager gameManager)
+        public CharacterMenu(GameManager gameManager)
         {
             this.gameManager = gameManager;
             game = this.gameManager.engine.Dependencies.Game;
@@ -52,10 +50,10 @@ namespace Game.Menu
 
             sb.Draw(gameManager.GameContent.GameModeBackground, viewport.Bounds, Color.White);
 
-            sb.DrawString(gameManager.GameContent.MenuFont, textBlockworld, new Vector2(400, viewport.Height * 0.35f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textSurvival, new Vector2(400, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textDeathmatch, new Vector2(400, viewport.Height * 0.75f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(viewport.Width * 0.5f, viewport.Height * 0.9f), Color.Gray);
+            sb.DrawString(gameManager.GameContent.MenuFont, textTwo, new Vector2(400, viewport.Height * 0.40f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textThree, new Vector2(400, viewport.Height * 0.50f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textOne, new Vector2(400, viewport.Height * 0.60f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textFour, new Vector2(400, viewport.Height * 0.70f), Color.Gray);
 
             switch (currentPosition)
             {
@@ -63,13 +61,13 @@ namespace Game.Menu
                     sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.35f), Color.White);
                     break;
                 case OptionsState.Survival:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.55f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.45f), Color.White);
                     break;
                 case OptionsState.Exit:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.75f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.55f), Color.White);
                     break;
                 case OptionsState.Blockworld:
-                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.75f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.65f), Color.White);
                     break;
             }
 
@@ -90,16 +88,16 @@ namespace Game.Menu
             switch (currentPosition)
             {
                 case OptionsState.Extinction:
-                    controls.ContinueButton(GameManager.GameState.CharacterMenu);
+                    controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
                 case OptionsState.Survival:
-                    controls.ContinueButton(GameManager.GameState.CharacterMenu);
+                    controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
                 case OptionsState.Exit:
-                    controls.ContinueButton(GameManager.GameState.CharacterMenu);
+                    controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
                 case OptionsState.Blockworld:
-                    controls.ContinueButton(GameManager.GameState.CharacterMenu);
+                    controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
             }
         }
