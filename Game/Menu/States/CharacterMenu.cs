@@ -15,28 +15,27 @@ namespace Game.Menu.States
         private readonly Microsoft.Xna.Framework.Game game;
         private readonly GameManager gameManager;
         private readonly ControlConfiguration controls;
-        private OptionsState currentPosition = OptionsState.Exit;
+        private OptionsState currentPosition = OptionsState.FirstCharacter;
 
-
-
-        String textOne = "Carlos";
-        String textTwo = "Elvir";
-        String textThree = "Markus";
-        String textFour = "Escape: EXIT THE GAME";
+        private string textOne = "Carlios";
+        private string textTwo = "Bonzie";
+        private string textThree = "Dr.Strange";
+        private string textFour = "Wladimir";
 
         private enum OptionsState
         {
-            Extinction,
-            Survival,
-            Blockworld,
-            Exit
+            FirstCharacter,
+            SecondCharacter,
+            ThirdCharacter,
+            FourthCharacter
         }
 
         public CharacterMenu(GameManager gameManager)
         {
             this.gameManager = gameManager;
             game = this.gameManager.engine.Dependencies.Game;
-            this.controls = new ControlConfiguration(0, 2, gameManager);
+            // Adding the options interval and gamemanager.
+            controls = new ControlConfiguration(0, 3, gameManager);
         }
 
         private void MainMenuDisplay()
@@ -48,7 +47,7 @@ namespace Game.Menu.States
             var viewport = game.GraphicsDevice.Viewport;
             sb.Begin();
 
-            sb.Draw(gameManager.GameContent.GameModeBackground, viewport.Bounds, Color.White);
+            sb.Draw(gameManager.GameContent.CharacterBackground, viewport.Bounds, Color.White);
 
             sb.DrawString(gameManager.GameContent.MenuFont, textTwo, new Vector2(400, viewport.Height * 0.40f), Color.White);
             sb.DrawString(gameManager.GameContent.MenuFont, textThree, new Vector2(400, viewport.Height * 0.50f), Color.White);
@@ -57,18 +56,19 @@ namespace Game.Menu.States
 
             switch (currentPosition)
             {
-                case OptionsState.Extinction:
+                case OptionsState.FirstCharacter:
                     sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.35f), Color.White);
                     break;
-                case OptionsState.Survival:
+                case OptionsState.SecondCharacter:
                     sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.45f), Color.White);
                     break;
-                case OptionsState.Exit:
+                case OptionsState.ThirdCharacter:
                     sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.55f), Color.White);
                     break;
-                case OptionsState.Blockworld:
+                case OptionsState.FourthCharacter:
                     sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.65f), Color.White);
                     break;
+
             }
 
 
@@ -87,16 +87,16 @@ namespace Game.Menu.States
 
             switch (currentPosition)
             {
-                case OptionsState.Extinction:
+                case OptionsState.FirstCharacter:
                     controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
-                case OptionsState.Survival:
+                case OptionsState.SecondCharacter:
                     controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
-                case OptionsState.Exit:
+                case OptionsState.ThirdCharacter:
                     controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
-                case OptionsState.Blockworld:
+                case OptionsState.FourthCharacter:
                     controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
             }

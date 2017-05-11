@@ -14,6 +14,8 @@ namespace Game
         public Texture2D ButtonEsc;
         public Texture2D ButtonEnter;
         public Texture2D ButtonBack;
+        public Texture2D CharacterBackground;
+
         // Continue
         // Go back
         // Quit
@@ -26,9 +28,11 @@ namespace Game
             MenuFont = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
             MainBackground = game.Content.Load<Texture2D>("Images/mainmenu");
             GameModeBackground = game.Content.Load<Texture2D>("gamemodesv2");
+            CharacterBackground = game.Content.Load<Texture2D>("Images/zombieCharacter");
             ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
             ButtonEnter = game.Content.Load<Texture2D>("Images/Keyboard/enter");
             ButtonBack = game.Content.Load<Texture2D>("Images/Keyboard/left");
+
         }
     }
 }
