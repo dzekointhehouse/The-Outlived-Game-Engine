@@ -14,6 +14,7 @@ namespace Game.Menu
     {
         private Microsoft.Xna.Framework.Game game;
         private GameManager gameManager;
+        private ControlConfiguration controls;
         private OptionsState currentPosition = OptionsState.Exit;
         Viewport viewport;
 
@@ -28,51 +29,11 @@ namespace Game.Menu
         {
             this.gameManager = gameManager;
             game = this.gameManager.engine.Dependencies.Game;
-
+            controls = new ControlConfiguration(0, 2, gameManager);
             viewport = game.GraphicsDevice.Viewport;
         }
 
-        private void ContinueButton(GameManager.GameState state)
-        {
-            // get the newest state
-            KeyboardState newState = Keyboard.GetState();
 
-            // With this button we want to continue to the next phase of the game initialization
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || newState.IsKeyDown(Keys.Enter) && gameManager.OldState.IsKeyUp(Keys.Enter))
-            {
-                gameManager.CurrentGameState = state;
-
-            }
-            gameManager.OldState = newState;
-        }
-
-        private void ArrowPosition()
-        {
-            SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-            // get the newest state
-            KeyboardState newState = Keyboard.GetState();
-
-            // With this button we want to continue to the next phase of the game initialization
-            if (GamePad.GetState(PlayerIndex.One).DPad.Up == ButtonState.Pressed
-                || newState.IsKeyDown(Keys.Up) && gameManager.OldState.IsKeyUp(Keys.Up))
-            {
-                if(currentPosition != 0)
-                    currentPosition -= 1;
-                gameManager.OldState = newState;
-
-            }
-            if (GamePad.GetState(PlayerIndex.One).DPad.Down == ButtonState.Pressed
-                || newState.IsKeyDown(Keys.Down) && gameManager.OldState.IsKeyUp(Keys.Down))
-            {
-                if (currentPosition != OptionsState.Exit)
-                    currentPosition++;
-                gameManager.OldState = newState;
-            }
-
-
-
-        }
 
         private void MainMenuDisplay()
         {
@@ -114,18 +75,18 @@ namespace Game.Menu
 
         public void Update(GameTime gameTime)
         {
-            ArrowPosition();
+            currentPosition = (OptionsState) controls.GetMenuOptionPosition((int) currentPosition);
 
             switch (currentPosition)
             {
                 case OptionsState.Continue:
-                    ContinueButton(GameManager.GameState.GameModesMenu);
+                    controls.ContinueButton(GameManager.GameState.GameModesMenu);
                     break;
                 case OptionsState.Pause:
-                    ContinueButton(GameManager.GameState.MainMenu);
+                    controls.ContinueButton(GameManager.GameState.MainMenu);
                     break;
                 case OptionsState.Exit:
-                    ContinueButton(GameManager.GameState.GameOver);
+                    controls.ContinueButton(GameManager.GameState.GameOver);
                     break;
             }
         }

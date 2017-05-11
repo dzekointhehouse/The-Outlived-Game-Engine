@@ -34,14 +34,7 @@ namespace Game.Menu
             game = this.gameManager.engine.Dependencies.Game;
         }
 
-        //private void LoadMenu()
-        //{
-        //    font = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
-        //    background = game.Content.Load<Texture2D>("gamemodesv2");
-        //    esc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
-        //    enter = game.Content.Load<Texture2D>("Images/Keyboard/enter");
-        //    back = game.Content.Load<Texture2D>("Images/Keyboard/left");
-        //}
+
         private void ContinueButton()
         {
             // get the newest state
