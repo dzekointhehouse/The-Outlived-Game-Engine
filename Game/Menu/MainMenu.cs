@@ -38,10 +38,9 @@ namespace Game.Menu
         private void MainMenuDisplay()
         {
             SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-            //LoadMenu();
-            String textEscape = "BACK TO THE MAIN MENU / PAUSE THE GAME";
-            String textContinue = "CONTINUE";
-            String textExit = "EXIT THE GAME";
+            String textEscape = "CREDITS";
+            String textContinue = "PLAY IF YOU DARE";
+            String textExit = "TAKE THE EASY WAY OUT";
 
 
             sb.Begin();
