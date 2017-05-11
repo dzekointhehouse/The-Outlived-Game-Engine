@@ -14,58 +14,64 @@ namespace Game.Menu
     {
         private Microsoft.Xna.Framework.Game game;
         private GameManager gameManager;
+        private OptionsState currentPosition = OptionsState.Exit;
+        Viewport viewport;
+
+        private enum OptionsState
+        {
+            Continue,
+            Pause,
+            Exit
+        }
 
         public MainMenu(GameManager gameManager)
         {
             this.gameManager = gameManager;
             game = this.gameManager.engine.Dependencies.Game;
+
+            viewport = game.GraphicsDevice.Viewport;
         }
 
-        //private void LoadMenu()
-        //{
-        //    font = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
-        //    background = game.Content.Load<Texture2D>("Images/mainmenu");
-        //}
-        private void ContinueButton()
+        private void ContinueButton(GameManager.GameState state)
         {
             // get the newest state
             KeyboardState newState = Keyboard.GetState();
 
             // With this button we want to continue to the next phase of the game initialization
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || newState.IsKeyDown(Keys.Enter) && newState != gameManager.OldState)
+                || newState.IsKeyDown(Keys.Enter) && gameManager.OldState.IsKeyUp(Keys.Enter))
             {
-                gameManager.CurrentGameState = GameManager.GameState.GameModesMenu;
-                gameManager.OldState = newState;
-            }
+                gameManager.CurrentGameState = state;
 
+            }
+            gameManager.OldState = newState;
         }
 
-        private void BackToMenu()
+        private void ArrowPosition()
         {
+            SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
             // get the newest state
             KeyboardState newState = Keyboard.GetState();
 
             // With this button we want to continue to the next phase of the game initialization
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || newState.IsKeyDown(Keys.Escape) && newState != gameManager.OldState)
+            if (GamePad.GetState(PlayerIndex.One).DPad.Up == ButtonState.Pressed
+                || newState.IsKeyDown(Keys.Up) && gameManager.OldState.IsKeyUp(Keys.Up))
             {
-                gameManager.CurrentGameState = GameManager.GameState.MainMenu;
+                if(currentPosition != 0)
+                    currentPosition -= 1;
                 gameManager.OldState = newState;
-            }
-        }
-        private void ExitButton()
-        {
-            // get the newest state
-            KeyboardState newState = Keyboard.GetState();
 
-            // With this button we want to continue to the next phase of the game initialization
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || newState.IsKeyDown(Keys.S) && newState != gameManager.OldState)
+            }
+            if (GamePad.GetState(PlayerIndex.One).DPad.Down == ButtonState.Pressed
+                || newState.IsKeyDown(Keys.Down) && gameManager.OldState.IsKeyUp(Keys.Down))
             {
-                game.Exit();
+                if (currentPosition != OptionsState.Exit)
+                    currentPosition++;
                 gameManager.OldState = newState;
             }
+
+
+
         }
 
         private void MainMenuDisplay()
@@ -75,7 +81,7 @@ namespace Game.Menu
             String textEscape = "BACK TO THE MAIN MENU / PAUSE THE GAME";
             String textContinue = "CONTINUE";
             String textExit = "EXIT THE GAME";
-            var viewport = game.GraphicsDevice.Viewport;
+
 
             sb.Begin();
 
@@ -83,6 +89,19 @@ namespace Game.Menu
             sb.DrawString(gameManager.GameContent.MenuFont, textContinue, new Vector2(400, viewport.Height * 0.45f), Color.White);
             sb.DrawString(gameManager.GameContent.MenuFont, textEscape, new Vector2(400, viewport.Height * 0.55f), Color.White);
             sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(400, viewport.Height * 0.65f), Color.White);
+
+            switch (currentPosition)
+            {
+                case OptionsState.Continue:
+                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.45f), Color.White);
+                    break;
+                case OptionsState.Pause:
+                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.55f), Color.White);
+                    break;
+                case OptionsState.Exit:
+                    sb.Draw(gameManager.GameContent.ButtonEnter, new Vector2(250, viewport.Height * 0.65f), Color.White);
+                    break;
+            }
 
             sb.End();
         }
@@ -95,9 +114,20 @@ namespace Game.Menu
 
         public void Update(GameTime gameTime)
         {
-            ContinueButton();
-            BackToMenu();
-            ExitButton();
+            ArrowPosition();
+
+            switch (currentPosition)
+            {
+                case OptionsState.Continue:
+                    ContinueButton(GameManager.GameState.GameModesMenu);
+                    break;
+                case OptionsState.Pause:
+                    ContinueButton(GameManager.GameState.MainMenu);
+                    break;
+                case OptionsState.Exit:
+                    ContinueButton(GameManager.GameState.GameOver);
+                    break;
+            }
         }
     }
 }

@@ -107,7 +107,7 @@ namespace Game
 
                 case GameState.GameOver:
 
-                    ExitButton();
+                    engine.Dependencies.Game.Exit();
 
                     break;
                 case GameState.GameModesMenu:
@@ -133,7 +133,7 @@ namespace Game
 
                 case GameState.GameOver:
 
-                    ExitButton();
+                    engine.Dependencies.Game.Exit();
 
                     break;
                 case GameState.GameModesMenu:

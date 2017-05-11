@@ -14,6 +14,9 @@ namespace Game
         public Texture2D ButtonEsc;
         public Texture2D ButtonEnter;
         public Texture2D ButtonBack;
+        // Continue
+        // Go back
+        // Quit
 
 
         public SpriteFont MenuFont;
