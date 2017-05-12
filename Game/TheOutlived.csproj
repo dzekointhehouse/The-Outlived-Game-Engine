@@ -46,8 +46,8 @@
     <Compile Include="Factory\EntityFactory.cs" />
     <Compile Include="GameContent.cs" />
     <Compile Include="Menu\ControlConfiguration.cs" />
-    <Compile Include="Menu\GameModeMenu.cs" />
-    <Compile Include="Menu\MainMenu.cs" />
+    <Compile Include="Menu\States\GameModeMenu.cs" />
+    <Compile Include="Menu\States\MainMenu.cs" />
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Menu\GameManager.cs" />
     <Compile Include="Menu\States\CharacterMenu.cs" />
