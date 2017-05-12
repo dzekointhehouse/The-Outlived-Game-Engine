@@ -85,6 +85,7 @@ namespace Game
                     break;
 
                 case GameState.MainMenu:
+                    DrawBackground();
                     mainMenu.Draw(gameTime, sb);
                     break;
 
@@ -97,14 +98,17 @@ namespace Game
                     break;
 
                 case GameState.GameModesMenu:
+                    DrawBackground();
                     gameModesMenu.Draw(gameTime, sb);
                     break;
 
                 case GameState.CharacterMenu:
+                    DrawBackground();
                     characterMenu.Draw(gameTime, sb);
                     break;
 
                 case GameState.Credits:
+                    DrawBackground();
                     credits.Draw(gameTime, sb);
                     break;
                 case GameState.Paused:
@@ -122,7 +126,6 @@ namespace Game
                     break;
 
                 case GameState.MainMenu:
-                    DrawBackground();
                     mainMenu.Update(gameTime);
                     break;
 
@@ -135,17 +138,14 @@ namespace Game
                     break;
 
                 case GameState.GameModesMenu:
-                    DrawBackground();
                     gameModesMenu.Update(gameTime);
                     break;
 
                 case GameState.CharacterMenu:
-                    DrawBackground();
                     characterMenu.Update(gameTime);
                     break;
 
                 case GameState.Credits:
-                    DrawBackground();
                     credits.Update(gameTime);
                     break;
 
@@ -155,6 +155,8 @@ namespace Game
             }
         }
 
+        // This method can be used to draw a shared, moving background
+        // behind other drawn menus that have transparency in them.
         private void DrawBackground()
         {
             if (scale <= maxScale && scale >= minScale)
