@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Game
 {
     public class GameContent
     {
-        public Texture2D MainBackground;
+        public Video IntroVideo;
+        public Texture2D Background;
+        public Texture2D CreditsBackground;
+        
+        public Texture2D MainOptionsBackground;
         public Texture2D GameModeHiglightExtinction;
         public Texture2D GameModeHiglightSurvival;
         public Texture2D GameModeHiglightBlockworld;
@@ -31,7 +36,16 @@ namespace Game
         public GameContent(Microsoft.Xna.Framework.Game game)
         {
             MenuFont = game.Content.Load<SpriteFont>("Fonts/ZMenufont");
-            MainBackground = game.Content.Load<Texture2D>("Images/Menu/main");
+
+            // Intro
+            IntroVideo = game.Content.Load<Video>("version1");
+            // Main menu
+            MainOptionsBackground = game.Content.Load<Texture2D>("Images/Menu/mainoptions");
+            Background = game.Content.Load<Texture2D>("Images/Menu/background");
+
+            // Credits
+            CreditsBackground = game.Content.Load<Texture2D>("Images/Menu/credits");
+
             // Game mode
             GameModeHiglightExtinction = game.Content.Load<Texture2D>("Images/Menu/gamemodemenu_he");
             GameModeHiglightSurvival = game.Content.Load<Texture2D>("Images/Menu/gamemodemenu_hs");

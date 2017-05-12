@@ -23,13 +23,16 @@ namespace Game
         private Texture2D background;
         SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         // Here we just say that the first state is the Intro
-        protected internal GameState CurrentGameState = GameState.MainMenu;
+        protected internal GameState CurrentGameState = GameState.Intro;
+        protected internal GameState PreviousGameState;
         protected internal KeyboardState OldState;
         protected internal GameContent GameContent;
         // Game states
         private IMenu mainMenu;
         private IMenu gameModesMenu;
         private IMenu characterMenu;
+        private IMenu credits;
+        private IMenu gameIntro;
 
         public GameManager(FullZengineBundle gameBundle)
         {
@@ -42,6 +45,8 @@ namespace Game
             mainMenu = new MainMenu(this);
             gameModesMenu = new GameModeMenu(this);
             characterMenu = new CharacterMenu(this);
+            credits = new Credits(this);
+            gameIntro = new GameIntro(this);
 
         }
         // Game states
@@ -53,37 +58,11 @@ namespace Game
             GameModesMenu,
             CharacterMenu,
             InGame,
-            GameOver,
+            Quit,
+            Credits,
 
         };
 
-
-        public void IntroVideo()
-        {
-
-            Texture2D videoTexture = null;
-
-            //if (player.State != MediaState.Stopped)
-            //    videoTexture = player.GetTexture();
-
-            if (videoTexture != null)
-            {
-                sb.Begin();
-                // sb.Draw(videoTexture, new Rectangle(0, 0, (int)vp.X, (int)vp.Y), Color.White);
-                sb.End();
-
-            }
-            else CurrentGameState = GameState.MainMenu;
-        }
-
-        public void PlayGame(GameTime gameTime)
-        {
-            // Draw was done here
-
-            //BackToMenu();
-            //ContinueButton();
-            //ExitButton();
-        }
 
         private void ExitButton()
         {
@@ -98,7 +77,7 @@ namespace Game
 
                 case GameState.Intro:
 
-                    IntroVideo();
+                    gameIntro.Draw(sb);
 
                     break;
 
@@ -108,11 +87,11 @@ namespace Game
 
                 case GameState.InGame:
 
-                    PlayGame(gameTime);
+                    //PlayGame(gameTime);
 
                     break;
 
-                case GameState.GameOver:
+                case GameState.Quit:
 
                     engine.Dependencies.Game.Exit();
 
@@ -123,6 +102,9 @@ namespace Game
                 case GameState.CharacterMenu:
                     characterMenu.Draw(sb);
                     break;
+                case GameState.Credits:
+                    credits.Draw(sb);
+                    break;
             }
         }
 
@@ -130,18 +112,20 @@ namespace Game
         {
             switch (CurrentGameState)
             {
-
+                case GameState.Intro:
+                    gameIntro.Update(gameTime);
+                    break;
                 case GameState.MainMenu:
                     mainMenu.Update(gameTime);
                     break;
 
                 case GameState.InGame:
 
-                    PlayGame(gameTime);
+                   // PlayGame(gameTime);
 
                     break;
 
-                case GameState.GameOver:
+                case GameState.Quit:
 
                     engine.Dependencies.Game.Exit();
 
@@ -151,6 +135,9 @@ namespace Game
                     break;
                 case GameState.CharacterMenu:
                     characterMenu.Update(gameTime);
+                    break;
+                case GameState.Credits:
+                    credits.Update(gameTime);
                     break;
             }
         }

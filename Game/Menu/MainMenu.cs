@@ -16,12 +16,14 @@ namespace Game.Menu
         private GameManager gameManager;
         private ControlConfiguration controls;
         private OptionsState currentPosition = OptionsState.Continue;
+        private float minScale = 1.0f, maxScale = 2.0f, scale = 1.0f;
+        private bool moveHigher = true;
         Viewport viewport;
 
         private enum OptionsState
         {
             Continue,
-            Pause,
+            Credits,
             Exit
         }
 
@@ -43,19 +45,48 @@ namespace Game.Menu
             String textExit = "TAKE THE EASY WAY OUT";
 
 
-            sb.Begin();
+            if (scale <= maxScale && scale >= minScale)
+            {
+                if (scale <= minScale + 0.1)
+                {
+                    moveHigher = true;
+                }
+                if (scale >= maxScale - 0.1)
+                {
+                    moveHigher = false;
+                }
 
-            sb.Draw(gameManager.GameContent.MainBackground, viewport.Bounds, Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textContinue, new Vector2(400, viewport.Height * 0.45f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textEscape, new Vector2(400, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(400, viewport.Height * 0.65f), Color.White);
+                if (moveHigher)
+                {
+                    scale = scale + 0.0001f;
+                }
+                else
+                {
+                    scale = scale - 0.0001f;
+                }
+            }
+
+
+            sb.Begin();
+            //sb.Draw(gameManager.GameContent.Background, viewport.Bounds, Color.White);
+            sb.Draw(
+                texture: gameManager.GameContent.Background,
+                position:Vector2.Zero,
+                color: Color.White,
+                scale: new Vector2(scale)
+            );
+            sb.Draw(gameManager.GameContent.MainOptionsBackground, viewport.Bounds, Color.White);
+
+            sb.DrawString(gameManager.GameContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textEscape, new Vector2(600, viewport.Height * 0.55f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.65f), Color.White);
 
             switch (currentPosition)
             {
                 case OptionsState.Continue:
                     sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.40f), Color.White);
                     break;
-                case OptionsState.Pause:
+                case OptionsState.Credits:
                     sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
                     break;
                 case OptionsState.Exit:
@@ -81,11 +112,11 @@ namespace Game.Menu
                 case OptionsState.Continue:
                     controls.ContinueButton(GameManager.GameState.GameModesMenu);
                     break;
-                case OptionsState.Pause:
-                    controls.ContinueButton(GameManager.GameState.MainMenu);
+                case OptionsState.Credits:
+                    controls.ContinueButton(GameManager.GameState.Credits);
                     break;
                 case OptionsState.Exit:
-                    controls.ContinueButton(GameManager.GameState.GameOver);
+                    controls.ContinueButton(GameManager.GameState.Quit);
                     break;
             }
         }

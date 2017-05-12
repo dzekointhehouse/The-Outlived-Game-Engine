@@ -17,7 +17,7 @@ namespace Game.Menu
     /// </summary>
     class ControlConfiguration
     {
-        private readonly int min, max;
+        private readonly int min = 0, max = 0;
         private readonly GameManager gameManager;
 
         // Specify the intervals oft arrow controlls and the game manager.
@@ -26,6 +26,11 @@ namespace Game.Menu
             // interval for arrows
             this.min = min;
             this.max = max;
+            this.gameManager = gameManager;
+        }
+
+        public ControlConfiguration(GameManager gameManager)
+        {
             this.gameManager = gameManager;
         }
 
@@ -65,13 +70,28 @@ namespace Game.Menu
             KeyboardState newState = Keyboard.GetState();
 
             // With this button we want to continue to the next phase of the game initialization
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+            if (GamePad.GetState(PlayerIndex.One).Buttons.X == ButtonState.Pressed
                 || newState.IsKeyDown(Keys.Enter) && gameManager.OldState.IsKeyUp(Keys.Enter))
             {
+                gameManager.PreviousGameState = gameManager.CurrentGameState;
                 gameManager.CurrentGameState = state;
-
             }
             gameManager.OldState = newState;
         }
+
+        public void GoBackButton()
+        {
+            // get the newest state
+            KeyboardState newState = Keyboard.GetState();
+
+            // With this button we want to continue to the next phase of the game initialization
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+                || newState.IsKeyDown(Keys.Back) && gameManager.OldState.IsKeyUp(Keys.Back))
+            {          
+                gameManager.CurrentGameState = gameManager.PreviousGameState;
+            }
+            gameManager.OldState = newState;
+        }
+
     }
 }
