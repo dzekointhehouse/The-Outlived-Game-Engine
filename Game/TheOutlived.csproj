@@ -53,6 +53,8 @@
     <Compile Include="Menu\States\CharacterMenu.cs" />
     <Compile Include="Menu\States\Credits.cs" />
     <Compile Include="Menu\States\GameIntro.cs" />
+    <Compile Include="Menu\States\PausedMenu.cs" />
+    <Compile Include="Menu\States\SurvivalGame.cs" />
     <Compile Include="OutlivedGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

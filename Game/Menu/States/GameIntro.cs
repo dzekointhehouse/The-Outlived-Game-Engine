@@ -27,7 +27,7 @@ namespace Game.Menu.States
         }
 
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Texture2D videoTexture = null;
 
@@ -47,6 +47,16 @@ namespace Game.Menu.States
         public void Update(GameTime gameTime)
         {
             controls.ContinueButton(GameManager.GameState.MainMenu);
+
+            // We want to stop playing the video and dispose it if 
+            // the game state has been set to main menu.
+            if (gameManager.CurrentGameState == GameManager.GameState.MainMenu)
+            {
+                videoPlayer.Stop();
+                videoPlayer.Video.Dispose();
+                videoPlayer.Dispose();
+            }
+                
         }
     }
 }

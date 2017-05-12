@@ -15,7 +15,8 @@ namespace Game
         public Video IntroVideo;
         public Texture2D Background;
         public Texture2D CreditsBackground;
-        
+        public Texture2D PauseBackground;
+
         public Texture2D MainOptionsBackground;
         public Texture2D GameModeHiglightExtinction;
         public Texture2D GameModeHiglightSurvival;
@@ -39,6 +40,7 @@ namespace Game
 
             // Intro
             IntroVideo = game.Content.Load<Video>("version1");
+
             // Main menu
             MainOptionsBackground = game.Content.Load<Texture2D>("Images/Menu/mainoptions");
             Background = game.Content.Load<Texture2D>("Images/Menu/background");
@@ -50,6 +52,9 @@ namespace Game
             GameModeHiglightExtinction = game.Content.Load<Texture2D>("Images/Menu/gamemodemenu_he");
             GameModeHiglightSurvival = game.Content.Load<Texture2D>("Images/Menu/gamemodemenu_hs");
             GameModeHiglightBlockworld = game.Content.Load<Texture2D>("Images/Menu/gamemodemenu_hb");
+
+            // Pause
+            PauseBackground = game.Content.Load<Texture2D>("Images/Menu/paused");
 
             CharacterBackground = game.Content.Load<Texture2D>("Images/zombieCharacter");
             ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");

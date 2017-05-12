@@ -11,7 +11,7 @@ namespace Game.Menu
 {
     interface IMenu
     {
-        void Draw(SpriteBatch spriteBatch);
+        void Draw(GameTime gameTime, SpriteBatch spriteBatch);
 
         void Update(GameTime gameTime);
 

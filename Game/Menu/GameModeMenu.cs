@@ -19,13 +19,6 @@ namespace Game.Menu
         private readonly ControlConfiguration controls;
         private OptionsState currentPosition = OptionsState.Survival;
 
-
-
-        String textDeathmatch = "Deathmatch";
-        String textBlockworld = "Blockworld";
-        String textSurvival = "Survival";
-        String textExit = "Escape: EXIT THE GAME";
-
         private enum OptionsState
         {
             Survival,
@@ -50,12 +43,6 @@ namespace Game.Menu
             var viewport = game.GraphicsDevice.Viewport;
             sb.Begin();
 
-
-            //sb.DrawString(gameManager.GameContent.MenuFont, textBlockworld, new Vector2(400, viewport.Height * 0.35f), Color.White);
-            //sb.DrawString(gameManager.GameContent.MenuFont, textSurvival, new Vector2(400, viewport.Height * 0.55f), Color.White);
-            //sb.DrawString(gameManager.GameContent.MenuFont, textDeathmatch, new Vector2(400, viewport.Height * 0.75f), Color.White);
-            //sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(viewport.Width * 0.5f, viewport.Height * 0.9f), Color.Gray);
-
             switch (currentPosition)
             {
                 case OptionsState.Survival:
@@ -66,10 +53,6 @@ namespace Game.Menu
                     sb.Draw(gameManager.GameContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
                     sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.45f), Color.White);
                     break;
-                //case OptionsState.Exit:
-                //    sb.Draw(gameManager.GameContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
-                //    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
-                //    break;
                 case OptionsState.Blockworld:
                     sb.Draw(gameManager.GameContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
                     sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
@@ -80,7 +63,7 @@ namespace Game.Menu
             sb.End();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             MainMenuDisplay();
 
@@ -93,7 +76,7 @@ namespace Game.Menu
             switch (currentPosition)
             {
                 case OptionsState.Survival:
-                    controls.ContinueButton(GameManager.GameState.CharacterMenu);
+                    controls.ContinueButton(GameManager.GameState.PlaySurvivalGame);
                     break;
                 case OptionsState.Extinction:
                     controls.ContinueButton(GameManager.GameState.CharacterMenu);

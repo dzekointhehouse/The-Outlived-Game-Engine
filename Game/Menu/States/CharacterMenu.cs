@@ -75,7 +75,7 @@ namespace Game.Menu.States
             sb.End();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             MainMenuDisplay();
 

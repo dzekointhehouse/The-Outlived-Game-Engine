@@ -93,5 +93,27 @@ namespace Game.Menu
             gameManager.OldState = newState;
         }
 
+        public void PauseButton()
+        {
+            // get the newest state
+            KeyboardState newState = Keyboard.GetState();
+
+            // With this button we want to continue to the next phase of the game initialization
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed
+                || newState.IsKeyDown(Keys.Escape) && gameManager.OldState.IsKeyUp(Keys.Escape))
+            {
+                if (gameManager.CurrentGameState != GameManager.GameState.Paused)
+                {
+                    gameManager.PreviousGameState = gameManager.CurrentGameState;
+                    gameManager.CurrentGameState = GameManager.GameState.Paused;
+
+                }
+                else
+                {
+                    gameManager.CurrentGameState = gameManager.PreviousGameState;
+                }
+            }
+            gameManager.OldState = newState;
+        }
     }
 }
