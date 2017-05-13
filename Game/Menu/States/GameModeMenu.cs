@@ -64,7 +64,7 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
-            currentPosition = (OptionsState)controls.GetMenuOptionPosition((int)currentPosition);
+            currentPosition = (OptionsState)controls.MoveOptionPositionVertically((int)currentPosition);
 
             switch (currentPosition)
             {

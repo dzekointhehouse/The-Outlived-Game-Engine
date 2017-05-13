@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Game
 {
+    /// <summary>
+    /// Game content used in the menu.
+    /// </summary>
     public class GameContent
     {
         public Video IntroVideo;

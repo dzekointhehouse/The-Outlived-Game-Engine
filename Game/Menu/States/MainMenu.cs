@@ -5,6 +5,12 @@ using ZEngine.Wrappers;
 
 namespace Game.Menu.States
 {
+    /// <summary>
+    /// The main game menu state. This state is used as the first
+    /// state that the users come to when starting the game
+    /// (exl. intro state). It presents options that the players
+    /// can choose from.
+    /// </summary>
     class MainMenu : IMenu
     {
         private Microsoft.Xna.Framework.Game game;
@@ -14,6 +20,7 @@ namespace Game.Menu.States
         private Viewport viewport;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
+        // different menu options
         private enum OptionsState
         {
             Continue,
@@ -30,7 +37,8 @@ namespace Game.Menu.States
         }
 
 
-
+        // This method displays all the options
+        // in an ordered fashion.
         private void MainMenuDisplay()
         {
             String textEscape = "CREDITS";
@@ -60,15 +68,19 @@ namespace Game.Menu.States
             sb.End();
         }
 
+        // Draws
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             MainMenuDisplay();
 
         }
 
+        // Updates. When the players clicks continue we go to
+        // the next state that is specified in the switch case,
+        // depending on which option we currently are at.
         public void Update(GameTime gameTime)
         {
-            currentPosition = (OptionsState) controls.GetMenuOptionPosition((int) currentPosition);
+            currentPosition = (OptionsState) controls.MoveOptionPositionVertically((int) currentPosition);
 
             switch (currentPosition)
             {
