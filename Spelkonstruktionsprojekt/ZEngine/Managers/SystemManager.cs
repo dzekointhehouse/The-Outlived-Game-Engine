@@ -53,7 +53,8 @@ namespace ZEngine.Managers
             { typeof(PickupCollisionSystem), new PickupCollisionSystem() },
             { typeof(SprintAbilitySystem), new SprintAbilitySystem() },
             { typeof(QuickTurnAbilitySystem), new QuickTurnAbilitySystem() },
-            { typeof(GamePadMovementSystem), new GamePadMovementSystem() }
+            { typeof(GamePadMovementSystem), new GamePadMovementSystem() },
+            { typeof(ScoreSystem), new ScoreSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

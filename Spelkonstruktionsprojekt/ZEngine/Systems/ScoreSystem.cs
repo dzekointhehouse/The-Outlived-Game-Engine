@@ -6,60 +6,119 @@ using System.Text;
 using System.Threading.Tasks;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Managers;
+using ZEngine.EventBus;
+using System.Diagnostics;
+using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
+using ZEngine.EventBus;
+using ZEngine.Managers;
+using ZEngine.Systems;
+using Microsoft.Xna.Framework;
 
 namespace ZEngine.Systems
 {
     public class ScoreSystem : ISystem
     {
-        public void IncreaseEntityScore(int entityId, int points)
+        private readonly EventBus.EventBus E = EventBus.EventBus.Instance;
+
+
+        public void Start()
         {
-            var scoreComponent = (ScoreComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(ScoreComponent), entityId);
-            scoreComponent.score += points;
+            E.Subscribe<SpecificCollisionEvent>(EventConstants.BulletCollision, HandleBulletCollisionScore);
+            E.Subscribe<SpecificCollisionEvent>(EventConstants.EnemyCollision, HandleEnemyCollisionScore);
         }
+
+        private void HandleBulletCollisionScore(SpecificCollisionEvent CollisionEvent)
+        {
+            int shooter = ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(CollisionEvent.Entity).ShooterEntityId;
+            if (shooter == CollisionEvent.Target) return;
+            var shooterScore = ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(shooter);
+            if (shooterScore == null) return;
+
+            if (DifferentTeams(CollisionEvent.Target, shooter))
+            { 
+                shooterScore.score += shooterScore.damageScore;
+            }
+        }
+
+        private void HandleEnemyCollisionScore(SpecificCollisionEvent CollisionEvent)
+        {
+            var EntityScore = ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(CollisionEvent.Entity);
+            if (EntityScore == null) return;
+
+
+            if (DifferentTeams(CollisionEvent.Target, CollisionEvent.Entity))
+            {
+                EntityScore.score += EntityScore.damagePenalty;
+            }
+        }
+
+
+        public void Update(GameTime gameTime)
+        {
+
+            var GameScore = (GameScoreComponent)ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).Values.First();
+
+            foreach(var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityScoreComponent)))
+            {
+                var scoreComponent = entity.Value as EntityScoreComponent;
+                scoreComponent.score += scoreComponent.survivalScoreFactor * gameTime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+
+
+
+        /*
+         * This function checks if the involved parties were on the same team or not
+         * 
+         */
+        private bool DifferentTeams(int target, int entity)
+        {
+            var targetTeamComponent = (TeamComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(TeamComponent), target);
+            var entityTeamComponent = (TeamComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(TeamComponent), entity);
+
+            if (targetTeamComponent == null || entityTeamComponent == null)
+                return true;
+
+            if (targetTeamComponent.teamId != entityTeamComponent.teamId)
+                return true;
+            else return false;
+        }
+
+
 
         public int TotalScore()
         {
             int scoresum = 0;
-            var scoreEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(ScoreComponent));
+            var scoreEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityScoreComponent));
             foreach (var scores in scoreEntities)
             {
                 var ScoreComponent =
-                          ComponentManager.Instance.GetEntityComponentOrDefault<ScoreComponent>(scores.Key);
-                if (ComponentManager.Instance.EntityHasComponent<ScoreComponent>(scores.Key))
+                          ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(scores.Key);
+                if (ScoreComponent != null)
                 {
-                    scoresum = ScoreComponent.score;
-
+                    scoresum += (int) ScoreComponent.score;
                 }
-
             }
             return scoresum;
-            //return scoreEntities
-            //    .Select(entity => entity.Value)
-            //    .OfType<ScoreComponent>()
-            //    .Sum(scoreComponent => scoreComponent.score);
         }
 
         public int TotalScore(TeamComponent team)
         {
             int teamScore = 0;
-            var scoreEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(ScoreComponent));
+            var scoreEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityScoreComponent));
             foreach (var scores in scoreEntities)
             {
                 var ScoreComponent =
-                          ComponentManager.Instance.GetEntityComponentOrDefault<ScoreComponent>(scores.Key);
-                if (ComponentManager.Instance.EntityHasComponent<ScoreComponent>(scores.Key))
+                          ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(scores.Key);
+                if (ComponentManager.Instance.EntityHasComponent<EntityScoreComponent>(scores.Key))
                 {
-                    teamScore += ScoreComponent.score;
-
+                    teamScore += (int) ScoreComponent.score;
                 }
 
             }
             return teamScore;
-            //return team.members
-            //    .Where(member =>
-            //        ComponentManager.Instance.EntityHasComponent(typeof(ScoreComponent), member))
-            //    .Sum(member => ComponentManager.Instance.GetEntityComponentOrDefault<ScoreComponent>(member).score);
         }
-
     }
 }

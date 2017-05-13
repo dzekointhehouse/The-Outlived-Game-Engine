@@ -7,8 +7,12 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class ScoreComponent : IComponent
+    class GameScoreComponent : IComponent
     {
-        public int score { get; set; } = 0;
+        public int ElapsedSecondsLimit { get; set; } = 10;
+
+        public int PointsPerSecondsLimit { get; set; }
+
+        public int TotalGameScore { get; set; }
     }
 }
