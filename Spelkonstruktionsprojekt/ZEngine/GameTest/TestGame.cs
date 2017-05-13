@@ -154,12 +154,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var renderComponentCage = new RenderComponent()
             {
-                DimensionsComponent = new DimensionsComponent()
-                {
-                    Width = (int)(viewportDimensions.X * 0.8),
-                    Height = (int)(viewportDimensions.Y * 0.8)
-                },
                 Fixed = true
+            };
+
+            var dimensionsComponent = new DimensionsComponent()
+            {
+                Width = (int) (viewportDimensions.X * 0.8),
+                Height = (int) (viewportDimensions.Y * 0.8)
             };
 
             var position = new PositionComponent()
@@ -181,6 +182,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 Offset = new Vector2((float)(viewportDimensions.X * 0.25), (float)(viewportDimensions.Y * 0.25))
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
+            ComponentManager.Instance.AddComponentToEntity(dimensionsComponent, cameraCage);
             //            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(position, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);

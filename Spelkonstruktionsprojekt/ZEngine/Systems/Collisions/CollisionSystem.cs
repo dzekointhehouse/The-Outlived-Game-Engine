@@ -79,20 +79,20 @@ namespace ZEngine.Systems
 
         private bool EntitiesCollide(int movingEntity, int stillEntity)
         {
-            var movingRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(movingEntity);
-            if (movingRenderComponent == null) return false;
+            var movingDimensionsComponent = ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(movingEntity);
+            if (movingDimensionsComponent == null) return false;
             var movingPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(movingEntity);
             if (movingPositionComponent == null) return false;
 
-            var stillRenderComponent = ComponentManager.GetEntityComponentOrDefault<RenderComponent>(stillEntity);
-            if (stillRenderComponent == null) return false;
+            var stillDimensionsComponent = ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(stillEntity);
+            if (stillDimensionsComponent == null) return false;
             var stillPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(stillEntity);
             if (stillPositionComponent == null) return false;
 
             //Roughly check distance
             var aproxDistance = Math.Pow(stillPositionComponent.Position.X - movingPositionComponent.Position.X, 2) +
                 Math.Pow(stillPositionComponent.Position.Y - movingPositionComponent.Position.Y, 2);
-            if (aproxDistance > Math.Pow(movingRenderComponent.DimensionsComponent.Width, 2)) return false;
+            if (aproxDistance > Math.Pow(movingDimensionsComponent.Width, 2)) return false;
 
             var movingMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(movingEntity);
             if (movingMoveComponent == null) return false;
@@ -117,8 +117,8 @@ namespace ZEngine.Systems
                     (float) (-movingSpriteComponent.TileWidth * 0.5),
                     (float) (-movingSpriteComponent.TileHeight * 0.5), 0)) *
                 Matrix.CreateScale(
-                    (float) movingRenderComponent.DimensionsComponent.Width / (float) movingSpriteComponent.TileWidth,
-                    (float) movingRenderComponent.DimensionsComponent.Height / (float) movingSpriteComponent.TileHeight,
+                    (float) movingDimensionsComponent.Width / (float) movingSpriteComponent.TileWidth,
+                    (float) movingDimensionsComponent.Height / (float) movingSpriteComponent.TileHeight,
                     1) *
                 Matrix.CreateRotationZ(movingMoveComponent.Direction) *
                 Matrix.CreateTranslation(movingPositionComponent.Position.X, movingPositionComponent.Position.Y, 0f);
@@ -142,15 +142,15 @@ namespace ZEngine.Systems
             stillSpriteComponent.Sprite.GetData(0,
                 new Rectangle(xB, yB, stillSpriteComponent.TileWidth, stillSpriteComponent.TileHeight), colorB, 0,
                 colorB.Length);
-            var stillScale = (float) stillRenderComponent.DimensionsComponent.Width /
+            var stillScale = (float) stillDimensionsComponent.Width /
                              (float) stillSpriteComponent.TileWidth;
             var matrixB =
                 Matrix.CreateTranslation(new Vector3(
                     (float) (-stillSpriteComponent.TileWidth * 0.5),
                     (float) (-stillSpriteComponent.TileHeight * 0.5), 0)) *
                 Matrix.CreateScale(
-                    (float) stillRenderComponent.DimensionsComponent.Width / (float) stillSpriteComponent.TileWidth,
-                    (float) stillRenderComponent.DimensionsComponent.Height / (float) stillSpriteComponent.TileHeight,
+                    (float) stillDimensionsComponent.Width / (float) stillSpriteComponent.TileWidth,
+                    (float) stillDimensionsComponent.Height / (float) stillSpriteComponent.TileHeight,
                     1) *
                 Matrix.CreateRotationZ(stillEntityAngle) *
                 Matrix.CreateTranslation(stillPositionComponent.Position.X, stillPositionComponent.Position.Y, 0f);

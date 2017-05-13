@@ -64,10 +64,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             var positionComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
-            var renderComponent =
-                ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(inputEvent.EntityId);
-            if (renderComponent == null) return;
-            var dimensionComponent = renderComponent.DimensionsComponent;
+            var shooterDimensionsComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<DimensionsComponent>(inputEvent.EntityId);
+            if (shooterDimensionsComponent == null) return;
             var moveComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(inputEvent.EntityId);
             // We create an new position instance for the bullet that starts from the player but should
@@ -75,8 +74,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // will follow the same way ass the bullet.
             var matrixA =
                 Matrix.CreateTranslation(new Vector3(
-                    (float) (-positionComponent.Position.X - dimensionComponent.Width * 0.5 + 100),
-                    (float) (-positionComponent.Position.Y - dimensionComponent.Height * 0.5 + 75), 0)) *
+                    (float) (-positionComponent.Position.X - shooterDimensionsComponent.Width * 0.5 + 100),
+                    (float) (-positionComponent.Position.Y - shooterDimensionsComponent.Height * 0.5 + 75), 0)) *
                 Matrix.CreateRotationZ(moveComponent.Direction) *
                 Matrix.CreateTranslation(positionComponent.Position.X, positionComponent.Position.Y, 0f);
 
@@ -89,14 +88,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             int bulletEntityId = EntityManager.GetEntityManager().NewEntity();
 
-            var bulletRenderComponent = new RenderComponent()
+            var bulletRenderComponent = new RenderComponent();
+
+            var bulletDimensionsComponent = new DimensionsComponent()
             {
-                DimensionsComponent = new DimensionsComponent()
-                {
-                    Height = 10,
-                    Width = 10
-                }
+                Height = 10,
+                Width = 10
             };
+
             var bulletMoveComponent = new MoveComponent()
             {
                 AccelerationSpeed = 0,
@@ -116,6 +115,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             ComponentManager.AddComponentToEntity(bulletSpriteComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletMoveComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
+            ComponentManager.AddComponentToEntity(bulletDimensionsComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
 
             var animationComponent = new AnimationComponent();

@@ -33,6 +33,7 @@ namespace ZEngine.Systems
         private RenderComponent renderComponent;
         private MoveComponent moveComponent;
         private RenderOffsetComponent offsetComponent;
+        private DimensionsComponent dimensionsComponent;
 
         private CameraViewComponent cameraViewComponent;
         // _____________________________________________________________________________________________________________________ //
@@ -96,7 +97,8 @@ namespace ZEngine.Systems
                 renderComponent = entity.Value as RenderComponent;
                 offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
                 moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-
+                dimensionsComponent = ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(entity.Key);
+                
                 int zIndex = positionComponent.ZIndex;
                 var offset = offsetComponent?.Offset ?? default(Vector2);
                 float angle = moveComponent?.Direction ?? 0;
@@ -104,8 +106,8 @@ namespace ZEngine.Systems
                     new Rectangle(
                         (int) (positionComponent.Position.X + offset.X),
                         (int) (positionComponent.Position.Y + offset.Y),
-                        (int) (renderComponent.DimensionsComponent.Width * sprite.Scale),
-                        (int) (renderComponent.DimensionsComponent.Width * sprite.Scale)
+                        (int) (dimensionsComponent.Width * sprite.Scale),
+                        (int) (dimensionsComponent.Width * sprite.Scale)
                     );
 
                 // render the sprite only if it's visible (sourceRectangle) intersects

@@ -150,14 +150,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public EntityBuilder SetRendering(int width, int height)
         {
-            RenderComponent component = new RenderComponent()
-            {
-                DimensionsComponent = new DimensionsComponent()
-                {
-                    Height = height,
-                    Width = width
-                },
-            };
+            RenderComponent component = new RenderComponent();
+            this.SetDimensions(width, height);
             components.Add(component);
             return this;
         }
