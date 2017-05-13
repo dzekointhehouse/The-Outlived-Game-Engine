@@ -37,7 +37,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 // Load the sprite font
                 font = Game.Content.Load<SpriteFont>("ZEone");
-
                 base.LoadContent();
             }
 

@@ -179,7 +179,7 @@ namespace Game.Menu.States
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence(600f)
-                .SetCollision(new Rectangle(50, 50, 200, 200))
+                .SetRectangleCollision()
                 .SetHealth()
                 //.SetHUD("hello")
                 .Build();
@@ -257,13 +257,12 @@ namespace Game.Menu.States
                 .SetLight(light)
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetCollision(new Rectangle(30, 20, 70, 60))
+                .SetRectangleCollision()
                 .SetCameraFollow()
                 .SetPlayer(name)
                 .SetHealth()
                 .SetHUD(false, showStats: true)
                 .Build();
-
 
             var animationBindings = new SpriteAnimationBindingsBuilder()
                 .Binding(

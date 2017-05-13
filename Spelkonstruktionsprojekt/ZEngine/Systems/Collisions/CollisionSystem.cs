@@ -228,66 +228,6 @@ namespace ZEngine.Systems
                 (int) (max.Y - min.Y));
         }
 
-        public static bool IntersectPixels(Matrix transformA, int widthA, int heightA, Color[] dataA,
-            Matrix transformB, int widthB, int heightB, Color[] dataB)
-        {
-            var collisionTrue = false;
-            var shapeRenderer = CollisionRendering.renderer;
-
-            // Matrix that transforms A's local space to world space and then to B's local space
-            Matrix transformAToB = transformA * Matrix.Invert(transformB);
-            // When a point moves in A's local space, it moves in B's local space with a
-            // fixed direction and distance proportional to the movement in A.
-            Vector2 stepX = Vector2.TransformNormal(Vector2.UnitX, transformAToB);
-            Vector2 stepY = Vector2.TransformNormal(Vector2.UnitY, transformAToB);
-            // Calculate the top left corner of A in B's local space
-            Vector2 yPosInB = Vector2.Transform(Vector2.Zero, transformA);
-            // For each row of pixels in A
-            for (int yA = 0; yA < heightA; yA++)
-            {
-                Vector2 posInB = yPosInB; // Start at the beginning of the row
-                // For each pixel in this row
-                for (int xA = 0; xA < widthA; xA++)
-                {
-                    int xB = (int) Math.Round(posInB.X);
-                    int yB = (int) Math.Round(posInB.Y);
-                    // If the pixel lies within the bounds of B
-                    if (0 <= xB && xB < widthB && 0 <= yB && yB < heightB)
-                    {
-                        // Get the colors of the overlapping pixels
-                        Color colorA = dataA[xA + yA * widthA];
-                        Color colorB = dataB[xB + yB * widthB];
-                        if (colorA.A != 0 && colorB.A != 0)
-                        {
-//                            shapeRenderer.AddBoundingRectangle(new Rectangle(
-//                                xA, yA, 1, 1
-//                            ), Color.Yellow, 0.02f);
-                            collisionTrue = true;
-                        }
-                        else
-                        {
-                            if (colorA.A != 0)
-                            {
-                                shapeRenderer.AddBoundingRectangle(new Rectangle(
-                                    xA, yA, 1, 1
-                                ), Color.Orange, 0.02f);
-                            }
-                            if (colorB.A != 0)
-                            {
-                                shapeRenderer.AddBoundingRectangle(new Rectangle(
-                                    xB, yB, 1, 1
-                                ), Color.OrangeRed, 0.02f);
-                            }
-                        }
-                    }
-                    posInB += stepX; // Move to the next pixel in the row
-                }
-                yPosInB += stepY; // Move to the next row
-            }
-            return collisionTrue;
-//            return false;
-        }
-
         public static bool IntersectPixs(
             Matrix transformA, Rectangle boundsA, Color[] dataA,
             Matrix transformB, Rectangle boundsB, Color[] dataB)

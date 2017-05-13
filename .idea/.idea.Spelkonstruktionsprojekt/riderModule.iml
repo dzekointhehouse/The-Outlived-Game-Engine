@@ -3,6 +3,7 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$/../..">
       <sourceFolder url="file://$MODULE_DIR$/../../Game" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../ShapeRendering2D" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../Spelkonstruktionsprojekt" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../Game/bin" />
       <excludeFolder url="file://$MODULE_DIR$/../../Game/obj" />
