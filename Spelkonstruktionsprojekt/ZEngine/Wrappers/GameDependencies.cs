@@ -9,7 +9,12 @@ using Microsoft.Xna.Framework.Graphics;
 namespace ZEngine.Wrappers
 {
     public class GameDependencies
-    { 
+    {
+        // Singleton pattern is used here for the ComponentManager,
+        // Instance is used heer to get that only instance.
+        public static GameDependencies Instance => LazyInitializer.Value;
+        private static readonly Lazy<GameDependencies> LazyInitializer = new Lazy<GameDependencies>(() => new GameDependencies());
+
         // These are som of the dependencies that we will need for our
         // fine monogame engine.
         // they will probably be used in the systems we have created.

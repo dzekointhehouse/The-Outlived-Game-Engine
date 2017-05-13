@@ -49,6 +49,7 @@
     <Compile Include="..\ShapeRendering2D\Properties\AssemblyInfo.cs" />
     <Compile Include="..\ShapeRendering2D\Shape.cs" />
     <Compile Include="..\ShapeRendering2D\ShapeRenderer2D.cs" />
+    <Compile Include="ZEngine\Components\GameScoreComponent.cs" />
     <Compile Include="ZEngine\Components\Input\GamePadComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
@@ -146,7 +147,6 @@
     <Compile Include="Zenu\templates\ZenuButton.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
