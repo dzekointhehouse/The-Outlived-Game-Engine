@@ -73,6 +73,7 @@ namespace ZEngine.Systems
                     }
                     collisionComponent.collisions.Remove(collisionTarget);
                 }
+                StateManager.TryRemoveState(entity.Key, State.Collided, 0);
             }
         }
 

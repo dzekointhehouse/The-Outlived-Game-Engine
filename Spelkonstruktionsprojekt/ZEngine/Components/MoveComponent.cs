@@ -5,6 +5,7 @@ namespace ZEngine.Components
     public class MoveComponent : IComponent
     {
         public Vector2 PreviousPosition { get; set; }
+        public float PreviousDirection { get; set; }
         public float Direction { get; set; } = 0;
         public float Speed = 0;
         public double CurrentAcceleration = 0;

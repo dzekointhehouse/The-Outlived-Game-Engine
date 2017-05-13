@@ -11,6 +11,7 @@ using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using ZEngine.Components;
+using ZEngine.EventBus;
 using ZEngine.Managers;
 
 namespace ZEngine.Systems.Collisions
@@ -34,7 +35,6 @@ namespace ZEngine.Systems.Collisions
             {
                 healthComponent.Damage.Add(1000);
             }
-
 //            Debug.WriteLine("Handle enemy collision");
 //            GameEnder.Score = GameTime.TotalGameTime.TotalSeconds;
         }
@@ -46,6 +46,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
     public class TempGameEnder
     {
         public double Score = 0;
-        
     }
 }

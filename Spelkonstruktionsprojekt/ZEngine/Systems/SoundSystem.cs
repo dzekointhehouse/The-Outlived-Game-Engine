@@ -124,7 +124,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             var soundComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(entityId);
-
+            if (soundComponent == null) return;
 
             var animationComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entityId);

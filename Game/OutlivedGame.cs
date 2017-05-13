@@ -80,7 +80,7 @@ namespace Game
         private void CreateTestEntities()
         {
             // var button = new Button();
-            var cameraCageId = SetupCameraCage();
+//            var cameraCageId = SetupCameraCage();
 //            InitPlayers(cameraCageId);
             InitTestPlayer();
             SetupBackgroundTiles(5, 5);
@@ -208,7 +208,7 @@ namespace Game
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence(600f)
-                .SetCollision(new Rectangle(50, 50, 200, 200))
+                .SetRectangleCollision()
                 .SetHealth()
                 //.SetHUD("hello")
                 .Build();
@@ -288,11 +288,11 @@ namespace Game
                 .SetRendering(100, 100)
                 .SetInertiaDampening()
                 .SetBackwardsPenalty()
-                .SetSprite("dot")
+                .SetSprite("player_sprites", new Point(1252, 206), 313, 206)
                 .SetLight(light)
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetCollision(new Rectangle(30, 20, 70, 60))
+                .SetRectangleCollision()
                 .SetCameraFollow()
                 .SetPlayer("MrTest")
                 .SetHealth()
@@ -334,7 +334,7 @@ namespace Game
                 .Build();
 
             ComponentManager.Instance.AddComponentToEntity(actionBindings, playerEntity.GetEntityKey());
-//            ComponentManager.Instance.AddComponentToEntity(animationBindings, playerEntity.GetEntityKey());
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, playerEntity.GetEntityKey());
 
             var weaponComponent = new WeaponComponent()
             {
@@ -368,7 +368,7 @@ namespace Game
                 .SetLight(light)
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetCollision(new Rectangle(30, 20, 70, 60))
+                .SetRectangleCollision()
                 .SetCameraFollow()
                 .SetPlayer(name)
                 .SetHealth()
