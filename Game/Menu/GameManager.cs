@@ -29,7 +29,7 @@ namespace Game
         protected internal GameState PreviousGameState;
         protected internal KeyboardState OldState;
         protected internal GameContent GameContent;
-        // Game states
+
         private IMenu mainMenu;
         private IMenu gameModesMenu;
         private IMenu characterMenu;
@@ -37,6 +37,19 @@ namespace Game
         private IMenu gameIntro;
         private IMenu survivalGame;
         private IMenu pausedMenu;
+
+        // Game states
+        protected internal enum GameState
+        {
+            Intro,
+            MainMenu,
+            GameModesMenu,
+            CharacterMenu,
+            PlaySurvivalGame,
+            Quit,
+            Credits,
+            Paused
+        };
 
         public GameManager(FullZengineBundle gameBundle)
         {
@@ -55,26 +68,10 @@ namespace Game
             pausedMenu = new PausedMenu(this);
 
         }
-        // Game states
-        protected internal enum GameState
-        {
-            Intro,
-            MainMenu,
-            GameModesMenu,
-            CharacterMenu,
-            PlaySurvivalGame,
-            Quit,
-            Credits,
-            Paused
-        };
 
-
-        private void ExitButton()
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.S)) engine.Dependencies.Game.Exit();
-        }
-
+        // Draw method consists of a switch case with all
+        // the different states that we have, depending on which
+        // state we are we use that state's draw method.
         public void Draw(GameTime gameTime)
         {         
             switch (CurrentGameState)
@@ -117,6 +114,8 @@ namespace Game
             }
         }
 
+        // Same as the draw method, the update method
+        // we execute is the one of the current state.
         public void Update(GameTime gameTime)
         {
             switch (CurrentGameState)

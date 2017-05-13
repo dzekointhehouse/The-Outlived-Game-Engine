@@ -17,6 +17,12 @@ namespace Game
         public Texture2D CreditsBackground;
         public Texture2D PauseBackground;
 
+        // Characters
+        public Texture2D HighlightFirst;
+        public Texture2D HighlightSecond;
+        public Texture2D HighlightThird;
+        public Texture2D HighlightFourth;
+
         public Texture2D MainOptionsBackground;
         public Texture2D GameModeHiglightExtinction;
         public Texture2D GameModeHiglightSurvival;
@@ -60,6 +66,12 @@ namespace Game
             ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
 
             ButtonBack = game.Content.Load<Texture2D>("Images/Keyboard/left");
+
+            HighlightFirst = game.Content.Load<Texture2D>("Images/Characters/character_hb");
+            HighlightSecond = game.Content.Load<Texture2D>("Images/Characters/character_he");
+            HighlightThird = game.Content.Load<Texture2D>("Images/Characters/character_hw");
+            HighlightFourth = game.Content.Load<Texture2D>("Images/Characters/character_hj");
+
 
             if (GamePad.GetState(PlayerIndex.One).IsConnected)
             {
