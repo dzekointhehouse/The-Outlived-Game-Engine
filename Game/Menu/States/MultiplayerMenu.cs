@@ -11,7 +11,7 @@ using ZEngine.Wrappers;
 
 namespace Game.Menu.States
 {
-    class MultiplayerMenu : IMenu
+    public class MultiplayerMenu : IMenu
     {
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
@@ -20,10 +20,10 @@ namespace Game.Menu.States
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
         // players current position
-        private OptionsState PlayerOneChoice = OptionsState.NoTeam;
-        private OptionsState PlayerTwoChoice = OptionsState.NoTeam;
-        private OptionsState PlayerThreeChoice = OptionsState.NoTeam;
-        private OptionsState PlayerFourChoice = OptionsState.NoTeam;
+        private TeamState PlayerOneChoice = TeamState.NoTeam;
+        private TeamState PlayerTwoChoice = TeamState.NoTeam;
+        private TeamState PlayerThreeChoice = TeamState.NoTeam;
+        private TeamState PlayerFourChoice = TeamState.NoTeam;
 
         // used for the keyboard.
         private PlayerIndex currentPlayer;
@@ -31,7 +31,7 @@ namespace Game.Menu.States
 
         // enum so we can keep track on which option
         // we currently are at.
-        private enum OptionsState
+        public enum TeamState
         {
             TeamOne,
             NoTeam,
@@ -48,19 +48,19 @@ namespace Game.Menu.States
 
         // Draws the character names and the button at the option that
         // is the current option that we are positioned at.
-        private void DisplayPlayerChoice(OptionsState playerChoice, float heightPercentage)
+        private void DisplayPlayerChoice(TeamState playerChoice, float heightPercentage)
         {
             var viewport = game.GraphicsDevice.Viewport;
             sb.Draw(gameManager.GameContent.TeamOptions, viewport.Bounds, Color.White);
             switch (playerChoice)
             {
-                case OptionsState.NoTeam:
+                case TeamState.NoTeam:
                     sb.Draw(gameManager.GameContent.GamePadIcon, new Vector2((float) (viewport.Width * 0.4), viewport.Height * heightPercentage), Color.White);
                     break;
-                case OptionsState.TeamOne:
+                case TeamState.TeamOne:
                     sb.Draw(gameManager.GameContent.GamePadIconHighlight, new Vector2((float)(viewport.Width * 0.2), viewport.Height * heightPercentage), Color.White);
                     break;
-                case OptionsState.TeamTwo:
+                case TeamState.TeamTwo:
                     sb.Draw(gameManager.GameContent.GamePadIconHighlight, new Vector2((float)(viewport.Width * 0.6), viewport.Height * heightPercentage), Color.White);
                     break;
 
@@ -108,52 +108,52 @@ namespace Game.Menu.States
             switch (currentPlayer)
             {
                 case PlayerIndex.One:
-                    PlayerOneChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice, PlayerIndex.One);
+                    PlayerOneChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice, PlayerIndex.One);
                     break;
                 case PlayerIndex.Two:
-                    PlayerTwoChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice, PlayerIndex.Two);
+                    PlayerTwoChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice, PlayerIndex.Two);
                     break;
                 case PlayerIndex.Three:
-                    PlayerThreeChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice, PlayerIndex.Three);
+                    PlayerThreeChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice, PlayerIndex.Three);
                     break;
                 case PlayerIndex.Four:
-                    PlayerFourChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice, PlayerIndex.Four);
+                    PlayerFourChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice, PlayerIndex.Four);
                     break;
 
             }
             
             // which player does the move
-            PlayerOneChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice, PlayerIndex.One);
-            PlayerTwoChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice, PlayerIndex.Two);
-            PlayerThreeChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice, PlayerIndex.Three);
-            PlayerFourChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice, PlayerIndex.Four);
+            PlayerOneChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice, PlayerIndex.One);
+            PlayerTwoChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice, PlayerIndex.Two);
+            PlayerThreeChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice, PlayerIndex.Three);
+            PlayerFourChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice, PlayerIndex.Four);
 
             // Proceed if continue is pressed
-            controls.ContinueButton(GameManager.GameState.CharacterMenu);
-            UpdateGameConfigurations();
+            if(controls.ContinueButton(GameManager.GameState.CharacterMenu))
+                UpdateGameConfigurations();
         }
 
         private void UpdateGameConfigurations()
         {
             // Add players on option team one -> to team one
-            if(PlayerOneChoice == OptionsState.TeamOne)
-                gameManager.gameConfig.TeamOne.Add(PlayerIndex.One);
-            if (PlayerTwoChoice == OptionsState.TeamOne)
-                gameManager.gameConfig.TeamOne.Add(PlayerIndex.Two);
-            if (PlayerThreeChoice == OptionsState.TeamOne)
-                gameManager.gameConfig.TeamOne.Add(PlayerIndex.Three);
-            if (PlayerFourChoice == OptionsState.TeamOne)
-                gameManager.gameConfig.TeamOne.Add(PlayerIndex.Four);
+            if(PlayerOneChoice == TeamState.TeamOne)
+                gameManager.gameConfig.Players.Add(new Player() {Index = PlayerIndex.One});
+            if (PlayerTwoChoice == TeamState.TeamOne)
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Two });
+            if (PlayerThreeChoice == TeamState.TeamOne)
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Three });
+            if (PlayerFourChoice == TeamState.TeamOne)
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Four });
 
             // Add players on option team two -> to team two
-            if (PlayerOneChoice == OptionsState.TeamTwo)
-                gameManager.gameConfig.TeamTwo.Add(PlayerIndex.One);
-            if (PlayerTwoChoice == OptionsState.TeamTwo)
-                gameManager.gameConfig.TeamTwo.Add(PlayerIndex.Two);
-            if (PlayerThreeChoice == OptionsState.TeamTwo)
-                gameManager.gameConfig.TeamTwo.Add(PlayerIndex.Three);
-            if (PlayerFourChoice == OptionsState.TeamTwo)
-                gameManager.gameConfig.TeamTwo.Add(PlayerIndex.Four);
+            if (PlayerOneChoice == TeamState.TeamTwo)
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.One });
+            if (PlayerTwoChoice == TeamState.TeamTwo)
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Two });
+            if (PlayerThreeChoice == TeamState.TeamTwo)
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Three });
+            if (PlayerFourChoice == TeamState.TeamTwo)
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Four });
         }
     }
 }

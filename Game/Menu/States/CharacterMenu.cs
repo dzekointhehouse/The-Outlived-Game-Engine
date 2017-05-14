@@ -15,17 +15,20 @@ namespace Game.Menu.States
     /// choose from different characters that are to be used in the 
     /// game by the player or players.
     /// </summary>
-    class CharacterMenu : IMenu
+    public class CharacterMenu : IMenu
     {
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
         private readonly GameManager gameManager;
         private readonly ControlsConfig controls;
-        private OptionsState currentPosition = OptionsState.FirstCharacter;
+        private CharacterState currentPosition = CharacterState.FirstCharacter;
+        private Player currentPlayer;
+        private int playerIndex = 0;
+        
 
         // enum so we can keep track on which option
         // we currently are at.
-        private enum OptionsState
+        public enum CharacterState
         {
             FirstCharacter,
             SecondCharacter,
@@ -39,6 +42,7 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             // Adding the options interval and gamemanager.
             controls = new ControlsConfig(0, 3, gameManager);
+            
         }
 
         // Draws the character names and the button at the option that
@@ -47,20 +51,25 @@ namespace Game.Menu.States
         {
             SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
+            // Add the first player. This is done the first time.
+            if (currentPlayer == null)
+                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex);
+
             var viewport = game.GraphicsDevice.Viewport;
+            sb.DrawString(gameManager.GameContent.MenuFont, currentPlayer.Index.ToString(), new Vector2(viewport.Width * 0.5f, viewport.Height * 0.2f), Color.White);
 
             switch (currentPosition)
             {
-                case OptionsState.FirstCharacter:
+                case CharacterState.FirstCharacter:
                     sb.Draw(gameManager.GameContent.HighlightFirst, viewport.Bounds, Color.White);
                     break;
-                case OptionsState.SecondCharacter:
+                case CharacterState.SecondCharacter:
                     sb.Draw(gameManager.GameContent.HighlightSecond, viewport.Bounds, Color.White);
                     break;
-                case OptionsState.ThirdCharacter:
+                case CharacterState.ThirdCharacter:
                     sb.Draw(gameManager.GameContent.HighlightThird, viewport.Bounds, Color.White);
                     break;
-                case OptionsState.FourthCharacter:
+                case CharacterState.FourthCharacter:
                     sb.Draw(gameManager.GameContent.HighlightFourth, viewport.Bounds, Color.White);
                     break;
 
@@ -83,23 +92,27 @@ namespace Game.Menu.States
         // are to be done.
         public void Update(GameTime gameTime)
         {
-            currentPosition = (OptionsState)controls.MoveOptionPositionHorizontally((int)currentPosition);
-            currentPosition = (OptionsState)controls.MoveOptionPositionVertically((int)currentPosition);
+            // Add the first player. This is done the first time.
+            if (currentPlayer == null)
+                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex);
+            // Change character position
+            currentPosition = (CharacterState)controls.MoveOptionPositionHorizontally((int)currentPosition, currentPlayer.Index);
+            currentPosition = (CharacterState)controls.MoveOptionPositionVertically((int)currentPosition, currentPlayer.Index);
 
-            switch (currentPosition)
+            // If the player pressed continue button but there are players left..
+            if (controls.ContinueButton(GameManager.GameState.CharacterMenu) &&
+                gameManager.gameConfig.Players.Count > playerIndex)
             {
-                case OptionsState.FirstCharacter:
-                    controls.ContinueButton(GameManager.GameState.MainMenu);
-                    break;
-                case OptionsState.SecondCharacter:
-                    controls.ContinueButton(GameManager.GameState.MainMenu);
-                    break;
-                case OptionsState.ThirdCharacter:
-                    controls.ContinueButton(GameManager.GameState.MainMenu);
-                    break;
-                case OptionsState.FourthCharacter:
-                    controls.ContinueButton(GameManager.GameState.MainMenu);
-                    break;
+                // Set the current character to that player
+                // pop the next player and reset.
+                currentPlayer.Character = currentPosition;
+                currentPlayer = gameManager.gameConfig.Players[playerIndex++];
+                currentPosition = CharacterState.FirstCharacter;
+            }
+            else if (gameManager.gameConfig.Players.Count == playerIndex)
+            {
+                // Continue to next state when done with the players.
+                controls.ContinueButton(GameManager.GameState.MainMenu);
             }
         }
     }

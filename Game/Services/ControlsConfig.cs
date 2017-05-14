@@ -92,21 +92,24 @@ namespace Game.Services
             return currentPosition;
         }
 
-        public void ContinueButton(GameManager.GameState state, PlayerIndex player = 0)
+        public bool ContinueButton(GameManager.GameState state, PlayerIndex player = 0)
         {
             // Get the newest state
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(player);
+            bool clicked = false;
 
             // With this button we want to continue to the next phase of the game initialization
-            if (gamePadState.Buttons.X == ButtonState.Pressed && gameManager.OldGamepadState.IsButtonUp(Buttons.X)
+            if (gamePadState.Buttons.A == ButtonState.Pressed && gameManager.OldGamepadState.IsButtonUp(Buttons.A)
                 || keyboardState.IsKeyDown(Keys.Enter) && gameManager.OldKeyboardState.IsKeyUp(Keys.Enter))
             {
                 gameManager.PreviousGameState = gameManager.CurrentGameState;
                 gameManager.CurrentGameState = state;
-            }
+                clicked = true;
+            } 
             gameManager.OldGamepadState = gamePadState;
             gameManager.OldKeyboardState = keyboardState;
+            return clicked;
         }
 
         public void GoBackButton(PlayerIndex player = 0)
