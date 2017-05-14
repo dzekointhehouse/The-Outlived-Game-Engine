@@ -9,10 +9,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class GameScoreComponent : IComponent
     {
-        public int ElapsedSecondsLimit { get; set; } = 10;
+        //public int ElapsedSecondsLimit { get; set; } = 10;
 
-        public int PointsPerSecondsLimit { get; set; }
+        //public int PointsPerSecondsLimit { get; set; }
 
         public int TotalGameScore { get; set; }
+
+
+        public double multiplier = 1;
+        public double survivalScoreFactor = 5;
+        public int damageScore = 50;
+        public int damagePenalty = -500;
+
+
+
     }
 }

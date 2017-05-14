@@ -51,6 +51,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<QuickTurnAbilitySystem>().Start();
             manager.Get<SprintAbilitySystem>().Start();
             manager.Get<ScoreSystem>().Start();
+            manager.Get<PickupCollisionSystem>().Start();
 
         }
 
