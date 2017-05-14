@@ -33,12 +33,16 @@ namespace ZEngine.Systems
         {
             int shooter = ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(CollisionEvent.Entity).ShooterEntityId;
             if (shooter == CollisionEvent.Target) return;
+
+            var GameScore = (GameScoreComponent)ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).Values.First();
+            if (GameScore == null) return;
+
             var shooterScore = ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(shooter);
             if (shooterScore == null) return;
 
             if (DifferentTeams(CollisionEvent.Target, shooter))
             { 
-                shooterScore.score += shooterScore.damageScore;
+                shooterScore.score += GameScore.damageScore;
             }
         }
 
@@ -48,9 +52,12 @@ namespace ZEngine.Systems
             if (EntityScore == null) return;
 
 
+            var GameScore = (GameScoreComponent)ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).Values.First();
+            if (GameScore == null) return;
+
             if (DifferentTeams(CollisionEvent.Target, CollisionEvent.Entity))
             {
-                EntityScore.score += EntityScore.damagePenalty;
+                EntityScore.score += GameScore.damagePenalty;
             }
         }
 
@@ -59,12 +66,21 @@ namespace ZEngine.Systems
         {
 
             var GameScore = (GameScoreComponent)ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).Values.First();
+            if (GameScore == null) return;
+            GameScore.TotalGameScore = 0;
 
             foreach(var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityScoreComponent)))
             {
                 var scoreComponent = entity.Value as EntityScoreComponent;
-                scoreComponent.score += scoreComponent.survivalScoreFactor * gameTime.ElapsedGameTime.TotalSeconds;
+                var health = (HealthComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(HealthComponent), entity.Key);
+                if (health == null) continue;
+                if (health.Alive) { 
+                    scoreComponent.score += GameScore.survivalScoreFactor * gameTime.ElapsedGameTime.TotalSeconds;
+                }
+                GameScore.TotalGameScore += (int) scoreComponent.score;
+                Debug.WriteLine(entity.Key + ": " + scoreComponent.score);
             }
+            Debug.WriteLine("Total: " + GameScore.TotalGameScore);
         }
 
 

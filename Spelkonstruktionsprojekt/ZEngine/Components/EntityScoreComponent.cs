@@ -11,10 +11,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     {
         public double score { get; set; } = 0;
 
-        public double multiplier = 1;
-        public double survivalScoreFactor = 5;
-        public int damageScore = 50;
-        public int damagePenalty = -500;
+
 
     }
 }

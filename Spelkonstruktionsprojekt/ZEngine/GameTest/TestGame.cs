@@ -28,6 +28,7 @@ using ZEngine.Systems.InputHandler;
 using ZEngine.Wrappers;
 using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -95,6 +96,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
             SetupTempPlayerDeadSpriteFlyweight();
+            SetupGameScoreEntity();
+        }
+
+        private void SetupGameScoreEntity()
+        {
+            var gameScoreComponent = new GameScoreComponent();
+
+            ComponentManager.Instance.AddComponentToEntity(gameScoreComponent, EntityManager.GetEntityManager().NewEntity());
         }
 
         private void SetupHUD()
@@ -404,6 +413,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 Damage = 10
             };
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
+
+            /*
+            if(name == "Elvir")
+            {
+                ComponentManager.Instance.AddComponentToEntity(new HealthPickupComponent(), playerEntity.GetEntityKey());
+            }*/
         }
 
         protected override void LoadContent()
