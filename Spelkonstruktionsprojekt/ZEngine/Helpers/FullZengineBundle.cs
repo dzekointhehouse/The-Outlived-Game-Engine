@@ -73,6 +73,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<CameraSceneSystem>().Update(gameTime);
             manager.Get<MoveSystem>().Move(gameTime);
             manager.Get<AISystem>().Update(gameTime);
+            manager.Get<SpawnSystem>().HandleWaves();
             manager.Get<CollisionSystem>().DetectCollisions();
             manager.Get<AnimationSystem>().UpdateAnimations(gameTime);
             manager.Get<SpriteAnimationSystem>().Update(gameTime);

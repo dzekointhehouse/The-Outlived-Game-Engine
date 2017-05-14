@@ -21,19 +21,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void HandleWaves() {
-            foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent))) {
-              var spawn = entity.Value as SpawnComponent;
+            foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
+            {
+                var spawn = entity.Value as SpawnComponent;
 
-                if (ComponentManager.EntityHasComponent<HealthComponent>(entity.Key)) {
+                if (ComponentManager.EntityHasComponent<HealthComponent>(entity.Key))
+                {
                     var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
-                    if (!HealthComponent.Alive) {
-                        spawn.EnemiesLeft--;
+                    if (!HealthComponent.Alive)
+                    {
+                        spawn.EnemiesDead++;
                     }
+
                 }
-                if (spawn.EnemiesLeft == 0) {
-                    spawn.WaveSize += spawn.WaveSizeIncreaseConstant;
-                    //can we do this?? there might be a problem with doing it like this.
-                    SetupWave(spawn.WaveSize);
+                if (spawn.EnemiesDead == spawn.WaveSize)
+                {
+                    spawn.WaveSize += spawn.WaveSizeIncreaseConstant;   
+                //    can we do this ?? there might be a problem with doing it like this.
+                     SetupWave(spawn.WaveSize);
                 }
 
             }

@@ -9,7 +9,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     class SpawnComponent : IComponent
     {
         public int WaveSize { get; set; } = 40;
-        public int EnemiesLeft { get; set; }
+        public int EnemiesDead { get; set; }
 
         public int WaveSizeIncreaseConstant = 10;
 
