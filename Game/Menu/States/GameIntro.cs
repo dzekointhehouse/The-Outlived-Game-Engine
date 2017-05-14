@@ -29,6 +29,7 @@ namespace Game.Menu.States
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
             Texture2D videoTexture = null;
 
             if (videoPlayer.State != MediaState.Stopped)
@@ -42,6 +43,7 @@ namespace Game.Menu.States
 
             }
             else gameManager.CurrentGameState = GameManager.GameState.MainMenu;
+            spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
