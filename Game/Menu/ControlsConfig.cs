@@ -17,15 +17,19 @@ namespace Game.Menu
     /// </summary>
     class ControlsConfig
     {
-        private readonly int min = 0, max = 0;
+        // MinLimit and MaxLimit are the state interval limits.
+        public int MinLimit { get; set; } = 0;
+        public int MaxLimit { get; set; } = 0;
+
+        // we need a reference to the gm to change states.
         private readonly GameManager gameManager;
 
         // Specify the intervals oft arrow controlls and the game manager.
-        public ControlsConfig(int min, int max, GameManager gameManager)
+        public ControlsConfig(int minLimit, int maxLimit, GameManager gameManager)
         {
             // interval for arrows
-            this.min = min;
-            this.max = max;
+            this.MinLimit = minLimit;
+            this.MaxLimit = maxLimit;
             this.gameManager = gameManager;
         }
 
@@ -51,7 +55,7 @@ namespace Game.Menu
                 gameManager.OldKeyboardState = newState;
                 gameManager.OldGamepadState = gamePadState;
 
-                if (currentPosition != min)
+                if (currentPosition != MinLimit)
                     return currentPosition - 1;
 
 
@@ -62,7 +66,7 @@ namespace Game.Menu
                 gameManager.OldKeyboardState = newState;
                 gameManager.OldGamepadState = gamePadState;
 
-                if (currentPosition != max)
+                if (currentPosition != MaxLimit)
                     return currentPosition + 1;
             }
             return currentPosition;
@@ -70,7 +74,7 @@ namespace Game.Menu
 
         public int MoveOptionPositionHorizontally(int currentPosition, PlayerIndex player = 0)
         {
-            // get the newest state
+            // Get the newest state
             KeyboardState newState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(player);
 
@@ -80,7 +84,7 @@ namespace Game.Menu
                 gameManager.OldKeyboardState = newState;
                 gameManager.OldGamepadState = gamePadState;
 
-                if (currentPosition != min)
+                if (currentPosition != MinLimit)
                     return currentPosition - 1;
 
 
@@ -89,7 +93,7 @@ namespace Game.Menu
                 || newState.IsKeyDown(Keys.Right) && gameManager.OldKeyboardState.IsKeyUp(Keys.Right))
             {
                 gameManager.OldKeyboardState = newState;
-                if (currentPosition != max)
+                if (currentPosition != MaxLimit)
                     return currentPosition + 1;
             }
             return currentPosition;
@@ -97,7 +101,7 @@ namespace Game.Menu
 
         public void ContinueButton(GameManager.GameState state, PlayerIndex player = 0)
         {
-            // get the newest state
+            // Get the newest state
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(player);
 

@@ -26,6 +26,10 @@ namespace Game
         public Texture2D HighlightThird;
         public Texture2D HighlightFourth;
 
+        public Texture2D GamePadIcon;
+        public Texture2D GamePadIconHighlight;
+        public Texture2D TeamOptions;
+        
         public Texture2D MainOptionsBackground;
         public Texture2D GameModeHiglightExtinction;
         public Texture2D GameModeHiglightSurvival;
@@ -49,6 +53,11 @@ namespace Game
 
             // Intro
             IntroVideo = game.Content.Load<Video>("version1");
+
+            // Multiplayer
+            GamePadIcon = game.Content.Load<Texture2D>("Images/Gamepad/gamepad");
+            GamePadIconHighlight = game.Content.Load<Texture2D>("Images/Gamepad/gamepad_h");
+            TeamOptions = game.Content.Load<Texture2D>("Images/Menu/teamoptions");
 
             // Main menu
             MainOptionsBackground = game.Content.Load<Texture2D>("Images/Menu/mainoptions");

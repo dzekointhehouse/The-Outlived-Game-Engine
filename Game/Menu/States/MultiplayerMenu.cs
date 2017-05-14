@@ -25,6 +25,8 @@ namespace Game.Menu.States
         private OptionsState PlayerThreeChoice = OptionsState.NoTeam;
         private OptionsState PlayerFourChoice = OptionsState.NoTeam;
 
+        // used for the keyboard.
+        private PlayerIndex currentPlayer;
 
 
         // enum so we can keep track on which option
@@ -41,7 +43,7 @@ namespace Game.Menu.States
             this.gameManager = gameManager;
             game = this.gameManager.Engine.Dependencies.Game;
             // Adding the options interval and gamemanager.
-            controls = new ControlsConfig(0, 3, gameManager);
+            controls = new ControlsConfig(0, 2, gameManager);
         }
 
         // Draws the character names and the button at the option that
@@ -49,17 +51,17 @@ namespace Game.Menu.States
         private void DisplayPlayerChoice(OptionsState playerChoice, float heightPercentage)
         {
             var viewport = game.GraphicsDevice.Viewport;
-            //sb.Draw(gameManager.GameContent.Background, viewport.Bounds, Color.White);
+            sb.Draw(gameManager.GameContent.TeamOptions, viewport.Bounds, Color.White);
             switch (playerChoice)
             {
                 case OptionsState.NoTeam:
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2((float) (viewport.Width * 0.3), heightPercentage), Color.White);
+                    sb.Draw(gameManager.GameContent.GamePadIcon, new Vector2((float) (viewport.Width * 0.4), viewport.Height * heightPercentage), Color.White);
                     break;
                 case OptionsState.TeamOne:
-                    sb.Draw(gameManager.GameContent.ButtonBack, new Vector2((float)(viewport.Width * 0.5), viewport.Y * heightPercentage), Color.White);
+                    sb.Draw(gameManager.GameContent.GamePadIconHighlight, new Vector2((float)(viewport.Width * 0.2), viewport.Height * heightPercentage), Color.White);
                     break;
                 case OptionsState.TeamTwo:
-                    sb.Draw(gameManager.GameContent.ButtonBack, new Vector2((float)(viewport.Width * 0.8), viewport.Y * heightPercentage), Color.White);
+                    sb.Draw(gameManager.GameContent.GamePadIconHighlight, new Vector2((float)(viewport.Width * 0.6), viewport.Height * heightPercentage), Color.White);
                     break;
 
             }
@@ -73,7 +75,7 @@ namespace Game.Menu.States
 
             // We check if the players are connected. If they are,
             // we draw their option state on the screen.
-            if(GamePad.GetState(PlayerIndex.One).IsConnected)
+            //if(GamePad.GetState(PlayerIndex.One).IsConnected)
                 DisplayPlayerChoice(PlayerOneChoice, 0.2f);
             //if (GamePad.GetState(PlayerIndex.Two).IsConnected)
                 DisplayPlayerChoice(PlayerTwoChoice, 0.4f);
@@ -91,25 +93,37 @@ namespace Game.Menu.States
         // are to be done.
         public void Update(GameTime gameTime)
         {
+            // If doing it with the keyboard.
+            // state interval for n player's not the
+            // same as for the 3 options states, So
+            // we set it to 3 (four players).
+            controls.MaxLimit = 3;
+            currentPlayer = (PlayerIndex)controls.MoveOptionPositionVertically((int)currentPlayer);
+            // Reset
+            controls.MaxLimit = 2;
+            switch (currentPlayer)
+            {
+                case PlayerIndex.One:
+                    PlayerOneChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice, PlayerIndex.One);
+                    break;
+                case PlayerIndex.Two:
+                    PlayerTwoChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice, PlayerIndex.Two);
+                    break;
+                case PlayerIndex.Three:
+                    PlayerThreeChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice, PlayerIndex.Three);
+                    break;
+                case PlayerIndex.Four:
+                    PlayerFourChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice, PlayerIndex.Four);
+                    break;
+
+            }
+            
             // which player does the move
             PlayerOneChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice);
             PlayerTwoChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice);
             PlayerThreeChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice);
             PlayerFourChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice);
 
-            //switch (PlayerOneChoice)
-            //{
-            //    case OptionsState.NoTeam:
-            //        controls.ContinueButton(GameManager.GameState.MainMenu);
-            //        break;
-            //    case OptionsState.TeamOne:
-            //        controls.ContinueButton(GameManager.GameState.MainMenu);
-            //        break;
-            //    case OptionsState.TeamTwo:
-            //        controls.ContinueButton(GameManager.GameState.MainMenu);
-            //        break;
-
-            //}
             // Proceed if continue is pressed
             controls.ContinueButton(GameManager.GameState.CharacterMenu);
             UpdateGameConfigurations();
