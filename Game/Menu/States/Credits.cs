@@ -27,9 +27,7 @@ namespace Game.Menu.States
         // the credits. Woohoo.
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            sb.Begin();
             sb.Draw(gameManager.GameContent.CreditsBackground, viewport.Bounds, Color.White);
-            sb.End();
         }
 
         // The backspace button is added which makes

@@ -49,17 +49,17 @@ namespace Game.Menu.States
         private void DisplayPlayerChoice(OptionsState playerChoice, float heightPercentage)
         {
             var viewport = game.GraphicsDevice.Viewport;
-            sb.Draw(gameManager.GameContent.HighlightFirst, viewport.Bounds, Color.White);
+            //sb.Draw(gameManager.GameContent.Background, viewport.Bounds, Color.White);
             switch (playerChoice)
             {
                 case OptionsState.NoTeam:
-                    sb.Draw(gameManager.GameContent.CharacterBackground, new Vector2((float) (viewport.X * 0.3), heightPercentage), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2((float) (viewport.Width * 0.3), heightPercentage), Color.White);
                     break;
                 case OptionsState.TeamOne:
-                    sb.Draw(gameManager.GameContent.ButtonBack, new Vector2((float)(viewport.X * 0.5), viewport.Y * heightPercentage), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonBack, new Vector2((float)(viewport.Width * 0.5), viewport.Y * heightPercentage), Color.White);
                     break;
                 case OptionsState.TeamTwo:
-                    sb.Draw(gameManager.GameContent.ButtonBack, new Vector2((float)(viewport.X * 0.8), viewport.Y * heightPercentage), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonBack, new Vector2((float)(viewport.Width * 0.8), viewport.Y * heightPercentage), Color.White);
                     break;
 
             }
@@ -70,7 +70,6 @@ namespace Game.Menu.States
         // then it won't be drawn.
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            sb.Begin();
 
             // We check if the players are connected. If they are,
             // we draw their option state on the screen.
@@ -83,7 +82,7 @@ namespace Game.Menu.States
             //if (GamePad.GetState(PlayerIndex.Four).IsConnected)
                 DisplayPlayerChoice(PlayerFourChoice, 0.8f);
 
-            sb.End();
+
 
         }
 

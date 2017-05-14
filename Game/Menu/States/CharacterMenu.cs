@@ -47,7 +47,6 @@ namespace Game.Menu.States
             SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
             var viewport = game.GraphicsDevice.Viewport;
-            sb.Begin();
 
             switch (currentPosition)
             {
@@ -65,7 +64,6 @@ namespace Game.Menu.States
                     break;
 
             }
-            sb.End();
         }
 
         // Here is all the drawing called for this

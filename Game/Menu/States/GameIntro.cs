@@ -36,9 +36,9 @@ namespace Game.Menu.States
 
             if (videoTexture != null)
             {
-                spriteBatch.Begin();
+               // spriteBatch.Begin();
                 spriteBatch.Draw(videoTexture, new Rectangle(0, 0, 1920, 1080), Color.White);
-                spriteBatch.End();
+                //spriteBatch.End();
 
             }
             else gameManager.CurrentGameState = GameManager.GameState.MainMenu;

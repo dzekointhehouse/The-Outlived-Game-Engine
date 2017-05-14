@@ -34,7 +34,6 @@ namespace Game.Menu.States
 
 
             var viewport = game.GraphicsDevice.Viewport;
-            sb.Begin();
 
             switch (currentPosition)
             {
@@ -52,8 +51,6 @@ namespace Game.Menu.States
                     break;
             }
 
-
-            sb.End();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
