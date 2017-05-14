@@ -83,6 +83,7 @@ namespace Game
         public void Draw(GameTime gameTime)
         {     
             sb.GraphicsDevice.Clear(Color.Black);    
+            sb.Begin();
             switch (CurrentGameState)
             {
 
@@ -121,9 +122,11 @@ namespace Game
                     pausedMenu.Draw(gameTime, sb);
                     break;
                 case GameState.MultiplayerMenu:
+                    DrawBackground();
                     multiplayerMenu.Draw(gameTime, sb);
                     break;
             }
+            sb.End();
         }
 
         // Same as the draw method, the update method
@@ -194,16 +197,12 @@ namespace Game
                 }
             }
 
-
-            sb.Begin();
-
             sb.Draw(
                 texture: GameContent.Background,
                 position: Vector2.Zero,
                 color: Color.White,
                 scale: new Vector2(scale)
             );
-            sb.End();
         }
     }
 }

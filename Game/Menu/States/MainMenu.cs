@@ -45,7 +45,6 @@ namespace Game.Menu.States
             String textContinue = "PLAY IF YOU DARE";
             String textExit = "TAKE THE EASY WAY OUT";
 
-            sb.Begin();
             sb.Draw(gameManager.GameContent.MainOptionsBackground, viewport.Bounds, Color.White);
 
             sb.DrawString(gameManager.GameContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
@@ -64,8 +63,6 @@ namespace Game.Menu.States
                     sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.60f), Color.White);
                     break;
             }
-
-            sb.End();
         }
 
         // Draws
