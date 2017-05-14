@@ -17,11 +17,13 @@ namespace Game
 {
     public class GameManager
     {
+        public const float MinScale = 1.0f;
+        public const float MaxScale = 2.0f;
+        public static float Scale { get; set; } = 1.0f;
+        public static bool MoveHigher { get; set; } = true;
 
         private SpriteFont font;
         private Texture2D background;
-        private float minScale = 1.0f, maxScale = 2.0f, scale = 1.0f;
-        private bool moveHigher = true;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
         // Here we just say that the first state is the Intro
@@ -29,7 +31,7 @@ namespace Game
         protected internal GameState PreviousGameState;
         protected internal KeyboardState OldKeyboardState;
         protected internal GamePadState OldGamepadState;
-        protected internal GameContent GameContent;
+        public GameContent GameContent { get; }
         protected internal FullZengineBundle Engine;
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
@@ -83,7 +85,6 @@ namespace Game
         public void Draw(GameTime gameTime)
         {     
             sb.GraphicsDevice.Clear(Color.Black);    
-            sb.Begin();
             switch (CurrentGameState)
             {
 
@@ -92,7 +93,6 @@ namespace Game
                     break;
 
                 case GameState.MainMenu:
-                    DrawBackground();
                     mainMenu.Draw(gameTime, sb);
                     break;
 
@@ -105,28 +105,23 @@ namespace Game
                     break;
 
                 case GameState.GameModesMenu:
-                    DrawBackground();
                     gameModesMenu.Draw(gameTime, sb);
                     break;
 
                 case GameState.CharacterMenu:
-                    DrawBackground();
                     characterMenu.Draw(gameTime, sb);
                     break;
 
                 case GameState.Credits:
-                    DrawBackground();
                     credits.Draw(gameTime, sb);
                     break;
                 case GameState.Paused:
                     pausedMenu.Draw(gameTime, sb);
                     break;
                 case GameState.MultiplayerMenu:
-                    DrawBackground();
                     multiplayerMenu.Draw(gameTime, sb);
                     break;
             }
-            sb.End();
         }
 
         // Same as the draw method, the update method
@@ -174,35 +169,5 @@ namespace Game
 
         // This method can be used to draw a shared, moving background
         // behind other drawn menus that have transparency in them.
-        private void DrawBackground()
-        {
-            if (scale <= maxScale && scale >= minScale)
-            {
-                if (scale <= minScale + 0.1)
-                {
-                    moveHigher = true;
-                }
-                if (scale >= maxScale - 0.1)
-                {
-                    moveHigher = false;
-                }
-
-                if (moveHigher)
-                {
-                    scale = scale + 0.0001f;
-                }
-                else
-                {
-                    scale = scale - 0.0001f;
-                }
-            }
-
-            sb.Draw(
-                texture: GameContent.Background,
-                position: Vector2.Zero,
-                color: Color.White,
-                scale: new Vector2(scale)
-            );
-        }
     }
 }

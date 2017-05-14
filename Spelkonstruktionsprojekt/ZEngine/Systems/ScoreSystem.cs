@@ -34,8 +34,9 @@ namespace ZEngine.Systems
             int shooter = ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(CollisionEvent.Entity).ShooterEntityId;
             if (shooter == CollisionEvent.Target) return;
 
-            var GameScore = (GameScoreComponent)ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).Values.First();
-            if (GameScore == null) return;
+            var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
+            if (GameScoreList.Count <= 0) return;
+            var GameScore = (GameScoreComponent)GameScoreList.First().Value;
 
             var shooterScore = ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(shooter);
             if (shooterScore == null) return;
@@ -52,8 +53,9 @@ namespace ZEngine.Systems
             if (EntityScore == null) return;
 
 
-            var GameScore = (GameScoreComponent)ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).Values.First();
-            if (GameScore == null) return;
+            var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
+            if (GameScoreList.Count <= 0) return;
+            var GameScore = (GameScoreComponent)GameScoreList.First().Value;
 
             if (DifferentTeams(CollisionEvent.Target, CollisionEvent.Entity))
             {
@@ -65,8 +67,10 @@ namespace ZEngine.Systems
         public void Update(GameTime gameTime)
         {
 
-            var GameScore = (GameScoreComponent)ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).Values.First();
-            if (GameScore == null) return;
+            var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
+            if (GameScoreList.Count <= 0) return;
+            var GameScore = (GameScoreComponent) GameScoreList.First().Value;
+            
             GameScore.TotalGameScore = 0;
 
             foreach(var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityScoreComponent)))

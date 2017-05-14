@@ -71,7 +71,10 @@ namespace Game.Menu.States
         // then it won't be drawn.
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
+            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
             MainMenuDisplay();
+            spriteBatch.End();
         }
 
         // The update method for this class

@@ -31,8 +31,6 @@ namespace Game.Menu.States
         {
             SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
-
-
             var viewport = game.GraphicsDevice.Viewport;
 
             switch (currentPosition)
@@ -55,8 +53,10 @@ namespace Game.Menu.States
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
+            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
             MainMenuDisplay();
-
+            spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)

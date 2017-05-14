@@ -73,6 +73,9 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
 
+            spriteBatch.Begin();
+            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
+
             // We check if the players are connected. If they are,
             // we draw their option state on the screen.
             //if(GamePad.GetState(PlayerIndex.One).IsConnected)
@@ -84,6 +87,7 @@ namespace Game.Menu.States
             //if (GamePad.GetState(PlayerIndex.Four).IsConnected)
                 DisplayPlayerChoice(PlayerFourChoice, 0.8f);
 
+            spriteBatch.End();
 
 
         }

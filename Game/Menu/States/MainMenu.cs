@@ -68,8 +68,10 @@ namespace Game.Menu.States
         // Draws
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
+            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
             MainMenuDisplay();
-
+            spriteBatch.End();
         }
 
         // Updates. When the players clicks continue we go to
