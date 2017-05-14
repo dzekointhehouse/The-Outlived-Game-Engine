@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Microsoft.Xna.Framework.Input;
-using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
-using UnityEngine;
 using ZEngine.Components;
 using ZEngine.Managers;
 using Light = Penumbra.Light;
-using Random = System.Random;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
@@ -88,7 +80,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             DimensionsComponent component = new DimensionsComponent()
             {
                 Width = width,
-                Height = height, 
+                Height = height,
             };
             components.Add(component);
             return this;
@@ -114,12 +106,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetCollision(Rectangle boundingRectangle = default(Rectangle), bool isCage = false)
+        public EntityBuilder SetRectangleCollision(bool isCage = false)
         {
             CollisionComponent component = new CollisionComponent()
             {
                 IsCage = isCage,
-                SpriteBoundingRectangle = boundingRectangle
             };
             components.Add(component);
             return this;
@@ -159,14 +150,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public EntityBuilder SetRendering(int width, int height)
         {
-            RenderComponent component = new RenderComponent()
-            {
-                DimensionsComponent = new DimensionsComponent()
-                {
-                    Height = width,
-                    Width = height
-                }
-            };
+            RenderComponent component = new RenderComponent();
+            this.SetDimensions(width, height);
             components.Add(component);
             return this;
         }
@@ -210,7 +195,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // and is able to create an entity that is almost the same.
         public EntityBuilder Build()
         {
-
             foreach (var component in components)
             {
                 ComponentManager.Instance.AddComponentToEntity(component, _key);
@@ -231,8 +215,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             components.AddRange(alreadyCreatedComponents);
             return this;
         }
-
     }
-
 }
-

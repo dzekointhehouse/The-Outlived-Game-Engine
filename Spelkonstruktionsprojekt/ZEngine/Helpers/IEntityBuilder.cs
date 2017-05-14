@@ -33,7 +33,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <param name="scale"> texture scale </param>
         /// <param name="alpha"> alpha value between 0-1, 0 will make it transparent </param>
         /// <returns></returns>
-        EntityBuilder SetSprite(string spriteName, Point startPosition, int tileWidth, int tileHeight, float scale = 1, float alpha = 1);
+        EntityBuilder SetSprite(string spriteName, Point startPosition, int tileWidth, int tileHeight, float scale = 1,
+            float alpha = 1);
 
         /// <summary>
         /// Build is the last call to make, when all other component method
@@ -59,7 +60,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <param name="boundingRectangle"></param>
         /// <param name="isCage"></param>
         /// <returns></returns>
-        EntityBuilder SetCollision(Rectangle boundingRectangle = default(Rectangle), bool isCage = false);
+        EntityBuilder SetRectangleCollision(bool isCage = false);
 
         /// <summary>
         /// A special case method for the user who decides to
@@ -158,10 +159,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// </summary>
         /// <returns></returns>
         EntityBuilder SetCameraFollow();
-
-
-            
-
     }
-
 }

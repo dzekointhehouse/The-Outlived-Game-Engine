@@ -39,7 +39,7 @@ namespace Game.Menu
         // which is inserted as parameter, and then a check is done to see if
         // the player hass pressed up or down arrow then the position
         // is moved accordingly, or kept the same.
-        public int GetMenuOptionPosition(int currentPosition)
+        public int MoveOptionPositionVertically(int currentPosition)
         {
             // get the newest state
             KeyboardState newState = Keyboard.GetState();
@@ -50,7 +50,7 @@ namespace Game.Menu
             {
                 gameManager.OldState = newState;
                 if (currentPosition != min)
-                    return currentPosition = currentPosition - 1;
+                    return currentPosition - 1;
 
 
             }
@@ -59,7 +59,32 @@ namespace Game.Menu
             {
                 gameManager.OldState = newState;
                 if (currentPosition != max)
-                    return currentPosition = currentPosition + 1;
+                    return currentPosition + 1;
+            }
+            return currentPosition;
+        }
+
+        public int MoveOptionPositionHorizontally(int currentPosition)
+        {
+            // get the newest state
+            KeyboardState newState = Keyboard.GetState();
+
+
+            if (GamePad.GetState(PlayerIndex.One).DPad.Left == ButtonState.Pressed
+                || newState.IsKeyDown(Keys.Left) && gameManager.OldState.IsKeyUp(Keys.Left))
+            {
+                gameManager.OldState = newState;
+                if (currentPosition != min)
+                    return currentPosition - 1;
+
+
+            }
+            if (GamePad.GetState(PlayerIndex.One).DPad.Right == ButtonState.Pressed
+                || newState.IsKeyDown(Keys.Right) && gameManager.OldState.IsKeyUp(Keys.Right))
+            {
+                gameManager.OldState = newState;
+                if (currentPosition != max)
+                    return currentPosition + 1;
             }
             return currentPosition;
         }

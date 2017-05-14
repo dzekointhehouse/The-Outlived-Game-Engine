@@ -13,9 +13,9 @@ namespace Game.Menu.States
     {
         private readonly GameManager gameManager;
         private readonly ControlConfiguration controls;
+        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         private Viewport viewport;
-
-
+        
         public Credits(GameManager gameManager)
         {
             this.gameManager = gameManager;
@@ -23,23 +23,18 @@ namespace Game.Menu.States
             controls = new ControlConfiguration(gameManager);
         }
 
-
-
-        private void DrawCredits()
+        // Draws a simple background which contains
+        // the credits. Woohoo.
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-
             sb.Begin();
             sb.Draw(gameManager.GameContent.CreditsBackground, viewport.Bounds, Color.White);
             sb.End();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            DrawCredits();
-
-        }
-
+        // The backspace button is added which makes
+        // it possible to go back to the previous game
+        // state.
         public void Update(GameTime gameTime)
         {
             controls.GoBackButton();

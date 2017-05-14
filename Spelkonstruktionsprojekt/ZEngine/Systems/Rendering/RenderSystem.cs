@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -32,6 +33,8 @@ namespace ZEngine.Systems
         private RenderComponent renderComponent;
         private MoveComponent moveComponent;
         private RenderOffsetComponent offsetComponent;
+        private DimensionsComponent dimensionsComponent;
+
         private CameraViewComponent cameraViewComponent;
         // _____________________________________________________________________________________________________________________ //
 
@@ -43,7 +46,9 @@ namespace ZEngine.Systems
         {
             graphics = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
 
-            CameraViewComponent cameraEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First().Value as CameraViewComponent;
+            CameraViewComponent cameraEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent))
+                .First()
+                .Value as CameraViewComponent;
 
             graphics.Clear(Color.Black); // Maybe done outside
 
@@ -64,9 +69,9 @@ namespace ZEngine.Systems
             // Our zoom effect will be doing its jobb here,
             // as this matrix will easily help us achieve it.
             Matrix transform = Matrix.Identity *
-                            Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
-                            Matrix.CreateRotationZ(0) *
-                            Matrix.CreateScale(1);
+                               Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
+                               Matrix.CreateRotationZ(0) *
+                               Matrix.CreateScale(1);
 
             gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
             DrawEntities(gameDependencies.SpriteBatch);
@@ -79,35 +84,35 @@ namespace ZEngine.Systems
         // we use the spritebach to draw all the entities.
         private void DrawEntities(SpriteBatch spriteBatch)
         {
-            Dictionary<int, IComponent> renderableEntities =
-                ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderComponent));
+            var renderableEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderComponent));
 
             foreach (var entity in renderableEntities)
             {
-                PositionComponent positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                 if (positionComponent == null) continue;
 
-                SpriteComponent sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
+                var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
                 if (sprite == null) continue;
 
                 renderComponent = entity.Value as RenderComponent;
                 offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
                 moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-
+                dimensionsComponent = ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(entity.Key);
+                
                 int zIndex = positionComponent.ZIndex;
-                Vector2 offset = offsetComponent?.Offset ?? default(Vector2);
+                var offset = offsetComponent?.Offset ?? default(Vector2);
                 float angle = moveComponent?.Direction ?? 0;
-                Rectangle destinationRectangle =
+                var destinationRectangle =
                     new Rectangle(
                         (int) (positionComponent.Position.X + offset.X),
                         (int) (positionComponent.Position.Y + offset.Y),
-                        (int) (RenderComponentHelper.GetDimensions(renderComponent).Width * sprite.Scale),
-                        (int) (RenderComponentHelper.GetDimensions(renderComponent).Height * sprite.Scale)
+                        (int) (dimensionsComponent.Width * sprite.Scale),
+                        (int) (dimensionsComponent.Width * sprite.Scale)
                     );
 
                 // render the sprite only if it's visible (sourceRectangle) intersects
                 // with the viewport.
-                KeyValuePair<int, IComponent> camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
+                var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
                 cameraViewComponent = camera.Value as CameraViewComponent;
                 if (true || cameraViewComponent.View.Intersects(destinationRectangle))
                 {
@@ -122,7 +127,7 @@ namespace ZEngine.Systems
                         sourceRectangle: spriteCrop,
                         color: Color.White * sprite.Alpha,
                         rotation: (float) angle,
-                        origin: new Vector2(x: sprite.TileWidth / 2, y: sprite.TileHeight / 2),
+                        origin: new Vector2(x: (float) (sprite.TileWidth * 0.5), y: (float) (sprite.TileHeight * 0.5)),
                         effects: SpriteEffects.None,
                         layerDepth: (float) zIndex / SystemConstants.LayerDepthMaxLimit
                         //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
@@ -130,6 +135,5 @@ namespace ZEngine.Systems
                 }
             }
         }
-
     }
 }

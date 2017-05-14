@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
@@ -18,7 +19,7 @@ namespace ZEngine.Systems
 
         public void Move(GameTime gameTime)
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             var moveEntities = ComponentManager.GetEntitiesWithComponent(typeof(MoveComponent));
             var positionComponents =
                 ComponentManager.GetEntitiesWithComponent(typeof(PositionComponent))
@@ -28,12 +29,13 @@ namespace ZEngine.Systems
                 var moveComponent = moveEntities[entity.Key] as MoveComponent;
 
                 //Play direction based on angular momentum
-                moveComponent.Direction = (float) ((moveComponent.Direction + moveComponent.RotationMomentum * delta) %
-                                                   MathHelper.TwoPi);
-
+                moveComponent.PreviousDirection = moveComponent.Direction;
+                moveComponent.Direction =
+                    (float) ((moveComponent.Direction + moveComponent.RotationMomentum * delta) %
+                             MathHelper.TwoPi);
                 //If the entity is moving, calculate new acceleration
                 //And if moving backwards, apply backwards motion penalty factor
-                moveComponent.Speed += (float)(moveComponent.CurrentAcceleration * delta);
+                moveComponent.Speed += (float) (moveComponent.CurrentAcceleration * delta);
 
                 //Limit velocity if above max velocity
                 ApplyVelocityLimits(moveComponent);
@@ -86,7 +88,7 @@ namespace ZEngine.Systems
             var y1 = acceleration.Y * Math.Sin(direction) * deltaTime;
             var x = (oldVector.X + x1);
             var y = (oldVector.Y + y1);
-            return new Vector2((float)x, (float)y);
+            return new Vector2((float) x, (float) y);
         }
 
         public Vector2 MoveDirectly(ref Vector2 oldVector, float direction, float acceleration)

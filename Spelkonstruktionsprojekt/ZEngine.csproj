@@ -45,6 +45,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\ShapeRendering2D\IShapeRenderer2D.cs" />
+    <Compile Include="..\ShapeRendering2D\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\ShapeRendering2D\Shape.cs" />
+    <Compile Include="..\ShapeRendering2D\ShapeRenderer2D.cs" />
+    <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
     <Compile Include="ZEngine\Components\GameScoreComponent.cs" />
     <Compile Include="ZEngine\Components\Input\GamePadComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
@@ -75,7 +80,6 @@
     <Compile Include="ZEngine\Components\RenderComponent\RenderComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderOffsetComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderPaintComponent.cs" />
-    <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
     <Compile Include="ZEngine\Components\SoundComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteAnimationComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteAnimation\SpriteAnimationBindings.cs" />
@@ -93,14 +97,12 @@
     <Compile Include="ZEngine\EventBus\EventBus.cs" />
     <Compile Include="ZEngine\EventBus\ParameterlessEventBuss.cs" />
     <Compile Include="ZEngine\Helpers\DefaultMaps\MapPack.cs" />
-    <Compile Include="ZEngine\GameTest\TestChaseGame.cs" />
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
     <Compile Include="ZEngine\Helpers\EntityBuilder.cs" />
     <Compile Include="ZEngine\Helpers\FullZengineBundle.cs" />
     <Compile Include="ZEngine\Helpers\MapHelper.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
     <Compile Include="ZEngine\Systems\AISystem.cs" />
     <Compile Include="ZEngine\Systems\AnimationSystem.cs" />
@@ -136,13 +138,6 @@
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
-    <Compile Include="Zenu\Button.cs" />
-    <Compile Include="Zenu\components\ButtonComponent.cs" />
-    <Compile Include="Zenu\components\MenuComponent.cs" />
-    <Compile Include="Zenu\components\MenuManagerComponent.cs" />
-    <Compile Include="Zenu\factories\ButtonFactory.cs" />
-    <Compile Include="Zenu\factories\MenuBuilder.cs" />
-    <Compile Include="Zenu\templates\ZenuButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -169,6 +164,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\ShapeRendering2D\app.manifest" />
+    <Content Include="..\ShapeRendering2D\ShapeRendering2D.csproj" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +174,11 @@
     <None Include="app.manifest" />
     <None Include="Iteration1.cd" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="..\ShapeRendering2D\Content\bin\Windows" />
+    <Folder Include="..\ShapeRendering2D\Content\obj\Windows" />
+    <Folder Include="Properties" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

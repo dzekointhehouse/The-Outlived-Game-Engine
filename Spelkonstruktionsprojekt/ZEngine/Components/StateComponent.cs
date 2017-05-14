@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
+using System.Diagnostics;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.EventBus;
-using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
@@ -17,7 +16,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         WalkingForward,
         WalkingBackwards,
         Shooting,
-        Dead
+        Dead,
+        Collided
     }
 
     public static class StateManager

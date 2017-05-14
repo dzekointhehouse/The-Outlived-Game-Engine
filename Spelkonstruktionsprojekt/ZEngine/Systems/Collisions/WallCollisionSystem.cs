@@ -31,15 +31,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
             if (IsBulletCollisionAndNotRelevant(collisionEvent)) return;
 
             var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
-            var entityRenderComponent = ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(collisionEvent.Entity);
             var entityPositionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(collisionEvent.Entity);
-            StopMovement(entityRenderComponent, entityPositionComponent, entityMoveComponent);
+            StopMovement(entityPositionComponent, entityMoveComponent);
         }
 
-        private void StopMovement(RenderComponent renderComponent, PositionComponent positionComponent, MoveComponent moveComponent)
+        private void StopMovement(PositionComponent positionComponent, MoveComponent moveComponent)
         {
             positionComponent.Position = moveComponent.PreviousPosition;
-            moveComponent.Speed = 0;
+            moveComponent.Direction = moveComponent.PreviousDirection;
         }
 
         private static bool IsBulletCollisionAndNotRelevant(SpecificCollisionEvent collisionEvent)

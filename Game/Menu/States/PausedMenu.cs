@@ -10,11 +10,16 @@ using ZEngine.Wrappers;
 
 namespace Game.Menu.States
 {
+    /// <summary>
+    /// Pause game state, when the user want's to
+    /// pause the game.
+    /// </summary>
     class PausedMenu : IMenu
     {
         private readonly GameManager gameManager;
         private readonly ControlConfiguration controls;
         private Viewport viewport;
+        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
         public PausedMenu(GameManager gameManager)
         {
@@ -23,33 +28,19 @@ namespace Game.Menu.States
             viewport = this.gameManager.engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
         }
 
+        // drawing the menu background.
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-
             sb.Begin();
             sb.Draw(gameManager.GameContent.PauseBackground, viewport.Bounds, Color.White);
             sb.End();
         }
-
+        // A pause button that goes to the pause game state,
+        // but if the current game state is the pause state
+        // then we go back to the previous state.
         public void Update(GameTime gameTime)
         {
             controls.PauseButton();
-        }
-
-        public void ContinueButton(GameManager.GameState state)
-        {
-            // get the newest state
-            KeyboardState newState = Keyboard.GetState();
-
-            // With this button we want to continue to the next phase of the game initialization
-            if (GamePad.GetState(PlayerIndex.One).Buttons.BigButton == ButtonState.Pressed
-                || newState.IsKeyDown(Keys.Q) && gameManager.OldState.IsKeyUp(Keys.Q))
-            {
-                gameManager.PreviousGameState = gameManager.CurrentGameState;
-                gameManager.CurrentGameState = GameManager.GameState.Quit;
-            }
-            gameManager.OldState = newState;
         }
     }
 }

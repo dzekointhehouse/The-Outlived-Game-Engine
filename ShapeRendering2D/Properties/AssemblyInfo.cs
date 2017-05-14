@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Spelkonstruktionsprojekt")]
-[assembly: AssemblyProduct("Spelkonstruktionsprojekt")]
+[assembly: AssemblyTitle("ShapeRendering2D")]
+[assembly: AssemblyProduct("ShapeRendering2D")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f0a5e368-a2b6-4eeb-b362-1ae022083818")]
+[assembly: Guid("feb5594d-8296-4774-9e79-fb6565bcf574")]
 
 // Version information for an assembly consists of the following four values:
 //

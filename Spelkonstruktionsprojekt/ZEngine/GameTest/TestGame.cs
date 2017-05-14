@@ -154,12 +154,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var renderComponentCage = new RenderComponent()
             {
-                DimensionsComponent = new DimensionsComponent()
-                {
-                    Width = (int)(viewportDimensions.X * 0.8),
-                    Height = (int)(viewportDimensions.Y * 0.8)
-                },
                 Fixed = true
+            };
+
+            var dimensionsComponent = new DimensionsComponent()
+            {
+                Width = (int) (viewportDimensions.X * 0.8),
+                Height = (int) (viewportDimensions.Y * 0.8)
             };
 
             var position = new PositionComponent()
@@ -181,6 +182,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 Offset = new Vector2((float)(viewportDimensions.X * 0.25), (float)(viewportDimensions.Y * 0.25))
             };
             ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
+            ComponentManager.Instance.AddComponentToEntity(dimensionsComponent, cameraCage);
             //            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(position, cameraCage);
             ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
@@ -230,7 +232,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
-                .SetCollision(new Rectangle(50, 50, 200, 200))
+                .SetRectangleCollision()
                 .SetHealth()
                 //.SetHUD("hello")
                 .BuildAndReturnId();
@@ -342,7 +344,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetLight(light)
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetCollision(new Rectangle(30, 20, 70, 60))
+                .SetRectangleCollision()
                 .SetCameraFollow()
                 .SetPlayer(name)
                 .SetHealth()
