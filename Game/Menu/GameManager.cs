@@ -18,18 +18,22 @@ namespace Game
     public class GameManager
     {
 
-        protected internal FullZengineBundle engine;
         private SpriteFont font;
         private Texture2D background;
         private float minScale = 1.0f, maxScale = 2.0f, scale = 1.0f;
         private bool moveHigher = true;
-        SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
+        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
+
         // Here we just say that the first state is the Intro
         protected internal GameState CurrentGameState = GameState.Intro;
         protected internal GameState PreviousGameState;
-        protected internal KeyboardState OldState;
+        protected internal KeyboardState OldKeyboardState;
+        protected internal GamePadState OldGamepadState;
         protected internal GameContent GameContent;
-
+        protected internal FullZengineBundle Engine;
+        // To keep track of the game configurations made
+        protected internal GameConfig gameConfig;
+    
         private IMenu mainMenu;
         private IMenu gameModesMenu;
         private IMenu characterMenu;
@@ -37,14 +41,16 @@ namespace Game
         private IMenu gameIntro;
         private IMenu survivalGame;
         private IMenu pausedMenu;
+        private IMenu multiplayerMenu;
 
         // Game states
-        protected internal enum GameState
+        public enum GameState
         {
             Intro,
             MainMenu,
             GameModesMenu,
             CharacterMenu,
+            MultiplayerMenu,
             PlaySurvivalGame,
             Quit,
             Credits,
@@ -53,8 +59,9 @@ namespace Game
 
         public GameManager(FullZengineBundle gameBundle)
         {
-            engine = gameBundle;
+            Engine = gameBundle;
             GameContent = new GameContent(gameBundle.Dependencies.Game);
+            gameConfig = new GameConfig();
 
             // initializing the states, remember:
             // all the states need to exist in the 
@@ -66,6 +73,7 @@ namespace Game
             gameIntro = new GameIntro(this);
             survivalGame = new SurvivalGame(this);
             pausedMenu = new PausedMenu(this);
+            multiplayerMenu = new MultiplayerMenu(this);
 
         }
 
@@ -73,7 +81,8 @@ namespace Game
         // the different states that we have, depending on which
         // state we are we use that state's draw method.
         public void Draw(GameTime gameTime)
-        {         
+        {     
+            sb.GraphicsDevice.Clear(Color.Black);    
             switch (CurrentGameState)
             {
 
@@ -91,7 +100,7 @@ namespace Game
                     break;
 
                 case GameState.Quit:
-                    engine.Dependencies.Game.Exit();
+                    Engine.Dependencies.Game.Exit();
                     break;
 
                 case GameState.GameModesMenu:
@@ -110,6 +119,9 @@ namespace Game
                     break;
                 case GameState.Paused:
                     pausedMenu.Draw(gameTime, sb);
+                    break;
+                case GameState.MultiplayerMenu:
+                    multiplayerMenu.Draw(gameTime, sb);
                     break;
             }
         }
@@ -133,7 +145,7 @@ namespace Game
                     break;
 
                 case GameState.Quit:
-                    engine.Dependencies.Game.Exit();
+                    Engine.Dependencies.Game.Exit();
                     break;
 
                 case GameState.GameModesMenu:
@@ -150,6 +162,9 @@ namespace Game
 
                 case GameState.Paused:
                     pausedMenu.Update(gameTime);
+                    break;
+                case GameState.MultiplayerMenu:
+                    multiplayerMenu.Update(gameTime);
                     break;
             }
         }
@@ -181,7 +196,7 @@ namespace Game
 
 
             sb.Begin();
-            //sb.Draw(gameManager.GameContent.Background, viewport.Bounds, Color.White);
+
             sb.Draw(
                 texture: GameContent.Background,
                 position: Vector2.Zero,

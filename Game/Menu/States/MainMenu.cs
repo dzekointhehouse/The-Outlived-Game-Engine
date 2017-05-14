@@ -15,7 +15,7 @@ namespace Game.Menu.States
     {
         private Microsoft.Xna.Framework.Game game;
         private GameManager gameManager;
-        private ControlConfiguration controls;
+        private ControlsConfig controls;
         private OptionsState currentPosition = OptionsState.Continue;
         private Viewport viewport;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
@@ -31,8 +31,8 @@ namespace Game.Menu.States
         public MainMenu(GameManager gameManager)
         {
             this.gameManager = gameManager;
-            game = this.gameManager.engine.Dependencies.Game;
-            controls = new ControlConfiguration(0, 2, gameManager);
+            game = this.gameManager.Engine.Dependencies.Game;
+            controls = new ControlsConfig(0, 2, gameManager);
             viewport = game.GraphicsDevice.Viewport;
         }
 

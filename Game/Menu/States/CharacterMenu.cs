@@ -19,7 +19,7 @@ namespace Game.Menu.States
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
         private readonly GameManager gameManager;
-        private readonly ControlConfiguration controls;
+        private readonly ControlsConfig controls;
         private OptionsState currentPosition = OptionsState.FirstCharacter;
 
         // enum so we can keep track on which option
@@ -35,9 +35,9 @@ namespace Game.Menu.States
         public CharacterMenu(GameManager gameManager)
         {
             this.gameManager = gameManager;
-            game = this.gameManager.engine.Dependencies.Game;
+            game = this.gameManager.Engine.Dependencies.Game;
             // Adding the options interval and gamemanager.
-            controls = new ControlConfiguration(0, 3, gameManager);
+            controls = new ControlsConfig(0, 3, gameManager);
         }
 
         // Draws the character names and the button at the option that
@@ -67,13 +67,14 @@ namespace Game.Menu.States
             }
             sb.End();
         }
+
         // Here is all the drawing called for this
         // class, so if some drawing isn't in here
         // then it won't be drawn.
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             MainMenuDisplay();
-            }
+        }
 
         // The update method for this class
         // that takes care of all the updates, that
@@ -82,7 +83,7 @@ namespace Game.Menu.States
         {
             currentPosition = (OptionsState)controls.MoveOptionPositionHorizontally((int)currentPosition);
             currentPosition = (OptionsState)controls.MoveOptionPositionVertically((int)currentPosition);
-            
+
             switch (currentPosition)
             {
                 case OptionsState.FirstCharacter:

@@ -15,13 +15,13 @@ namespace Game.Menu.States
        // private SpriteBatch sb;
         private Viewport viewport;
         private readonly VideoPlayer videoPlayer;
-        private readonly ControlConfiguration controls;
+        private readonly ControlsConfig controls;
         public GameIntro(GameManager gameManager)
         {
             this.gameManager = gameManager;
            // sb = gameManager.engine.Dependencies.SpriteBatch;
-            viewport = gameManager.engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
-            controls = new ControlConfiguration(gameManager);
+            viewport = gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            controls = new ControlsConfig(gameManager);
             videoPlayer = new VideoPlayer();
             videoPlayer.Play(gameManager.GameContent.IntroVideo);
         }

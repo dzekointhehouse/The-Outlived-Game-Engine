@@ -24,7 +24,7 @@ namespace Game.Menu.States
     {
 
         private GameManager gameManager;
-        private ControlConfiguration controls;
+        private ControlsConfig controls;
         private Boolean isIngame = true;
 
         // SOME BUG NEED THIS.
@@ -32,18 +32,18 @@ namespace Game.Menu.States
         public SurvivalGame(GameManager gameManager)
         {
             this.gameManager = gameManager;
-            controls = new ControlConfiguration(gameManager);
+            controls = new ControlsConfig(gameManager);
             CreateTestEntities();
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            gameManager.engine.Draw(gameTime);
+            gameManager.Engine.Draw(gameTime);
         }
 
         public void Update(GameTime gameTime)
         {
             controls.PauseButton();
-            gameManager.engine.Update(gameTime);
+            gameManager.Engine.Update(gameTime);
         }
 
 

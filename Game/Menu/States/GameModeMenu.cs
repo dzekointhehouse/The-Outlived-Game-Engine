@@ -9,7 +9,7 @@ namespace Game.Menu.States
 
         private readonly Microsoft.Xna.Framework.Game game;
         private readonly GameManager gameManager;
-        private readonly ControlConfiguration controls;
+        private readonly ControlsConfig controls;
         private OptionsState currentPosition = OptionsState.Survival;
 
         private enum OptionsState
@@ -23,8 +23,8 @@ namespace Game.Menu.States
         public GameModeMenu(GameManager gameManager)
         {
             this.gameManager = gameManager;
-            game = this.gameManager.engine.Dependencies.Game;
-            this.controls = new ControlConfiguration(0, 2, gameManager);
+            game = this.gameManager.Engine.Dependencies.Game;
+            this.controls = new ControlsConfig(0, 2, gameManager);
         }
 
         private void MainMenuDisplay()
@@ -72,13 +72,13 @@ namespace Game.Menu.States
                     controls.ContinueButton(GameManager.GameState.PlaySurvivalGame);
                     break;
                 case OptionsState.Extinction:
-                    controls.ContinueButton(GameManager.GameState.CharacterMenu);
+                    controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
                     break;
                 case OptionsState.Exit:
-                    controls.ContinueButton(GameManager.GameState.CharacterMenu);
+                    controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
                     break;
                 case OptionsState.Blockworld:
-                    controls.ContinueButton(GameManager.GameState.CharacterMenu);
+                    controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
                     break;
             }
         }

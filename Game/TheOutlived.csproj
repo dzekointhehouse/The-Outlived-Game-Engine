@@ -41,11 +41,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controllers\XboxControls.cs" />
     <Compile Include="Entities\GameHUD.cs" />
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
     <Compile Include="GameContent.cs" />
-    <Compile Include="Menu\ControlConfiguration.cs" />
+    <Compile Include="Menu\ControlsConfig.cs" />
+    <Compile Include="Menu\GameConfig.cs" />
     <Compile Include="Menu\States\GameModeMenu.cs" />
     <Compile Include="Menu\States\MainMenu.cs" />
     <Compile Include="Menu\Menu.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="Menu\States\CharacterMenu.cs" />
     <Compile Include="Menu\States\Credits.cs" />
     <Compile Include="Menu\States\GameIntro.cs" />
+    <Compile Include="Menu\States\MultiplayerMenu.cs" />
     <Compile Include="Menu\States\PausedMenu.cs" />
     <Compile Include="Menu\States\SurvivalGame.cs" />
     <Compile Include="OutlivedGame.cs" />

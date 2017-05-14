@@ -12,15 +12,15 @@ namespace Game.Menu.States
     class Credits : IMenu
     {
         private readonly GameManager gameManager;
-        private readonly ControlConfiguration controls;
+        private readonly ControlsConfig controls;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         private Viewport viewport;
         
         public Credits(GameManager gameManager)
         {
             this.gameManager = gameManager;
-            viewport = this.gameManager.engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
-            controls = new ControlConfiguration(gameManager);
+            viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            controls = new ControlsConfig(gameManager);
         }
 
         // Draws a simple background which contains

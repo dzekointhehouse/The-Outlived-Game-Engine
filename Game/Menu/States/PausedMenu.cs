@@ -17,15 +17,15 @@ namespace Game.Menu.States
     class PausedMenu : IMenu
     {
         private readonly GameManager gameManager;
-        private readonly ControlConfiguration controls;
+        private readonly ControlsConfig controls;
         private Viewport viewport;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
         public PausedMenu(GameManager gameManager)
         {
             this.gameManager = gameManager;
-            controls = new ControlConfiguration(gameManager);
-            viewport = this.gameManager.engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            controls = new ControlsConfig(gameManager);
+            viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
         }
 
         // drawing the menu background.
