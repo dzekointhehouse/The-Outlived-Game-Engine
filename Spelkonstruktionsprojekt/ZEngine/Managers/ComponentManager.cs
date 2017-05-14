@@ -124,6 +124,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
         public void RemoveComponentFromEntity(Type component, int entityId)
         {
             var entityComponents = _components[component];
+            if(entityComponents != null)
             entityComponents.Remove(entityId);
 
         }
