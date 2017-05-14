@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Game.Controllers;
+using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -123,10 +123,10 @@ namespace Game.Menu.States
             }
             
             // which player does the move
-            PlayerOneChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice);
-            PlayerTwoChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice);
-            PlayerThreeChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice);
-            PlayerFourChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice);
+            PlayerOneChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice, PlayerIndex.One);
+            PlayerTwoChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice, PlayerIndex.Two);
+            PlayerThreeChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice, PlayerIndex.Three);
+            PlayerFourChoice = (OptionsState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice, PlayerIndex.Four);
 
             // Proceed if continue is pressed
             controls.ContinueButton(GameManager.GameState.CharacterMenu);

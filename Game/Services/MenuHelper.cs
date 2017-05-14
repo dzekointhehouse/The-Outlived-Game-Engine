@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Game.Menu
+namespace Game.Services
 {
     public class MenuHelper
     {

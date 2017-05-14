@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Game.Menu;
 using Game.Menu.States;
+using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -35,7 +36,7 @@ namespace Game
         protected internal FullZengineBundle Engine;
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
-    
+
         private IMenu mainMenu;
         private IMenu gameModesMenu;
         private IMenu characterMenu;
@@ -83,8 +84,8 @@ namespace Game
         // the different states that we have, depending on which
         // state we are we use that state's draw method.
         public void Draw(GameTime gameTime)
-        {     
-            sb.GraphicsDevice.Clear(Color.Black);    
+        {
+            sb.GraphicsDevice.Clear(Color.Black);
             switch (CurrentGameState)
             {
 
@@ -166,8 +167,5 @@ namespace Game
                     break;
             }
         }
-
-        // This method can be used to draw a shared, moving background
-        // behind other drawn menus that have transparency in them.
     }
 }
