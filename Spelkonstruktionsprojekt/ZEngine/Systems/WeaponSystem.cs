@@ -47,6 +47,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
             if (weaponComponent == default(WeaponComponent)) return;
 
+            //Check if they have ammo
+            var ammoComponent = ComponentManager.GetEntityComponentOrDefault<AmmoComponent>(inputEvent.EntityId);
+            if(ammoComponent != null)
+            {
+                if (ammoComponent.Amount > 0)
+                {
+                    ammoComponent.Amount -= 1;
+                }
+                else
+                {
+                    //Debug.WriteLine(inputEvent.EntityId + " is out of ammo");
+                    return; //Should play a clicking noise
+                }
+                
+            }
+
+
             var bulletSpriteEntities =
                 ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
             if (bulletSpriteEntities.Count <= 0) return;
