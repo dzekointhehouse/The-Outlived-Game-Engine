@@ -21,8 +21,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
 
         //Pickup Values, should be moved to components later
-        private int HealingAmount = 50;
-        private int AmmoAmount = 10;
+        //private int HealingAmount = 50;
+        //private int AmmoAmount = 10;
 
 
         public void Start()
@@ -56,9 +56,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         private void HandleHealthPickup(int player, int pickup)
         {
             var HealthComponent = (HealthComponent)ComponentManager.GetEntityComponentOrDefault(typeof(HealthComponent), player);
+            var HealthPickupComponent = (HealthPickupComponent) ComponentManager.GetEntityComponentOrDefault(typeof(HealthPickupComponent), pickup);
             if (HealthComponent.CurrentHealth < HealthComponent.MaxHealth)
             {
-                HealthComponent.Damage.Add(-HealingAmount);
+                HealthComponent.Damage.Add(-HealthPickupComponent.Amount);
                 DeletePickup(pickup);
             }
         }
@@ -67,7 +68,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         private void HandleAmmoPickup(int player, int pickup)
         {
             var AmmoComponent = (AmmoComponent)ComponentManager.GetEntityComponentOrDefault(typeof(AmmoComponent), player);
-            AmmoComponent.Amount += AmmoAmount;
+            var AmmoPickupComponent = (AmmoPickupComponent)ComponentManager.GetEntityComponentOrDefault(typeof(AmmoPickupComponent), pickup);
+            AmmoComponent.SpareAmmoAmount += AmmoPickupComponent.Amount;
             DeletePickup(pickup);
         }
 
