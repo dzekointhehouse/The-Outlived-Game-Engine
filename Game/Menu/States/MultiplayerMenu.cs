@@ -74,7 +74,7 @@ namespace Game.Menu.States
         {
 
             spriteBatch.Begin();
-            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
 
             // We check if the players are connected. If they are,
             // we draw their option state on the screen.
@@ -97,6 +97,7 @@ namespace Game.Menu.States
         // are to be done.
         public void Update(GameTime gameTime)
         {
+            controls.GoBackButton();
             // If doing it with the keyboard.
             // state interval for n player's not the
             // same as for the 3 options states, So
@@ -128,7 +129,7 @@ namespace Game.Menu.States
             PlayerThreeChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice, PlayerIndex.Three);
             PlayerFourChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerFourChoice, PlayerIndex.Four);
 
-            // controls.GoBackButton();
+            
 
             // Need atleast one player to proceed
             // Proceed if continue is pressed

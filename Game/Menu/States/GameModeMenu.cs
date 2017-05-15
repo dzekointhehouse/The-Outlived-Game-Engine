@@ -55,13 +55,14 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
             MainMenuDisplay();
             spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
         {
+            controls.GoBackButton();
             currentPosition = (OptionsState)controls.MoveOptionPositionVertically((int)currentPosition);
 
             switch (currentPosition)

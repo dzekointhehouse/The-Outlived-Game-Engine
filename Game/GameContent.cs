@@ -18,6 +18,7 @@ namespace Game
         public Video IntroVideo;
         public Song BackgroundSong;
         public Texture2D Background;
+        public Texture2D BackgroundFog;
         public Texture2D CreditsBackground;
         public Texture2D PauseBackground;
 
@@ -64,6 +65,7 @@ namespace Game
             BackgroundSong = game.Content.Load<Song>("Sound/creepyPiano");
             MainOptionsBackground = game.Content.Load<Texture2D>("Images/Menu/mainoptions");
             Background = game.Content.Load<Texture2D>("Images/Menu/background3");
+            BackgroundFog = game.Content.Load<Texture2D>("Images/Menu/movingfog");
 
             // Credits
             CreditsBackground = game.Content.Load<Texture2D>("Images/Menu/credits");

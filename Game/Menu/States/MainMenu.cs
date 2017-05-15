@@ -21,6 +21,8 @@ namespace Game.Menu.States
         private OptionsState currentPosition = OptionsState.Continue;
         private Viewport viewport;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
+        private MenuHelper.Background fogBackground;
+        private MenuHelper.Background mainBackground;
 
         // different menu options
         private enum OptionsState
@@ -36,6 +38,8 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             controls = new ControlsConfig(0, 2, gameManager);
             viewport = game.GraphicsDevice.Viewport;
+            mainBackground = new MenuHelper.Background(gameManager.GameContent.Background, new Vector2(10, 10), 1.5f);
+            fogBackground = new MenuHelper.Background(gameManager.GameContent.BackgroundFog, new Vector2(30, 30), 1);
         }
 
 
@@ -48,7 +52,7 @@ namespace Game.Menu.States
             String textExit = "TAKE THE EASY WAY OUT";
 
             sb.Draw(gameManager.GameContent.MainOptionsBackground, viewport.Bounds, Color.White);
-
+            fogBackground.Draw(sb);
             sb.DrawString(gameManager.GameContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
             sb.DrawString(gameManager.GameContent.MenuFont, textEscape, new Vector2(600, viewport.Height * 0.55f), Color.White);
             sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.65f), Color.White);
@@ -71,7 +75,11 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0f);
+            mainBackground.Draw(spriteBatch);
+            
+            
+           // MenuHelper.DrawBackgroundMovingSideways(spriteBatch, gameManager.GameContent, viewport, 5f);
             MainMenuDisplay();
             spriteBatch.End();
         }
@@ -81,7 +89,9 @@ namespace Game.Menu.States
         // depending on which option we currently are at.
         public void Update(GameTime gameTime)
         {
-            // playing beatiful background music.
+            fogBackground.Update(gameTime, new Vector2(1,0),viewport);
+            //mainBackground.Update(gameTime, new Vector2(1, 0), viewport);
+            // playing beatiful mainBackground music.
             if (MediaPlayer.State == MediaState.Stopped)
             {
                 MediaPlayer.Volume = 0.8f;

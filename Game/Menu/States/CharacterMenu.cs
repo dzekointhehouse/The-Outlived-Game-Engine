@@ -82,7 +82,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
             MainMenuDisplay();
             spriteBatch.End();
         }
@@ -125,7 +125,7 @@ namespace Game.Menu.States
                 currentPlayer = null;
                 currentPosition = CharacterState.FirstCharacter;
             }
-            // controls.GoBackButton();
+            controls.GoBackButton();
 
         }
     }

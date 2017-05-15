@@ -126,9 +126,10 @@ namespace Game.Services
                 || newState.IsKeyDown(Keys.Back) && gameManager.OldKeyboardState.IsKeyUp(Keys.Back))
             {          
                 gameManager.CurrentGameState = gameManager.PreviousGameState;
+                gameManager.OldKeyboardState = newState;
+                gameManager.OldGamepadState = gamePadState;
             }
-            gameManager.OldKeyboardState = newState;
-            gameManager.OldGamepadState = gamePadState;
+
 
         }
 

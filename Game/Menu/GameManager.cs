@@ -22,6 +22,7 @@ namespace Game
         public const float MaxScale = 2.0f;
         public static float Scale { get; set; } = 1.0f;
         public static bool MoveHigher { get; set; } = true;
+        public static bool MoveRight { get; set; } = true;
 
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
