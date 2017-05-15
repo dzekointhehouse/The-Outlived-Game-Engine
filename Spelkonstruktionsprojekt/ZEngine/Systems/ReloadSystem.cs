@@ -25,18 +25,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private void Handle(InputEvent inputEvent)
         {
             if (inputEvent.KeyEvent != ActionBindings.KeyEvent.KeyPressed) { return; }
-            Debug.WriteLine(inputEvent.EntityId + ": Reloading!");
+            //Debug.WriteLine(inputEvent.EntityId + ": Reloading!");
             var ammoComponent = (AmmoComponent) ComponentManager.Instance.GetEntityComponentOrDefault(typeof(AmmoComponent), inputEvent.EntityId);
             var weaponComponent = (WeaponComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(WeaponComponent), inputEvent.EntityId);
-            if (ammoComponent == null || weaponComponent == null) { return; }
+            if (ammoComponent == null || weaponComponent == null) { return; } 
+            if (weaponComponent.ClipSize == ammoComponent.Amount) { return; } // Return if clip is full
+
 
             int ammoToBeAdded = weaponComponent.ClipSize - ammoComponent.Amount;
-            if (ammoToBeAdded >= ammoComponent.SpareAmmoAmount)
+
+            if (ammoToBeAdded >= ammoComponent.SpareAmmoAmount) // Check to see if they don't have enough ammo for a full reload
             {
                 ammoComponent.Amount += ammoComponent.SpareAmmoAmount;
                 ammoComponent.SpareAmmoAmount = 0;
             }
-            else
+            else //full reload
             {
                 ammoComponent.Amount += ammoToBeAdded;
                 ammoComponent.SpareAmmoAmount -= ammoToBeAdded;
