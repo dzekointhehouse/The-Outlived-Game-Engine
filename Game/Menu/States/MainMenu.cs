@@ -85,6 +85,7 @@ namespace Game.Menu.States
             if (MediaPlayer.State == MediaState.Stopped)
             {
                 MediaPlayer.Volume = 0.8f;
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(gameManager.GameContent.BackgroundSong);
 
             }
