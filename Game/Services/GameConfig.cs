@@ -15,8 +15,6 @@ namespace Game.Services
         }
         public GameModes GameMode { get; set; }
 
-        //public List<Player> GamePlayers { get; set; } = new List<Player>(4);
-        //public List<Player> TeamTwo { get; set; } = new List<Player>(4);
         public List<Player> Players { get; set; } = new List<Player>(4);
     }
 

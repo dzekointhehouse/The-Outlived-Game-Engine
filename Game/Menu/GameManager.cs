@@ -127,7 +127,7 @@ namespace Game
         // we execute is the one of the current state.
         public void Update(GameTime gameTime)
         {
-
+            
             switch (CurrentGameState)
             {
                 case GameState.Intro:

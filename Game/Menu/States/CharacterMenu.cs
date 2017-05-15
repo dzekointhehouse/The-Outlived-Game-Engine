@@ -24,7 +24,7 @@ namespace Game.Menu.States
         private CharacterState currentPosition = CharacterState.FirstCharacter;
         private Player currentPlayer;
         private int playerIndex = 0;
-        
+
 
         // enum so we can keep track on which option
         // we currently are at.
@@ -42,7 +42,7 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             // Adding the options interval and gamemanager.
             controls = new ControlsConfig(0, 3, gameManager);
-            
+
         }
 
         // Draws the character names and the button at the option that
@@ -97,24 +97,35 @@ namespace Game.Menu.States
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
             // Change character position
             currentPosition = (CharacterState)controls.MoveOptionPositionHorizontally((int)currentPosition, currentPlayer.Index);
-            currentPosition = (CharacterState)controls.MoveOptionPositionVertically((int)currentPosition, currentPlayer.Index);
+            //currentPosition = (CharacterState)controls.MoveOptionPositionVertically((int)currentPosition, currentPlayer.Index);
+           
 
-            // if there are no players left to choose character.
-            if (gameManager.gameConfig.Players.Count == playerIndex)
-            {
-                // Continue to next state when done with the players.
-                controls.ContinueButton(GameManager.GameState.MainMenu);
-            }
+
             // If the player pressed continue button but there are players left..
-            if (controls.ContinueButton(GameManager.GameState.CharacterMenu) &&
-                gameManager.gameConfig.Players.Count > playerIndex)
+            if (gameManager.gameConfig.Players.Count > playerIndex)
             {
+                if (controls.ContinueButton(GameManager.GameState.CharacterMenu))
+                {
+                    
+                
                 // Set the current character to that player
                 // pop the next player and reset.
                 currentPlayer.Character = currentPosition;
                 currentPlayer = gameManager.gameConfig.Players[playerIndex++];
                 currentPosition = CharacterState.FirstCharacter;
+                }
             }
+
+            // If there are no players left to choose character.
+            // Continue to next state when done with the players.
+            if (controls.ContinueButton(GameManager.GameState.MainMenu) && gameManager.gameConfig.Players.Count == playerIndex)
+            {
+                // Reset values if this state is re-visited.
+                playerIndex = 0;
+                currentPlayer = null;
+                currentPosition = CharacterState.FirstCharacter;
+            }
+            // controls.GoBackButton();
 
         }
     }
