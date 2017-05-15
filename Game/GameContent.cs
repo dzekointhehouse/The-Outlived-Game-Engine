@@ -61,7 +61,7 @@ namespace Game
 
             // Main menu
             MainOptionsBackground = game.Content.Load<Texture2D>("Images/Menu/mainoptions");
-            Background = game.Content.Load<Texture2D>("Images/Menu/background");
+            Background = game.Content.Load<Texture2D>("Images/Menu/background3");
 
             // Credits
             CreditsBackground = game.Content.Load<Texture2D>("Images/Menu/credits");

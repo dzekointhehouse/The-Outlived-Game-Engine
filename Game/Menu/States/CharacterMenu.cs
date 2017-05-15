@@ -53,10 +53,10 @@ namespace Game.Menu.States
 
             // Add the first player. This is done the first time.
             if (currentPlayer == null)
-                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex);
+                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
 
             var viewport = game.GraphicsDevice.Viewport;
-            sb.DrawString(gameManager.GameContent.MenuFont, currentPlayer.Index.ToString(), new Vector2(viewport.Width * 0.5f, viewport.Height * 0.2f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, "Player " + currentPlayer.Index.ToString(), new Vector2(viewport.Width * 0.5f, viewport.Height * 0.15f), Color.White);
 
             switch (currentPosition)
             {
@@ -94,11 +94,17 @@ namespace Game.Menu.States
         {
             // Add the first player. This is done the first time.
             if (currentPlayer == null)
-                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex);
+                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
             // Change character position
             currentPosition = (CharacterState)controls.MoveOptionPositionHorizontally((int)currentPosition, currentPlayer.Index);
             currentPosition = (CharacterState)controls.MoveOptionPositionVertically((int)currentPosition, currentPlayer.Index);
 
+            // if there are no players left to choose character.
+            if (gameManager.gameConfig.Players.Count == playerIndex)
+            {
+                // Continue to next state when done with the players.
+                controls.ContinueButton(GameManager.GameState.MainMenu);
+            }
             // If the player pressed continue button but there are players left..
             if (controls.ContinueButton(GameManager.GameState.CharacterMenu) &&
                 gameManager.gameConfig.Players.Count > playerIndex)
@@ -109,11 +115,7 @@ namespace Game.Menu.States
                 currentPlayer = gameManager.gameConfig.Players[playerIndex++];
                 currentPosition = CharacterState.FirstCharacter;
             }
-            else if (gameManager.gameConfig.Players.Count == playerIndex)
-            {
-                // Continue to next state when done with the players.
-                controls.ContinueButton(GameManager.GameState.MainMenu);
-            }
+
         }
     }
 }
