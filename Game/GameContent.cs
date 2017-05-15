@@ -41,6 +41,7 @@ namespace Game
         public Texture2D ButtonContinue;
         public Texture2D ButtonBack;
         public Texture2D CharacterBackground;
+        public Texture2D AboutBackground;
 
         // Continue
         // Go back
@@ -77,6 +78,8 @@ namespace Game
 
             // Pause
             PauseBackground = game.Content.Load<Texture2D>("Images/Menu/paused");
+            // About
+            AboutBackground = game.Content.Load<Texture2D>("Images/Menu/about");
 
             CharacterBackground = game.Content.Load<Texture2D>("Images/zombieCharacter");
             ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
@@ -99,5 +102,7 @@ namespace Game
             }
 
         }
+
+        
     }
 }

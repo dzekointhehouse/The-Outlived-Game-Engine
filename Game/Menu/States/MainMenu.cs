@@ -28,6 +28,7 @@ namespace Game.Menu.States
         private enum OptionsState
         {
             Continue,
+            About,
             Credits,
             Exit
         }
@@ -36,7 +37,7 @@ namespace Game.Menu.States
         {
             this.gameManager = gameManager;
             game = this.gameManager.Engine.Dependencies.Game;
-            controls = new ControlsConfig(0, 2, gameManager);
+            controls = new ControlsConfig(0, 3, gameManager);
             viewport = game.GraphicsDevice.Viewport;
             mainBackground = new MenuHelper.Background(gameManager.GameContent.Background, new Vector2(10, 10), 1.5f);
             fogBackground = new MenuHelper.Background(gameManager.GameContent.BackgroundFog, new Vector2(30, 30), 1);
@@ -47,27 +48,33 @@ namespace Game.Menu.States
         // in an ordered fashion.
         private void MainMenuDisplay()
         {
-            String textEscape = "CREDITS";
-            String textContinue = "PLAY IF YOU DARE";
-            String textExit = "TAKE THE EASY WAY OUT";
+            string textCredits = "CREDITS";
+            string textContinue = "PLAY IF YOU DARE";
+            string textAbout = "WHAT HAPPENED?";
+            string textExit = "TAKE THE EASY WAY OUT";
 
             sb.Draw(gameManager.GameContent.MainOptionsBackground, viewport.Bounds, Color.White);
             fogBackground.Draw(sb);
             sb.DrawString(gameManager.GameContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textEscape, new Vector2(600, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.65f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
 
             switch (currentPosition)
             {
                 case OptionsState.Continue:
                     sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.40f), Color.White);
                     break;
-                case OptionsState.Credits:
+                case OptionsState.About:
                     sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
                     break;
-                case OptionsState.Exit:
+                case OptionsState.Credits:
                     sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.60f), Color.White);
                     break;
+                case OptionsState.Exit:
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
+                    break;
+
             }
         }
 
@@ -106,6 +113,9 @@ namespace Game.Menu.States
             {
                 case OptionsState.Continue:
                     controls.ContinueButton(GameManager.GameState.GameModesMenu);
+                    break;
+                case OptionsState.About:
+                    controls.ContinueButton(GameManager.GameState.About);
                     break;
                 case OptionsState.Credits:
                     controls.ContinueButton(GameManager.GameState.Credits);
