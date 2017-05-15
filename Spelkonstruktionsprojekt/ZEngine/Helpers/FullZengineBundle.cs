@@ -52,6 +52,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<SprintAbilitySystem>().Start();
             manager.Get<ScoreSystem>().Start();
             manager.Get<PickupCollisionSystem>().Start();
+            manager.Get<ReloadSystem>().Start();
 
         }
 
