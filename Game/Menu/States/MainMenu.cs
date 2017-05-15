@@ -2,6 +2,7 @@
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using ZEngine.Wrappers;
 
 namespace Game.Menu.States
@@ -80,6 +81,14 @@ namespace Game.Menu.States
         // depending on which option we currently are at.
         public void Update(GameTime gameTime)
         {
+            // playing beatiful background music.
+            if (MediaPlayer.State == MediaState.Stopped)
+            {
+                MediaPlayer.Volume = 0.8f;
+                MediaPlayer.Play(gameManager.GameContent.BackgroundSong);
+
+            }
+
             currentPosition = (OptionsState) controls.MoveOptionPositionVertically((int) currentPosition);
 
             switch (currentPosition)

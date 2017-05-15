@@ -23,8 +23,6 @@ namespace Game
         public static float Scale { get; set; } = 1.0f;
         public static bool MoveHigher { get; set; } = true;
 
-        private SpriteFont font;
-        private Texture2D background;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
         // Here we just say that the first state is the Intro
@@ -129,6 +127,7 @@ namespace Game
         // we execute is the one of the current state.
         public void Update(GameTime gameTime)
         {
+
             switch (CurrentGameState)
             {
                 case GameState.Intro:

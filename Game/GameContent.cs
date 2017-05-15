@@ -16,6 +16,7 @@ namespace Game
     public class GameContent
     {
         public Video IntroVideo;
+        public Song BackgroundSong;
         public Texture2D Background;
         public Texture2D CreditsBackground;
         public Texture2D PauseBackground;
@@ -60,6 +61,7 @@ namespace Game
             TeamOptions = game.Content.Load<Texture2D>("Images/Menu/teamoptions");
 
             // Main menu
+            BackgroundSong = game.Content.Load<Song>("Sound/creepyPiano");
             MainOptionsBackground = game.Content.Load<Texture2D>("Images/Menu/mainoptions");
             Background = game.Content.Load<Texture2D>("Images/Menu/background3");
 

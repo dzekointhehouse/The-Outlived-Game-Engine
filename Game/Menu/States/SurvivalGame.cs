@@ -8,6 +8,7 @@ using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
@@ -43,6 +44,10 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
+            if (MediaPlayer.State != MediaState.Stopped)
+            {
+                MediaPlayer.Stop();
+            }
             controls.PauseButton();
             gameManager.Engine.Update(gameTime);
         }

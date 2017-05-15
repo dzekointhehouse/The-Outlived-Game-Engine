@@ -49,6 +49,7 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
+            // Skipping the intro.
             controls.ContinueButton(GameManager.GameState.MainMenu);
 
             // We want to stop playing the video and dispose it if 
