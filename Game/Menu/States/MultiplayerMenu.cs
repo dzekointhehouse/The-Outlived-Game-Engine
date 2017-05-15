@@ -135,6 +135,8 @@ namespace Game.Menu.States
 
         private void UpdateGameConfigurations()
         {
+            // Clear before each game..
+            gameManager.gameConfig.Players.Clear();
             // Add players on option team one -> to team one
             if(PlayerOneChoice == TeamState.TeamOne)
                 gameManager.gameConfig.Players.Add(new Player() {Index = PlayerIndex.One});
