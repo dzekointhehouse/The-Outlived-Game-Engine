@@ -50,6 +50,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<SpriteAnimationSystem>().Start();
             manager.Get<QuickTurnAbilitySystem>().Start();
             manager.Get<SprintAbilitySystem>().Start();
+            
 
         }
 
@@ -73,7 +74,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<CameraSceneSystem>().Update(gameTime);
             manager.Get<MoveSystem>().Move(gameTime);
             manager.Get<AISystem>().Update(gameTime);
-            manager.Get<SpawnSystem>().HandleWaves();
             manager.Get<CollisionSystem>().DetectCollisions();
             manager.Get<AnimationSystem>().UpdateAnimations(gameTime);
             manager.Get<SpriteAnimationSystem>().Update(gameTime);
@@ -82,6 +82,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<EntityRemovalSystem>().Update(gameTime);
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();
+            manager.Get<SpawnSystem>().HandleWaves();
         }
 
         public void Draw(GameTime gameTime)

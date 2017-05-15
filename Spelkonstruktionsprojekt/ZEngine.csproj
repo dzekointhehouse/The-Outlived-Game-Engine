@@ -54,6 +54,7 @@
     <Compile Include="ZEngine\Components\Input\GamePadComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
     <Compile Include="ZEngine\Components\SpawnComponent.cs" />
+    <Compile Include="ZEngine\Components\SpawnFlyweightComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Helpers\IEntityBuilder.cs" />

@@ -10,6 +10,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     {
         public int WaveSize { get; set; } = 40;
         public int EnemiesDead { get; set; }
+        public bool FirstRound = true;
 
         public int WaveSizeIncreaseConstant = 10;
 

@@ -62,8 +62,10 @@ namespace ZEngine.Managers
         {
             var stateComponent = new StateComponent();
             var tagComponent = new TagComponent();
+           // var spawnComponent = new SpawnComponent();
             ComponentManager.Instance.AddComponentToEntity(stateComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(tagComponent, entityId);
+         //   ComponentManager.Instance.AddComponentToEntity(spawnComponent, entityId);
         }
 
         // Completely deletes the entity and all components

@@ -94,6 +94,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
+            CreateGlobalSpawnSpriteEntity();
             SetupTempPlayerDeadSpriteFlyweight();
         }
 
@@ -145,6 +146,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(soundComponent, bulletSprite);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteSprite, bulletSprite);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, bulletSprite);
+        }
+        private static void CreateGlobalSpawnSpriteEntity()
+        {
+            var spawnSprite = EntityManager.GetEntityManager().NewEntity();
+            var spawnSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "topDownSoldier"
+            };
+            var SpawnSpriteComponent = new SpawnFlyweightComponent();
+           
+            ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
+            ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
         }
 
         //The camera cage keeps players from reaching the edge of the screen
