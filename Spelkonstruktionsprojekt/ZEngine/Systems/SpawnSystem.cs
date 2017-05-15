@@ -6,6 +6,7 @@ using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,41 +18,46 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {    
     class SpawnSystem : ISystem
     {
-          private int Wave = 40;
+        
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void HandleWaves() {
-            foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
+            SetupWave(40);
+            foreach (var entitys in ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent)))
             {
-                var spawn = entity.Value as SpawnComponent;
-
-                if (ComponentManager.EntityHasComponent<HealthComponent>(entity.Key))
+                var spawn = entitys.Value as SpawnComponent;
+                foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
                 {
-                    var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
-                    if (!HealthComponent.Alive)
+                    
+                    //if (spawn == null) { Debug.WriteLine("spawn is null u dumbass"); break; }
+                   
+                    if (ComponentManager.EntityHasComponent<HealthComponent>(entity.Key))
                     {
-                        spawn.EnemiesDead++;
+                        var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
+                        if (!HealthComponent.Alive)
+                        {
+                            spawn.EnemiesDead++;
+                        }
+
+                    }
+                    if (spawn.EnemiesDead == spawn.WaveSize)
+                    {
+                        spawn.WaveSize += spawn.WaveSizeIncreaseConstant;
+                        //    can we do this ?? there might be a problem with doing it like this.
+                        SetupWave(spawn.WaveSize);
                     }
 
                 }
-                if (spawn.EnemiesDead == spawn.WaveSize)
-                {
-                    spawn.WaveSize += spawn.WaveSizeIncreaseConstant;   
-                //    can we do this ?? there might be a problem with doing it like this.
-                     SetupWave(spawn.WaveSize);
-                }
 
             }
-
-
         }
 
         public void SetupWave(int wavesize) {
+            int x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
+            int y = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
             //example on how to do the wave
             //we go through a loop that gives us places for each enemy to spawn and we create wavesize amount of enemies.
-            for (int i = 0; i < wavesize; i++) {
-                int x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
-                int y = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
+            for (int i = 1; i <= wavesize; i++) {
                 SetupEnemy(x, y);
             }
 
