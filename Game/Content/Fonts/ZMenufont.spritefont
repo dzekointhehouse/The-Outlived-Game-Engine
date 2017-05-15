@@ -11,7 +11,7 @@ with.
     <!--
     Modify this string to change the font that will be imported. Courier New Bold
     -->
-    <FontName>Marquisette BTN Bold</FontName>
+    <FontName>Courier New Bold</FontName>
 
     <!--
     Size is a float value, measured in points. Modify this value to change

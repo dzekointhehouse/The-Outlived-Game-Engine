@@ -122,7 +122,7 @@ namespace Game.Menu.States
 
             }
 
-            // which player does the move
+            // which player does the move gamepad
             PlayerOneChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerOneChoice, PlayerIndex.One);
             PlayerTwoChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerTwoChoice, PlayerIndex.Two);
             PlayerThreeChoice = (TeamState)controls.MoveOptionPositionHorizontally((int)PlayerThreeChoice, PlayerIndex.Three);
@@ -131,13 +131,11 @@ namespace Game.Menu.States
             // controls.GoBackButton();
 
             // Need atleast one player to proceed
-            if (PlayerOneChoice != TeamState.NoTeam || PlayerTwoChoice != TeamState.NoTeam
-                || PlayerThreeChoice != TeamState.NoTeam || PlayerFourChoice != TeamState.NoTeam)
-            {
-                // Proceed if continue is pressed
-                if (controls.ContinueButton(GameManager.GameState.CharacterMenu))
-                    UpdateGameConfigurations();
-            }
+            // Proceed if continue is pressed
+            if (controls.ContinueButton(GameManager.GameState.CharacterMenu) && (PlayerOneChoice != TeamState.NoTeam || PlayerTwoChoice != TeamState.NoTeam
+                || PlayerThreeChoice != TeamState.NoTeam || PlayerFourChoice != TeamState.NoTeam))
+                UpdateGameConfigurations();
+
         }
 
         private void UpdateGameConfigurations()
@@ -149,7 +147,7 @@ namespace Game.Menu.States
             // Add players from option team -> to teams they belong
             if (PlayerOneChoice == TeamState.TeamOne)
                 gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.One });
-            else if(PlayerOneChoice == TeamState.TeamTwo)
+            else if (PlayerOneChoice == TeamState.TeamTwo)
                 gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.One });
 
             if (PlayerTwoChoice == TeamState.TeamOne)
@@ -159,15 +157,15 @@ namespace Game.Menu.States
 
             if (PlayerThreeChoice == TeamState.TeamOne)
                 gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Three });
-            else if(PlayerThreeChoice == TeamState.TeamTwo)
+            else if (PlayerThreeChoice == TeamState.TeamTwo)
                 gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Three });
 
             if (PlayerFourChoice == TeamState.TeamOne)
                 gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Four });
-            else if(PlayerFourChoice == TeamState.TeamTwo)
+            else if (PlayerFourChoice == TeamState.TeamTwo)
                 gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Four });
 
-            
+
             // Must reset values
             currentPlayer = PlayerIndex.One;
             PlayerOneChoice = TeamState.NoTeam;
