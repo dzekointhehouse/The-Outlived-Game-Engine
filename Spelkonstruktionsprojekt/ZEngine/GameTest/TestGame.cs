@@ -122,11 +122,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var pick = new HealthPickupComponent();
             var pos = new PositionComponent()
             {
-                Position = new Vector2(40, 40)
+                Position = new Vector2(40, 40),
+                ZIndex = 100
             };
             var sprite = new SpriteComponent()
             {
-                SpriteName = "healthpickup"
+                SpriteName = "healthpickup",
             };
             var sound = new SoundComponent()
             {
