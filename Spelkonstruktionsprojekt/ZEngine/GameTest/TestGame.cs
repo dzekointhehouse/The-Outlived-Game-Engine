@@ -91,6 +91,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InitPlayers(cameraCageId);
             SetupBackgroundTiles(5, 5);
             SetupCamera();
+          //  SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
             CreateGlobalSpawnSpriteEntity();
