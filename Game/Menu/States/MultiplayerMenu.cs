@@ -51,17 +51,17 @@ namespace Game.Menu.States
         private void DisplayPlayerChoice(TeamState playerChoice, float heightPercentage)
         {
             var viewport = game.GraphicsDevice.Viewport;
-            sb.Draw(gameManager.GameContent.TeamOptions, viewport.Bounds, Color.White);
+            sb.Draw(gameManager.MenuContent.TeamOptions, viewport.Bounds, Color.White);
             switch (playerChoice)
             {
                 case TeamState.NoTeam:
-                    sb.Draw(gameManager.GameContent.GamePadIcon, new Vector2((float)(viewport.Width * 0.4), viewport.Height * heightPercentage), Color.White);
+                    sb.Draw(gameManager.MenuContent.GamePadIcon, new Vector2((float)(viewport.Width * 0.4), viewport.Height * heightPercentage), Color.White);
                     break;
                 case TeamState.TeamOne:
-                    sb.Draw(gameManager.GameContent.GamePadIconHighlight, new Vector2((float)(viewport.Width * 0.2), viewport.Height * heightPercentage), Color.White);
+                    sb.Draw(gameManager.MenuContent.GamePadIconHighlight, new Vector2((float)(viewport.Width * 0.2), viewport.Height * heightPercentage), Color.White);
                     break;
                 case TeamState.TeamTwo:
-                    sb.Draw(gameManager.GameContent.GamePadIconHighlight, new Vector2((float)(viewport.Width * 0.6), viewport.Height * heightPercentage), Color.White);
+                    sb.Draw(gameManager.MenuContent.GamePadIconHighlight, new Vector2((float)(viewport.Width * 0.6), viewport.Height * heightPercentage), Color.White);
                     break;
 
             }
@@ -74,7 +74,7 @@ namespace Game.Menu.States
         {
 
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
 
             // We check if the players are connected. If they are,
             // we draw their option state on the screen.

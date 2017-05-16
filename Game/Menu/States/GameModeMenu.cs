@@ -37,16 +37,16 @@ namespace Game.Menu.States
             switch (currentPosition)
             {
                 case OptionsState.Survival:
-                    sb.Draw(gameManager.GameContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.45f), Color.White);
+                    sb.Draw(gameManager.MenuContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.45f), Color.White);
                     break;
                 case OptionsState.Extinction:
-                    sb.Draw(gameManager.GameContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.20f), Color.White);
+                    sb.Draw(gameManager.MenuContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.20f), Color.White);
                     break;
                 case OptionsState.Blockworld:
-                    sb.Draw(gameManager.GameContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
+                    sb.Draw(gameManager.MenuContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
                     break;
             }
 
@@ -55,7 +55,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
             MainMenuDisplay();
             spriteBatch.End();
         }
@@ -68,7 +68,7 @@ namespace Game.Menu.States
             switch (currentPosition)
             {
                 case OptionsState.Survival:
-                    controls.ContinueButton(GameManager.GameState.PlaySurvivalGame);
+                    controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
                     break;
                 case OptionsState.Extinction:
                     controls.ContinueButton(GameManager.GameState.MultiplayerMenu);

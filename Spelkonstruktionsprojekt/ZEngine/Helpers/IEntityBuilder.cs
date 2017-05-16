@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Penumbra;
 using ZEngine.Components;
 
@@ -34,7 +35,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <param name="alpha"> alpha value between 0-1, 0 will make it transparent </param>
         /// <returns></returns>
         EntityBuilder SetSprite(string spriteName, Point startPosition, int tileWidth, int tileHeight, float scale = 1,
-            float alpha = 1);
+            float alpha = 1, Texture2D sprite = null);
 
         /// <summary>
         /// Build is the last call to make, when all other component method

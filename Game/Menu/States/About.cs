@@ -33,8 +33,8 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             sb.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
-            sb.Draw(gameManager.GameContent.AboutBackground, viewport.Bounds, Color.White);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            sb.Draw(gameManager.MenuContent.AboutBackground, viewport.Bounds, Color.White);
             sb.End();
         }
         // A pause button that goes to the pause game state,

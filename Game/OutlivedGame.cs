@@ -61,7 +61,7 @@ namespace Game
 
         protected override void LoadContent()
         {
-            gameBundle.LoadContent();
+
         }
 
         protected override void UnloadContent()
