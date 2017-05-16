@@ -10,5 +10,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     class PlayerComponent : IComponent
     {
         public string Name { get; set; }
+        public bool isHuman { get; set; }
     }
 }

@@ -41,6 +41,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
+        public bool CheckIfAlive()
+        {
+            var playerEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent));
+
+            foreach (var soldier in playerEntities)
+            {
+                var healthComponent = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(soldier.Key);
+
+                if (healthComponent.Alive) return false;
+            }
+            return true;
+        }
+
         private void CheckIfDead(int entityId, HealthComponent healthComponent, GameTime gameTime)
         {
             if (healthComponent.CurrentHealth <= 0 && healthComponent.Alive)

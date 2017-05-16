@@ -22,7 +22,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public List<int> Damage { get; set; } = new List<int>(30);
 
         public bool Alive { get; set; } = true;
-
+        public bool isHuman { get; set; }
     }
 }
 
