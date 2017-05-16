@@ -42,42 +42,6 @@ namespace Game.Services
             );
         }
 
-        //public static void DrawBackgroundMovingSideways(SpriteBatch sb, GameContent gameContent, Viewport viewport, float speed)
-        //{
-        //    var bounds = gameContent.BackgroundFog.Bounds;
-        //   // var viewport = gm.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
-        //    Vector2 position = Vector2.Zero;
-        //    Vector2 Offset = Vector2.Zero;
-
-        //    if (GameManager.Scale <= GameManager.MaxScale && GameManager.Scale >= GameManager.MinScale)
-        //    {
-        //        if (viewport.X <= bounds.X)
-        //        {
-        //            GameManager.MoveRight = true;
-        //        }
-        //        if (viewport.X >= viewport.Width - bounds.Width)
-        //        {
-        //            GameManager.MoveRight = false;
-        //        }
-
-        //        if (GameManager.MoveRight)
-        //        {
-        //            //Calculate the distance to move our image, based on speed
-        //            Vector2 distance = direction * Speed * elapsed;
-
-        //            //Update our offset
-        //            Offset += distance;
-        //            position = new Vector2(bounds.X - speed);
-        //        }
-        //        else
-        //        {
-        //            position = new Vector2(bounds.X + speed);
-        //        }
-        //    }
-
-        //    sb.Draw(gameContent.BackgroundFog, new Vector2(viewport.X, viewport.Y), Rectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
-        //}
-
         public class Background
         {
             private Texture2D Texture;      //The image to use
@@ -107,12 +71,34 @@ namespace Game.Services
 
                 //Store the viewport
                 Viewport = viewport;
+                var bounds = Texture.Bounds;
 
                 //Calculate the distance to move our image, based on speed
                 Vector2 distance = direction * Speed * elapsed;
 
-                //Update our offset
-                Offset += distance;
+                if (viewport.X >= Offset.X)
+                {
+                    GameManager.MoveRight = true; // viewport to move right because its X is smaller than image
+                }
+                if (bounds.Width <= Offset.X + viewport.Width)
+                {
+                    GameManager.MoveRight = false;
+                }
+
+                if (GameManager.MoveRight)
+                {
+
+                    //Move our offset to the right of the image
+                    Offset += distance;
+                    
+                }
+                else
+                {
+                    //Move our offset to the left of the image
+                    Offset -= distance;
+                }
+
+
             }
 
             public void Draw(SpriteBatch spriteBatch)

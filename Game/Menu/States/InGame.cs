@@ -67,7 +67,7 @@ namespace Game.Menu.States
         public void InitializeGameContent()
         {
             players.CreatePlayers(gameManager.gameConfig);
-            enemies.CreateMonster("zombie");
+            enemies.CreateMonster("player_sprites");
             // enemies.CreateMonster("vampyre");
             CreateGameEntities();
         }
