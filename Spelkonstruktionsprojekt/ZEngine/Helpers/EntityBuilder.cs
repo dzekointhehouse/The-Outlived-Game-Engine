@@ -136,6 +136,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             components.Add(component);
             return this;
         }
+        public EntityBuilder SetSpawn(int WaveSize = 10, int EnemiesDead = 0, bool FirstRound = true)
+        {
+            SpawnComponent component = new SpawnComponent()
+            {
+                WaveSize = WaveSize,
+                EnemiesDead = EnemiesDead,
+                FirstRound = FirstRound
+            };
+            components.Add(component);
+            return this;
+        }
 
         public EntityBuilder SetSound(string soundname, float volume = 1)
         {

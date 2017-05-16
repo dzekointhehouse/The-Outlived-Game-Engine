@@ -47,7 +47,7 @@ namespace Game
             };
             gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = false;
             Content.RootDirectory = "Content";
-
+          
         }
 
         protected override void Initialize()

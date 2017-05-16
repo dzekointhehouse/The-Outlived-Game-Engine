@@ -15,57 +15,76 @@ using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Systems;
+
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {    
     class SpawnSystem : ISystem
     {
         
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        public ISystem Start()
-        { 
-            return this;
-        }
 
-        public ISystem Stop()
+        public void HandleWaves()
         {
-            return this;
-        }
-
-        public void HandleWaves() {
-            var test = ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent));
-            foreach (var entitys in test)
+            var test = ComponentManager.GetEntitiesWithComponent(typeof(AIComponent));
+            var testt = ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent));
+            // Ta bort kommentarer här så ser man att spawn funkar! men problemet är att den spawnar hela tiden vilket vi inte vill
+            //          var SpawnSpriteEntities =
+            //            ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+            //          if (SpawnSpriteEntities.Count <= 0) return;
+            //        var SpawnSpriteComponent =
+            //            ComponentManager.Instance
+            //                .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+            //SetupWave(2,SpawnSpriteComponent);
+            foreach (var entity in test)
             {
-                var spawns = entitys.Value as SpawnComponent;
-                foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
-                {
 
-                  ;
+                foreach (var entitys in testt)
+                {
+                    var spawns = entitys.Value as SpawnComponent;
                     if (ComponentManager.EntityHasComponent<HealthComponent>(entity.Key))
+                {
+                    var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
+                  
+                    if (!HealthComponent.Alive)
                     {
-                        var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
-                        if (!HealthComponent.Alive)
-                        {
                             spawns.EnemiesDead++;
-                        }
 
                     }
-                }
-                if (spawns.EnemiesDead == spawns.WaveSize || spawns.FirstRound)
-                {
-                    spawns.FirstRound = false;
-                    var SpawnSpriteEntities =
-                        ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
-                      if (SpawnSpriteEntities.Count <= 0) return;
-                    var SpawnSpriteComponent =
-                        ComponentManager.Instance
-                            .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+                    if (spawns.EnemiesDead == spawns.WaveSize || spawns.FirstRound)
+                    {
+                            spawns.FirstRound = false;
+                        // here is where we want do it! instead of up there ^^
+                        //var SpawnSpriteEntities =
+                        //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+                        //  if (SpawnSpriteEntities.Count <= 0) return;
+                        //var SpawnSpriteComponent =
+                        //    ComponentManager.Instance
+                        //        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
-                    SetupWave(spawns.WaveSize, SpawnSpriteComponent);
-                    spawns.WaveSize += spawns.WaveSizeIncreaseConstant;
-                }
+                        //SetupWave(spawns.WaveSize, SpawnSpriteComponent);
+                        //spawns.WaveSize += spawns.WaveSizeIncreaseConstant;
+                    }
 
+                }
             }
+            //if (spawns.EnemiesDead == spawns.WaveSize || spawns.FirstRound)
+            //{
+            //    spawns.FirstRound = false;
+            //    // here is where we want do it! instead of up there ^^
+            //    //var SpawnSpriteEntities =
+            //    //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+            //    //  if (SpawnSpriteEntities.Count <= 0) return;
+            //    //var SpawnSpriteComponent =
+            //    //    ComponentManager.Instance
+            //    //        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+
+            //    //SetupWave(spawns.WaveSize, SpawnSpriteComponent);
+            //    //spawns.WaveSize += spawns.WaveSizeIncreaseConstant;
+            //}
+        
+            
         }
+        // Creates a wave wavesize big.. with enemies
 
         public void SetupWave(int wavesize, SpriteComponent SpawnSpriteComponent) {
             //   int x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
@@ -87,7 +106,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             //var positioncomponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>();
 
-
+            
            // int monsterEntityId = EntityManager.GetEntityManager().NewEntity();
 
             //var x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
