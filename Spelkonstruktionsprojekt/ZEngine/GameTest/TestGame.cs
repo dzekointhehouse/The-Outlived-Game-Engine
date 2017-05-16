@@ -103,8 +103,49 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             CreateGlobalBulletSpriteEntity();
             SetupTempPlayerDeadSpriteFlyweight();
             SetupGameScoreEntity();
+            AddPickup();
         }
 
+        private void AddPickup()
+        {
+            var entity = EntityManager.GetEntityManager().NewEntity();
+            var coll = new CollisionComponent();
+            var dim = new DimensionsComponent()
+            {
+                Height = 40,
+                Width = 40
+            };
+            var render = new RenderComponent()
+            {
+                IsVisible = true,
+            };
+            var pick = new HealthPickupComponent();
+            var pos = new PositionComponent()
+            {
+                Position = new Vector2(40, 40)
+            };
+            var sprite = new SpriteComponent()
+            {
+                SpriteName = "healthpickup"
+            };
+            var sound = new SoundComponent()
+            {
+                SoundEffectName = "pickup"
+            };
+            var ligh = new LightComponent()
+            {
+                Light = new PointLight() { },
+            };
+            ComponentManager.Instance.AddComponentToEntity(sound, entity);
+            ComponentManager.Instance.AddComponentToEntity(ligh, entity);
+            ComponentManager.Instance.AddComponentToEntity(coll, entity);
+            ComponentManager.Instance.AddComponentToEntity(pick, entity);
+            ComponentManager.Instance.AddComponentToEntity(pos, entity);
+            ComponentManager.Instance.AddComponentToEntity(dim, entity);
+            ComponentManager.Instance.AddComponentToEntity(render, entity);
+            ComponentManager.Instance.AddComponentToEntity(sprite, entity);
+
+        }
         private void SetupGameScoreEntity()
         {
             var gameScoreComponent = new GameScoreComponent();

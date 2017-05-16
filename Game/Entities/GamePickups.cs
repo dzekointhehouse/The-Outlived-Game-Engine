@@ -58,6 +58,11 @@ namespace Game.Entities
             {
                 Light = new PointLight() { },
             };
+            var sound = new SoundComponent()
+            {
+                SoundEffectName = "pickup"
+            };
+            ComponentManager.Instance.AddComponentToEntity(sound, entity);
             ComponentManager.Instance.AddComponentToEntity(ligh, entity);
             ComponentManager.Instance.AddComponentToEntity(coll, entity);
             
