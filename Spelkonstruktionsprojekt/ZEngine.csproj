@@ -134,7 +134,6 @@
     <Compile Include="ZEngine\Systems\Rendering\SpriteAnimationSystem.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderHUDSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
-    <Compile Include="ZEngine\Systems\VideoPlayerSystem.cs" />
     <Compile Include="ZEngine\Systems\WeaponSystem.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderSystem.cs" />
