@@ -23,18 +23,19 @@ using ZEngine.Wrappers;
 
 namespace Game.Menu.States
 {
-    class SurvivalGame : IMenu
+    class InGame : IMenu
     {
 
         private GameManager gameManager;
         private ControlsConfig controls;
         private bool isInitialized = false;
         private Boolean isIngame = true;
-        private CreatePlayers playerCreator = new CreatePlayers();
+        private GamePlayers players = new GamePlayers();
+        private GameEnemies enemies = new GameEnemies();
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
-        public SurvivalGame(GameManager gameManager)
+        public InGame(GameManager gameManager)
         {
             this.gameManager = gameManager;
             controls = new ControlsConfig(gameManager);
@@ -65,56 +66,15 @@ namespace Game.Menu.States
         // to this state.
         public void InitializeGameContent()
         {
+            players.CreatePlayers(gameManager.gameConfig);
+            enemies.CreateMonster("zombie");
+            // enemies.CreateMonster("vampyre");
             CreateGameEntities();
         }
 
 
         // TEST CODE
-        private void InitializeGamePlayers()
-        {
-            foreach (var player in gameManager.gameConfig.Players)
-            {
-                if (player.Team == MultiplayerMenu.TeamState.TeamOne)
-                {
-                    switch (player.Index)
-                    {
-                        case PlayerIndex.One:
-                            playerCreator.InitPlayerOne(1);
-                            break;
-                        case PlayerIndex.Two:
-                            playerCreator.InitPlayerTwo(1);
-                            break;
-                        case PlayerIndex.Three:
-                            playerCreator.InitPlayerThree(1);
-                            break;
-                        //case PlayerIndex.Four:
-                        //    CreatePlayers.i(1);
-                        //    break;
-                    };  
-                }
-                if (player.Team == MultiplayerMenu.TeamState.TeamTwo)
-                {
-                    switch (player.Index)
-                    {
-                        case PlayerIndex.One:
-                            playerCreator.InitPlayerOne(1);
-                            break;
-                        case PlayerIndex.Two:
-                            playerCreator.InitPlayerTwo(1);
-                            break;
-                        case PlayerIndex.Three:
-                            playerCreator.InitPlayerThree(1);
-                            break;
-                            //case PlayerIndex.Four:
-                            //    CreatePlayers.i(1);
-                            //    break;
-                    };
-                }
 
-            }
-
-
-        }
         
 
         private void CreateGameEntities()
@@ -122,11 +82,9 @@ namespace Game.Menu.States
             var cameraCageId = SetupCameraCage();
             SetupBackgroundTiles(5, 5);
             SetupCamera();
-            InitializeGamePlayers();
-            SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
-            SetupTempPlayerDeadSpriteFlyweight();
+           // SetupTempPlayerDeadSpriteFlyweight();
         }
 
         private void SetupHUD()
@@ -149,19 +107,6 @@ namespace Game.Menu.States
                 .SetSprite("health3_small")
                 .Build();
         }
-
-        private void SetupTempPlayerDeadSpriteFlyweight()
-        {
-            var tempEntity = EntityManager.GetEntityManager().NewEntity();
-            var spriteComponent = new SpriteComponent()
-            {
-                SpriteName = "dot"
-            };
-            var tempDeadSpriteComponent = new TempPlayerDeadSpriteComponent();
-            ComponentManager.Instance.AddComponentToEntity(tempDeadSpriteComponent, tempEntity);
-            ComponentManager.Instance.AddComponentToEntity(spriteComponent, tempEntity);
-        }
-
         private static void CreateGlobalBulletSpriteEntity()
         {
             var bulletSprite = EntityManager.GetEntityManager().NewEntity();
@@ -251,61 +196,5 @@ namespace Game.Menu.States
             ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
             ComponentManager.Instance.AddComponentToEntity(position, cameraEntity);
         }
-
-        public void SetupEnemy()
-        {
-            var x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
-            var y = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
-
-            var monster = new EntityBuilder()
-                .SetPosition(new Vector2(x, y), layerDepth: 20)
-                .SetRendering(200, 200)
-                .SetSprite("player_sprites", new Point(1252, 206), 313, 206)
-                .SetSound("zombiewalking")
-                .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetArtificialIntelligence()
-                .SetRectangleCollision()
-                .SetHealth()
-                //.SetHUD("hello")
-                .BuildAndReturnId();
-
-            var animationBindings = new SpriteAnimationBindingsBuilder()
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(1252, 206), new Point(0, 1030))
-                        .StateConditions(State.WalkingForward)
-                        .Length(40)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead, State.WalkingForward)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead, State.WalkingBackwards)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Build();
-
-            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
-        }
-
-        
     }
 }

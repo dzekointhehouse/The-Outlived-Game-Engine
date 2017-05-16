@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Game.Menu.States;
+using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Penumbra;
@@ -16,13 +18,61 @@ using ZEngine.Managers;
 
 namespace Game.Entities
 {
-   public class CreatePlayers
+   public class GamePlayers
     {
-        public CreatePlayers()
+        public GamePlayers()
         {
             
         }
-        public void InitPlayerOne(int cageId)
+
+        public void CreatePlayers(GameConfig config)
+        {
+            foreach (var player in config.Players)
+            {
+                if (player.Team == MultiplayerMenu.TeamState.TeamOne)
+                {
+                    switch (player.Index)
+                    {
+                        case PlayerIndex.One:
+                            this.InitPlayerOne(1);
+                            break;
+                        case PlayerIndex.Two:
+                            this.InitPlayerTwo(1);
+                            break;
+                        case PlayerIndex.Three:
+                            this.InitPlayerThree(1);
+                            break;
+                        case PlayerIndex.Four:
+                            this.InitPlayerFour(1);
+                            break;
+                    };
+                }
+                if (player.Team == MultiplayerMenu.TeamState.TeamTwo)
+                {
+                    switch (player.Index)
+                    {
+                        case PlayerIndex.One:
+                            this.InitPlayerOne(2);
+                            break;
+                        case PlayerIndex.Two:
+                            this.InitPlayerTwo(2);
+                            break;
+                        case PlayerIndex.Three:
+                            this.InitPlayerThree(2);
+                            break;
+                        case PlayerIndex.Four:
+                            this.InitPlayerFour(2);
+                            break;
+                    };
+                }
+
+            }
+
+
+        }
+
+        // TODO should get spawn positions depending on map
+        private void InitPlayerOne(int cageId)
         {
             var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
@@ -40,12 +90,12 @@ namespace Game.Entities
                 new Vector2(1650, 1100),
                 name: "Carlos",
                 actionBindings: actionBindings1,
-                position: new Vector2(200, 200),
+                position: new Vector2(200, 200), // spawn point
                 cageId: cageId
             );
         }
 
-        public void InitPlayerTwo(int cageId)
+        private void InitPlayerTwo(int cageId)
         {
             var player2 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings2 = new ActionBindingsBuilder()
@@ -62,13 +112,13 @@ namespace Game.Entities
                 new Vector2(1650, 1100),
                 "Elvir",
                 actionBindings2,
-                position: new Vector2(400, 400),
+                position: new Vector2(400, 400), // spawn point
                 cageId: cageId,
                 disabled: false
             );
         }
 
-        public void InitPlayerThree(int cageId)
+        private void InitPlayerThree(int cageId)
         {
             var player3 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings = new ActionBindingsBuilder()
@@ -83,9 +133,33 @@ namespace Game.Entities
 
             CreatePlayer(
                 new Vector2(1650, 1100),
-                "Elvir",
+                "Jacob",
                 actionBindings,
-                position: new Vector2(400, 400),
+                position: new Vector2(300, 400), // spawn point
+                cageId: cageId,
+                disabled: false
+                );
+
+        }
+
+        private void InitPlayerFour(int cageId)
+        {
+            var player3 = EntityManager.GetEntityManager().NewEntity();
+            var actionBindings = new ActionBindingsBuilder()
+                .SetAction(Keys.Up, EventConstants.WalkForward)
+                .SetAction(Keys.Down, EventConstants.WalkBackward)
+                .SetAction(Keys.Left, EventConstants.TurnLeft)
+                .SetAction(Keys.Right, EventConstants.TurnRight)
+                .SetAction(Keys.PageDown, EventConstants.FireWeapon)
+                .SetAction(Keys.PageUp, EventConstants.TurnAround)
+                .SetAction(Keys.RightControl, EventConstants.Running)
+                .Build();
+
+            CreatePlayer(
+                new Vector2(1650, 1100),
+                "Jacob",
+                actionBindings,
+                position: new Vector2(250, 250), // spawn point
                 cageId: cageId,
                 disabled: false
                 );
@@ -93,7 +167,7 @@ namespace Game.Entities
         }
 
         //The multitude of options here is for easy debug purposes
-        public void CreatePlayer(Vector2 playerPosition, string name, ActionBindings actionBindings,
+        private void CreatePlayer(Vector2 playerPosition, string name, ActionBindings actionBindings,
             Vector2 position,
             MoveComponent customMoveComponent = null,
             bool disabled = false, int cageId = 0)
