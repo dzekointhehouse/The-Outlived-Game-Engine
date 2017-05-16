@@ -57,6 +57,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // that is associated with this event "entityFireWeapon"
             if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
+                var ammoComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(inputEvent.EntityId);
+                // No ammo no sound
+                if (ammoComponent == null) return;
+                if (ammoComponent.Amount == 0) return;
 
                 // To play the bullet sound the entity needs to have
                 // the BulletFlyweightComponent
