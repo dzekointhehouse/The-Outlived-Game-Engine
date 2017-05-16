@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -50,12 +51,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         }
 
         public EntityBuilder SetSprite(string spriteName, Point startPosition = default(Point), int tileWidth = 0,
-            int tileHeight = 0, float scale = 1f, float alpha = 1f)
+            int tileHeight = 0, float scale = 1f, float alpha = 1f, Texture2D sprite = null)
         {
             SpriteComponent component = new SpriteComponent()
             {
                 Alpha = alpha,
                 Position = startPosition,
+                Sprite = sprite,
                 Scale = scale,
                 SpriteName = spriteName,
                 TileHeight = tileHeight,

@@ -28,7 +28,9 @@ namespace Game.Menu.States
 
         private GameManager gameManager;
         private ControlsConfig controls;
+        private bool isInitialized = false;
         private Boolean isIngame = true;
+        private CreatePlayers playerCreator = new CreatePlayers();
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
@@ -36,10 +38,16 @@ namespace Game.Menu.States
         {
             this.gameManager = gameManager;
             controls = new ControlsConfig(gameManager);
-            CreateTestEntities();
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if (!isInitialized)
+            {
+
+                InitializeGameContent();
+                gameManager.Engine.LoadContent();
+                isInitialized = true;
+            }
             gameManager.Engine.Draw(gameTime);
         }
 
@@ -53,15 +61,68 @@ namespace Game.Menu.States
             gameManager.Engine.Update(gameTime);
         }
 
+        // To initialize game content when navigating
+        // to this state.
+        public void InitializeGameContent()
+        {
+            CreateGameEntities();
+        }
+
 
         // TEST CODE
+        private void InitializeGamePlayers()
+        {
+            foreach (var player in gameManager.gameConfig.Players)
+            {
+                if (player.Team == MultiplayerMenu.TeamState.TeamOne)
+                {
+                    switch (player.Index)
+                    {
+                        case PlayerIndex.One:
+                            playerCreator.InitPlayerOne(1);
+                            break;
+                        case PlayerIndex.Two:
+                            playerCreator.InitPlayerTwo(1);
+                            break;
+                        case PlayerIndex.Three:
+                            playerCreator.InitPlayerThree(1);
+                            break;
+                        //case PlayerIndex.Four:
+                        //    CreatePlayers.i(1);
+                        //    break;
+                    };  
+                }
+                if (player.Team == MultiplayerMenu.TeamState.TeamTwo)
+                {
+                    switch (player.Index)
+                    {
+                        case PlayerIndex.One:
+                            playerCreator.InitPlayerOne(1);
+                            break;
+                        case PlayerIndex.Two:
+                            playerCreator.InitPlayerTwo(1);
+                            break;
+                        case PlayerIndex.Three:
+                            playerCreator.InitPlayerThree(1);
+                            break;
+                            //case PlayerIndex.Four:
+                            //    CreatePlayers.i(1);
+                            //    break;
+                    };
+                }
 
-        private void CreateTestEntities()
+            }
+
+
+        }
+        
+
+        private void CreateGameEntities()
         {
             var cameraCageId = SetupCameraCage();
-            InitPlayers(cameraCageId);
             SetupBackgroundTiles(5, 5);
             SetupCamera();
+            InitializeGamePlayers();
             SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
@@ -245,142 +306,6 @@ namespace Game.Menu.States
             ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
         }
 
-        public void InitPlayers(int cageId)
-        {
-            var player1 = EntityManager.GetEntityManager().NewEntity();
-            var actionBindings1 = new ActionBindingsBuilder()
-                .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
-                .SetAction(Keys.S, EventConstants.WalkBackward)
-                .SetAction(Keys.A, EventConstants.TurnLeft)
-                .SetAction(Keys.D, EventConstants.TurnRight)
-                .SetAction(Keys.Q, EventConstants.TurnAround)
-                .SetAction(Keys.E, EventConstants.FireWeapon)
-                .SetAction(Keys.LeftShift, EventConstants.LightStatus)
-                .SetAction(Keys.R, EventConstants.Running)
-                .Build();
-
-            var player2 = EntityManager.GetEntityManager().NewEntity();
-            var actionBindings2 = new ActionBindingsBuilder()
-                .SetAction(Keys.I, EventConstants.WalkForward)
-                .SetAction(Keys.K, EventConstants.WalkBackward)
-                .SetAction(Keys.J, EventConstants.TurnLeft)
-                .SetAction(Keys.L, EventConstants.TurnRight)
-                .SetAction(Keys.O, EventConstants.FireWeapon)
-                .SetAction(Keys.U, EventConstants.TurnAround)
-                .SetAction(Keys.H, EventConstants.LightStatus)
-                .Build();
-
-            var player3 = EntityManager.GetEntityManager().NewEntity();
-            var actionBindings3 = new ActionBindingsBuilder()
-                .SetAction(Keys.Up, EventConstants.WalkForward)
-                .SetAction(Keys.Down, EventConstants.WalkBackward)
-                .SetAction(Keys.Left, EventConstants.TurnLeft)
-                .SetAction(Keys.Right, EventConstants.TurnRight)
-                .SetAction(Keys.PageDown, EventConstants.FireWeapon)
-                .SetAction(Keys.PageUp, EventConstants.TurnAround)
-                .SetAction(Keys.RightControl, EventConstants.Running)
-                .Build();
-
-            CreatePlayer(new Vector2(1650, 1100), name: "Carlos", actionBindings: actionBindings1,
-                position: new Vector2(200, 200), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId);
-            CreatePlayer(new Vector2(1650, 1100), "Elvir", actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId, disabled: false);
-            //CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
-            //    collision: true, isCaged: false, cageId: cageId, disabled: true);
-        }
-
-        //The multitude of options here is for easy debug purposes
-        public void CreatePlayer(Vector2 HUDposition, string name, ActionBindings actionBindings,
-            Vector2 position = default(Vector2), bool movable = true,
-            MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false,
-            bool disabled = false, bool isCaged = false, int cageId = 0)
-        {
-            if (disabled) return;
-
-            var light = new Spotlight()
-            {
-                Position = position,
-                Scale = new Vector2(850f),
-                Radius = (float)0.0001,
-                Intensity = (float)0.6,
-                ShadowType = ShadowType.Solid // Will not lit hulls themselves
-            };
-            IEntityBuilder playerEntity = new EntityBuilder()
-                .SetPosition(position, 10)
-                .SetRendering(100, 100)
-                .SetInertiaDampening()
-                .SetBackwardsPenalty()
-                .SetSprite("player_sprites", new Point(1252, 206), 313, 206)
-                .SetLight(light)
-                .SetSound("walking")
-                .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetRectangleCollision()
-                .SetCameraFollow()
-                .SetPlayer(name)
-                .SetHealth()
-                .SetHUD(false, showStats: true)
-                .Build();
-
-
-            var animationBindings = new SpriteAnimationBindingsBuilder()
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(1252, 206), new Point(0, 1030))
-                        .StateConditions(State.WalkingForward)
-                        .Length(40)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead, State.WalkingForward)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead, State.WalkingBackwards)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Build();
-
-            ComponentManager.Instance.AddComponentToEntity(actionBindings, playerEntity.GetEntityKey());
-            ComponentManager.Instance.AddComponentToEntity(animationBindings, playerEntity.GetEntityKey());
-
-
-            if (isCaged)
-            {
-                var cageComponent = new CageComponent()
-                {
-                    CageId = cageId
-                };
-                ComponentManager.Instance.AddComponentToEntity(cageComponent, playerEntity.GetEntityKey());
-            }
-
-            var weaponComponent = new WeaponComponent()
-            {
-                Damage = 10
-            };
-            ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
-
-            /*
-            if(name == "Elvir")
-            {
-                ComponentManager.Instance.AddComponentToEntity(new HealthPickupComponent(), playerEntity.GetEntityKey());
-            }*/
-        }
+        
     }
 }

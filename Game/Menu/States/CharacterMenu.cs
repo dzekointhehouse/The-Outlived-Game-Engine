@@ -56,21 +56,21 @@ namespace Game.Menu.States
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
 
             var viewport = game.GraphicsDevice.Viewport;
-            sb.DrawString(gameManager.GameContent.MenuFont, "Player " + currentPlayer.Index.ToString(), new Vector2(viewport.Width * 0.5f, viewport.Height * 0.15f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, "Player " + currentPlayer.Index.ToString(), new Vector2(viewport.Width * 0.5f, viewport.Height * 0.15f), Color.White);
 
             switch (currentPosition)
             {
                 case CharacterState.FirstCharacter:
-                    sb.Draw(gameManager.GameContent.HighlightFirst, viewport.Bounds, Color.White);
+                    sb.Draw(gameManager.MenuContent.HighlightFirst, viewport.Bounds, Color.White);
                     break;
                 case CharacterState.SecondCharacter:
-                    sb.Draw(gameManager.GameContent.HighlightSecond, viewport.Bounds, Color.White);
+                    sb.Draw(gameManager.MenuContent.HighlightSecond, viewport.Bounds, Color.White);
                     break;
                 case CharacterState.ThirdCharacter:
-                    sb.Draw(gameManager.GameContent.HighlightThird, viewport.Bounds, Color.White);
+                    sb.Draw(gameManager.MenuContent.HighlightThird, viewport.Bounds, Color.White);
                     break;
                 case CharacterState.FourthCharacter:
-                    sb.Draw(gameManager.GameContent.HighlightFourth, viewport.Bounds, Color.White);
+                    sb.Draw(gameManager.MenuContent.HighlightFourth, viewport.Bounds, Color.White);
                     break;
 
             }
@@ -82,7 +82,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
             MainMenuDisplay();
             spriteBatch.End();
         }
@@ -118,7 +118,7 @@ namespace Game.Menu.States
 
             // If there are no players left to choose character.
             // Continue to next state when done with the players.
-            if (controls.ContinueButton(GameManager.GameState.MainMenu) && gameManager.gameConfig.Players.Count == playerIndex)
+            if (controls.ContinueButton(GameManager.GameState.PlaySurvivalGame) && gameManager.gameConfig.Players.Count == playerIndex)
             {
                 // Reset values if this state is re-visited.
                 playerIndex = 0;

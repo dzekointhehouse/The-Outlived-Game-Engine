@@ -11,7 +11,7 @@ namespace Game.Services
        //{
        //    this.gm = gm;
        //}
-        public static void DrawBackgroundWithScaling(SpriteBatch sb, GameContent gameContent, float speed)
+        public static void DrawBackgroundWithScaling(SpriteBatch sb, MenuContent menuContent, float speed)
         {
             if (GameManager.Scale <= GameManager.MaxScale && GameManager.Scale >= GameManager.MinScale)
             {
@@ -35,7 +35,7 @@ namespace Game.Services
             }
 
             sb.Draw(
-                texture: gameContent.Background,
+                texture: menuContent.Background,
                 position: Vector2.Zero,
                 color: Color.White,
                 scale: new Vector2(GameManager.Scale)

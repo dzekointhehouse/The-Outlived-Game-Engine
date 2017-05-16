@@ -41,10 +41,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreatePlayers.cs" />
     <Compile Include="Entities\GameHUD.cs" />
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
     <Compile Include="GameContent.cs" />
+    <Compile Include="MenuContent.cs" />
     <Compile Include="Menu\States\About.cs" />
     <Compile Include="Services\ControlsConfig.cs" />
     <Compile Include="Services\GameConfig.cs" />

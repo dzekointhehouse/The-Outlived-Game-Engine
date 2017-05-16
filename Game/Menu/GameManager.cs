@@ -31,7 +31,7 @@ namespace Game
         protected internal GameState PreviousGameState;
         protected internal KeyboardState OldKeyboardState;
         protected internal GamePadState OldGamepadState;
-        public GameContent GameContent { get; }
+        public MenuContent MenuContent { get; }
         protected internal FullZengineBundle Engine;
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
@@ -64,7 +64,7 @@ namespace Game
         public GameManager(FullZengineBundle gameBundle)
         {
             Engine = gameBundle;
-            GameContent = new GameContent(gameBundle.Dependencies.Game);
+            MenuContent = new MenuContent(gameBundle.Dependencies.Game);
             gameConfig = new GameConfig();
 
             // initializing the states, remember:

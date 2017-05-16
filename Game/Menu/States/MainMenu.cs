@@ -39,8 +39,8 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             controls = new ControlsConfig(0, 3, gameManager);
             viewport = game.GraphicsDevice.Viewport;
-            mainBackground = new MenuHelper.Background(gameManager.GameContent.Background, new Vector2(10, 10), 1.5f);
-            fogBackground = new MenuHelper.Background(gameManager.GameContent.BackgroundFog, new Vector2(30, 30), 1);
+            mainBackground = new MenuHelper.Background(gameManager.MenuContent.Background, new Vector2(10, 10), 1.5f);
+            fogBackground = new MenuHelper.Background(gameManager.MenuContent.BackgroundFog, new Vector2(30, 30), 1);
         }
 
 
@@ -53,26 +53,26 @@ namespace Game.Menu.States
             string textAbout = "WHAT HAPPENED?";
             string textExit = "TAKE THE EASY WAY OUT";
 
-            sb.Draw(gameManager.GameContent.MainOptionsBackground, viewport.Bounds, Color.White);
+            sb.Draw(gameManager.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
             fogBackground.Draw(sb);
-            sb.DrawString(gameManager.GameContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
-            sb.DrawString(gameManager.GameContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
 
             switch (currentPosition)
             {
                 case OptionsState.Continue:
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.40f), Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.40f), Color.White);
                     break;
                 case OptionsState.About:
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
                     break;
                 case OptionsState.Credits:
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.60f), Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.60f), Color.White);
                     break;
                 case OptionsState.Exit:
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
                     break;
 
             }
@@ -82,7 +82,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0f);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0f);
             mainBackground.Draw(spriteBatch);
             
             
@@ -103,7 +103,7 @@ namespace Game.Menu.States
             {
                 MediaPlayer.Volume = 0.8f;
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Play(gameManager.GameContent.BackgroundSong);
+                MediaPlayer.Play(gameManager.MenuContent.BackgroundSong);
 
             }
 
