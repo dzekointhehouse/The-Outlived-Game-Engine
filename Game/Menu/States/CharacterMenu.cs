@@ -51,6 +51,12 @@ namespace Game.Menu.States
         {
             SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
+
+            if (gameManager.gameConfig.Players.Count == 0)
+            {
+                gameManager.CurrentGameState = gameManager.PreviousGameState;
+                return;
+            }
             // Add the first player. This is done the first time.
             if (currentPlayer == null)
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);

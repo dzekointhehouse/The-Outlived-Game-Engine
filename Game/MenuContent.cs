@@ -82,9 +82,9 @@ namespace Game
             AboutBackground = game.Content.Load<Texture2D>("Images/Menu/about");
 
             CharacterBackground = game.Content.Load<Texture2D>("Images/zombieCharacter");
-            ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
+            //ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
 
-            ButtonBack = game.Content.Load<Texture2D>("Images/Keyboard/left");
+          //  ButtonBack = game.Content.Load<Texture2D>("Images/Keyboard/left");
 
             HighlightFirst = game.Content.Load<Texture2D>("Images/Characters/character_hb");
             HighlightSecond = game.Content.Load<Texture2D>("Images/Characters/character_he");
