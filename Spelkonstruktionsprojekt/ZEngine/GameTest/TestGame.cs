@@ -48,8 +48,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public SpriteBatch spriteBatch;
         private Song musicTest;
         private SystemManager manager = SystemManager.Instance;
+        private SpriteFont scoreFont;
+        private Texture2D gameOver;
 
         private readonly FullZengineBundle gameBundle;
+
+        // Game states
+        private enum GameState { Start, InGame, GameOver };
+        private GameState currentGameState = GameState.Start;
 
         public TestGame()
         {
@@ -124,6 +130,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetHUD(true)
                 .SetPosition(new Vector2(1680, 1210))
                 .SetSprite("health3_small")
+                .Build();
+
+            new EntityBuilder()
+                .SetHUD(true)
+                .SetPosition(new Vector2(1670, 20))
+                .SetSprite("medal")
+                .Build();
+
+            new EntityBuilder()
+                .SetHUD(true)
+                .SetPosition(new Vector2(1670, 90))
+                .SetSprite("medal")
                 .Build();
         }
 
@@ -357,6 +375,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetCameraFollow()
                 .SetPlayer(name)
                 .SetHealth()
+                .SetScore()
                 .SetHUD(false, showStats:true)
                 .Build();
 
@@ -424,6 +443,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         protected override void LoadContent()
         {
             video = Content.Load<Video>("ZEngine-intro");
+            scoreFont = Content.Load<SpriteFont>("Score");
+            gameOver = Content.Load<Texture2D>("gameOver");
 
             player = new VideoPlayer();
             //MediaPlayer.Play(musicTest);
@@ -451,23 +472,67 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void Draw(GameTime gameTime)
         {
-            Texture2D videoTexture = null;
+            //Texture2D videoTexture = null;
+            
+            HealthSystem life = new HealthSystem();
 
-            if (player.State != MediaState.Stopped)
-                videoTexture = player.GetTexture();
+            switch (currentGameState)
+            {
+                case GameState.Start:
+                    //if (player.State != MediaState.Stopped)
+                    //    videoTexture = player.GetTexture();
 
-            if (videoTexture != null)
-            {
-                spriteBatch.Begin();
-                spriteBatch.Draw(videoTexture,
-                    new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y), Color.White);
-                spriteBatch.End();
-            }
-            if (player.State == MediaState.Stopped)
-            {
-                //BUNDLE
-                gameBundle.Draw(gameTime);
-                fps.Draw(gameTime);
+                    //if (videoTexture != null)
+                    //{
+                    //    spriteBatch.Begin();
+                    //    spriteBatch.Draw(videoTexture,
+                    //        new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y), Color.White);
+                    //    spriteBatch.End();
+                        currentGameState = GameState.InGame;
+                    //}
+                    break;
+
+                case GameState.InGame:
+                    //if (player.State == MediaState.Stopped)
+                    //{
+                        //BUNDLE
+                        gameBundle.Draw(gameTime);
+                        fps.Draw(gameTime);
+
+                    if (life.CheckIfAlive())
+                    {
+                        currentGameState = GameState.GameOver;
+                    }
+
+                    //}
+                    break;
+
+                case GameState.GameOver:
+
+                    GraphicsDevice.Clear(Color.Black);
+
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(gameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
+                    spriteBatch.End();
+
+
+                    var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
+                    if (GameScoreList.Count <= 0) return;
+                    var GameScore = (GameScoreComponent)GameScoreList.First().Value;
+
+
+                    string yourScore = "Your score: " + GameScore.TotalGameScore;
+                    string exit = "(Press ESCAPE to exit)";
+
+                    spriteBatch.Begin();
+                    spriteBatch.DrawString(scoreFont, yourScore, new Vector2(50, 100), Color.Red);
+                    spriteBatch.DrawString(scoreFont, exit, new Vector2(50, 200), Color.Red);
+                    spriteBatch.End();
+
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        Exit();
+
+                    break;
             }
             base.Draw(gameTime);
         }

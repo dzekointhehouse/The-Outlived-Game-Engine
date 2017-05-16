@@ -65,7 +65,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     // We want to remove all the components for the entity except for the 
                     // spriteComponent and health, we need them still.
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(CameraFollowComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entity.Key);
+                    //ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(SoundComponent), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(WeaponComponent), entity.Key);
                     ComponentManager.Instance.RemoveComponentFromEntity(typeof(ActionBindings), entity.Key);

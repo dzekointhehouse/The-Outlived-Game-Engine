@@ -26,6 +26,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
         private GameDependencies _gameDependencies;
         private StringBuilder gameHUD = new StringBuilder(0, 50);
 
+        private StringBuilder scoreGameHUD = new StringBuilder(0, 50);
+
         // This draw method is used to start the system process.
         // it uses DrawTitlesafeStrings to draw the components.
         public void Draw(GameDependencies gameDependencies)
@@ -53,12 +55,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             // them (the text for every player) on top of eachother.
             float previousHeightHealth = 50f;
             float previousHeightAmmo = 50f;
+            float scoreSpacing = 1170f;
 
             ContentManager contentManager = _gameDependencies.GameContent as ContentManager;
 
             foreach (var instance in HUDComponents)
             {
                 gameHUD.Clear();
+                scoreGameHUD.Clear();
 
                 var HUD = instance.Value as RenderHUDComponent;
 
@@ -66,10 +70,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                 Vector2 position = Vector2.Zero;
 
                 gameHUD.AppendLine();
+                scoreGameHUD.AppendLine();
 
                 if (HUD.HUDtext != null)
                 {
                     gameHUD.Append(HUD.HUDtext);
+                    scoreGameHUD.Append(HUD.HUDtext);
                 }
 
                 // We execute this if - statement, if showstats is true,
@@ -83,7 +89,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         HealthComponent health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(instance.Key);
                         if (health == null) return;
 
-                       // gameHUD.Append(player.Name);
+                        EntityScoreComponent score = ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(instance.Key);
+                        if (score == null) return;
+                        // gameHUD.Append(player.Name);
 
                         float textHeight;
 
@@ -108,8 +116,27 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             previousHeightHealth += textHeight;
 
                             position = new Vector2(xPosition, yPosition);
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);                            
 
+                        }
+
+                        // adding score
+                        if(ComponentManager.Instance.EntityHasComponent<EntityScoreComponent>(instance.Key))
+                        {
+                            scoreGameHUD.Clear();
+                            var currentScore = (int)score.score;
+
+                            scoreGameHUD.AppendLine();
+                            scoreGameHUD.Append(currentScore);
+
+                            float scoreTextHeight = spriteFont.MeasureString(scoreGameHUD).Y;
+                            float scoreXPosition = titlesafearea.X + 1720;
+                            float scoreYPosition = titlesafearea.Height - (scoreTextHeight + scoreSpacing);
+                            scoreSpacing += scoreTextHeight;
+
+                            Vector2 scorePosition = new Vector2(scoreXPosition, scoreYPosition);
+
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, scoreGameHUD, scorePosition, HUD.FontColor);
                         }
 
                         // adding ammo here the same way.

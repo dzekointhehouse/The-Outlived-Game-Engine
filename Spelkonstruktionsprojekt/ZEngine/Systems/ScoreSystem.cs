@@ -68,20 +68,24 @@ namespace ZEngine.Systems
         {
 
             var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
+
+
             if (GameScoreList.Count <= 0) return;
-            var GameScore = (GameScoreComponent) GameScoreList.First().Value;
-            
+            var GameScore = (GameScoreComponent)GameScoreList.First().Value;
+
             GameScore.TotalGameScore = 0;
 
-            foreach(var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityScoreComponent)))
+            foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityScoreComponent)))
             {
                 var scoreComponent = entity.Value as EntityScoreComponent;
                 var health = (HealthComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(HealthComponent), entity.Key);
                 if (health == null) continue;
-                if (health.Alive) { 
+                if (health.Alive)
+                {
                     scoreComponent.score += GameScore.survivalScoreFactor * gameTime.ElapsedGameTime.TotalSeconds;
+
                 }
-                GameScore.TotalGameScore += (int) scoreComponent.score;
+                GameScore.TotalGameScore += (int)scoreComponent.score;
                 Debug.WriteLine(entity.Key + ": " + scoreComponent.score);
             }
             Debug.WriteLine("Total: " + GameScore.TotalGameScore);

@@ -130,6 +130,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
+        public EntityBuilder SetScore()
+        {
+            EntityScoreComponent component = new EntityScoreComponent()
+            {
+                score = 0,
+            };
+            components.Add(component);
+            return this;
+        }
+
         public EntityBuilder SetTeam(int maxhealth = 100, int currentHealth = 100, bool alive = true)
         {
             TeamComponent component = new TeamComponent()

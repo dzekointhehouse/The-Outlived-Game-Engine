@@ -10,8 +10,5 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     class EntityScoreComponent : IComponent
     {
         public double score { get; set; } = 0;
-
-
-
     }
 }
