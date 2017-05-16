@@ -41,7 +41,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\CreatePlayers.cs" />
+    <Compile Include="Entities\GamePlayers.cs" />
+    <Compile Include="Entities\GameEnemies.cs" />
     <Compile Include="Entities\GameHUD.cs" />
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="Menu\States\GameIntro.cs" />
     <Compile Include="Menu\States\MultiplayerMenu.cs" />
     <Compile Include="Menu\States\PausedMenu.cs" />
-    <Compile Include="Menu\States\SurvivalGame.cs" />
+    <Compile Include="Menu\States\InGame.cs" />
     <Compile Include="OutlivedGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

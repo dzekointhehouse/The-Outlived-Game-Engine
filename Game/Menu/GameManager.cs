@@ -75,7 +75,7 @@ namespace Game
             characterMenu = new CharacterMenu(this);
             credits = new Credits(this);
             gameIntro = new GameIntro(this);
-            survivalGame = new SurvivalGame(this);
+            survivalGame = new InGame(this);
             pausedMenu = new PausedMenu(this);
             multiplayerMenu = new MultiplayerMenu(this);
             aboutMenu = new AboutMenu(this);
