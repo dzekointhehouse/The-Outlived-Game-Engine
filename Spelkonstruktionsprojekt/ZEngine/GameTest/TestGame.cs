@@ -95,6 +95,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
             CreateGlobalSpawnSpriteEntity();
+            CreateGlobalSpawnEntity();
             SetupTempPlayerDeadSpriteFlyweight();
         }
 
@@ -158,6 +159,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
            
             ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
             ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
+        }
+        private static void CreateGlobalSpawnEntity()
+        {
+            var spawn = EntityManager.GetEntityManager().NewEntity();
+            var spawncomponent = new GlobalSpawnComponent()
+            {    
+            };
+           // var spawnSpawnComponent = new GlobalSpawnComponent();
+            ComponentManager.Instance.AddComponentToEntity(spawncomponent, spawn);
+            //ComponentManager.Instance.AddComponentToEntity(spawnSpawnComponent, spawn);
         }
 
         //The camera cage keeps players from reaching the edge of the screen
