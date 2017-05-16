@@ -22,7 +22,7 @@ namespace Game.Entities
                 .SetPosition(new Vector2(x, y), layerDepth: 20)
                 .SetRendering(200, 200)
                 .SetSprite(spriteName, new Point(1252, 206), 313, 206)
-                .SetSound("zombiewalking")
+                .SetSound("player_sprites")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetRectangleCollision()

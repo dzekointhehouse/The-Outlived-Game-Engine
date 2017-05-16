@@ -98,12 +98,12 @@ namespace Game.Menu.States
         // are to be done.
         public void Update(GameTime gameTime)
         {
+            controls.GoBackButton();
             // Add the first player. This is done the first time.
             if (currentPlayer == null)
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
             // Change character position
             currentPosition = (CharacterState)controls.MoveOptionPositionHorizontally((int)currentPosition, currentPlayer.Index);
-            //currentPosition = (CharacterState)controls.MoveOptionPositionVertically((int)currentPosition, currentPlayer.Index);
            
 
 
@@ -131,7 +131,7 @@ namespace Game.Menu.States
                 currentPlayer = null;
                 currentPosition = CharacterState.FirstCharacter;
             }
-            controls.GoBackButton();
+
 
         }
     }

@@ -173,7 +173,7 @@ namespace Game.Menu.States
             var tileTypes = new Dictionary<int, string>();
 
             //tileTypes.Add(0, "blue64");
-            tileTypes.Add(1, "grass");
+            tileTypes.Add(1, "red64");
             //tileTypes.Add(2, "red64");
             //tileTypes.Add(4, "yellowwall64");
 

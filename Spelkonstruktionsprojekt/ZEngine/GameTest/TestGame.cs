@@ -480,17 +480,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void LoadContent()
         {
-            video = Content.Load<Video>("ZEngine-intro");
+
             scoreFont = Content.Load<SpriteFont>("Score");
             gameOver = Content.Load<Texture2D>("gameOver");
-
-            player = new VideoPlayer();
-            //MediaPlayer.Play(musicTest);
-
-            //            if (player.State == MediaState.Stopped)
-            //            {
-            //                player.Play(video);
-            //            }
 
             //BUNDLE
             gameBundle.LoadContent();
