@@ -3,11 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Game.Services
 {
-    public class MenuHelper
+    public class ScalingBackground
     {
        // private GameManager gm;
         //private bool moveRight = false;
-       //public MenuHelper(GameManager gm)
+       //public ScalingBackground(GameManager gm)
        //{
        //    this.gm = gm;
        //}
@@ -41,11 +41,12 @@ namespace Game.Services
                 scale: new Vector2(GameManager.Scale)
             );
         }
-
-        public class Background
+    }
+    public class SidewaysBackground
         {
             private Texture2D Texture;      //The image to use
             private Vector2 Offset;         //Offset to start drawing our image
+            private bool moveRight = true;
             public Vector2 Speed;           //Speed of movement of our parallax effect
             public float Zoom;              //Zoom level of our image
 
@@ -57,7 +58,7 @@ namespace Game.Services
                 get { return new Rectangle((int)(Offset.X), (int)(Offset.Y), (int)(Viewport.Width / Zoom), (int)(Viewport.Height / Zoom)); }
             }
 
-            public Background(Texture2D texture, Vector2 speed, float zoom)
+            public SidewaysBackground(Texture2D texture, Vector2 speed, float zoom)
             {
                 Texture = texture;
                 Offset = Vector2.Zero;
@@ -78,14 +79,14 @@ namespace Game.Services
 
                 if (viewport.X >= Offset.X)
                 {
-                    GameManager.MoveRight = true; // viewport to move right because its X is smaller than image
+                    moveRight = true; // viewport to move right because its X is smaller than image
                 }
                 if (bounds.Width <= Offset.X + viewport.Width)
                 {
-                    GameManager.MoveRight = false;
+                    moveRight = false;
                 }
 
-                if (GameManager.MoveRight)
+                if (moveRight)
                 {
 
                     //Move our offset to the right of the image
@@ -106,5 +107,5 @@ namespace Game.Services
                 spriteBatch.Draw(Texture, new Vector2(Viewport.X, Viewport.Y), Rectangle, Color.White, 0, Vector2.Zero, Zoom, SpriteEffects.None, 1);
             }
         }
-    }
+
 }

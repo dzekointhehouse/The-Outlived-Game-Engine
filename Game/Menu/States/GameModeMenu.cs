@@ -7,7 +7,7 @@ namespace Game.Menu.States
 {
     class GameModeMenu : IMenu
     {
-
+        private SidewaysBackground fogBackground;
         private readonly Microsoft.Xna.Framework.Game game;
         private readonly GameManager gameManager;
         private readonly ControlsConfig controls;
@@ -26,6 +26,8 @@ namespace Game.Menu.States
             this.gameManager = gameManager;
             game = this.gameManager.Engine.Dependencies.Game;
             this.controls = new ControlsConfig(0, 2, gameManager);
+            fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
+
         }
 
         private void MainMenuDisplay()
@@ -55,13 +57,15 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            fogBackground.Draw(spriteBatch);
             MainMenuDisplay();
             spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
         {
+            fogBackground.Update(gameTime, new Vector2(1, 0), gameManager.Viewport);
             controls.GoBackButton();
             currentPosition = (OptionsState)controls.MoveOptionPositionVertically((int)currentPosition);
 

@@ -21,7 +21,7 @@ namespace Game.Entities
             Ammo
         }
 
-        private void AddPickup(string spritename, PickupType pickup)
+        public void AddPickup(string spritename, PickupType pickup, Vector2 position)
         {
             var entity = EntityManager.GetEntityManager().NewEntity();
             var coll = new CollisionComponent();
@@ -48,11 +48,12 @@ namespace Game.Entities
 
             var pos = new PositionComponent()
             {
-                Position = new Vector2(40, 40)
+                Position = position,
+                ZIndex = 500
             };
             var sprite = new SpriteComponent()
             {
-                SpriteName = "healthpickup"
+                SpriteName = spritename
             };
             var ligh = new LightComponent()
             {

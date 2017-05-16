@@ -21,9 +21,8 @@ namespace Game.Menu.States
         private OptionsState currentPosition = OptionsState.Continue;
         private Viewport viewport;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-        private MenuHelper.Background fogBackground;
-        private MenuHelper.Background fogBackground2;
-        private MenuHelper.Background mainBackground;
+        private SidewaysBackground fogBackground;
+        private SidewaysBackground mainBackground;
 
         // different menu options
         private enum OptionsState
@@ -40,9 +39,8 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             controls = new ControlsConfig(0, 3, gameManager);
             viewport = game.GraphicsDevice.Viewport;
-            mainBackground = new MenuHelper.Background(gameManager.MenuContent.Background, new Vector2(10, 10), 1.5f);
-            fogBackground = new MenuHelper.Background(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1);
-            fogBackground2 = new MenuHelper.Background(gameManager.MenuContent.BackgroundFog, new Vector2(50, 50), 10);
+            mainBackground = new SidewaysBackground(gameManager.MenuContent.Background, new Vector2(10, 10), 1.5f);
+            fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
         }
 
 
@@ -57,7 +55,6 @@ namespace Game.Menu.States
 
             sb.Draw(gameManager.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
             fogBackground.Draw(sb);
-            //fogBackground2.Draw(sb);
             sb.DrawString(gameManager.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
             sb.DrawString(gameManager.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
             sb.DrawString(gameManager.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
@@ -85,7 +82,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0f);
+            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0f);
             mainBackground.Draw(spriteBatch);
             
             MainMenuDisplay();
@@ -98,7 +95,6 @@ namespace Game.Menu.States
         public void Update(GameTime gameTime)
         {
             fogBackground.Update(gameTime, new Vector2(1,0),viewport);
-            //fogBackground2.Update(gameTime, new Vector2(1, 0), viewport);
             //mainBackground.Update(gameTime, new Vector2(1, 0), viewport);
             // playing beatiful mainBackground music.
             if (MediaPlayer.State == MediaState.Stopped)

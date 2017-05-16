@@ -52,7 +52,7 @@
     <Compile Include="Menu\States\About.cs" />
     <Compile Include="Services\ControlsConfig.cs" />
     <Compile Include="Services\GameConfig.cs" />
-    <Compile Include="Services\MenuHelper.cs" />
+    <Compile Include="Services\ScalingBackground.cs" />
     <Compile Include="Menu\States\GameModeMenu.cs" />
     <Compile Include="Menu\States\MainMenu.cs" />
     <Compile Include="Menu\Menu.cs" />
