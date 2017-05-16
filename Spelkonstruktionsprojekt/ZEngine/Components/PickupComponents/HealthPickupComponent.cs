@@ -7,7 +7,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents
 {
-    class HealthPickupComponent : IComponent
+    public class HealthPickupComponent : IComponent
     {
         public int Amount { get; set; } = 50;
     }

@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\GamePickups.cs" />
     <Compile Include="Entities\GamePlayers.cs" />
     <Compile Include="Entities\GameEnemies.cs" />
     <Compile Include="Entities\GameHUD.cs" />

@@ -39,7 +39,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // be done. 
             EventBus.Subscribe<InputEvent>(EventConstants.FireWeapon, WeaponSounds);
             EventBus.Subscribe<InputEvent>(EventConstants.HealthPickup, PickupSounds);
-            EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
+            //EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
             return this;
         }
 
@@ -83,7 +83,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 listener.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
 
                 // Applying the 3d sound effect to the sound instance
-                soundInstance.Apply3D(listener, emitter);
+                //soundInstance.Apply3D(listener, emitter);
 
                 // If it is not already playing then play it
                 if (soundInstance.State != SoundState.Playing)
