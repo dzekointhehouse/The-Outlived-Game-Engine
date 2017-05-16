@@ -125,7 +125,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetHUD(true)
                 .SetPosition(new Vector2(viewportDimensions.X * 0.3f, viewportDimensions.Y * 0.83f))
                 .SetSprite("health3_small")
-                .Build();           
+                .Build();
 
             new EntityBuilder()
                 .SetHUD(true)
@@ -511,11 +511,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     spriteBatch.Draw(gameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
                     spriteBatch.End();
 
-
                     var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
                     if (GameScoreList.Count <= 0) return;
                     var GameScore = (GameScoreComponent)GameScoreList.First().Value;
-
 
                     string yourScore = "Total score: " + GameScore.TotalGameScore;
                     string exit = "(Press ESCAPE to exit)";

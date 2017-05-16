@@ -145,7 +145,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             AmmoComponent component = new AmmoComponent()
             {
                 Amount = 100,
-                SpareAmmoAmount = 100,
+                SpareAmmoAmount = 10,
             };
             components.Add(component);
             return this;

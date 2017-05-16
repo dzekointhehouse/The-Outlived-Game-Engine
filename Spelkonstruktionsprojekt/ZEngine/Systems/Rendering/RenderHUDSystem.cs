@@ -28,6 +28,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
         private StringBuilder gameHUD = new StringBuilder(0, 50);
         private StringBuilder scoreGameHUD = new StringBuilder(0, 50);
         private StringBuilder ammoGameHUD = new StringBuilder(0, 50);
+        private StringBuilder playerGameHUD = new StringBuilder(0, 50);
 
         // This draw method is used to start the system process.
         // it uses DrawTitlesafeStrings to draw the components.
@@ -58,6 +59,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             float healthSpacing = 0.33f;
             float scoreSpacing = 0.33f;
             float ammoSpacing = 0.33f;
+            float playerSpacing = 0.33f;
 
             ContentManager contentManager = _gameDependencies.GameContent as ContentManager;
 
@@ -66,6 +68,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                 gameHUD.Clear();
                 scoreGameHUD.Clear();
                 ammoGameHUD.Clear();
+                playerGameHUD.Clear();
 
                 var HUD = instance.Value as RenderHUDComponent;
 
@@ -79,6 +82,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                 {
                     gameHUD.Append(HUD.HUDtext);
                     scoreGameHUD.Append(HUD.HUDtext);
+                    ammoGameHUD.Append(HUD.HUDtext);
+                    playerGameHUD.Append(HUD.HUDtext);
                 }
 
                 // We execute this if - statement, if showstats is true,
@@ -94,7 +99,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                         EntityScoreComponent score = ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(instance.Key);
                         if (score == null) return;
-                        // gameHUD.Append(player.Name);
 
                         float xPosition;
                         float yPosition;
@@ -113,15 +117,32 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             xPosition = titlesafearea.Width * healthSpacing;
                             yPosition = titlesafearea.Height * 0.81f;
-                            healthSpacing += 0.04f;
+                            healthSpacing += 0.06f;
 
                             position = new Vector2(xPosition, yPosition);
                             _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);                            
 
                         }
 
+                        // adding player name
+                        if (ComponentManager.Instance.EntityHasComponent<EntityScoreComponent>(instance.Key))
+                        {
+                            playerGameHUD.Clear();
+
+                            playerGameHUD.AppendLine();
+                            playerGameHUD.Append(player.Name);
+
+                            float playerXPosition = (titlesafearea.Width * 1f) * playerSpacing;
+                            float playerYPosition = titlesafearea.Height * 0.78f;
+                            playerSpacing += 0.06f;
+
+                            Vector2 scorePosition = new Vector2(playerXPosition, playerYPosition);
+
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, playerGameHUD, scorePosition, HUD.FontColor);
+                        }
+
                         // adding score
-                        if(ComponentManager.Instance.EntityHasComponent<EntityScoreComponent>(instance.Key))
+                        if (ComponentManager.Instance.EntityHasComponent<EntityScoreComponent>(instance.Key))
                         {
                             scoreGameHUD.Clear();
                             var currentScore = (int)score.score;
@@ -131,7 +152,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             float scoreXPosition = (titlesafearea.Width * 1f) * scoreSpacing;
                             float scoreYPosition = titlesafearea.Height * 0.86f;
-                            scoreSpacing += 0.04f;
+                            scoreSpacing += 0.06f;
 
                             Vector2 scorePosition = new Vector2(scoreXPosition, scoreYPosition);
 
@@ -153,7 +174,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             // so now we are able to stack them on top of each other.
                             float ammoXPosition = (titlesafearea.Width * 1f) * ammoSpacing;
                             float ammoYPosition = titlesafearea.Height * 0.91f;
-                            ammoSpacing += 0.04f;
+                            ammoSpacing += 0.06f;
 
                             Vector2 ammoPosition = new Vector2(ammoXPosition, ammoYPosition);
 
