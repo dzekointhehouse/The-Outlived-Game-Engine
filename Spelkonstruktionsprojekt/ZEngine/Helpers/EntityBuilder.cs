@@ -95,6 +95,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             components.Add(component);
             return this;
         }
+        public EntityBuilder SetSpawn(int Wavesize)
+        {
+            SpawnComponent component = new SpawnComponent()
+            {
+               WaveSize = Wavesize,
+               EnemiesDead = 0,
+
+            };
+            components.Add(component);
+            return this;
+        }
+
 
         public EntityBuilder SetPlayer(string name)
         {

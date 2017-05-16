@@ -25,49 +25,46 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void HandleWaves()
         {
-            var test = ComponentManager.GetEntitiesWithComponent(typeof(AIComponent));
-            var testt = ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent));
+            //var test = ComponentManager.GetEntitiesWithComponent(typeof(AIComponent));
+            //var testt = ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent));
             // Ta bort kommentarer här så ser man att spawn funkar! men problemet är att den spawnar hela tiden vilket vi inte vill
-            //          var SpawnSpriteEntities =
-            //            ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
-            //          if (SpawnSpriteEntities.Count <= 0) return;
-            //        var SpawnSpriteComponent =
-            //            ComponentManager.Instance
-            //                .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
-            //SetupWave(2,SpawnSpriteComponent);
-            foreach (var entitys in test)
+            //var SpawnSpriteEntities =
+            //  ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+            //if (SpawnSpriteEntities.Count <= 0) return;
+            //var SpawnSpriteComponent =
+            //    ComponentManager.Instance
+            //        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+            //SetupWave(2, SpawnSpriteComponent);
+            foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
-                var spawns = entitys.Value as SpawnComponent;
-                foreach (var entity in testt)
+                if (ComponentManager.EntityHasComponent<SpawnComponent>(entity.Key))
                 {
+                    var spawnComponent = ComponentManager.GetEntityComponentOrDefault<SpawnComponent>(entity.Key);
                     if (ComponentManager.EntityHasComponent<HealthComponent>(entity.Key))
                     {
                         var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
 
                         if (!HealthComponent.Alive)
                         {
-                            spawns.EnemiesDead++;
+                            spawnComponent.EnemiesDead++;
+                        }
+                        if (spawnComponent.EnemiesDead == spawnComponent.WaveSize || spawnComponent.FirstRound)
+                        {
+                            // spawns.FirstRound = false;
+                            // here is where we want do it! instead of up there ^^
+                            //var SpawnSpriteEntities =
+                            //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+                            //  if (SpawnSpriteEntities.Count <= 0) return;
+                            //var SpawnSpriteComponent =
+                            //    ComponentManager.Instance
+                            //        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+
+                            //SetupWave(spawns.WaveSize, SpawnSpriteComponent);
+                            //spawns.WaveSize += spawns.WaveSizeIncreaseConstant;
 
                         }
                     }
-
                 }
-
-                if (spawns.EnemiesDead == spawns.WaveSize || spawns.FirstRound)
-                {
-                    spawns.FirstRound = false;
-                    // here is where we want do it! instead of up there ^^
-                    //var SpawnSpriteEntities =
-                    //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
-                    //  if (SpawnSpriteEntities.Count <= 0) return;
-                    //var SpawnSpriteComponent =
-                    //    ComponentManager.Instance
-                    //        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
-
-                    //SetupWave(spawns.WaveSize, SpawnSpriteComponent);
-                    //spawns.WaveSize += spawns.WaveSizeIncreaseConstant;
-                }
-
             }
         }
 
@@ -92,54 +89,52 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void CreateEnemy(int x, int y, SpriteComponent SpawnSpriteComponent)
         {
-            //var positioncomponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>();
 
-            var monster = new EntityBuilder()
-                .SetPosition(new Vector2(x, y), layerDepth: 20)
-                .SetRendering(200, 200)
-                .SetSound("zombiewalking")
-                .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetArtificialIntelligence()
-                .SetRectangleCollision()
-                .SetHealth()
-                //.SetHUD("hello")
-                .BuildAndReturnId();
+            //var monster = new EntityBuilder()
+            //    .SetPosition(new Vector2(x, y), layerDepth: 20)
+            //    .SetRendering(200, 200)
+            //    .SetSound("zombiewalking")
+            //    .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
+            //    .SetArtificialIntelligence()
+            //    .SetRectangleCollision()
+            //    .SetHealth()
+            //    .BuildAndReturnId();
 
-            var animationBindings = new SpriteAnimationBindingsBuilder()
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(1252, 206), new Point(0, 1030))
-                        .StateConditions(State.WalkingForward)
-                        .Length(40)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead, State.WalkingForward)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead, State.WalkingBackwards)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
-                        .StateConditions(State.Dead)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Build();
-            ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, monster);
-            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
+            //var animationBindings = new SpriteAnimationBindingsBuilder()
+            //    .Binding(
+            //        new SpriteAnimationBindingBuilder()
+            //            .Positions(new Point(1252, 206), new Point(0, 1030))
+            //            .StateConditions(State.WalkingForward)
+            //            .Length(40)
+            //            .Build()
+            //    )
+            //    .Binding(
+            //        new SpriteAnimationBindingBuilder()
+            //            .Positions(new Point(0, 0), new Point(939, 206))
+            //            .StateConditions(State.Dead, State.WalkingForward)
+            //            .IsTransition(true)
+            //            .Length(30)
+            //            .Build()
+            //    )
+            //    .Binding(
+            //        new SpriteAnimationBindingBuilder()
+            //            .Positions(new Point(0, 0), new Point(939, 206))
+            //            .StateConditions(State.Dead, State.WalkingBackwards)
+            //            .IsTransition(true)
+            //            .Length(30)
+            //            .Build()
+            //    )
+            //    .Binding(
+            //        new SpriteAnimationBindingBuilder()
+            //            .Positions(new Point(0, 0), new Point(939, 206))
+            //            .StateConditions(State.Dead)
+            //            .IsTransition(true)
+            //            .Length(30)
+            //            .Build()
+            //    )
+            //    .Build();
+            //ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, monster);
+            //ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
         }
     }
 }

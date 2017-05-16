@@ -51,6 +51,7 @@
     <Compile Include="..\ShapeRendering2D\ShapeRenderer2D.cs" />
     <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
     <Compile Include="ZEngine\Components\GameScoreComponent.cs" />
+    <Compile Include="ZEngine\Components\GlobalSpawnComponent.cs" />
     <Compile Include="ZEngine\Components\Input\GamePadComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
     <Compile Include="ZEngine\Components\SpawnComponent.cs" />

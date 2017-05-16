@@ -91,7 +91,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InitPlayers(cameraCageId);
             SetupBackgroundTiles(5, 5);
             SetupCamera();
-            SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
             CreateGlobalSpawnSpriteEntity();
@@ -245,6 +244,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
+                .SetSpawn()
                 .SetRectangleCollision()
                 .SetHealth()
                 //.SetHUD("hello")
