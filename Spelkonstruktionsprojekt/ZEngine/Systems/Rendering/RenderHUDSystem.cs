@@ -53,9 +53,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
-            float previousHeightHealth = 50f;
+
             float previousHeightAmmo = 50f;
-            float scoreSpacing = 1170f;
+            float healthSpacing = 0.33f;
+            float scoreSpacing = 0.33f;
 
             ContentManager contentManager = _gameDependencies.GameContent as ContentManager;
 
@@ -109,11 +110,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             // this call gives us the height of the text,
                             // so now we are able to stack them on top of each other.
-                            textHeight = spriteFont.MeasureString(gameHUD).Y;
 
-                            xPosition = titlesafearea.Width - spriteFont.MeasureString(gameHUD).X - 20;
-                            yPosition = titlesafearea.Height - (textHeight + previousHeightHealth);
-                            previousHeightHealth += textHeight;
+                            xPosition = titlesafearea.Width * healthSpacing;
+                            yPosition = titlesafearea.Height * 0.81f;
+                            healthSpacing += 0.04f;
 
                             position = new Vector2(xPosition, yPosition);
                             _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);                            
@@ -129,10 +129,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             scoreGameHUD.AppendLine();
                             scoreGameHUD.Append(currentScore);
 
-                            float scoreTextHeight = spriteFont.MeasureString(scoreGameHUD).Y;
-                            float scoreXPosition = titlesafearea.X + 1720;
-                            float scoreYPosition = titlesafearea.Height - (scoreTextHeight + scoreSpacing);
-                            scoreSpacing += scoreTextHeight;
+                            float scoreXPosition = (titlesafearea.Width * 1f) * scoreSpacing;
+                            float scoreYPosition = titlesafearea.Height * 0.86f;
+                            scoreSpacing += 0.04f;
 
                             Vector2 scorePosition = new Vector2(scoreXPosition, scoreYPosition);
 

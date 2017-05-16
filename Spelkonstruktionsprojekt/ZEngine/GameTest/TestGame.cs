@@ -114,35 +114,30 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void SetupHUD()
         {
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(10, 1100))
-                .SetSprite("XboxController")
-                .Build();
+            //new EntityBuilder()
+            //    .SetHUD(true)
+            //    .SetPosition(new Vector2(10, 1100))
+            //    .SetSprite("XboxController")
+            //    .Build();
 
             // Health Icons
             new EntityBuilder()
                 .SetHUD(true)
-                .SetPosition(new Vector2(1680, 1150))
+                .SetPosition(new Vector2(viewportDimensions.X * 0.3f, viewportDimensions.Y * 0.83f))
                 .SetSprite("health3_small")
-                .Build();
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(1680, 1210))
-                .SetSprite("health3_small")
-                .Build();
+                .Build();           
 
             new EntityBuilder()
                 .SetHUD(true)
-                .SetPosition(new Vector2(1670, 20))
+                .SetPosition(new Vector2(viewportDimensions.X * 0.3f, viewportDimensions.Y * 0.88f))
                 .SetSprite("medal")
                 .Build();
 
             new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(1670, 90))
-                .SetSprite("medal")
-                .Build();
+               .SetHUD(true)
+               .SetPosition(new Vector2(viewportDimensions.X * 0.28f, viewportDimensions.Y * 0.93f))
+               .SetSprite("ammo")
+               .Build();
         }
 
         private void SetupTempPlayerDeadSpriteFlyweight()
@@ -521,7 +516,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     var GameScore = (GameScoreComponent)GameScoreList.First().Value;
 
 
-                    string yourScore = "Your score: " + GameScore.TotalGameScore;
+                    string yourScore = "Total score: " + GameScore.TotalGameScore;
                     string exit = "(Press ESCAPE to exit)";
 
                     spriteBatch.Begin();
