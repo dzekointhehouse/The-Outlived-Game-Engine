@@ -24,9 +24,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
     {
         public static string SystemName = "RenderHUDSystem";
         private GameDependencies _gameDependencies;
-        private StringBuilder gameHUD = new StringBuilder(0, 50);
 
+        private StringBuilder gameHUD = new StringBuilder(0, 50);
         private StringBuilder scoreGameHUD = new StringBuilder(0, 50);
+        private StringBuilder ammoGameHUD = new StringBuilder(0, 50);
 
         // This draw method is used to start the system process.
         // it uses DrawTitlesafeStrings to draw the components.
@@ -54,9 +55,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
 
-            float previousHeightAmmo = 50f;
             float healthSpacing = 0.33f;
             float scoreSpacing = 0.33f;
+            float ammoSpacing = 0.33f;
 
             ContentManager contentManager = _gameDependencies.GameContent as ContentManager;
 
@@ -64,6 +65,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             {
                 gameHUD.Clear();
                 scoreGameHUD.Clear();
+                ammoGameHUD.Clear();
 
                 var HUD = instance.Value as RenderHUDComponent;
 
@@ -93,8 +95,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         EntityScoreComponent score = ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(instance.Key);
                         if (score == null) return;
                         // gameHUD.Append(player.Name);
-
-                        float textHeight;
 
                         float xPosition;
                         float yPosition;
@@ -145,19 +145,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             AmmoComponent ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(instance.Key);
                             
                             // for formating and adding the amount to the HUD.
-                            gameHUD.AppendLine();
-                            gameHUD.Append(ammo.Amount);
+                            ammoGameHUD.AppendLine();
+                            ammoGameHUD.Append(ammo.Amount);
 
 
                             // this call gives us the height of the text,
                             // so now we are able to stack them on top of each other.
-                            textHeight = spriteFont.MeasureString(gameHUD).Y;
-                            xPosition = titlesafearea.X + 20;
-                            yPosition = titlesafearea.Height - (textHeight + previousHeightAmmo);
-                            previousHeightAmmo += textHeight;
+                            float ammoXPosition = (titlesafearea.Width * 1f) * ammoSpacing;
+                            float ammoYPosition = titlesafearea.Height * 0.91f;
+                            ammoSpacing += 0.04f;
 
-                            position = new Vector2(xPosition, yPosition);
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);
+                            Vector2 ammoPosition = new Vector2(ammoXPosition, ammoYPosition);
+
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, ammoGameHUD, ammoPosition, HUD.FontColor);
 
                         }
                     }

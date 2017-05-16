@@ -135,7 +135,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             new EntityBuilder()
                .SetHUD(true)
-               .SetPosition(new Vector2(viewportDimensions.X * 0.28f, viewportDimensions.Y * 0.93f))
+               .SetPosition(new Vector2(viewportDimensions.X * 0.28f, viewportDimensions.Y * 0.92f))
                .SetSprite("ammo")
                .Build();
         }
@@ -370,6 +370,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetCameraFollow()
                 .SetPlayer(name)
                 .SetHealth()
+                .SetAmmo()
                 .SetScore()
                 .SetHUD(false, showStats:true)
                 .Build();
