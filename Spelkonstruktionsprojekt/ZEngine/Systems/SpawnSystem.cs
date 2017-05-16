@@ -17,10 +17,10 @@ using ZEngine.Managers;
 using ZEngine.Systems;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
-{    
+{
     class SpawnSystem : ISystem
     {
-        
+
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void HandleWaves()
@@ -35,65 +35,53 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             //            ComponentManager.Instance
             //                .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
             //SetupWave(2,SpawnSpriteComponent);
-            foreach (var entity in test)
+            foreach (var entitys in test)
             {
-
-                foreach (var entitys in testt)
+                var spawns = entitys.Value as SpawnComponent;
+                foreach (var entity in testt)
                 {
-                    var spawns = entitys.Value as SpawnComponent;
                     if (ComponentManager.EntityHasComponent<HealthComponent>(entity.Key))
-                {
-                    var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
-                  
-                    if (!HealthComponent.Alive)
                     {
+                        var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
+
+                        if (!HealthComponent.Alive)
+                        {
                             spawns.EnemiesDead++;
 
-                    }
-                    if (spawns.EnemiesDead == spawns.WaveSize || spawns.FirstRound)
-                    {
-                            spawns.FirstRound = false;
-                        // here is where we want do it! instead of up there ^^
-                        //var SpawnSpriteEntities =
-                        //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
-                        //  if (SpawnSpriteEntities.Count <= 0) return;
-                        //var SpawnSpriteComponent =
-                        //    ComponentManager.Instance
-                        //        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
-
-                        //SetupWave(spawns.WaveSize, SpawnSpriteComponent);
-                        //spawns.WaveSize += spawns.WaveSizeIncreaseConstant;
+                        }
                     }
 
                 }
+
+                if (spawns.EnemiesDead == spawns.WaveSize || spawns.FirstRound)
+                {
+                    spawns.FirstRound = false;
+                    // here is where we want do it! instead of up there ^^
+                    //var SpawnSpriteEntities =
+                    //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+                    //  if (SpawnSpriteEntities.Count <= 0) return;
+                    //var SpawnSpriteComponent =
+                    //    ComponentManager.Instance
+                    //        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+
+                    //SetupWave(spawns.WaveSize, SpawnSpriteComponent);
+                    //spawns.WaveSize += spawns.WaveSizeIncreaseConstant;
+                }
+
             }
-            //if (spawns.EnemiesDead == spawns.WaveSize || spawns.FirstRound)
-            //{
-            //    spawns.FirstRound = false;
-            //    // here is where we want do it! instead of up there ^^
-            //    //var SpawnSpriteEntities =
-            //    //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
-            //    //  if (SpawnSpriteEntities.Count <= 0) return;
-            //    //var SpawnSpriteComponent =
-            //    //    ComponentManager.Instance
-            //    //        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
-
-            //    //SetupWave(spawns.WaveSize, SpawnSpriteComponent);
-            //    //spawns.WaveSize += spawns.WaveSizeIncreaseConstant;
-            //}
-        
-            
         }
-        // Creates a wave wavesize big.. with enemies
 
-        public void SetupWave(int wavesize, SpriteComponent SpawnSpriteComponent) {
+        // Creates a wave wavesize big.. with enemies
+        public void SetupWave(int wavesize, SpriteComponent SpawnSpriteComponent)
+        {
             //   int x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
             //     int y = new Random(DateTime.Now.Millisecond).Next(1000, 3000);'
             int x = 500;
             int y = 500;
             //example on how to do the wave
             //we go through a loop that gives us places for each enemy to spawn and we create wavesize amount of enemies.
-            for (int i = 1; i <= wavesize; i++) {
+            for (int i = 1; i <= wavesize; i++)
+            {
                 CreateEnemy(x, y, SpawnSpriteComponent);
             }
 
@@ -106,16 +94,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             //var positioncomponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>();
 
-            
-           // int monsterEntityId = EntityManager.GetEntityManager().NewEntity();
-
-            //var x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
-            //var y = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
-
             var monster = new EntityBuilder()
                 .SetPosition(new Vector2(x, y), layerDepth: 20)
                 .SetRendering(200, 200)
-               // .SetSprite("player_sprites", new Point(1252, 206), 313, 206)
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
@@ -157,8 +138,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         .Build()
                 )
                 .Build();
-              ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, monster);
-              ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
+            ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, monster);
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
         }
     }
 }
