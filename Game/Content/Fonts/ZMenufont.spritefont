@@ -9,7 +9,7 @@ with.
   <Asset Type="Graphics:FontDescription">
 
     <!--
-    Modify this string to change the font that will be imported.
+    Modify this string to change the font that will be imported. Courier New Bold
     -->
     <FontName>Courier New Bold</FontName>
 

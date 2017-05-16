@@ -15,8 +15,8 @@ namespace Game.Menu.States
 
         private enum OptionsState
         {
-            Survival,
             Extinction,
+            Survival,
             Blockworld,
             Exit
         }
@@ -38,11 +38,11 @@ namespace Game.Menu.States
             {
                 case OptionsState.Survival:
                     sb.Draw(gameManager.GameContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.20f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.45f), Color.White);
                     break;
                 case OptionsState.Extinction:
                     sb.Draw(gameManager.GameContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
-                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.45f), Color.White);
+                    sb.Draw(gameManager.GameContent.ButtonContinue, new Vector2(250, viewport.Height * 0.20f), Color.White);
                     break;
                 case OptionsState.Blockworld:
                     sb.Draw(gameManager.GameContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
@@ -55,13 +55,14 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
             MainMenuDisplay();
             spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
         {
+            controls.GoBackButton();
             currentPosition = (OptionsState)controls.MoveOptionPositionVertically((int)currentPosition);
 
             switch (currentPosition)

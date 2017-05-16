@@ -45,6 +45,7 @@
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
     <Compile Include="GameContent.cs" />
+    <Compile Include="Menu\States\About.cs" />
     <Compile Include="Services\ControlsConfig.cs" />
     <Compile Include="Services\GameConfig.cs" />
     <Compile Include="Services\MenuHelper.cs" />

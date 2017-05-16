@@ -22,9 +22,8 @@ namespace Game
         public const float MaxScale = 2.0f;
         public static float Scale { get; set; } = 1.0f;
         public static bool MoveHigher { get; set; } = true;
+        public static bool MoveRight { get; set; } = true;
 
-        private SpriteFont font;
-        private Texture2D background;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
         // Here we just say that the first state is the Intro
@@ -44,6 +43,7 @@ namespace Game
         private IMenu gameIntro;
         private IMenu survivalGame;
         private IMenu pausedMenu;
+        private IMenu aboutMenu;
         private IMenu multiplayerMenu;
 
         // Game states
@@ -57,7 +57,8 @@ namespace Game
             PlaySurvivalGame,
             Quit,
             Credits,
-            Paused
+            Paused,
+            About
         };
 
         public GameManager(FullZengineBundle gameBundle)
@@ -77,6 +78,7 @@ namespace Game
             survivalGame = new SurvivalGame(this);
             pausedMenu = new PausedMenu(this);
             multiplayerMenu = new MultiplayerMenu(this);
+            aboutMenu = new AboutMenu(this);
 
         }
 
@@ -122,6 +124,9 @@ namespace Game
                 case GameState.MultiplayerMenu:
                     multiplayerMenu.Draw(gameTime, sb);
                     break;
+                case GameState.About:
+                    aboutMenu.Draw(gameTime, sb);
+                    break;
             }
         }
 
@@ -129,6 +134,7 @@ namespace Game
         // we execute is the one of the current state.
         public void Update(GameTime gameTime)
         {
+            
             switch (CurrentGameState)
             {
                 case GameState.Intro:
@@ -164,6 +170,9 @@ namespace Game
                     break;
                 case GameState.MultiplayerMenu:
                     multiplayerMenu.Update(gameTime);
+                    break;
+                case GameState.About:
+                    aboutMenu.Update(gameTime);
                     break;
             }
         }

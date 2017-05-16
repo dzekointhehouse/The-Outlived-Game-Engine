@@ -30,11 +30,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     healthComponent.CurrentHealth -= damage;
                     healthComponent.Damage.Remove(damage);
                 }
+                /*
                 for(var i = 0; i < healthComponent.Damage.Count; i++)
                 {
 
                 }
-                
+                */
 
                 healthComponent.CurrentHealth = MathHelper.Min(healthComponent.CurrentHealth, healthComponent.MaxHealth);
                 CheckIfDead(entityId, healthComponent, gameTime);

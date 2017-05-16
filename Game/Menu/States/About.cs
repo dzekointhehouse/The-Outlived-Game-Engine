@@ -6,37 +6,40 @@ using System.Threading.Tasks;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using ZEngine.Wrappers;
 
 namespace Game.Menu.States
 {
-    class Credits : IMenu
+    /// <summary>
+    /// Pause game state, when the user want's to
+    /// pause the game.
+    /// </summary>
+    class AboutMenu : IMenu
     {
         private readonly GameManager gameManager;
         private readonly ControlsConfig controls;
-        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         private Viewport viewport;
-        
-        public Credits(GameManager gameManager)
+        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
+
+        public AboutMenu(GameManager gameManager)
         {
             this.gameManager = gameManager;
-            viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
             controls = new ControlsConfig(gameManager);
+            viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
         }
 
-        // Draws a simple background which contains
-        // the credits. Woohoo.
+        // drawing the menu background.
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            sb.Begin();
             MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
-            sb.Draw(gameManager.GameContent.CreditsBackground, viewport.Bounds, Color.White);
-            spriteBatch.End();
+            sb.Draw(gameManager.GameContent.AboutBackground, viewport.Bounds, Color.White);
+            sb.End();
         }
-
-        // The backspace button is added which makes
-        // it possible to go back to the previous game
-        // state.
+        // A pause button that goes to the pause game state,
+        // but if the current game state is the pause state
+        // then we go back to the previous state.
         public void Update(GameTime gameTime)
         {
             controls.GoBackButton();

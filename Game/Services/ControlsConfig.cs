@@ -79,16 +79,18 @@ namespace Game.Services
 
                 if (currentPosition != MinLimit)
                     return currentPosition - 1;
-
-
             }
             if (gamePadState.DPad.Right == ButtonState.Pressed && gameManager.OldGamepadState.IsButtonUp(Buttons.DPadRight)
                 || newState.IsKeyDown(Keys.Right) && gameManager.OldKeyboardState.IsKeyUp(Keys.Right))
             {
                 gameManager.OldKeyboardState = newState;
+                gameManager.OldGamepadState = gamePadState;
+
                 if (currentPosition != MaxLimit)
                     return currentPosition + 1;
             }
+
+
             return currentPosition;
         }
 
@@ -124,9 +126,10 @@ namespace Game.Services
                 || newState.IsKeyDown(Keys.Back) && gameManager.OldKeyboardState.IsKeyUp(Keys.Back))
             {          
                 gameManager.CurrentGameState = gameManager.PreviousGameState;
+                gameManager.OldKeyboardState = newState;
+                gameManager.OldGamepadState = gamePadState;
             }
-            gameManager.OldKeyboardState = newState;
-            gameManager.OldGamepadState = gamePadState;
+
 
         }
 

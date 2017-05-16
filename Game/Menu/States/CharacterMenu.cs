@@ -24,7 +24,7 @@ namespace Game.Menu.States
         private CharacterState currentPosition = CharacterState.FirstCharacter;
         private Player currentPlayer;
         private int playerIndex = 0;
-        
+
 
         // enum so we can keep track on which option
         // we currently are at.
@@ -42,7 +42,7 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             // Adding the options interval and gamemanager.
             controls = new ControlsConfig(0, 3, gameManager);
-            
+
         }
 
         // Draws the character names and the button at the option that
@@ -53,10 +53,10 @@ namespace Game.Menu.States
 
             // Add the first player. This is done the first time.
             if (currentPlayer == null)
-                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex);
+                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
 
             var viewport = game.GraphicsDevice.Viewport;
-            sb.DrawString(gameManager.GameContent.MenuFont, currentPlayer.Index.ToString(), new Vector2(viewport.Width * 0.5f, viewport.Height * 0.2f), Color.White);
+            sb.DrawString(gameManager.GameContent.MenuFont, "Player " + currentPlayer.Index.ToString(), new Vector2(viewport.Width * 0.5f, viewport.Height * 0.15f), Color.White);
 
             switch (currentPosition)
             {
@@ -82,7 +82,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackground(spriteBatch, gameManager.GameContent);
+            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.GameContent, 0.0001f);
             MainMenuDisplay();
             spriteBatch.End();
         }
@@ -94,26 +94,39 @@ namespace Game.Menu.States
         {
             // Add the first player. This is done the first time.
             if (currentPlayer == null)
-                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex);
+                currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
             // Change character position
             currentPosition = (CharacterState)controls.MoveOptionPositionHorizontally((int)currentPosition, currentPlayer.Index);
-            currentPosition = (CharacterState)controls.MoveOptionPositionVertically((int)currentPosition, currentPlayer.Index);
+            //currentPosition = (CharacterState)controls.MoveOptionPositionVertically((int)currentPosition, currentPlayer.Index);
+           
+
 
             // If the player pressed continue button but there are players left..
-            if (controls.ContinueButton(GameManager.GameState.CharacterMenu) &&
-                gameManager.gameConfig.Players.Count > playerIndex)
+            if (gameManager.gameConfig.Players.Count > playerIndex)
             {
+                if (controls.ContinueButton(GameManager.GameState.CharacterMenu))
+                {
+                    
+                
                 // Set the current character to that player
                 // pop the next player and reset.
                 currentPlayer.Character = currentPosition;
                 currentPlayer = gameManager.gameConfig.Players[playerIndex++];
                 currentPosition = CharacterState.FirstCharacter;
+                }
             }
-            else if (gameManager.gameConfig.Players.Count == playerIndex)
+
+            // If there are no players left to choose character.
+            // Continue to next state when done with the players.
+            if (controls.ContinueButton(GameManager.GameState.MainMenu) && gameManager.gameConfig.Players.Count == playerIndex)
             {
-                // Continue to next state when done with the players.
-                controls.ContinueButton(GameManager.GameState.MainMenu);
+                // Reset values if this state is re-visited.
+                playerIndex = 0;
+                currentPlayer = null;
+                currentPosition = CharacterState.FirstCharacter;
             }
+            controls.GoBackButton();
+
         }
     }
 }

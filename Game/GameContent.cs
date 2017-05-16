@@ -16,7 +16,9 @@ namespace Game
     public class GameContent
     {
         public Video IntroVideo;
+        public Song BackgroundSong;
         public Texture2D Background;
+        public Texture2D BackgroundFog;
         public Texture2D CreditsBackground;
         public Texture2D PauseBackground;
 
@@ -39,6 +41,7 @@ namespace Game
         public Texture2D ButtonContinue;
         public Texture2D ButtonBack;
         public Texture2D CharacterBackground;
+        public Texture2D AboutBackground;
 
         // Continue
         // Go back
@@ -60,8 +63,10 @@ namespace Game
             TeamOptions = game.Content.Load<Texture2D>("Images/Menu/teamoptions");
 
             // Main menu
+            BackgroundSong = game.Content.Load<Song>("Sound/creepyPiano");
             MainOptionsBackground = game.Content.Load<Texture2D>("Images/Menu/mainoptions");
-            Background = game.Content.Load<Texture2D>("Images/Menu/background");
+            Background = game.Content.Load<Texture2D>("Images/Menu/background3");
+            BackgroundFog = game.Content.Load<Texture2D>("Images/Menu/movingfog");
 
             // Credits
             CreditsBackground = game.Content.Load<Texture2D>("Images/Menu/credits");
@@ -73,6 +78,8 @@ namespace Game
 
             // Pause
             PauseBackground = game.Content.Load<Texture2D>("Images/Menu/paused");
+            // About
+            AboutBackground = game.Content.Load<Texture2D>("Images/Menu/about");
 
             CharacterBackground = game.Content.Load<Texture2D>("Images/zombieCharacter");
             ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
@@ -95,5 +102,7 @@ namespace Game
             }
 
         }
+
+        
     }
 }
