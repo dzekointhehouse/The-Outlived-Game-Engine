@@ -61,6 +61,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<LoadContentSystem>().LoadContent(this.Dependencies.Game.Content);
             // Want to initialize penumbra after loading all the game content.
             penumbraComponent = manager.Get<FlashlightSystem>().Initialize(Dependencies);
+
+            manager.Get<WeaponSystem>().LoadBulletSpriteEntity();
         }
 
         public void Update(GameTime gameTime)

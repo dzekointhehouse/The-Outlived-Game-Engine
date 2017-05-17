@@ -55,6 +55,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
             {
                 if (bulletComponent2.ShooterEntityId == collisionEvent.Target) return true;
             }
+
+            var sourceBulletComponent = ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Entity);
+            if (sourceBulletComponent != null) return true;
+
             return false;
         }
     }

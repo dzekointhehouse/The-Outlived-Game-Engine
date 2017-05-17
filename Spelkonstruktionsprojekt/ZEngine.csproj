@@ -111,6 +111,7 @@
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
     <Compile Include="ZEngine\Systems\AISystem.cs" />
     <Compile Include="ZEngine\Systems\AnimationSystem.cs" />
+    <Compile Include="ZEngine\Systems\Bullets\BulletFactory.cs" />
     <Compile Include="ZEngine\Systems\CameraSceneSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\BulletCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionResolveSystem.cs" />
@@ -123,7 +124,9 @@
     <Compile Include="ZEngine\Systems\HighScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
+    <Compile Include="ZEngine\Systems\InputHandler\PistolAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\QuickTurnAbilitySystem.cs" />
+    <Compile Include="ZEngine\Systems\InputHandler\ShotgunAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\SprintAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />

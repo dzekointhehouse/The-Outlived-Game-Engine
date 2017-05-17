@@ -21,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         public void Handle(SpecificCollisionEvent collisionEvent)
         {
             if (TargetIsShooter(collisionEvent)) return;
-
+            if (TargetIsBullet(collisionEvent)) return;
             if (ComponentManager.EntityHasComponent<HealthComponent>(collisionEvent.Target))
             {
 //                Debug.WriteLine("Added damage");
@@ -47,10 +47,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
             return collisionEvent.Target == bulletComponent.ShooterEntityId;
         }
 
+        private bool TargetIsBullet(SpecificCollisionEvent collisionEvent)
+        {
+            var bulletComponent = ComponentManager.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Target);
+            return bulletComponent != null;
+        }
+
         private void StopBulletAnimation(double currentTime, int bulletId)
         {
             var animationComponent = ComponentManager.Instance
                 .GetEntityComponentOrDefault<AnimationComponent>(bulletId);
+            if (animationComponent == null) return;
             animationComponent.Animations.ForEach(
                 animation => { animation.Animation.Invoke(currentTime + animation.Length); });
         }

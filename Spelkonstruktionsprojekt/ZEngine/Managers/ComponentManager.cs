@@ -123,10 +123,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
         // Deletes the entity from a given component's dictionary.
         public void RemoveComponentFromEntity(Type component, int entityId)
         {
+            if (!_components.ContainsKey(component)) return;
             var entityComponents = _components[component];
-            if(entityComponents.ContainsKey(entityId))
-                entityComponents.Remove(entityId);
-
+            entityComponents?.Remove(entityId);
         }
 
         // This method adds the component type as the key to the dictionary that 
