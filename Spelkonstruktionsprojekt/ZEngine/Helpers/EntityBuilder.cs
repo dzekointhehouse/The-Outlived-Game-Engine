@@ -146,6 +146,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             {
                 Amount = 100,
                 SpareAmmoAmount = 10,
+                OutOfAmmo = 0,
             };
             components.Add(component);
             return this;

@@ -160,14 +160,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         }
 
                         // adding ammo here the same way.
-                        if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(instance.Key) && health.Alive)
+                        if (ComponentManager.Instance.EntityHasComponent<AmmoComponent>(instance.Key))
                         {
                             gameHUD.Clear();
                             AmmoComponent ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(instance.Key);
                             
-                            // for formating and adding the amount to the HUD.
-                            ammoGameHUD.AppendLine();
-                            ammoGameHUD.Append(ammo.Amount);
+                            if (health.Alive)
+                            {
+                                // for formating and adding the amount to the HUD.
+                                ammoGameHUD.AppendLine();
+                                ammoGameHUD.Append(ammo.Amount);
+                            }
+                            else
+                            {
+                                ammoGameHUD.AppendLine();
+                                ammoGameHUD.Append(ammo.OutOfAmmo);
+                            }
 
 
                             // this call gives us the height of the text,
