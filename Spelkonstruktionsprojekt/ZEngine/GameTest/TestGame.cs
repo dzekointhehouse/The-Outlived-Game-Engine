@@ -98,9 +98,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InitPlayers(cameraCageId);
             SetupBackgroundTiles(5, 5);
             SetupCamera();
-            SetupEnemy();
+          //  SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
+            CreateGlobalSpawnSpriteEntity();
+            CreateGlobalSpawnEntity();
             SetupTempPlayerDeadSpriteFlyweight();
             SetupGameScoreEntity();
             AddPickup();
@@ -210,6 +212,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteSprite, bulletSprite);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, bulletSprite);
         }
+        private static void CreateGlobalSpawnSpriteEntity()
+        {
+            var spawnSprite = EntityManager.GetEntityManager().NewEntity();
+            var spawnSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "topDownSoldier"
+            };
+            var SpawnSpriteComponent = new SpawnFlyweightComponent();
+           
+            ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
+            ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
+        }
+        private static void CreateGlobalSpawnEntity()
+        {
+            var spawn = EntityManager.GetEntityManager().NewEntity();
+            var spawncomponent = new GlobalSpawnComponent()
+            {    
+            };
+           // var spawnSpawnComponent = new GlobalSpawnComponent();
+            ComponentManager.Instance.AddComponentToEntity(spawncomponent, spawn);
+            //ComponentManager.Instance.AddComponentToEntity(spawnSpawnComponent, spawn);
+        }
 
         //The camera cage keeps players from reaching the edge of the screen
         public int SetupCameraCage()
@@ -296,6 +320,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
+                .SetSpawn()
                 .SetRectangleCollision()
                 .SetHealth()
                 //.SetHUD("hello")

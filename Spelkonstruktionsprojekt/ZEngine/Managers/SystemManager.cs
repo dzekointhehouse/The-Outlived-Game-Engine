@@ -56,6 +56,8 @@ namespace ZEngine.Managers
             { typeof(ScoreSystem), new ScoreSystem() },
             { typeof(ReloadSystem), new ReloadSystem() }
 
+            { typeof(ScoreSystem), new ScoreSystem() },
+            { typeof(SpawnSystem), new SpawnSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //
