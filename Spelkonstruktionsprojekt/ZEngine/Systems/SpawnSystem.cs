@@ -107,36 +107,25 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     ComponentManager.Instance
                         .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
-              
-                int x = 500;
-                int y = 500;
+                Rectangle rect = new Rectangle();
+                
+                Random rand = new Random();
+                int spawnpoint = rand.Next(2500,3000);
+                int spawnpoint2 = rand.Next(-2000, 0);
+
+                int x = spawnpoint / 2;
+                int y = spawnpoint / 2;
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
                     CreateEnemy(x, y, SpawnSpriteComponent);
-                    x += 100;
-                    y += 100;
+                    x = spawnpoint2/2;
+                    y = spawnpoint2 / 2;
                 }
 
                 GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
             }
 
 
-        }
-
-
-        // Creates a wave wavesize big.. with enemies
-        public void SetupWave(int wavesize, SpriteComponent SpawnSpriteComponent)
-        {
-            ////   int x = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
-            ////     int y = new Random(DateTime.Now.Millisecond).Next(1000, 3000);'
-            int x = 800;
-            int y = 800;
-            ////example on how to do the wave
-            ////we go through a loop that gives us places for each enemy to spawn and we create wavesize amount of enemies.
-            for (int i = 1; i <= wavesize; i++)
-            {
-                //CreateEnemy(x, y, SpawnSpriteComponent);
-            }
         }
 
 
