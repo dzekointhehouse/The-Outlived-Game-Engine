@@ -21,7 +21,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class SpawnSystem : ISystem
     {
-        bool FirstRound = true;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void CreateEnemy(int x, int y, SpriteComponent SpawnSpriteComponent)
@@ -71,14 +70,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         .Build()
                 )
                 .Build();
-            ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, monster);
-            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
+            ComponentManager.AddComponentToEntity(SpawnSpriteComponent, monster);
+            ComponentManager.AddComponentToEntity(animationBindings, monster);
         }
         public void HandleWaves()
         {
             //GlobalSpawn
             var GlobalSpawnEntities =
-             ComponentManager.Instance.GetEntitiesWithComponent(typeof(GlobalSpawnComponent));
+             ComponentManager.GetEntitiesWithComponent(typeof(GlobalSpawnComponent));
             if (GlobalSpawnEntities.Count <= 0) return;
             var GlobalSpawnComponent =
                 ComponentManager.GetEntityComponentOrDefault<GlobalSpawnComponent>(GlobalSpawnEntities.First().Key);
@@ -93,7 +92,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     // if anyone is alive break
                     break;
                 }
-                
+
 
 
             }
@@ -101,34 +100,38 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 //SpawnSprite, the sprite for all monsters.
                 var SpawnSpriteEntities =
-                    ComponentManager.Instance.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+                ComponentManager.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
                 if (SpawnSpriteEntities.Count <= 0) return;
                 var SpawnSpriteComponent =
-                    ComponentManager.Instance
+                    ComponentManager
                         .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
-                Rectangle rect = new Rectangle();
-                
-                Random rand = new Random();
-                int spawnpoint = rand.Next(2500,3000);
-                int spawnpoint2 = rand.Next(-2000, 0);
+                //camera
+                var cameraEntities =
+                ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
+                if (cameraEntities.Count <= 0) return;
+                var cameraComponent =
+                    (CameraViewComponent)cameraEntities.First().Value;
 
-                int x = spawnpoint / 2;
-                int y = spawnpoint / 2;
+
+                Random rand = new Random();
+                Rectangle SpawnArea = new Rectangle();
+
+                SpawnArea.Width = 100;
+                SpawnArea.Height = 100;
+
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
-                    CreateEnemy(x, y, SpawnSpriteComponent);
-                    x = spawnpoint2/2;
-                    y = spawnpoint2 / 2;
+                    do
+                    {
+                        SpawnArea.X = rand.Next(0, 2200);
+                        SpawnArea.Y = rand.Next(0, 1100);
+                    }
+                    while (SpawnArea.Intersects(cameraComponent.View));
+                    CreateEnemy(SpawnArea.Center.X, SpawnArea.Center.Y, SpawnSpriteComponent);
                 }
-
                 GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
             }
-
-
         }
-
-
-      
     }
 }
