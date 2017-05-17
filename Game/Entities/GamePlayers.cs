@@ -195,6 +195,7 @@ namespace Game.Entities
                 .SetCameraFollow()
                 .SetPlayer(name)
                 .SetHealth()
+                .SetTeam(cageId)
                 .SetHUD(false, showStats: true)
                 .Build();
 

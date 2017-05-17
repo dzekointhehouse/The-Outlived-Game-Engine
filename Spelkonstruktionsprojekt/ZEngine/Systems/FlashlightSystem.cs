@@ -18,6 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     public class FlashlightSystem : ISystem
     {
         public static string SystemName = "FlashlightSystem";
+        private float GameScale = 1f;
 
         // This method is used to initialize the penumbra instance, and add
         // all the entities that have an associated instance of light component.
@@ -81,6 +82,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // are rendered betweend this BeginDraw and EndDraw will be affected.
         public void BeginDraw(PenumbraComponent penumbraComponent)
         {
+            var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
+            var cameraViewComponent = camera.Value as CameraViewComponent;
+            var cameraView = cameraViewComponent.View;
+
+            //GameScale += -0.001f;
+            //penumbraComponent.Transform = Matrix.Identity *
+            //                   Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
+            //                   Matrix.CreateRotationZ(0) *
+            //                   Matrix.CreateScale(1f);
+
             penumbraComponent.BeginDraw();
         }
 

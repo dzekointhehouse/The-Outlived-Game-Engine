@@ -112,7 +112,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <param name="currentHealth"></param>
         /// <param name="alive"></param>
         /// <returns></returns>
-        EntityBuilder SetTeam(int maxhealth = 100, int currentHealth = 100, bool alive = true);
+        EntityBuilder SetTeam(int teamId);
 
         /// <summary>
         /// An entity with this sound component is able to make different

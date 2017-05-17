@@ -150,24 +150,24 @@ namespace Game.Menu.States
 
             // Add players from option team -> to teams they belong
             if (PlayerOneChoice == TeamState.TeamOne)
-                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.One });
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.One, Team = TeamState.TeamOne });
             else if (PlayerOneChoice == TeamState.TeamTwo)
-                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.One });
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.One, Team = TeamState.TeamTwo});
 
             if (PlayerTwoChoice == TeamState.TeamOne)
-                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Two });
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Two, Team = TeamState.TeamOne });
             else if (PlayerTwoChoice == TeamState.TeamTwo)
-                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Two });
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Two, Team = TeamState.TeamTwo });
 
             if (PlayerThreeChoice == TeamState.TeamOne)
-                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Three });
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Three, Team = TeamState.TeamOne });
             else if (PlayerThreeChoice == TeamState.TeamTwo)
-                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Three });
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Three, Team = TeamState.TeamTwo });
 
             if (PlayerFourChoice == TeamState.TeamOne)
-                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Four });
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Four, Team = TeamState.TeamOne });
             else if (PlayerFourChoice == TeamState.TeamTwo)
-                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Four });
+                gameManager.gameConfig.Players.Add(new Player() { Index = PlayerIndex.Four, Team = TeamState.TeamTwo });
 
 
             // Must reset values

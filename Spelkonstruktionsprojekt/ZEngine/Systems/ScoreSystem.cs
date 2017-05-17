@@ -105,7 +105,7 @@ namespace ZEngine.Systems
             if (targetTeamComponent == null || entityTeamComponent == null)
                 return true;
 
-            if (targetTeamComponent.teamId != entityTeamComponent.teamId)
+            if (targetTeamComponent.TeamId != entityTeamComponent.TeamId)
                 return true;
             else return false;
         }

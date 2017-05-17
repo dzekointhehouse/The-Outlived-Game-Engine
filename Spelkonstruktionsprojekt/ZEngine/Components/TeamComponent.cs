@@ -9,7 +9,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     public class TeamComponent : IComponent
     {
-        public int teamId { get; set; }
+        public int TeamId { get; set; }
         public List<int> members { get; set; } = new List<int>();
     }
 }

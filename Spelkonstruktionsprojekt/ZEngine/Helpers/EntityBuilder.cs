@@ -151,10 +151,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetTeam(int maxhealth = 100, int currentHealth = 100, bool alive = true)
+        public EntityBuilder SetTeam(int teamId)
         {
             TeamComponent component = new TeamComponent()
             {
+                TeamId = teamId,
             };
             components.Add(component);
             return this;

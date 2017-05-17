@@ -36,6 +36,7 @@ namespace ZEngine.Systems
         private DimensionsComponent dimensionsComponent;
 
         private CameraViewComponent cameraViewComponent;
+
         // _____________________________________________________________________________________________________________________ //
 
 
@@ -68,10 +69,11 @@ namespace ZEngine.Systems
             // We won't be having any rotation.
             // Our zoom effect will be doing its jobb here,
             // as this matrix will easily help us achieve it.
+           // GameScale += -0.001f;
             Matrix transform = Matrix.Identity *
                                Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
                                Matrix.CreateRotationZ(0) *
-                               Matrix.CreateScale(1);
+                               Matrix.CreateScale(1f);
 
             gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
             DrawEntities(gameDependencies.SpriteBatch);
