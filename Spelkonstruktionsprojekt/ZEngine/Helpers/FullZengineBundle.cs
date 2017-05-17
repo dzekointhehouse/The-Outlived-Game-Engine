@@ -70,8 +70,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<InputHandler>().HandleGamePadInput(gameTime);
             _oldKeyboardState = Keyboard.GetState();
             manager.Get<GamePadMovementSystem>().WalkForwards(gameTime);
-            manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents,
-                gameTime);
+            manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
 
             manager.Get<CameraSceneSystem>().Update(gameTime);
             manager.Get<MoveSystem>().Move(gameTime);
@@ -84,6 +83,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<EntityRemovalSystem>().Update(gameTime);
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();
+            manager.Get<SpawnSystem>().HandleWaves();
             manager.Get<ScoreSystem>().Update(gameTime);
         }
 

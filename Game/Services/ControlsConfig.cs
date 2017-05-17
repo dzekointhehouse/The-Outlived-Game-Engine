@@ -139,7 +139,10 @@ namespace Game.Services
             KeyboardState newState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(player);
 
-
+            if (newState.IsKeyDown(Keys.Q) && gameManager.CurrentGameState == GameManager.GameState.Paused)
+            {
+                gameManager.CurrentGameState = GameManager.GameState.MainMenu;
+            }
             // With this button we want to continue to the next phase of the game initialization
             if (gamePadState.Buttons.Start == ButtonState.Pressed && gameManager.OldGamepadState.IsButtonUp(Buttons.Start)
                 || newState.IsKeyDown(Keys.Escape) && gameManager.OldKeyboardState.IsKeyUp(Keys.Escape))
@@ -148,7 +151,7 @@ namespace Game.Services
                 {
                     gameManager.PreviousGameState = gameManager.CurrentGameState;
                     gameManager.CurrentGameState = GameManager.GameState.Paused;
-
+                    
                 }
                 else
                 {

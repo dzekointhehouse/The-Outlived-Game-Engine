@@ -51,8 +51,13 @@
     <Compile Include="..\ShapeRendering2D\ShapeRenderer2D.cs" />
     <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
     <Compile Include="ZEngine\Components\GameScoreComponent.cs" />
+    <Compile Include="ZEngine\Components\FlyweightPickupComponent.cs" />
+    <Compile Include="ZEngine\Components\GlobalSpawnComponent.cs" />
+    <Compile Include="ZEngine\Components\HighScoreComponent.cs" />
     <Compile Include="ZEngine\Components\Input\GamePadComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
+    <Compile Include="ZEngine\Components\SpawnComponent.cs" />
+    <Compile Include="ZEngine\Components\SpawnFlyweightComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Helpers\IEntityBuilder.cs" />
@@ -115,6 +120,7 @@
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\EntityRemovalSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />
+    <Compile Include="ZEngine\Systems\HighScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\QuickTurnAbilitySystem.cs" />
@@ -134,6 +140,7 @@
     <Compile Include="ZEngine\Systems\Rendering\SpriteAnimationSystem.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderHUDSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
+    <Compile Include="ZEngine\Systems\SpawnSystem.cs" />
     <Compile Include="ZEngine\Systems\WeaponSystem.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderSystem.cs" />

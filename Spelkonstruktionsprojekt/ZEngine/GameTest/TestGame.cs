@@ -98,15 +98,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InitPlayers(cameraCageId);
             SetupBackgroundTiles(5, 5);
             SetupCamera();
-            SetupEnemy();
+          //  SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
+            CreateGlobalSpawnSpriteEntity();
+            CreateGlobalSpawnEntity();
+            CreateFlyweightHealthpickupEntity();
             SetupTempPlayerDeadSpriteFlyweight();
+            CreateFlyweightAmmopickupEntity();
             SetupGameScoreEntity();
-            AddPickup();
+           // AddPickup();
         }
 
-        private void AddPickup()
+        public void AddPickup()
         {
             var entity = EntityManager.GetEntityManager().NewEntity();
             var coll = new CollisionComponent();
@@ -156,13 +160,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void SetupHUD()
         {
-            //new EntityBuilder()
-            //    .SetHUD(true)
-            //    .SetPosition(new Vector2(10, 1100))
-            //    .SetSprite("XboxController")
-            //    .Build();
-
-            // Health Icons
             new EntityBuilder()
                 .SetHUD(true)
                 .SetPosition(new Vector2(viewportDimensions.X * 0.3f, viewportDimensions.Y * 0.83f))
@@ -193,7 +190,38 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(tempDeadSpriteComponent, tempEntity);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, tempEntity);
         }
-
+        private static void CreateFlyweightHealthpickupEntity()
+        {
+            var HealthpickupSprite = EntityManager.GetEntityManager().NewEntity();
+            var HealthpickupSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "healthpickup"
+            };
+            var healthSpriteComponent = new FlyweightPickupComponent();
+            var soundComponent = new SoundComponent()
+            {
+                SoundEffectName = "pickup"
+            };
+             ComponentManager.Instance.AddComponentToEntity(soundComponent, HealthpickupSprite);
+            ComponentManager.Instance.AddComponentToEntity(HealthpickupSpriteSprite, HealthpickupSprite);
+            ComponentManager.Instance.AddComponentToEntity(healthSpriteComponent, HealthpickupSprite);
+        }
+        private static void CreateFlyweightAmmopickupEntity()
+        {
+            var ammopickupSprite = EntityManager.GetEntityManager().NewEntity();
+            var ammopickupSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "knife"
+            };
+            var ammoPickUpSprite = new FlyweightPickupComponent();
+            var soundComponent = new SoundComponent()
+            {
+                SoundEffectName = "pickup"
+            };
+            ComponentManager.Instance.AddComponentToEntity(soundComponent, ammopickupSprite);
+            ComponentManager.Instance.AddComponentToEntity(ammopickupSpriteSprite, ammopickupSprite);
+            ComponentManager.Instance.AddComponentToEntity(ammoPickUpSprite, ammopickupSprite);
+        }
         private static void CreateGlobalBulletSpriteEntity()
         {
             var bulletSprite = EntityManager.GetEntityManager().NewEntity();
@@ -209,6 +237,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(soundComponent, bulletSprite);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteSprite, bulletSprite);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, bulletSprite);
+        }
+        private static void CreateGlobalSpawnSpriteEntity()
+        {
+            var spawnSprite = EntityManager.GetEntityManager().NewEntity();
+            var spawnSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "Player_Sprites"
+            };
+            var SpawnSpriteComponent = new SpawnFlyweightComponent();
+           
+            ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
+            ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
+        }
+        private static void CreateGlobalSpawnEntity()
+        {
+            var spawn = EntityManager.GetEntityManager().NewEntity();
+            var spawncomponent = new GlobalSpawnComponent()
+            {    
+            };
+           // var spawnSpawnComponent = new GlobalSpawnComponent();
+            ComponentManager.Instance.AddComponentToEntity(spawncomponent, spawn);
+            //ComponentManager.Instance.AddComponentToEntity(spawnSpawnComponent, spawn);
         }
 
         //The camera cage keeps players from reaching the edge of the screen
@@ -296,6 +346,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
+                .SetSpawn()
                 .SetRectangleCollision()
                 .SetHealth()
                 //.SetHUD("hello")
@@ -374,9 +425,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
 
-            CreatePlayer(new Vector2(1650, 1100), name: "Carlos", actionBindings: actionBindings1,
-                position: new Vector2(200, 200), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId);
+            CreatePlayer(
+                new Vector2(1650, 1100), 
+                name: "Carlos", 
+                actionBindings: actionBindings1,
+                position: new Vector2(200, 200),
+                cameraFollow: true,
+                collision: true, 
+                isCaged: true, 
+                cageId: cageId);
+
             CreatePlayer(new Vector2(1650, 1100), "Elvir", actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId, disabled: false);
             //CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
@@ -467,7 +525,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var weaponComponent = new WeaponComponent()
             {
-                Damage = 10
+                Damage = 1000
             };
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
 

@@ -7,7 +7,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class GameScoreComponent : IComponent
+    public class GameScoreComponent : IComponent
     {
         //public int ElapsedSecondsLimit { get; set; } = 10;
 

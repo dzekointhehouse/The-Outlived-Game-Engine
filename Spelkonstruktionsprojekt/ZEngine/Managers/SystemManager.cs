@@ -53,9 +53,9 @@ namespace ZEngine.Managers
             { typeof(SprintAbilitySystem), new SprintAbilitySystem() },
             { typeof(QuickTurnAbilitySystem), new QuickTurnAbilitySystem() },
             { typeof(GamePadMovementSystem), new GamePadMovementSystem() },
+            { typeof(ReloadSystem), new ReloadSystem() },
             { typeof(ScoreSystem), new ScoreSystem() },
-            { typeof(ReloadSystem), new ReloadSystem() }
-
+            { typeof(SpawnSystem), new SpawnSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

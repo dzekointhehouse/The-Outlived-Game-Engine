@@ -86,9 +86,9 @@ namespace ZEngine.Systems
 
                 }
                 GameScore.TotalGameScore += (int)scoreComponent.score;
-                Debug.WriteLine(entity.Key + ": " + scoreComponent.score);
+                //Debug.WriteLine(entity.Key + ": " + scoreComponent.score);
             }
-            Debug.WriteLine("Total: " + GameScore.TotalGameScore);
+            //Debug.WriteLine("Total: " + GameScore.TotalGameScore);
         }
 
 
