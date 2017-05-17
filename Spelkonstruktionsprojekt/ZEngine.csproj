@@ -51,6 +51,7 @@
     <Compile Include="..\ShapeRendering2D\ShapeRenderer2D.cs" />
     <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
     <Compile Include="ZEngine\Components\GameScoreComponent.cs" />
+    <Compile Include="ZEngine\Components\HighScoreComponent.cs" />
     <Compile Include="ZEngine\Components\Input\GamePadComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\EntityRemovalSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />
+    <Compile Include="ZEngine\Systems\HighScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\QuickTurnAbilitySystem.cs" />
