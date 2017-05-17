@@ -19,6 +19,7 @@ namespace Game.Menu.States
         private readonly ControlsConfig controls;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
+
         // players current position
         private TeamState PlayerOneChoice = TeamState.NoTeam;
         private TeamState PlayerTwoChoice = TeamState.NoTeam;
@@ -44,6 +45,7 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             // Adding the options interval and gamemanager.
             controls = new ControlsConfig(0, 2, gameManager);
+
         }
 
         // Draws the character names and the button at the option that
@@ -74,7 +76,8 @@ namespace Game.Menu.States
         {
 
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+
 
             // We check if the players are connected. If they are,
             // we draw their option state on the screen.

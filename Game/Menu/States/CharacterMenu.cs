@@ -51,6 +51,12 @@ namespace Game.Menu.States
         {
             SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
+
+            if (gameManager.gameConfig.Players.Count == 0)
+            {
+                gameManager.CurrentGameState = gameManager.PreviousGameState;
+                return;
+            }
             // Add the first player. This is done the first time.
             if (currentPlayer == null)
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
@@ -82,7 +88,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
             MainMenuDisplay();
             spriteBatch.End();
         }
@@ -92,12 +98,12 @@ namespace Game.Menu.States
         // are to be done.
         public void Update(GameTime gameTime)
         {
+            controls.GoBackButton();
             // Add the first player. This is done the first time.
             if (currentPlayer == null)
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
             // Change character position
             currentPosition = (CharacterState)controls.MoveOptionPositionHorizontally((int)currentPosition, currentPlayer.Index);
-            //currentPosition = (CharacterState)controls.MoveOptionPositionVertically((int)currentPosition, currentPlayer.Index);
            
 
 
@@ -125,7 +131,7 @@ namespace Game.Menu.States
                 currentPlayer = null;
                 currentPosition = CharacterState.FirstCharacter;
             }
-            controls.GoBackButton();
+
 
         }
     }

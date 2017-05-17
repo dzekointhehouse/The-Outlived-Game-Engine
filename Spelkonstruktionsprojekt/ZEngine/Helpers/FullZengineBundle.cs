@@ -84,6 +84,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<EntityRemovalSystem>().Update(gameTime);
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();
+            manager.Get<SpawnSystem>().HandleWaves();
             manager.Get<ScoreSystem>().Update(gameTime);
         }
 

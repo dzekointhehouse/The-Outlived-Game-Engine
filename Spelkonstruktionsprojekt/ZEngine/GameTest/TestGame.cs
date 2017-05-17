@@ -98,13 +98,57 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             InitPlayers(cameraCageId);
             SetupBackgroundTiles(5, 5);
             SetupCamera();
-            SetupEnemy();
+          //  SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
+            CreateGlobalSpawnSpriteEntity();
+            CreateGlobalSpawnEntity();
             SetupTempPlayerDeadSpriteFlyweight();
             SetupGameScoreEntity();
+            AddPickup();
         }
 
+        private void AddPickup()
+        {
+            var entity = EntityManager.GetEntityManager().NewEntity();
+            var coll = new CollisionComponent();
+            var dim = new DimensionsComponent()
+            {
+                Height = 40,
+                Width = 40
+            };
+            var render = new RenderComponent()
+            {
+                IsVisible = true,
+            };
+            var pick = new HealthPickupComponent();
+            var pos = new PositionComponent()
+            {
+                Position = new Vector2(40, 40),
+                ZIndex = 100
+            };
+            var sprite = new SpriteComponent()
+            {
+                SpriteName = "healthpickup",
+            };
+            var sound = new SoundComponent()
+            {
+                SoundEffectName = "pickup"
+            };
+            var ligh = new LightComponent()
+            {
+                Light = new PointLight() { },
+            };
+            ComponentManager.Instance.AddComponentToEntity(sound, entity);
+            ComponentManager.Instance.AddComponentToEntity(ligh, entity);
+            ComponentManager.Instance.AddComponentToEntity(coll, entity);
+            ComponentManager.Instance.AddComponentToEntity(pick, entity);
+            ComponentManager.Instance.AddComponentToEntity(pos, entity);
+            ComponentManager.Instance.AddComponentToEntity(dim, entity);
+            ComponentManager.Instance.AddComponentToEntity(render, entity);
+            ComponentManager.Instance.AddComponentToEntity(sprite, entity);
+
+        }
         private void SetupGameScoreEntity()
         {
             var gameScoreComponent = new GameScoreComponent();
@@ -125,7 +169,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetHUD(true)
                 .SetPosition(new Vector2(viewportDimensions.X * 0.3f, viewportDimensions.Y * 0.83f))
                 .SetSprite("health3_small")
-                .Build();           
+                .Build();
 
             new EntityBuilder()
                 .SetHUD(true)
@@ -167,6 +211,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(soundComponent, bulletSprite);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteSprite, bulletSprite);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, bulletSprite);
+        }
+        private static void CreateGlobalSpawnSpriteEntity()
+        {
+            var spawnSprite = EntityManager.GetEntityManager().NewEntity();
+            var spawnSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "topDownSoldier"
+            };
+            var SpawnSpriteComponent = new SpawnFlyweightComponent();
+           
+            ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
+            ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
+        }
+        private static void CreateGlobalSpawnEntity()
+        {
+            var spawn = EntityManager.GetEntityManager().NewEntity();
+            var spawncomponent = new GlobalSpawnComponent()
+            {    
+            };
+           // var spawnSpawnComponent = new GlobalSpawnComponent();
+            ComponentManager.Instance.AddComponentToEntity(spawncomponent, spawn);
+            //ComponentManager.Instance.AddComponentToEntity(spawnSpawnComponent, spawn);
         }
 
         //The camera cage keeps players from reaching the edge of the screen
@@ -218,14 +284,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var tileTypes = new Dictionary<int, string>();
 
             //tileTypes.Add(0, "blue64");
-            tileTypes.Add(1, "grass");
+            tileTypes.Add(1, "blue64");
             //tileTypes.Add(2, "red64");
             //tileTypes.Add(4, "yellowwall64");
 
 
             MapHelper mapcreator = new MapHelper(tileTypes);
 
-            mapcreator.CreateMapTiles(MapPack.Minimap, 2000);
+            mapcreator.CreateMapTiles(MapPack.Minimap, 500);
         }
 
         public void SetupCamera()
@@ -254,6 +320,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
+                .SetSpawn()
                 .SetRectangleCollision()
                 .SetHealth()
                 //.SetHUD("hello")
@@ -438,17 +505,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         protected override void LoadContent()
         {
-            video = Content.Load<Video>("ZEngine-intro");
+
             scoreFont = Content.Load<SpriteFont>("Score");
             gameOver = Content.Load<Texture2D>("gameOver");
-
-            player = new VideoPlayer();
-            //MediaPlayer.Play(musicTest);
-
-            //            if (player.State == MediaState.Stopped)
-            //            {
-            //                player.Play(video);
-            //            }
 
             //BUNDLE
             gameBundle.LoadContent();
@@ -495,7 +554,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                         gameBundle.Draw(gameTime);
                         fps.Draw(gameTime);
 
-                    if (life.CheckIfAlive())
+                    if (life.CheckIfNotAlive())
                     {
                         currentGameState = GameState.GameOver;
                     }
@@ -511,11 +570,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     spriteBatch.Draw(gameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
                     spriteBatch.End();
 
-
                     var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
                     if (GameScoreList.Count <= 0) return;
                     var GameScore = (GameScoreComponent)GameScoreList.First().Value;
-
 
                     string yourScore = "Total score: " + GameScore.TotalGameScore;
                     string exit = "(Press ESCAPE to exit)";

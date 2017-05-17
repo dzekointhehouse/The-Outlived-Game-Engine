@@ -38,8 +38,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // weapon, then we use the WeaponSounds method to "say" what should
             // be done. 
             EventBus.Subscribe<InputEvent>(EventConstants.FireWeapon, WeaponSounds);
-            EventBus.Subscribe<InputEvent>(EventConstants.HealthPickup, PickupSounds);
-            EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.PickupCollision, PickupSounds);
+            //EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
             return this;
         }
 
@@ -57,6 +57,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // that is associated with this event "entityFireWeapon"
             if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
+                var ammoComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(inputEvent.EntityId);
+                // No ammo no sound
+                if (ammoComponent == null) return;
+                if (ammoComponent.Amount == 0) return;
 
                 // To play the bullet sound the entity needs to have
                 // the BulletFlyweightComponent
@@ -83,7 +88,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 listener.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
 
                 // Applying the 3d sound effect to the sound instance
-                soundInstance.Apply3D(listener, emitter);
+                //soundInstance.Apply3D(listener, emitter);
 
                 // If it is not already playing then play it
                 if (soundInstance.State != SoundState.Playing)
@@ -94,26 +99,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        private void PickupSounds(InputEvent inputEvent)
+        private void PickupSounds(SpecificCollisionEvent inputEvent)
         {
-            // First things first, we only handle this event if the key is pressed
-            // that is associated with this event "entityFireWeapon"
-            if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
-            {
-                // To play the bullet sound the entity needs to have
-                // the BulletFlyweightComponent
+                // We get the entities pickup components, we don't know which
+                // so we try them all.
                 var pickup =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<AmmoPickupComponent>(inputEvent.EntityId);
-                if (pickup == null) return;
-
+                    ComponentManager.Instance.GetEntityComponentOrDefault<AmmoPickupComponent>(inputEvent.Target);
                 var health =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<HealthPickupComponent>(inputEvent.EntityId);
-                if (health == null) return;
+                    ComponentManager.Instance.GetEntityComponentOrDefault<HealthPickupComponent>(inputEvent.Target);
+                // Atlest one pickup needs to exist.
+                if (health == null && pickup == null) return;
 
                 // Get the sound instance for this entity
                 var sound =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(inputEvent.EntityId);
-
+                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(inputEvent.Target);
+                if (sound == null) return;
                 // We create a SoundEffectInstance which gives us more control
                 var soundInstance = sound.SoundEffect.CreateInstance();
 
@@ -123,7 +123,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     soundInstance.IsLooped = false;
                     soundInstance.Play();
                 }
-            }
         }
 
 

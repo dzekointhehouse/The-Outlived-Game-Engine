@@ -13,18 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin topDownSoldier.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:topDownSoldier.png
-
 #begin ZEone.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -68,11 +56,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:assassins.mp3
-
-#begin ZEngine-intro.wmv
-/importer:WmvImporter
-/processor:VideoProcessor
-/build:ZEngine-intro.wmv
 
 #begin zombieSquare.png
 /importer:TextureImporter
@@ -122,18 +105,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:blood.png
-
-#begin legotilesRed.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:legotilesRed.png
 
 #begin blue64.png
 /importer:TextureImporter
@@ -386,4 +357,34 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ammo.png
+
+#begin pickup.aiff
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pickup.aiff
+
+#begin healthpickup.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:healthpickup.png
+
+#begin ammopickup.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ammopickup.png
 

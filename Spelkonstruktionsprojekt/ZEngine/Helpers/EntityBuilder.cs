@@ -97,6 +97,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             components.Add(component);
             return this;
         }
+        public EntityBuilder SetSpawn(int Wavesize)
+        {
+            SpawnComponent component = new SpawnComponent()
+            {
+               WaveSize = Wavesize,
+               EnemiesDead = 0,
+
+            };
+            components.Add(component);
+            return this;
+        }
+
 
         public EntityBuilder SetPlayer(string name)
         {
@@ -145,7 +157,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             AmmoComponent component = new AmmoComponent()
             {
                 Amount = 100,
-                SpareAmmoAmount = 100,
+                SpareAmmoAmount = 10,
+                OutOfAmmo = 0,
             };
             components.Add(component);
             return this;
@@ -155,6 +168,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         {
             TeamComponent component = new TeamComponent()
             {
+            };
+            components.Add(component);
+            return this;
+        }
+        public EntityBuilder SetSpawn(int WaveSize = 10, int EnemiesDead = 0, bool FirstRound = true)
+        {
+            SpawnComponent component = new SpawnComponent()
+            {
+                WaveSize = WaveSize,
+                EnemiesDead = EnemiesDead,
+                FirstRound = FirstRound
             };
             components.Add(component);
             return this;
