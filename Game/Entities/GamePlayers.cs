@@ -195,6 +195,8 @@ namespace Game.Entities
                 .SetCameraFollow()
                 .SetPlayer(name)
                 .SetHealth()
+                .SetScore()
+                .SetAmmo()
                 .SetHUD(false, showStats: true)
                 .Build();
 

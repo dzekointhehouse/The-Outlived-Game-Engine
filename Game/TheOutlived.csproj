@@ -50,6 +50,7 @@
     <Compile Include="GameContent.cs" />
     <Compile Include="MenuContent.cs" />
     <Compile Include="Menu\States\About.cs" />
+    <Compile Include="Menu\States\GameOver.cs" />
     <Compile Include="Services\ControlsConfig.cs" />
     <Compile Include="Services\GameConfig.cs" />
     <Compile Include="Services\ScalingBackground.cs" />
