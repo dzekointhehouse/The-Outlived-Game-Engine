@@ -70,8 +70,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<InputHandler>().HandleGamePadInput(gameTime);
             _oldKeyboardState = Keyboard.GetState();
             manager.Get<GamePadMovementSystem>().WalkForwards(gameTime);
-            manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents,
-                gameTime);
+            manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
 
             manager.Get<CameraSceneSystem>().Update(gameTime);
             manager.Get<MoveSystem>().Move(gameTime);

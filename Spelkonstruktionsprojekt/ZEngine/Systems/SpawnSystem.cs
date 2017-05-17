@@ -16,6 +16,8 @@ using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Systems;
+using Penumbra;
+using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -92,9 +94,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     // if anyone is alive break
                     break;
                 }
-
-
-
             }
             if (GlobalSpawnComponent.EnemiesDead)
             {
@@ -112,6 +111,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (cameraEntities.Count <= 0) return;
                 var cameraComponent =
                     (CameraViewComponent)cameraEntities.First().Value;
+                //Health
+                var HealthpickupEntities =
+               ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+                if (HealthpickupEntities.Count <= 0) return;
+                var HealthpickupComponent =
+                    ComponentManager
+                        .GetEntityComponentOrDefault<SpriteComponent>(HealthpickupEntities.First().Key);
+                //Ammo
+                var ammoPickUpEntities =
+               ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+                if (ammoPickUpEntities.Count <= 0) return;
+                var ammopickupComponent =
+                    ComponentManager
+                        .GetEntityComponentOrDefault<SpriteComponent>(ammoPickUpEntities.Last().Key);
 
 
                 Random rand = new Random();
@@ -130,8 +143,139 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     while (SpawnArea.Intersects(cameraComponent.View));
                     CreateEnemy(SpawnArea.Center.X, SpawnArea.Center.Y, SpawnSpriteComponent);
                 }
+                for (int j= 0; j < GlobalSpawnComponent.WaveSize; j++) {
+                    
+                    if(/*rand.Next(0, 1)*/1 == 1)
+                    {
+                        if (/*rand.Next(1, 3)*/2 == 1)
+                        {
+                           // CreatePickup(1,HealthpickupComponent);
+                            
+                        }
+                        { CreatePickup(2, ammopickupComponent);}
+                    }
+                }
                 GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
             }
+        }
+       public int CreatePickup(int type, SpriteComponent pickupComponent)
+        {
+            var entity = EntityManager.GetEntityManager().NewEntity();
+            var coll = new CollisionComponent();
+            var dim = new DimensionsComponent()
+            {
+                Height = 40,
+                Width = 40
+            };
+            var render = new RenderComponent()
+            {
+                IsVisible = true,
+            };
+           
+            var pos = new PositionComponent()
+            {
+                Position = new Vector2(40, 40),
+                ZIndex = 100
+            };
+            var sound = new SoundComponent()
+            {
+                SoundEffectName = "pickup"
+            };
+            var ligh = new LightComponent()
+            {
+                Light = new PointLight() { },
+            };
+            if (type == 1 )
+            {
+                ComponentManager.Instance.AddComponentToEntity(new HealthPickupComponent(), entity);
+            }
+            else
+            {
+                ComponentManager.Instance.AddComponentToEntity(new AmmoPickupComponent(), entity);
+            }
+            ComponentManager.Instance.AddComponentToEntity(pickupComponent, entity);
+            ComponentManager.Instance.AddComponentToEntity(sound, entity);
+            ComponentManager.Instance.AddComponentToEntity(ligh, entity);
+            ComponentManager.Instance.AddComponentToEntity(coll, entity);
+            ComponentManager.Instance.AddComponentToEntity(pos, entity);
+            ComponentManager.Instance.AddComponentToEntity(dim, entity);
+            ComponentManager.Instance.AddComponentToEntity(render, entity);
+            return entity;
+            //var entity = EntityManager.GetEntityManager().NewEntity();
+            //var coll = new CollisionComponent();
+            //var dim = new DimensionsComponent()
+            //{
+            //    Height = 40,
+            //    Width = 40
+            //};
+            //var render = new RenderComponent()
+            //{
+            //    IsVisible = true,
+            //};
+            //var pos = new PositionComponent()
+            //{
+            //    Position = new Vector2(500, 500),
+            //    ZIndex = 100
+            //};
+
+            //var sound = new SoundComponent()
+            //{
+            //    SoundEffectName = "pickup"
+            //};
+            //var ligh = new LightComponent()
+            //{
+            //    Light = new PointLight() { },
+            //};
+
+            //var pick = new HealthPickupComponent();
+
+            //var sprite = new SpriteComponent()
+            //{
+            //    SpriteName = "knife",
+            //};
+            //ComponentManager.Instance.AddComponentToEntity(sprite, entity);
+            ////Debug.WriteLine("YYYEEEEEEEEEEEEEEEEEAAAAAAAAAAHHHHHHHHHHHHH");
+
+            //ComponentManager.Instance.AddComponentToEntity(pick, entity);
+
+            ////if (type == 1)
+            ////{
+            ////    var pick = new HealthPickupComponent();
+
+            ////    var sprite = new SpriteComponent()
+            ////    {
+            ////        SpriteName = "knife",
+            ////    };
+            ////    //ComponentManager.Instance.AddComponentToEntity(sprite, entity);
+            ////    Debug.WriteLine("YYYEEEEEEEEEEEEEEEEEAAAAAAAAAAHHHHHHHHHHHHH");
+
+            ////    ComponentManager.Instance.AddComponentToEntity(pick, entity);
+
+            ////}
+            ////else
+            ////{
+            ////    var pick = new AmmoPickupComponent();
+
+            ////    var sprite = new SpriteComponent()
+            ////    {
+            ////        SpriteName = "knife",
+            ////    };
+            ////    //ComponentManager.Instance.AddComponentToEntity(sprite, entity);
+            ////    Debug.WriteLine("YYYEEEEEEEEEEEEEEEEEAAAAAAAAAAHHHHHHHHHHHHH");
+
+            ////    ComponentManager.Instance.AddComponentToEntity(pick, entity);
+            ////}
+
+
+            //ComponentManager.Instance.AddComponentToEntity(sound, entity);
+            //ComponentManager.Instance.AddComponentToEntity(ligh, entity);
+            //ComponentManager.Instance.AddComponentToEntity(coll, entity);
+            //ComponentManager.Instance.AddComponentToEntity(pos, entity);
+            //ComponentManager.Instance.AddComponentToEntity(dim, entity);
+            //ComponentManager.Instance.AddComponentToEntity(render, entity);
+
+            //return entity;
+
         }
     }
 }

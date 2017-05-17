@@ -103,12 +103,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             CreateGlobalBulletSpriteEntity();
             CreateGlobalSpawnSpriteEntity();
             CreateGlobalSpawnEntity();
+            CreateFlyweightHealthpickupEntity();
             SetupTempPlayerDeadSpriteFlyweight();
+            CreateFlyweightAmmopickupEntity();
             SetupGameScoreEntity();
-            AddPickup();
+           // AddPickup();
         }
 
-        private void AddPickup()
+        public void AddPickup()
         {
             var entity = EntityManager.GetEntityManager().NewEntity();
             var coll = new CollisionComponent();
@@ -195,7 +197,38 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(tempDeadSpriteComponent, tempEntity);
             ComponentManager.Instance.AddComponentToEntity(spriteComponent, tempEntity);
         }
-
+        private static void CreateFlyweightHealthpickupEntity()
+        {
+            var HealthpickupSprite = EntityManager.GetEntityManager().NewEntity();
+            var HealthpickupSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "healthpickup"
+            };
+            var healthSpriteComponent = new FlyweightPickupComponent();
+            var soundComponent = new SoundComponent()
+            {
+                SoundEffectName = "pickup"
+            };
+             ComponentManager.Instance.AddComponentToEntity(soundComponent, HealthpickupSprite);
+            ComponentManager.Instance.AddComponentToEntity(HealthpickupSpriteSprite, HealthpickupSprite);
+            ComponentManager.Instance.AddComponentToEntity(healthSpriteComponent, HealthpickupSprite);
+        }
+        private static void CreateFlyweightAmmopickupEntity()
+        {
+            var ammopickupSprite = EntityManager.GetEntityManager().NewEntity();
+            var ammopickupSpriteSprite = new SpriteComponent()
+            {
+                SpriteName = "knife"
+            };
+            var ammoPickUpSprite = new FlyweightPickupComponent();
+            var soundComponent = new SoundComponent()
+            {
+                SoundEffectName = "pickup"
+            };
+            ComponentManager.Instance.AddComponentToEntity(soundComponent, ammopickupSprite);
+            ComponentManager.Instance.AddComponentToEntity(ammopickupSpriteSprite, ammopickupSprite);
+            ComponentManager.Instance.AddComponentToEntity(ammoPickUpSprite, ammopickupSprite);
+        }
         private static void CreateGlobalBulletSpriteEntity()
         {
             var bulletSprite = EntityManager.GetEntityManager().NewEntity();
@@ -217,7 +250,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var spawnSprite = EntityManager.GetEntityManager().NewEntity();
             var spawnSpriteSprite = new SpriteComponent()
             {
-                SpriteName = "topDownSoldier"
+                SpriteName = "Player_Sprites"
             };
             var SpawnSpriteComponent = new SpawnFlyweightComponent();
            
@@ -492,7 +525,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             var weaponComponent = new WeaponComponent()
             {
-                Damage = 10
+                Damage = 1000
             };
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
 
