@@ -20,6 +20,7 @@ using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 
 namespace Game.Menu.States
 {
@@ -33,14 +34,17 @@ namespace Game.Menu.States
         private GamePlayers players = new GamePlayers();
         private GameEnemies enemies = new GameEnemies();
         private GamePickups pickups = new GamePickups();
+        private HealthSystem life = new HealthSystem();
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
+
         public InGame(GameManager gameManager)
         {
             this.gameManager = gameManager;
             controls = new ControlsConfig(gameManager);
         }
+
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (!isInitialized)
@@ -54,13 +58,19 @@ namespace Game.Menu.States
         }
 
         public void Update(GameTime gameTime)
-        {
+        {            
+
             if (MediaPlayer.State != MediaState.Stopped)
             {
                 MediaPlayer.Stop();
             }
             controls.PauseButton();
             gameManager.Engine.Update(gameTime);
+
+            if (life.CheckIfNotAlive())
+            {
+                gameManager.CurrentGameState = GameManager.GameState.GameOver;
+            }
         }
 
         // To initialize game content when navigating
@@ -71,15 +81,9 @@ namespace Game.Menu.States
             enemies.CreateMonster("player_sprites");
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
-            pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));
-            // enemies.CreateMonster("vampyre");
+            pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));            
             CreateGameEntities();
         }
-
-
-        // TEST CODE
-
-        
 
         private void CreateGameEntities()
         {
@@ -88,29 +92,38 @@ namespace Game.Menu.States
             SetupCamera();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
-           // SetupTempPlayerDeadSpriteFlyweight();
+            SetupGameScoreEntity();
+            // SetupTempPlayerDeadSpriteFlyweight();
         }
+
+        private void SetupGameScoreEntity()
+        {
+            var gameScoreComponent = new GameScoreComponent();
+            ComponentManager.Instance.AddComponentToEntity(gameScoreComponent, EntityManager.GetEntityManager().NewEntity());
+        }        
 
         private void SetupHUD()
         {
+
             new EntityBuilder()
                 .SetHUD(true)
-                .SetPosition(new Vector2(10, 1100))
-                .SetSprite("XboxController")
+                .SetPosition(new Vector2(590, 900))
+                .SetSprite("health3_small")
                 .Build();
 
-            // Health Icons
             new EntityBuilder()
                 .SetHUD(true)
-                .SetPosition(new Vector2(1680, 1150))
-                .SetSprite("health3_small")
+                .SetPosition(new Vector2(590, 950))
+                .SetSprite("medal")
                 .Build();
+
             new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(1680, 1210))
-                .SetSprite("health3_small")
-                .Build();
+               .SetHUD(true)
+               .SetPosition(new Vector2(550, 1000))
+               .SetSprite("ammo")
+               .Build();
         }
+
         private static void CreateGlobalBulletSpriteEntity()
         {
             var bulletSprite = EntityManager.GetEntityManager().NewEntity();

@@ -14,7 +14,7 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class HealthSystem : ISystem
+    public class HealthSystem : ISystem
     {
         public void Update(GameTime gameTime)
         {

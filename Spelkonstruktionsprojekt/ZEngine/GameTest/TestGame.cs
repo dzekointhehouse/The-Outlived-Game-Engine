@@ -160,13 +160,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         private void SetupHUD()
         {
-            //new EntityBuilder()
-            //    .SetHUD(true)
-            //    .SetPosition(new Vector2(10, 1100))
-            //    .SetSprite("XboxController")
-            //    .Build();
-
-            // Health Icons
             new EntityBuilder()
                 .SetHUD(true)
                 .SetPosition(new Vector2(viewportDimensions.X * 0.3f, viewportDimensions.Y * 0.83f))
@@ -432,9 +425,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
 
-            CreatePlayer(new Vector2(1650, 1100), name: "Carlos", actionBindings: actionBindings1,
-                position: new Vector2(200, 200), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId);
+            CreatePlayer(
+                new Vector2(1650, 1100), 
+                name: "Carlos", 
+                actionBindings: actionBindings1,
+                position: new Vector2(200, 200),
+                cameraFollow: true,
+                collision: true, 
+                isCaged: true, 
+                cageId: cageId);
+
             CreatePlayer(new Vector2(1650, 1100), "Elvir", actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId, disabled: false);
             //CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,

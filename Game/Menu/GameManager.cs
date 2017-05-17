@@ -46,6 +46,7 @@ namespace Game
         private IMenu pausedMenu;
         private IMenu aboutMenu;
         private IMenu multiplayerMenu;
+        private IMenu gameOver;
 
         // Game states
         public enum GameState
@@ -59,7 +60,8 @@ namespace Game
             Quit,
             Credits,
             Paused,
-            About
+            About,
+            GameOver
         };
 
         public GameManager(FullZengineBundle gameBundle)
@@ -81,7 +83,7 @@ namespace Game
             pausedMenu = new PausedMenu(this);
             multiplayerMenu = new MultiplayerMenu(this);
             aboutMenu = new AboutMenu(this);
-
+            gameOver = new GameOver(this);
         }
 
         // Draw method consists of a switch case with all
@@ -129,6 +131,9 @@ namespace Game
                 case GameState.About:
                     aboutMenu.Draw(gameTime, sb);
                     break;
+                case GameState.GameOver:
+                    gameOver.Draw(gameTime, sb);
+                    break;
             }
         }
 
@@ -175,6 +180,9 @@ namespace Game
                     break;
                 case GameState.About:
                     aboutMenu.Update(gameTime);
+                    break;
+                case GameState.GameOver:
+                    gameOver.Update(gameTime);
                     break;
             }
         }

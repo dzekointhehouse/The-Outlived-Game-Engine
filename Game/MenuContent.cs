@@ -22,6 +22,10 @@ namespace Game
         public Texture2D CreditsBackground;
         public Texture2D PauseBackground;
 
+        //Game Over
+        public SpriteFont ScoreFont;
+        public Texture2D GameOver;
+
         // Characters
         public Texture2D HighlightFirst;
         public Texture2D HighlightSecond;
@@ -84,13 +88,16 @@ namespace Game
             CharacterBackground = game.Content.Load<Texture2D>("Images/zombieCharacter");
             //ButtonEsc = game.Content.Load<Texture2D>("Images/Keyboard/esc");
 
-          //  ButtonBack = game.Content.Load<Texture2D>("Images/Keyboard/left");
+            //ButtonBack = game.Content.Load<Texture2D>("Images/Keyboard/left");
 
             HighlightFirst = game.Content.Load<Texture2D>("Images/Characters/character_hb");
             HighlightSecond = game.Content.Load<Texture2D>("Images/Characters/character_he");
             HighlightThird = game.Content.Load<Texture2D>("Images/Characters/character_hw");
             HighlightFourth = game.Content.Load<Texture2D>("Images/Characters/character_hj");
 
+            //Game Over stuff
+            ScoreFont = game.Content.Load<SpriteFont>("Fonts/Score");
+            GameOver = game.Content.Load<Texture2D>("Images/GameOver/GameOver");
 
             if (GamePad.GetState(PlayerIndex.One).IsConnected)
             {
