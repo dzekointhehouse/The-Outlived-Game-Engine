@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\GamePickups.cs" />
     <Compile Include="Entities\GamePlayers.cs" />
     <Compile Include="Entities\GameEnemies.cs" />
     <Compile Include="Entities\GameHUD.cs" />
@@ -51,7 +52,7 @@
     <Compile Include="Menu\States\About.cs" />
     <Compile Include="Services\ControlsConfig.cs" />
     <Compile Include="Services\GameConfig.cs" />
-    <Compile Include="Services\MenuHelper.cs" />
+    <Compile Include="Services\ScalingBackground.cs" />
     <Compile Include="Menu\States\GameModeMenu.cs" />
     <Compile Include="Menu\States\MainMenu.cs" />
     <Compile Include="Menu\Menu.cs" />

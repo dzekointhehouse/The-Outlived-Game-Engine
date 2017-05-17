@@ -21,8 +21,8 @@ namespace Game.Menu.States
         private OptionsState currentPosition = OptionsState.Continue;
         private Viewport viewport;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-        private MenuHelper.Background fogBackground;
-        private MenuHelper.Background mainBackground;
+        private SidewaysBackground fogBackground;
+        private SidewaysBackground mainBackground;
 
         // different menu options
         private enum OptionsState
@@ -39,8 +39,8 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             controls = new ControlsConfig(0, 3, gameManager);
             viewport = game.GraphicsDevice.Viewport;
-            mainBackground = new MenuHelper.Background(gameManager.MenuContent.Background, new Vector2(10, 10), 1.5f);
-            fogBackground = new MenuHelper.Background(gameManager.MenuContent.BackgroundFog, new Vector2(30, 30), 1);
+            mainBackground = new SidewaysBackground(gameManager.MenuContent.Background, new Vector2(10, 10), 1.5f);
+            fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
         }
 
 
@@ -82,11 +82,9 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0f);
+            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0f);
             mainBackground.Draw(spriteBatch);
             
-            
-           // MenuHelper.DrawBackgroundMovingSideways(spriteBatch, gameManager.GameContent, viewport, 5f);
             MainMenuDisplay();
             spriteBatch.End();
         }

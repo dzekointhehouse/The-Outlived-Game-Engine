@@ -24,15 +24,16 @@ namespace Game
         public static bool MoveHigher { get; set; } = true;
         public static bool MoveRight { get; set; } = true;
 
-        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-
+        public MenuContent MenuContent { get; }
         // Here we just say that the first state is the Intro
         protected internal GameState CurrentGameState = GameState.Intro;
         protected internal GameState PreviousGameState;
         protected internal KeyboardState OldKeyboardState;
         protected internal GamePadState OldGamepadState;
-        public MenuContent MenuContent { get; }
+        
         protected internal FullZengineBundle Engine;
+        protected internal Viewport Viewport;
+        protected internal SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
 
@@ -64,6 +65,7 @@ namespace Game
         public GameManager(FullZengineBundle gameBundle)
         {
             Engine = gameBundle;
+            Viewport = Engine.Dependencies.Game.GraphicsDevice.Viewport;
             MenuContent = new MenuContent(gameBundle.Dependencies.Game);
             gameConfig = new GameConfig();
 

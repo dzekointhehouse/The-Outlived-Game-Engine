@@ -57,7 +57,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         {
             var HealthComponent = (HealthComponent)ComponentManager.GetEntityComponentOrDefault(typeof(HealthComponent), player);
             var HealthPickupComponent = (HealthPickupComponent) ComponentManager.GetEntityComponentOrDefault(typeof(HealthPickupComponent), pickup);
-            if (HealthComponent.CurrentHealth < HealthComponent.MaxHealth)
+            //if (HealthComponent.CurrentHealth < HealthComponent.MaxHealth)
             {
                 HealthComponent.Damage.Add(-HealthPickupComponent.Amount);
                 DeletePickup(pickup);

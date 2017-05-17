@@ -32,6 +32,7 @@ namespace Game.Menu.States
         private Boolean isIngame = true;
         private GamePlayers players = new GamePlayers();
         private GameEnemies enemies = new GameEnemies();
+        private GamePickups pickups = new GamePickups();
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
@@ -67,7 +68,10 @@ namespace Game.Menu.States
         public void InitializeGameContent()
         {
             players.CreatePlayers(gameManager.gameConfig);
-            enemies.CreateMonster("zombie");
+            enemies.CreateMonster("player_sprites");
+            pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));
+            pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
+            pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));
             // enemies.CreateMonster("vampyre");
             CreateGameEntities();
         }
@@ -173,7 +177,7 @@ namespace Game.Menu.States
             var tileTypes = new Dictionary<int, string>();
 
             //tileTypes.Add(0, "blue64");
-            tileTypes.Add(1, "grass");
+            tileTypes.Add(1, "red64");
             //tileTypes.Add(2, "red64");
             //tileTypes.Add(4, "yellowwall64");
 

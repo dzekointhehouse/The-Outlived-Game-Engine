@@ -49,10 +49,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     // where to place it.
                     PositionComponent position = new PositionComponent{ Position = new Vector2(x * size, y * size), ZIndex = 1 };
                     DimensionsComponent dimensionsComponent = new DimensionsComponent() { Height = size, Width = size };
+                    RenderComponent renderComponent = new RenderComponent() { IsVisible = true, Fixed = true};
 
 
                     if(positionNumber == 0) continue;
-                    if(positionNumber == 1) continue;
+                    //if(positionNumber == 1) continue;
                     if(positionNumber == 2) continue;
 
 
@@ -65,6 +66,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
                     ComponentManager.Instance.AddComponentToEntity(position, id);
                     ComponentManager.Instance.AddComponentToEntity(dimensionsComponent, id);
+                    ComponentManager.Instance.AddComponentToEntity(renderComponent, id);
                     ComponentManager.Instance.AddComponentToEntity(spriteComponent, id);
 
                     // If the position number is contained in our

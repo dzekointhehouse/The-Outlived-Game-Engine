@@ -33,7 +33,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             sb.Begin();
-            MenuHelper.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
             sb.Draw(gameManager.MenuContent.AboutBackground, viewport.Bounds, Color.White);
             sb.End();
         }

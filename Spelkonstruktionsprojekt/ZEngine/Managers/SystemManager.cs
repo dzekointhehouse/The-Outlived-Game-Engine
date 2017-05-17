@@ -44,7 +44,6 @@ namespace ZEngine.Managers
             { typeof(WeaponSystem), new WeaponSystem() },
             { typeof(BulletCollisionSystem), new BulletCollisionSystem() },
             { typeof(HealthSystem), new HealthSystem() },
-            { typeof(VideoPlayerSystem), new VideoPlayerSystem() },
             { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
             { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
             { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
