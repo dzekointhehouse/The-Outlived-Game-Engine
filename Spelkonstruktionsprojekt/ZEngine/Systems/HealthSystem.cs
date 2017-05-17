@@ -42,7 +42,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        public bool CheckIfAlive()
+        public bool CheckIfNotAlive()
         {
             var playerEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent));
 

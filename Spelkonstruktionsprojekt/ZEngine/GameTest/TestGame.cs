@@ -495,7 +495,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                         gameBundle.Draw(gameTime);
                         fps.Draw(gameTime);
 
-                    if (life.CheckIfAlive())
+                    if (life.CheckIfNotAlive())
                     {
                         currentGameState = GameState.GameOver;
                     }
