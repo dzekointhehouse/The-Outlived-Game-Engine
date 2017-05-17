@@ -88,7 +88,7 @@ namespace Game.Menu.States
         private void CreateGameEntities()
         {
             var cameraCageId = SetupCameraCage();
-            SetupBackgroundTiles(5, 5);
+            SetupBackgroundTiles();
             SetupCamera();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
@@ -185,19 +185,21 @@ namespace Game.Menu.States
         }
 
 
-        public void SetupBackgroundTiles(int width, int height)
+        public void SetupBackgroundTiles()
         {
             var tileTypes = new Dictionary<int, string>();
 
             //tileTypes.Add(0, "blue64");
-            tileTypes.Add(1, "red64");
-            //tileTypes.Add(2, "red64");
+            tileTypes.Add(2, "yellowwall64");
+            tileTypes.Add(28, "grass");
             //tileTypes.Add(4, "yellowwall64");
 
 
             MapHelper mapcreator = new MapHelper(tileTypes);
 
-            mapcreator.CreateMapTiles(MapPack.Minimap, 2000);
+            mapcreator.AddNumberToCollisionList(2);
+
+            mapcreator.CreateMapTiles(MapPack.TheWallMap, 100);
         }
 
         public void SetupCamera()

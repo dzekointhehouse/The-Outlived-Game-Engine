@@ -194,6 +194,7 @@ namespace Game.Entities
                 .SetRectangleCollision()
                 .SetCameraFollow()
                 .SetPlayer(name)
+                .SetTeam(cageId)
                 .SetHealth()
                 .SetScore()
                 .SetAmmo()
