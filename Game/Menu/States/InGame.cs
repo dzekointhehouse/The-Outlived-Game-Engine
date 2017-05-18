@@ -32,6 +32,7 @@ namespace Game.Menu.States
         private bool isInitialized = false;
         private Boolean isIngame = true;
         private GamePlayers players = new GamePlayers();
+        private GameMap maps = new GameMap();
         private GameEnemies enemies = new GameEnemies();
         private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
@@ -77,6 +78,7 @@ namespace Game.Menu.States
         // to this state.
         public void InitializeGameContent()
         {
+            maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers(gameManager.gameConfig);
             enemies.CreateMonster("player_sprites");
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));
@@ -88,7 +90,7 @@ namespace Game.Menu.States
         private void CreateGameEntities()
         {
             var cameraCageId = SetupCameraCage();
-            SetupBackgroundTiles();
+           // SetupBackgroundTiles();
             SetupCamera();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();

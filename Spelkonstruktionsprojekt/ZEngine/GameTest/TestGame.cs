@@ -310,14 +310,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var tileTypes = new Dictionary<int, string>();
 
             //tileTypes.Add(0, "blue64");
-            tileTypes.Add(1, "blue64");
-            //tileTypes.Add(2, "red64");
+            tileTypes.Add(28, "blue64");
+            tileTypes.Add(2, "red64");
             //tileTypes.Add(4, "yellowwall64");
 
 
             MapHelper mapcreator = new MapHelper(tileTypes);
 
-            mapcreator.CreateMapTiles(MapPack.Minimap, 500);
+            mapcreator.CreateMapTiles(MapPack.TheWallMap, 500);
         }
 
         public void SetupCamera()

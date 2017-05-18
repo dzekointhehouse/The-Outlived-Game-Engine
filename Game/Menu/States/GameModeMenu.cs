@@ -5,15 +5,15 @@ using ZEngine.Wrappers;
 
 namespace Game.Menu.States
 {
-    class GameModeMenu : IMenu
+    public class GameModeMenu : IMenu
     {
         private SidewaysBackground fogBackground;
         private readonly Microsoft.Xna.Framework.Game game;
         private readonly GameManager gameManager;
         private readonly ControlsConfig controls;
-        private OptionsState currentPosition = OptionsState.Survival;
+        private GameModes currentPosition = GameModes.Survival;
 
-        private enum OptionsState
+        public enum GameModes
         {
             Extinction,
             Survival,
@@ -38,15 +38,15 @@ namespace Game.Menu.States
 
             switch (currentPosition)
             {
-                case OptionsState.Survival:
+                case GameModes.Survival:
                     sb.Draw(gameManager.MenuContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
                     sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.45f), Color.White);
                     break;
-                case OptionsState.Extinction:
+                case GameModes.Extinction:
                     sb.Draw(gameManager.MenuContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
                     sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.20f), Color.White);
                     break;
-                case OptionsState.Blockworld:
+                case GameModes.Blockworld:
                     sb.Draw(gameManager.MenuContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
                     sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
                     break;
@@ -67,21 +67,24 @@ namespace Game.Menu.States
         {
             fogBackground.Update(gameTime, new Vector2(1, 0), gameManager.Viewport);
             controls.GoBackButton();
-            currentPosition = (OptionsState)controls.MoveOptionPositionVertically((int)currentPosition);
+            currentPosition = (GameModes)controls.MoveOptionPositionVertically((int)currentPosition);
 
             switch (currentPosition)
             {
-                case OptionsState.Survival:
+                case GameModes.Survival:
+                    if (controls.ContinueButton(GameManager.GameState.MultiplayerMenu))
+                        gameManager.gameConfig.GameMode = GameModes.Survival;
+                    break;
+                case GameModes.Extinction:
+                    if (controls.ContinueButton(GameManager.GameState.MultiplayerMenu))
+                        gameManager.gameConfig.GameMode = GameModes.Extinction;
+                    break;
+                case GameModes.Exit:
                     controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
                     break;
-                case OptionsState.Extinction:
-                    controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
-                    break;
-                case OptionsState.Exit:
-                    controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
-                    break;
-                case OptionsState.Blockworld:
-                    controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
+                case GameModes.Blockworld:
+                    if (controls.ContinueButton(GameManager.GameState.MultiplayerMenu))
+                        gameManager.gameConfig.GameMode = GameModes.Blockworld;
                     break;
             }
         }
