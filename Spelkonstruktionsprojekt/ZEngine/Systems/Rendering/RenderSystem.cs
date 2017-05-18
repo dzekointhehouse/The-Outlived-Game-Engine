@@ -70,11 +70,10 @@ namespace ZEngine.Systems
             // Our zoom effect will be doing its jobb here,
             // as this matrix will easily help us achieve it.
 
-            //GameScale += -0.00001f;
             Matrix transform = Matrix.Identity *
                                Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
                                Matrix.CreateRotationZ(0) *
-                               Matrix.CreateScale(GameScale);
+                               Matrix.CreateScale(new Vector3(cameraEntities.Scale, cameraEntities.Scale, 0));
 
             gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
             DrawEntities(gameDependencies.SpriteBatch);

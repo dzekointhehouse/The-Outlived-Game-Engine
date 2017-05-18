@@ -207,7 +207,8 @@ namespace Game.Menu.States
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
             var cameraViewComponent = new CameraViewComponent()
             {
-                View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y)
+                View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y),
+                MinScale = 0.5f
             };
 
             var position = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 500 };

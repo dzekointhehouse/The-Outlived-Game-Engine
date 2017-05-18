@@ -89,11 +89,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var cameraViewComponent = camera.Value as CameraViewComponent;
             var cameraView = cameraViewComponent.View;
 
-            //GameScale += -0.00001f;
             penumbraComponent.Transform = Matrix.Identity *
-                               Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
-                               Matrix.CreateRotationZ(0) *
-                               Matrix.CreateScale(GameScale);
+                                          Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
+                                          Matrix.CreateRotationZ(0) *
+                                          Matrix.CreateScale(new Vector3(cameraViewComponent.Scale, cameraViewComponent.Scale, 0));
+
 
             penumbraComponent.BeginDraw();
         }

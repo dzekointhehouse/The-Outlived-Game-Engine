@@ -13,15 +13,20 @@ using ZEngine.Managers;
 
 namespace ZEngine.Systems
 {
+    /// <summary>
+    /// This system takes care of the calculations that
+    /// are related to the camera, eg. scaling, position.
+    /// The camera will adjust its position according to 
+    /// the entities that possess the player and position
+    /// component.
+    /// </summary>
     class CameraSceneSystem : ISystem
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        // Update call so the camera follows the followable
-        // entities.
         public void Update(GameTime gameTime)
         {
-            UpdateCameraPosition(gameTime);
+            UpdateCamera(gameTime);
             UpdateFixedRenderables();
         }
 
@@ -55,21 +60,22 @@ namespace ZEngine.Systems
             }
         }
 
-        private void UpdateCameraPosition(GameTime gameTime)
+        // Updates the cameras position and will handle the scale
+        // to be used for each camera, depending on the player entity
+        // distances. Current Algorithm takes the farthest plater to the
+        // cameras center point.
+        private void UpdateCamera(GameTime gameTime)
         {
             double delta = gameTime.ElapsedGameTime.TotalSeconds;
             Dictionary<int, IComponent> followEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraFollowComponent));
             Dictionary<int, IComponent> cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
+            // Average position of all the players to be used
+            // when we are to calculate the cameras position.
             Vector2 averagePosition = new Vector2(0, 0);
+            float maxDistance = 0;
 
-            foreach (var entity in followEntities)
-            {
-                PositionComponent pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
-                averagePosition += pos.Position;
-            }
 
-            averagePosition /= followEntities.Count;
 
             // Remember: Change the camera scale depending on the distance of the farthest
             // players. And if the distance gets smaller we should increase scale.
@@ -77,6 +83,34 @@ namespace ZEngine.Systems
             foreach (var cameraEntity in cameras)
             {
                 CameraViewComponent camera = cameraEntity.Value as CameraViewComponent;
+
+
+                foreach (var entity in followEntities)
+                {
+                    PositionComponent pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                    averagePosition += pos.Position;
+
+                    // Getting the maximum distance for scaling, to be used
+                    // for the much wanted zooming effect later on.
+                    float distance = Vector2.Distance(camera.View.Center.ToVector2(), pos.Position);
+                    maxDistance = Math.Max(distance, maxDistance);
+                }
+
+                averagePosition /= followEntities.Count;
+
+
+                // Setting the zoom to  the camera.
+                if (camera.Scale <= camera.MaxScale && camera.Scale >= camera.MinScale)
+                {
+                    // We get an OK decimal by dividing camera dimension over itself and the max with.
+                    camera.Scale = camera.View.Width / (maxDistance + camera.View.Width);
+                   // If we surpass the limit reset it.
+                    if (camera.Scale < camera.MinScale)
+                        camera.Scale = camera.MinScale;
+                    else if (camera.Scale > camera.MaxScale)
+                        camera.Scale = camera.MaxScale;
+                }
+
                 Point screenCenter = camera.View.Center;
                 PositionComponent cameraPositionComponent =
                     ComponentManager.GetEntityComponentOrDefault<PositionComponent>(cameraEntity.Key);
