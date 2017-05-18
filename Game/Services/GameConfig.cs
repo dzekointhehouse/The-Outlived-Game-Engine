@@ -22,6 +22,6 @@ namespace Game.Services
     {
         public TeamState Team { get; set; }
         public PlayerIndex Index { get; set; }
-        public CharacterState Character { get; set; }
+        public string Character { get; set; }
     }
 }
