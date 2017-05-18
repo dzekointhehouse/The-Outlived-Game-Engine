@@ -54,7 +54,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
                     if(positionNumber == 0) continue;
                     //if(positionNumber == 1) continue;
-                    if(positionNumber == 2) continue;
+                    //if(positionNumber == 2) continue;
 
 
 

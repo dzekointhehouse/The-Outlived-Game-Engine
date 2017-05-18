@@ -18,7 +18,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     public class FlashlightSystem : ISystem
     {
         public static string SystemName = "FlashlightSystem";
-        private float GameScale = 1f;
+        private float GameScale = 1.0f;
 
         // This method is used to initialize the penumbra instance, and add
         // all the entities that have an associated instance of light component.
@@ -58,15 +58,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // If it has no render component than we should skip this entity.
                 if (!ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
                     continue;
-               
-                    var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(lightEntity.Key);
 
-                    lightComponent.Light.Position =
-                        new Vector2(
-                            positionComponent.Position.X - cameraView.X,
-                            positionComponent.Position.Y - cameraView.Y
-                            );
-             
+                var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(lightEntity.Key);
+
+                lightComponent.Light.Position =
+                    new Vector2(
+                        //positionComponent.Position.X - cameraView.X,
+                        //positionComponent.Position.Y - cameraView.Y
+                        //when using Matrix!
+                        positionComponent.Position.X,
+                        positionComponent.Position.Y
+                        );
+
                 if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(lightEntity.Key))
                 {
                     var moveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(lightEntity.Key);
@@ -86,11 +89,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var cameraViewComponent = camera.Value as CameraViewComponent;
             var cameraView = cameraViewComponent.View;
 
-            //GameScale += -0.001f;
-            //penumbraComponent.Transform = Matrix.Identity *
-            //                   Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
-            //                   Matrix.CreateRotationZ(0) *
-            //                   Matrix.CreateScale(1f);
+            penumbraComponent.Transform = Matrix.Identity *
+                                          Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
+                                          Matrix.CreateRotationZ(0) *
+                                          Matrix.CreateScale(new Vector3(cameraViewComponent.Scale, cameraViewComponent.Scale, 0));
+
 
             penumbraComponent.BeginDraw();
         }
