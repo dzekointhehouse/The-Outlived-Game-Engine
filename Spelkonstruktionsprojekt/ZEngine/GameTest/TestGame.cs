@@ -463,7 +463,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetRendering(100, 100)
                 .SetInertiaDampening()
                 .SetBackwardsPenalty()
-                .SetSprite("player_sprites3", new Point(1252, 206), 313, 206)
+                .SetSprite("player_sprites4", new Point(1252, 206), 313, 206)
                 .SetLight(light)
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)

@@ -109,6 +109,8 @@ namespace ZEngine.Systems
                         camera.Scale = camera.MinScale;
                     else if (camera.Scale > camera.MaxScale)
                         camera.Scale = camera.MaxScale;
+
+                    Debug.WriteLine(camera.Scale);
                 }
 
                 Point screenCenter = camera.View.Center;
