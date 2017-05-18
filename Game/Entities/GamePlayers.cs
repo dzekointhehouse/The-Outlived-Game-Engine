@@ -83,7 +83,7 @@ namespace Game.Entities
                 .SetAction(Keys.Q, EventConstants.TurnAround)
                 .SetAction(Keys.E, EventConstants.FireWeapon)
                 .SetAction(Keys.LeftShift, EventConstants.LightStatus)
-                .SetAction(Keys.R, EventConstants.Running)
+                .SetAction(Keys.R, EventConstants.ReloadWeapon)
                 .Build();
 
             CreatePlayer(
@@ -106,6 +106,7 @@ namespace Game.Entities
                 .SetAction(Keys.O, EventConstants.FireWeapon)
                 .SetAction(Keys.U, EventConstants.TurnAround)
                 .SetAction(Keys.H, EventConstants.LightStatus)
+                .SetAction(Keys.P, EventConstants.ReloadWeapon)
                 .Build();
 
             CreatePlayer(
@@ -248,7 +249,8 @@ namespace Game.Entities
 
             var weaponComponent = new WeaponComponent()
             {
-                Damage = 10
+                Damage = 10,
+                ClipSize = 100
             };
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
 
