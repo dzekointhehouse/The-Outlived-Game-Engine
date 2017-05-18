@@ -15,6 +15,7 @@ using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
+using static Game.Menu.States.CharacterMenu;
 
 namespace Game.Entities
 {
@@ -25,6 +26,7 @@ namespace Game.Entities
             
         }
 
+
         public void CreatePlayers(GameConfig config)
         {
             foreach (var player in config.Players)
@@ -34,16 +36,16 @@ namespace Game.Entities
                     switch (player.Index)
                     {
                         case PlayerIndex.One:
-                            this.InitPlayerOne(1);
+                            this.InitPlayerOne(1, player.Character);
                             break;
                         case PlayerIndex.Two:
-                            this.InitPlayerTwo(1);
+                            this.InitPlayerTwo(1, player.Character);
                             break;
                         case PlayerIndex.Three:
-                            this.InitPlayerThree(1);
+                            this.InitPlayerThree(1, player.Character);
                             break;
                         case PlayerIndex.Four:
-                            this.InitPlayerFour(1);
+                            this.InitPlayerFour(1, player.Character);
                             break;
                     };
                 }
@@ -52,16 +54,16 @@ namespace Game.Entities
                     switch (player.Index)
                     {
                         case PlayerIndex.One:
-                            this.InitPlayerOne(2);
+                            this.InitPlayerOne(2, player.Character);
                             break;
                         case PlayerIndex.Two:
-                            this.InitPlayerTwo(2);
+                            this.InitPlayerTwo(2, player.Character);
                             break;
                         case PlayerIndex.Three:
-                            this.InitPlayerThree(2);
+                            this.InitPlayerThree(2, player.Character);
                             break;
                         case PlayerIndex.Four:
-                            this.InitPlayerFour(2);
+                            this.InitPlayerFour(2, player.Character);
                             break;
                     };
                 }
@@ -72,7 +74,7 @@ namespace Game.Entities
         }
 
         // TODO should get spawn positions depending on map
-        private void InitPlayerOne(int cageId)
+        private void InitPlayerOne(int cageId, string character)
         {
             var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
@@ -88,14 +90,14 @@ namespace Game.Entities
 
             CreatePlayer(
                 new Vector2(1650, 1100),
-                name: "Carlos",
+                sprite: character,
                 actionBindings: actionBindings1,
                 position: new Vector2(200, 200), // spawn point
                 cageId: cageId
             );
         }
 
-        private void InitPlayerTwo(int cageId)
+        private void InitPlayerTwo(int cageId, string character)
         {
             var player2 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings2 = new ActionBindingsBuilder()
@@ -111,7 +113,7 @@ namespace Game.Entities
 
             CreatePlayer(
                 new Vector2(1650, 1100),
-                "Elvir",
+                character,
                 actionBindings2,
                 position: new Vector2(400, 400), // spawn point
                 cageId: cageId,
@@ -119,7 +121,7 @@ namespace Game.Entities
             );
         }
 
-        private void InitPlayerThree(int cageId)
+        private void InitPlayerThree(int cageId, string character)
         {
             var player3 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings = new ActionBindingsBuilder()
@@ -134,7 +136,7 @@ namespace Game.Entities
 
             CreatePlayer(
                 new Vector2(1650, 1100),
-                "Jacob",
+                character,
                 actionBindings,
                 position: new Vector2(300, 400), // spawn point
                 cageId: cageId,
@@ -143,7 +145,7 @@ namespace Game.Entities
 
         }
 
-        private void InitPlayerFour(int cageId)
+        private void InitPlayerFour(int cageId, string character)
         {
             var player3 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings = new ActionBindingsBuilder()
@@ -158,7 +160,7 @@ namespace Game.Entities
 
             CreatePlayer(
                 new Vector2(1650, 1100),
-                "Jacob",
+                character,
                 actionBindings,
                 position: new Vector2(250, 250), // spawn point
                 cageId: cageId,
@@ -168,7 +170,7 @@ namespace Game.Entities
         }
 
         //The multitude of options here is for easy debug purposes
-        private void CreatePlayer(Vector2 playerPosition, string name, ActionBindings actionBindings,
+        private void CreatePlayer(Vector2 playerPosition, string sprite, ActionBindings actionBindings,
             Vector2 position,
             MoveComponent customMoveComponent = null,
             bool disabled = false, int cageId = 0)
@@ -188,13 +190,13 @@ namespace Game.Entities
                 .SetRendering(100, 100)
                 .SetInertiaDampening()
                 .SetBackwardsPenalty()
-                .SetSprite("player_sprites", new Point(1252, 206), 313, 206)
+                .SetSprite(sprite, new Point(1252, 206), 313, 206)
                 .SetLight(light)
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10) // Random direction
                 .SetRectangleCollision()
                 .SetCameraFollow()
-                .SetPlayer(name)
+                .SetPlayer(sprite)
                 .SetTeam(cageId)
                 .SetHealth()
                 .SetScore()

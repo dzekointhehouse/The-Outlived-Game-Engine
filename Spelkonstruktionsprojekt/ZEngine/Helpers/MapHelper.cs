@@ -13,21 +13,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
     // Optimus prime
     public class MapHelper
     {
-        private readonly Dictionary<int, string> tileTypes;
-        private readonly List<int> collisions = new List<int>(10);
+        public Dictionary<int, string> TileTypes { get; set; }
+        public List<int> Collisions { get; set; } = new List<int>(10);
 
         // the user defines which tiles to be used in the MapPack 
         // here, the key will be used as the position in the matrix
         // that is given in the CreateMap method.
         public MapHelper(Dictionary<int, string> tileTypes)
         {
-            this.tileTypes = tileTypes;
+            this.TileTypes = tileTypes;
         }
 
 
         public void AddNumberToCollisionList(int number)
         {
-            collisions.Add(number);
+            Collisions.Add(number);
         }
 
 
@@ -50,17 +50,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     PositionComponent position = new PositionComponent{ Position = new Vector2(x * size, y * size), ZIndex = 1 };
                     DimensionsComponent dimensionsComponent = new DimensionsComponent() { Height = size, Width = size };
                     RenderComponent renderComponent = new RenderComponent() { IsVisible = true, Fixed = true};
-
-
-                    if(positionNumber == 0) continue;
-                    //if(positionNumber == 1) continue;
-                    //if(positionNumber == 2) continue;
-
-
+                
 
                     // We use the positionNumber from the MapPack in the dictionary so
                     // we can find which tile to use there that the user specifies.
-                    SpriteComponent spriteComponent = new SpriteComponent{ SpriteName = tileTypes[positionNumber] };
+                    SpriteComponent spriteComponent = new SpriteComponent{ SpriteName = TileTypes[positionNumber] };
 
                     var id = EntityManager.GetEntityManager().NewEntity();
 
@@ -72,7 +66,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     // If the position number is contained in our
                     // defined list of which tiles should have the
                     // collision component (for walls or other obstacles)
-                    if (collisions.Contains(positionNumber))
+                    if (Collisions.Contains(positionNumber))
                     {
                         var collision = new CollisionComponent();
                         ComponentManager.Instance.AddComponentToEntity(collision, id);

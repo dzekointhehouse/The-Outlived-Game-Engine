@@ -115,8 +115,8 @@ namespace Game.Menu.States
                     
                 
                 // Set the current character to that player
-                // pop the next player and reset.
-                currentPlayer.Character = currentPosition;
+                // get the next player and then reset.
+                currentPlayer.Character = GetCharacter(currentPosition);
                 currentPlayer = gameManager.gameConfig.Players[playerIndex++];
                 currentPosition = CharacterState.FirstCharacter;
                 }
@@ -125,7 +125,9 @@ namespace Game.Menu.States
             // If there are no players left to choose character.
             // Continue to next state when done with the players.
             if (controls.ContinueButton(GameManager.GameState.PlaySurvivalGame) && gameManager.gameConfig.Players.Count == playerIndex)
-            {
+            { 
+                // set the last player's character.
+                currentPlayer.Character = GetCharacter(currentPosition);
                 // Reset values if this state is re-visited.
                 playerIndex = 0;
                 currentPlayer = null;
@@ -133,6 +135,23 @@ namespace Game.Menu.States
             }
 
 
+        }
+
+        private string GetCharacter(CharacterState choice)
+        {
+            switch (choice)
+            {
+                case CharacterState.FirstCharacter:
+                    return "player_sprites";
+                case CharacterState.SecondCharacter:
+                    return "player_sprites2";
+                case CharacterState.ThirdCharacter:
+                    return "player_sprites3";
+                case CharacterState.FourthCharacter:
+                    return "player_sprites4";
+                default:
+                    return "player_sprites";
+            }
         }
     }
 }

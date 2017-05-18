@@ -103,7 +103,7 @@ namespace ZEngine.Systems
                 if (camera.Scale <= camera.MaxScale && camera.Scale >= camera.MinScale)
                 {
                     // We get an OK decimal by dividing camera dimension over itself and the max with.
-                    camera.Scale = camera.View.Width / (maxDistance + camera.View.Width);
+                    camera.Scale =(camera.View.Width / (maxDistance + camera.View.Width) ) + 0.5f;
                    // If we surpass the limit reset it.
                     if (camera.Scale < camera.MinScale)
                         camera.Scale = camera.MinScale;
