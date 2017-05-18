@@ -104,7 +104,6 @@ namespace Game.Menu.States
 
         private void SetupHUD()
         {
-
             new EntityBuilder()
                 .SetHUD(true)
                 .SetPosition(new Vector2(590, 900))
