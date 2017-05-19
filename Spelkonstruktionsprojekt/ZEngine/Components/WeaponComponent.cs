@@ -14,6 +14,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public float Range { get; set; }
         public int RateOfFire { get; set; }
         public int ClipSize { get; set; }
-
+        public double LastFiredMoment { get; set; } = 0;
     }
 }

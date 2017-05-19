@@ -76,7 +76,6 @@ namespace Game.Entities
         // TODO should get spawn positions depending on map
         private void InitPlayerOne(int cageId, string character)
         {
-            var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
                 .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
                 .SetAction(Keys.S, EventConstants.WalkBackward)

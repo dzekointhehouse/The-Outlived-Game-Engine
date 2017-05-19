@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Linq;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Bullets;
-using ZEngine.Components;
 using ZEngine.EventBus;
-using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 {
-    public class PistolAbilitySystem : ISystem
+    public class ShotgunAbilitySystem
     {
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
         private BulletFactory BulletFactory { get; set; }
+
+        private const double RateOfFire = 1000;
 
         public void Start(BulletFactory bulletFactory)
         {
@@ -23,14 +22,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             EventBus.Subscribe<InputEvent>(EventConstants.FireWeapon, HandleFireWeapon);
         }
 
-
         public void HandleFireWeapon(InputEvent inputEvent)
         {
             if (inputEvent.KeyEvent != ActionBindings.KeyEvent.KeyPressed) return;
 
             var weaponComponent =
-                ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
+                ComponentManager.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
             if (weaponComponent == default(WeaponComponent)) return;
+            if (weaponComponent.LastFiredMoment + RateOfFire > inputEvent.EventTime) return;
+            weaponComponent.LastFiredMoment = inputEvent.EventTime;
 
             //Check if they have ammo
             var ammoComponent = ComponentManager.GetEntityComponentOrDefault<AmmoComponent>(inputEvent.EntityId);
@@ -47,15 +47,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 }
             }
 
-            var bulletEntityId =
-                BulletFactory.CreatePistolBullet(
+            var bulletIds =
+                BulletFactory.CreateShotgunBullet(
                     inputEvent.EntityId,
                     inputEvent.EventTime,
                     weaponComponent.Damage);
-            if (bulletEntityId == -1) return;
+            if (bulletIds.Length == 0) return;
 
             var animationComponent = new AnimationComponent();
-            ComponentManager.AddComponentToEntity(animationComponent, bulletEntityId);
+            ComponentManager.AddComponentToEntity(animationComponent, bulletIds[0]);
 
             var animation = new GeneralAnimation()
             {
@@ -64,24 +64,27 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 Length = 2000,
                 Unique = true
             };
-            NewBulletAnimation(animation, bulletEntityId);
+            NewBulletAnimation(animation, bulletIds);
             animationComponent.Animations.Add(animation);
         }
 
         // Animation for when the bullet should be deleted.
-        public void NewBulletAnimation(GeneralAnimation generalAnimation, int entityId)
+        public void NewBulletAnimation(GeneralAnimation generalAnimation, int[] bulletIds)
         {
             generalAnimation.Animation = delegate(double currentTimeInMilliseconds)
             {
                 if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
                 {
-                    var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(entityId);
-                    if (tagComponent == null)
+                    for (var i = 0; i < bulletIds.Length; i++)
                     {
-                        throw new Exception(
-                            "Entity does not have a tag component which is needed to remove the entity.");
+                        var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(bulletIds[i]);
+                        if (tagComponent == null)
+                        {
+                            throw new Exception(
+                                "Entity does not have a tag component which is needed to remove the entity.");
+                        }
+                        tagComponent.Tags.Add(Tag.Delete);
                     }
-                    tagComponent.Tags.Add(Tag.Delete);
                     generalAnimation.IsDone = true;
                 }
             };

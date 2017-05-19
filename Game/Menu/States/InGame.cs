@@ -40,6 +40,8 @@ namespace Game.Menu.States
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
+        private WeaponSystem weaponSystem = new WeaponSystem();
+
         public InGame(GameManager gameManager)
         {
             this.gameManager = gameManager;
@@ -50,9 +52,10 @@ namespace Game.Menu.States
         {
             if (!isInitialized)
             {
-
                 InitializeGameContent();
                 gameManager.Engine.LoadContent();
+                weaponSystem.Start();
+                weaponSystem.LoadBulletSpriteEntity();
                 isInitialized = true;
             }
             gameManager.Engine.Draw(gameTime);

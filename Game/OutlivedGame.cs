@@ -16,6 +16,7 @@ using Spelkonstruktionsprojekt.ZEngine.GameTest;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
@@ -35,6 +36,7 @@ namespace Game
 
         private readonly FullZengineBundle gameBundle;
         private GameManager _gameManager;
+
 
         public OutlivedGame()
         {
@@ -61,7 +63,6 @@ namespace Game
 
         protected override void LoadContent()
         {
-
         }
 
         protected override void UnloadContent()

@@ -7,7 +7,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class BulletComponent : IComponent
+    public class BulletComponent : IComponent
     {
         public int Damage;
         public int ShooterEntityId;

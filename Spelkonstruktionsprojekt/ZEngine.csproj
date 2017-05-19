@@ -60,6 +60,7 @@
     <Compile Include="ZEngine\Components\SpawnFlyweightComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
+    <Compile Include="ZEngine\Helpers\ComponentFactory.cs" />
     <Compile Include="ZEngine\Helpers\IEntityBuilder.cs" />
     <Compile Include="ZEngine\Components\ActionBindings.cs" />
     <Compile Include="ZEngine\Components\AIComponent.cs" />
@@ -111,7 +112,6 @@
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
     <Compile Include="ZEngine\Systems\AISystem.cs" />
     <Compile Include="ZEngine\Systems\AnimationSystem.cs" />
-    <Compile Include="ZEngine\Systems\Bullets\BulletFactory.cs" />
     <Compile Include="ZEngine\Systems\CameraSceneSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\BulletCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionResolveSystem.cs" />
@@ -124,9 +124,7 @@
     <Compile Include="ZEngine\Systems\HighScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\InputHandler.cs" />
-    <Compile Include="ZEngine\Systems\InputHandler\PistolAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\QuickTurnAbilitySystem.cs" />
-    <Compile Include="ZEngine\Systems\InputHandler\ShotgunAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\SprintAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
@@ -144,7 +142,6 @@
     <Compile Include="ZEngine\Systems\Rendering\RenderHUDSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
     <Compile Include="ZEngine\Systems\SpawnSystem.cs" />
-    <Compile Include="ZEngine\Systems\WeaponSystem.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />

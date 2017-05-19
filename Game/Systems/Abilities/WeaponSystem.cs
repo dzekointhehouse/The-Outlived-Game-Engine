@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Game.Systems.Abilities;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -23,15 +25,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private BulletFactory BulletFactory { get; set; } = new BulletFactory();
         private PistolAbilitySystem PistolAbilitySystem { get; set; } = new PistolAbilitySystem();
-
         private ShotgunAbilitySystem ShotgunAbilitySystem { get; set; } = new ShotgunAbilitySystem();
+        private RifleAbilitySystem RifleAbilitySystem { get; set; } = new RifleAbilitySystem();
 
         // On start we subsribe to the events that
         // will be necessary for this system.
         public ISystem Start()
         {
 //            PistolAbilitySystem.Start(BulletFactory);
-            ShotgunAbilitySystem.Start(BulletFactory);
+            RifleAbilitySystem.Start(BulletFactory);
             return this;
         }
 

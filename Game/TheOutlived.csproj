@@ -67,6 +67,11 @@
     <Compile Include="OutlivedGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Systems\Abilities\Bullets\BulletFactory.cs" />
+    <Compile Include="Systems\Abilities\PistolAbilitySystem.cs" />
+    <Compile Include="Systems\Abilities\RifleAbilitySystem.cs" />
+    <Compile Include="Systems\Abilities\ShotgunAbilitySystem.cs" />
+    <Compile Include="Systems\Abilities\WeaponSystem.cs" />
     <Compile Include="Testing\FPS.cs" />
   </ItemGroup>
   <ItemGroup>
