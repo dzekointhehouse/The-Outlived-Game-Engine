@@ -46,6 +46,8 @@ namespace Game.Menu.States
             //spriteBatch.End();
 
             spriteBatch.Begin();
+
+            //ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
             spriteBatch.Draw(gameManager.MenuContent.GameOver, new Rectangle(0, 0, 1900, 1100), Color.White);
             spriteBatch.End();
 
