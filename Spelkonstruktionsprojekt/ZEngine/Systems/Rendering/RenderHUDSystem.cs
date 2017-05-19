@@ -170,6 +170,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                                 // for formating and adding the amount to the HUD.
                                 ammoGameHUD.AppendLine();
                                 ammoGameHUD.Append(ammo.Amount);
+                                ammoGameHUD.Append('/');
+                                ammoGameHUD.Append(ammo.SpareAmmoAmount);
                             }
                             else
                             {

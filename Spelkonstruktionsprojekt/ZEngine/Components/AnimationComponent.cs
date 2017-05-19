@@ -8,7 +8,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class AnimationComponent : IComponent
+    public class AnimationComponent : IComponent
     {
         public List<GeneralAnimation> Animations = new List<GeneralAnimation>();
     }

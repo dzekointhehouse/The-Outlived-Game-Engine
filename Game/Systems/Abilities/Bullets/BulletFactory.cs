@@ -14,8 +14,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
         private ComponentManager ComponentManager = ComponentManager.Instance;
         private SpriteComponent PistolBulletSprite;
 
-        private float xOffset = 100;
-        private float yOffset = 73;
+        private float xOffset = 65;
+        private float yOffset = 52;
         //Loads available bullet sprites, given that the neccesary entities containing
         // these sprites are created.
         public void LoadBulletSprites()
@@ -28,53 +28,65 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
                     .GetEntityComponentOrDefault<SpriteComponent>(bulletSpriteEntities.First().Key);
         }
 
-        private int CreateBullet(
-            int shooterEntityId,
-            PositionComponent shooterPosition,
-            Matrix transformation,
-            double direction,
-            int damage)
+        public void FireBullet(int bulletEntityId, float direction)
         {
+            var bulletRenderComponent = new RenderComponent();
+
+            var bulletMoveComponent = new MoveComponent()
+            {
+                AccelerationSpeed = 0,
+                Speed = 2000,
+                MaxVelocitySpeed = 2000,
+                Direction = (float) direction
+            };
+            var bulletCollisionComponent = new CollisionComponent();
+
+            ComponentManager.AddComponentToEntity(bulletMoveComponent, bulletEntityId);
+            ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
+            ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
+        }
+
+        public int CreateBullet(
+            int shooterId,
+            PositionComponent shooterPosition,
+            DimensionsComponent shooterDimensions,
+            int damage,
+            float direction)
+        {
+            // We create an new position instance for the bullet that starts from the player but should
+            // not be the same as the players, as we found out when we did our test, otherwise the player
+            // will follow the same way ass the bullet.
+            var transformation =
+                Matrix.CreateTranslation(new Vector3(
+                    (float) (-shooterPosition.Position.X - shooterDimensions.Width * 0.5 + xOffset),
+                    (float) (-shooterPosition.Position.Y - shooterDimensions.Height * 0.5 + yOffset), 0)) *
+                Matrix.CreateRotationZ(direction) *
+                Matrix.CreateTranslation(shooterPosition.Position.X, shooterPosition.Position.Y, 0f);
 
             var bulletPos = new Vector2(shooterPosition.Position.X + 50, shooterPosition.Position.Y + 24);
             var finalPosition = Vector2.Transform(bulletPos, transformation);
+            var bulletEntityId = EntityManager.GetEntityManager().NewEntity();
+
+
             var bulletshooterPosition = new PositionComponent()
             {
                 Position = finalPosition,
                 ZIndex = shooterPosition.ZIndex
             };
-
-            int bulletEntityId = EntityManager.GetEntityManager().NewEntity();
-
-            var bulletRenderComponent = new RenderComponent();
-
             var bulletDimensionsComponent = new DimensionsComponent()
             {
                 Height = 10,
                 Width = 10
             };
-
-            var bulletMoveComponent = new MoveComponent()
-            {
-                AccelerationSpeed = 0,
-                Speed = 1000,
-                MaxVelocitySpeed = 1000,
-                Direction = (float) direction
-            };
             var bulletComponent = new BulletComponent()
             {
                 Damage = damage,
-                ShooterEntityId = shooterEntityId
+                ShooterEntityId = shooterId
             };
-            var bulletCollisionComponent = new CollisionComponent();
-
             ComponentManager.AddComponentToEntity(bulletshooterPosition, bulletEntityId);
+            ComponentManager.AddComponentToEntity(bulletDimensionsComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(PistolBulletSprite, bulletEntityId);
-            ComponentManager.AddComponentToEntity(bulletMoveComponent, bulletEntityId);
-            ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
-            ComponentManager.AddComponentToEntity(bulletDimensionsComponent, bulletEntityId);
-            ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
 
             return bulletEntityId;
         }
@@ -82,7 +94,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
         //Returns -1 as id if fail to create new bullet
         public int CreatePistolBullet(int shooterEntityId, double currentTime, int bulletDamage)
         {
-            var positionComponent =
+            var shooterPosition =
                 ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(shooterEntityId);
             var shooterDimensionsComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<DimensionsComponent>(shooterEntityId);
@@ -92,26 +104,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
             // We create an new position instance for the bullet that starts from the player but should
             // not be the same as the players, as we found out when we did our test, otherwise the player
             // will follow the same way ass the bullet.
-            var matrixA =
-                Matrix.CreateTranslation(new Vector3(
-                    (float) (-positionComponent.Position.X - shooterDimensionsComponent.Width * 0.5 + 100),
-                    (float) (-positionComponent.Position.Y - shooterDimensionsComponent.Height * 0.5 + 75), 0)) *
-                Matrix.CreateRotationZ(moveComponent.Direction) *
-                Matrix.CreateTranslation(positionComponent.Position.X, positionComponent.Position.Y, 0f);
 
-            var bulletEntityId = CreateBullet(
+            int bulletEntityId = CreateBullet(
                 shooterEntityId,
-                positionComponent,
-                matrixA,
-                moveComponent.Direction,
-                bulletDamage);
+                shooterPosition,
+                shooterDimensionsComponent,
+                bulletDamage,
+                moveComponent.Direction);
+
+            FireBullet(
+                bulletEntityId,
+                moveComponent.Direction);
 
             return bulletEntityId;
         }
 
         public int[] CreateShotgunBullet(int shooterEntityId, double currentTime, int bulletDamage)
         {
-            var positionComponent =
+            var shooterPosition =
                 ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(shooterEntityId);
             var shooterDimensionsComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<DimensionsComponent>(shooterEntityId);
@@ -125,23 +135,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
             // will follow the same way ass the bullet.
 
 //            var spread = new double[] {Math.PI * 0.1, Math.PI * -0.1, 0};
-            var spread = new double[] {-0.2, 0, 0.2};
+            var spread = new[] {-0.2, 0, 0.2};
 //            var spread = new double[] {0};
             var bulletEntityIds = new int[spread.Length];
             for (var i = 0; i < spread.Length; i++)
             {
-                var matrixA =
-                    Matrix.CreateTranslation(-positionComponent.Position.X, -positionComponent.Position.Y, 0f) *
-                    Matrix.CreateRotationZ(moveComponent.Direction) *
-                    Matrix.CreateTranslation(new Vector3(positionComponent.Position.X, positionComponent.Position.Y, 0));
 
-                bulletEntityIds[i] =
-                    CreateBullet(
-                        shooterEntityId,
-                        positionComponent,
-                        matrixA,
-                        moveComponent.Direction + spread[i],
-                        bulletDamage);
+                int bulletEntityId = CreateBullet(
+                    shooterEntityId,
+                    shooterPosition,
+                    shooterDimensionsComponent,
+                    bulletDamage,
+                    moveComponent.Direction);
+
+                bulletEntityIds[i] = bulletEntityId;
+                FireBullet(
+                    bulletEntityId,
+                    (float) (moveComponent.Direction + spread[i])
+                );
             }
             return bulletEntityIds;
         }

@@ -76,7 +76,6 @@ namespace Game.Entities
         // TODO should get spawn positions depending on map
         private void InitPlayerOne(int cageId, string character)
         {
-            var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
                 .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
                 .SetAction(Keys.S, EventConstants.WalkBackward)
@@ -85,7 +84,7 @@ namespace Game.Entities
                 .SetAction(Keys.Q, EventConstants.TurnAround)
                 .SetAction(Keys.E, EventConstants.FireWeapon)
                 .SetAction(Keys.LeftShift, EventConstants.LightStatus)
-                .SetAction(Keys.R, EventConstants.Running)
+                .SetAction(Keys.R, EventConstants.ReloadWeapon)
                 .Build();
 
             CreatePlayer(
@@ -108,6 +107,7 @@ namespace Game.Entities
                 .SetAction(Keys.O, EventConstants.FireWeapon)
                 .SetAction(Keys.U, EventConstants.TurnAround)
                 .SetAction(Keys.H, EventConstants.LightStatus)
+                .SetAction(Keys.P, EventConstants.ReloadWeapon)
                 .Build();
 
             CreatePlayer(
@@ -250,7 +250,8 @@ namespace Game.Entities
 
             var weaponComponent = new WeaponComponent()
             {
-                Damage = 10
+                Damage = 10,
+                ClipSize = 100
             };
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
 

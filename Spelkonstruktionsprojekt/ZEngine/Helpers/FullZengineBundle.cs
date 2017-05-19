@@ -43,7 +43,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<TankMovementSystem>().Start();
             manager.Get<WallCollisionSystem>().Start();
             manager.Get<SoundSystem>().Start();
-            manager.Get<WeaponSystem>().Start();
             manager.Get<EnemyCollisionSystem>().Start();
             manager.Get<BulletCollisionSystem>().Start();
             manager.Get<LightAbilitySystem>().Start();
@@ -62,7 +61,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             // Want to initialize penumbra after loading all the game content.
             penumbraComponent = manager.Get<FlashlightSystem>().Initialize(Dependencies);
 
-            manager.Get<WeaponSystem>().LoadBulletSpriteEntity();
         }
 
         public void Update(GameTime gameTime)

@@ -28,7 +28,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.
-                AmbientColor = new Color(new Vector3(0.5f)) // should be an entity?
+                AmbientColor = new Color(new Vector3(1f)) // should be an entity?
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
 
@@ -46,7 +46,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // attached to an moving entity.
         public void Update(GameTime gameTime, Vector2 gameDimensions)
         {
-            var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
+            var cameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
+            if (cameras.Count < 1) return;
+            var camera = cameras.First();
             var cameraViewComponent = camera.Value as CameraViewComponent;
             var cameraView = cameraViewComponent.View;
             var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));

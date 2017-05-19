@@ -32,8 +32,9 @@ namespace ZEngine.Systems
 
         private void UpdateFixedRenderables()
         {
-
-            KeyValuePair<int, IComponent> camera = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
+            var cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
+            if (cameras.Count < 1) return;
+            KeyValuePair<int, IComponent> camera = cameras.First();
 
             IEnumerable<KeyValuePair<int, IComponent>> fixedRenderables =
                 ComponentManager.GetEntitiesWithComponent(typeof(RenderComponent))
