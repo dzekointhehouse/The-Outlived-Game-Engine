@@ -73,7 +73,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         }
 
         // Animation for when the bullet should be deleted.
-        public void NewBulletAnimation(GeneralAnimation generalAnimation, int entityId)
+        public void NewBulletAnimation(GeneralAnimation generalAnimation, uint entityId)
         {
             generalAnimation.Animation = delegate(double currentTimeInMilliseconds)
             {

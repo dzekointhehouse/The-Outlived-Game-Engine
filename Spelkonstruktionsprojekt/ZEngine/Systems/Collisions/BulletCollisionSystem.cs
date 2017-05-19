@@ -53,7 +53,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
             return bulletComponent != null;
         }
 
-        private void StopBulletAnimation(double currentTime, int bulletId)
+        private void StopBulletAnimation(double currentTime, uint bulletId)
         {
             var animationComponent = ComponentManager.Instance
                 .GetEntityComponentOrDefault<AnimationComponent>(bulletId);

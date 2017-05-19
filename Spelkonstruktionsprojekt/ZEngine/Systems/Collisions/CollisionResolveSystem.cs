@@ -23,7 +23,7 @@ namespace ZEngine.Systems
             GameTime gameTime)
         {
             var collidableEntities = ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent))
-                .Select(pair => new KeyValuePair<int, IComponent>(pair.Key, pair.Value));
+                .Select(pair => new KeyValuePair<uint, IComponent>(pair.Key, pair.Value));
 
             var nEntriesBefore = 0;
             var nEntriesAfter = 0;
@@ -33,12 +33,12 @@ namespace ZEngine.Systems
             foreach (var entity in collidableEntities)
             {
                 nEntriesBefore = collidableEntities.Count();
-                var collisions = new List<int>();
+                var collisions = new List<uint>();
                 var collisionComponent = entity.Value as CollisionComponent;
                 collisionComponent.collisions.ForEach(c => collisions.Add(c));
 
 //Check every occured collision
-                foreach (var collisionTarget in collisions)
+                foreach (uint collisionTarget in collisions)
                 {
                     //If the collision matches any valid collision event
                     foreach (var collisionEvent in collisionEvents)
@@ -50,12 +50,12 @@ namespace ZEngine.Systems
                         //Collision events are made up from requirement of each party
                         //If both entities (parties) fulfil the component requirements
                         //Then there is a match for a collision event
-                        int movingEntityId = entity.Key;
+                        uint movingEntityId = entity.Key;
                         var collisionRequirements = collisionEvent.Key;
                         var collisionEventType = collisionEvent.Value;
 
 //                        Debug.WriteLine("Testing match for " + FromCollisionEventType(collisionEventType));
-                        if (MatchesCollisionEvent(collisionRequirements, movingEntityId, collisionTarget))
+                        if (MatchesCollisionEvent(collisionRequirements, movingEntityId, (uint) collisionTarget))
                         {
 //                            Debug.WriteLine("Matched with " + FromCollisionEventType(collisionEventType));
                             //When there is a match for a collision-event, an event is published
@@ -63,7 +63,7 @@ namespace ZEngine.Systems
                             var collisionEventTypeName = FromCollisionEventType(collisionEventType);
                             var collisionEventWrapper = new SpecificCollisionEvent()
                             {
-                                Entity = movingEntityId,
+                                Entity = (uint) movingEntityId,
                                 Target = collisionTarget,
                                 Event = collisionEventType,
                                 EventTime = gameTime.TotalGameTime.TotalMilliseconds
@@ -77,11 +77,11 @@ namespace ZEngine.Systems
             }
         }
 
-        private bool MatchesCollisionEvent(CollisionRequirement collisionRequirements, int movingEntityId,
-            int targetId)
+        private bool MatchesCollisionEvent(CollisionRequirement collisionRequirements, uint movingEntityId,
+            uint targetId)
         {
             return collisionRequirements.MovingEntityRequirements
-                       .Count(componentType => ComponentManager.EntityHasComponent(componentType, movingEntityId))
+                       .Count(componentType => ComponentManager.EntityHasComponent(componentType, (uint) movingEntityId))
                    == collisionRequirements.MovingEntityRequirements.Count
                    && collisionRequirements.TargetEntityRequirements
                        .Count(componentType => ComponentManager.EntityHasComponent(componentType, targetId))
@@ -123,8 +123,8 @@ namespace ZEngine.Systems
     //Used for passing event data to system responsible for resolving collision
     public class SpecificCollisionEvent
     {
-        public int Entity = -1;
-        public int Target = -1;
+        public uint Entity = default(uint);
+        public uint Target = default(uint);
         public CollisionEvent Event = 0;
         public double EventTime = 0;
     }

@@ -23,7 +23,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // system. But that's a design choice that we live by.
         public void UpdateAnimations(GameTime gameTime)
         {
-            Dictionary<int, IComponent> animations = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
+            var animations = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
             foreach (var entity in animations)
             {
                 doneAnimations.Clear();

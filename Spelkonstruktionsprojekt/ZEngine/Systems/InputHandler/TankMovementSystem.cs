@@ -102,7 +102,7 @@ namespace ZEngine.Systems
             });
         }
 
-        public void UpdateMoveComponentIfApplicable(int entityId, Action<MoveComponent> updateAction)
+        public void UpdateMoveComponentIfApplicable(uint entityId, Action<MoveComponent> updateAction)
         {
             if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
             {

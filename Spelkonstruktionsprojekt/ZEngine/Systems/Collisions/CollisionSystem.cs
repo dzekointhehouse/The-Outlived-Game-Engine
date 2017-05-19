@@ -29,12 +29,12 @@ namespace ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private Dictionary<Tuple<int, Point>, Color[]> cache = new Dictionary<Tuple<int, Point>, Color[]>();
+        private Dictionary<Tuple<uint, Point>, Color[]> cache = new Dictionary<Tuple<uint, Point>, Color[]>();
 
-        public Color[] TextureCache(int entityId, SpriteComponent spriteComponent)
+        public Color[] TextureCache(uint entityId, SpriteComponent spriteComponent)
         {
             Color[] data;
-            var key = new Tuple<int, Point>(entityId, spriteComponent.Position);
+            var key = new Tuple<uint, Point>(entityId, spriteComponent.Position);
             var status = cache.TryGetValue(key, out data);
             if (!status)
             {
@@ -116,7 +116,7 @@ namespace ZEngine.Systems
         }
 
         private const bool PROFILING = false;
-        private bool EntitiesCollide(int movingEntity, int stillEntity)
+        private bool EntitiesCollide(uint movingEntity, uint stillEntity)
         {
             Stopwatch timer;
             if(PROFILING) timer = Stopwatch.StartNew();

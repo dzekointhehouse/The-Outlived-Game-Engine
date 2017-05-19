@@ -20,9 +20,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // later when we call build all the components will be 
         // added to the new entity, whiltst creating it's id.
         private readonly List<IComponent> components = new List<IComponent>();
-        private readonly int _key = EntityManager.GetEntityManager().NewEntity();
+        private readonly uint _key = EntityManager.GetEntityManager().NewEntity();
 
-        public int GetEntityKey()
+        public uint GetEntityKey()
         {
             return _key;
         }
@@ -250,7 +250,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public int BuildAndReturnId()
+        public uint BuildAndReturnId()
         {
             return Build()
                 .GetEntityKey();

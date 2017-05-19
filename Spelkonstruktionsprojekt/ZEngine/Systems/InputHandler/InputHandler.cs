@@ -23,7 +23,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         private readonly EventBus EventBus = EventBus.Instance;
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private static Dictionary<int, GamePadState> oldGamePadState = new Dictionary<int, GamePadState>();
+        private static Dictionary<uint, GamePadState> oldGamePadState = new Dictionary<uint, GamePadState>();
 
         public void HandleGamePadInput(GameTime gameTime)
         {
@@ -155,7 +155,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         public KeyEvent KeyEvent;
         public Keys Key;
         public string EventName;
-        public int EntityId;
+        public uint EntityId;
         public double EventTime;
     }
 

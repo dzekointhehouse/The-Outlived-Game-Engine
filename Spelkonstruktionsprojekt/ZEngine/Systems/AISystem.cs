@@ -84,7 +84,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        public void BeginWander(int entityId, double startTime)
+        public void BeginWander(uint entityId, double startTime)
         {
             var animationComponent = GetOrCreateDefault(entityId);
             var animation = new GeneralAnimation
@@ -98,7 +98,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             animationComponent.Animations.Add(animation);
         }
 
-        public void NewWanderAnimation(int entityId, GeneralAnimation generalAnimation)
+        public void NewWanderAnimation(uint entityId, GeneralAnimation generalAnimation)
         {
             var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
             var aiComponent = ComponentManager.GetEntityComponentOrDefault<AIComponent>(entityId);
@@ -138,7 +138,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             };
         }
 
-        private AnimationComponent GetOrCreateDefault(int entityId)
+        private AnimationComponent GetOrCreateDefault(uint entityId)
         {
             var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
             if (animationComponent != null) return animationComponent;

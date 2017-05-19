@@ -61,7 +61,24 @@ namespace ZEngine.Systems
 //                    + "  position " + positionComponent.Position
 //                );
             }
+            // Future implementation
+
+            //var playerComponents = ComponentManager.GetEntitiesWithComponent(typeof(PlayerComponent));
+            //foreach (var player in playerComponents)
+            //{
+            //    var cameraComponent = ComponentManager.GetEntityComponentOrDefault(typeof(CameraViewComponent), player.Key);
+            //    CameraViewComponent camera = cameraComponent as CameraViewComponent;
+            //    var positionComponent = ComponentManager.GetEntityComponentOrDefault(typeof(PositionComponent), player.Key);
+            //    var position = positionComponent as PositionComponent;
+
+            //    var x = MathHelper.Clamp(position.Position.X, camera.View.X + 50, camera.View.Width - 50);
+            //    var y = MathHelper.Clamp(position.Position.Y, camera.View.Y + 50, camera.View.Height - 50);
+
+            //    position.Position = new Vector2(x, y);
+            //}
         }
+
+
 
         public void ApplyVelocityLimits(MoveComponent moveComponent)
         {
@@ -100,7 +117,7 @@ namespace ZEngine.Systems
             return new Vector2((float) x, (float) y);
         }
 
-        public bool HasCollided(int entityId)
+        public bool HasCollided(uint entityId)
         {
             if (ComponentManager.EntityHasComponent<CollisionComponent>(entityId))
             {

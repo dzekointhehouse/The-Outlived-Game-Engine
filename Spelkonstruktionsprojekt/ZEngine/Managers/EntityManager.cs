@@ -13,8 +13,8 @@ namespace ZEngine.Managers
         // The next unique entity id that will be generated.
         // List with all the unique entities.
         private static EntityManager _entityManager;
-        private int _nextEntityId;
-        private List<int> _existingEntities;
+        private uint _nextEntityId;
+        private List<uint> _existingEntities;
 
         // _____________________________________________________________________________________________________________________ //
 
@@ -25,7 +25,7 @@ namespace ZEngine.Managers
         private EntityManager()
         {
             _nextEntityId = 0;
-            _existingEntities = new List<int>();
+            _existingEntities = new List<uint>();
 
         }
 
@@ -50,7 +50,7 @@ namespace ZEngine.Managers
         // to build a gameobject with components.
         // Add new entity id to the list of entites and return it
         // while generating a new id for the next call.
-        public int NewEntity()
+        public uint NewEntity()
         {
             _existingEntities.Add(_nextEntityId);
             var entityId = _nextEntityId++;
@@ -58,7 +58,7 @@ namespace ZEngine.Managers
             return entityId;
         }
 
-        private void AddMandatoryComponents(int entityId)
+        private void AddMandatoryComponents(uint entityId)
         {
             var stateComponent = new StateComponent();
             var tagComponent = new TagComponent();
@@ -69,7 +69,7 @@ namespace ZEngine.Managers
         // Completely deletes the entity and all components
         // that are associated with it, thats why it needs to
         // use the component manager instance.
-        public void DeleteEntity(int entityId)
+        public void DeleteEntity(uint entityId)
         {
             _existingEntities.Remove(entityId);
             ComponentManager.Instance.DeleteEntity(entityId);
@@ -77,7 +77,7 @@ namespace ZEngine.Managers
 
         // Returns the complete list with all of the existing 
         // Entities, that have been created.
-        public List<int> GetListWithEntities()
+        public List<uint> GetListWithEntities()
         {
             return _existingEntities;
         }

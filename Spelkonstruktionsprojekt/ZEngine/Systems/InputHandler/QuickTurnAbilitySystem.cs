@@ -39,7 +39,7 @@ namespace ZEngine.Systems.InputHandler
             animationComponent.Animations.Add(animation);
         }
 
-        public void NewTurningAnimation(int entityId, GeneralAnimation generalAnimation, MoveComponent moveComponent)
+        public void NewTurningAnimation(uint entityId, GeneralAnimation generalAnimation, MoveComponent moveComponent)
         {
             double start = moveComponent.Direction;
             double target = start + Math.PI;
@@ -55,7 +55,7 @@ namespace ZEngine.Systems.InputHandler
             };
         }
 
-        private AnimationComponent GetOrCreateDefault(int entityId)
+        private AnimationComponent GetOrCreateDefault(uint entityId)
         {
             var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
             if (animationComponent != null) return animationComponent;

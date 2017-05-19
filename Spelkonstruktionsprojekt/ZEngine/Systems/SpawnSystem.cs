@@ -159,7 +159,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
         
-       public int CreatePickup(int type, SpriteComponent pickupComponent)
+       public uint CreatePickup(int type, SpriteComponent pickupComponent)
         {
             var entity = EntityManager.GetEntityManager().NewEntity();
             var coll = new CollisionComponent();

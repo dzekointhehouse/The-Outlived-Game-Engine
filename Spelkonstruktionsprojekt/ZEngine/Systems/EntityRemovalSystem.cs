@@ -175,7 +175,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // general animation. This action will then be performed in another system and can do it's
         // own stuff independently of this system later on. Good for when we want to delete the sprite
         // later on.
-        public void AttachNewDeathFadeAwayAnimation(GeneralAnimation animation, int entityKey)
+        public void AttachNewDeathFadeAwayAnimation(GeneralAnimation animation, uint entityKey)
         {
             animation.Animation = delegate(double currentTime)
             {

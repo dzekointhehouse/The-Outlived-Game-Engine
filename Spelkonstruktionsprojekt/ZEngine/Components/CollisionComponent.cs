@@ -7,6 +7,6 @@ namespace ZEngine.Components
         public bool IsCage = false;
 
         //each int is an entityId
-        public List<int> collisions = new List<int>();
+        public List<uint> collisions = new List<uint>();
     }
 }

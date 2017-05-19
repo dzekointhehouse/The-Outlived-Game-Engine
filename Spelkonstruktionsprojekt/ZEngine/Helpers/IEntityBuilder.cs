@@ -14,7 +14,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// other reason.
         /// </summary>
         /// <returns> entity id </returns>
-        int GetEntityKey();
+        uint GetEntityKey();
 
         /// <summary>
         /// Gives the entity a vector to position.
