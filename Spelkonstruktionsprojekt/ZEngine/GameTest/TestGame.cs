@@ -262,7 +262,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         }
 
         //The camera cage keeps players from reaching the edge of the screen
-        public int SetupCameraCage()
+        public uint SetupCameraCage()
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
 
@@ -316,8 +316,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
 
             MapHelper mapcreator = new MapHelper(tileTypes);
-            mapcreator.AddNumberToCollisionList(2);
-            mapcreator.CreateMapTiles(MapPack.TheWallMap, 36);
+
+            mapcreator.CreateMapTiles(MapPack.TheWallMap, 100);
         }
 
         public void SetupCamera()
@@ -390,7 +390,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
         }
 
-        public void InitPlayers(int cageId)
+        public void InitPlayers(uint cageId)
         {
             var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
@@ -447,7 +447,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public void CreatePlayer(Vector2 HUDposition, string name, ActionBindings actionBindings,
             Vector2 position = default(Vector2), bool movable = true,
             MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false,
-            bool disabled = false, bool isCaged = false, int cageId = 0)
+            bool disabled = false, bool isCaged = false, uint cageId = 0)
         {
             if (disabled) return;
 
@@ -520,7 +520,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 var cageComponent = new CageComponent()
                 {
-                    CageId = cageId
+                    CageId = (int) cageId
                 };
                 ComponentManager.Instance.AddComponentToEntity(cageComponent, playerEntity.GetEntityKey());
             }

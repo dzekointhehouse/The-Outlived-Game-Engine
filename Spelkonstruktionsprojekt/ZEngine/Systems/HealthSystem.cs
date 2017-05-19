@@ -55,7 +55,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             return true;
         }
 
-        private void CheckIfDead(int entityId, HealthComponent healthComponent, GameTime gameTime)
+        private void CheckIfDead(uint entityId, HealthComponent healthComponent, GameTime gameTime)
         {
             if (healthComponent.CurrentHealth <= 0 && healthComponent.Alive)
             {

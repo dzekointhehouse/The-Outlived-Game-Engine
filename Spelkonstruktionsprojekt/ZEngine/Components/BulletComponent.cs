@@ -10,6 +10,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     public class BulletComponent : IComponent
     {
         public int Damage;
-        public int ShooterEntityId;
+        public uint ShooterEntityId;
     }
 }

@@ -51,7 +51,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             GraphicsDevice graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             Rectangle titlesafearea = graphics.Viewport.TitleSafeArea;
 
-            Dictionary<int, IComponent> HUDComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderHUDComponent));
+            Dictionary<uint, IComponent> HUDComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderHUDComponent));
 
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
@@ -205,7 +205,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             GraphicsDevice graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             Rectangle titlesafearea = graphics.Viewport.TitleSafeArea;
 
-            Dictionary<int, IComponent> HUDComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderHUDComponent));
+            Dictionary<uint, IComponent> HUDComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderHUDComponent));
 
             foreach (var instance in HUDComponents)
             {

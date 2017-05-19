@@ -53,7 +53,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         }
 
-        private void HandleHealthPickup(int player, int pickup)
+        private void HandleHealthPickup(uint player, uint pickup)
         {
             var HealthComponent = (HealthComponent)ComponentManager.GetEntityComponentOrDefault(typeof(HealthComponent), player);
             var HealthPickupComponent = (HealthPickupComponent) ComponentManager.GetEntityComponentOrDefault(typeof(HealthPickupComponent), pickup);
@@ -65,7 +65,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         }
 
 
-        private void HandleAmmoPickup(int player, int pickup)
+        private void HandleAmmoPickup(uint player, uint pickup)
         {
             var AmmoComponent = (AmmoComponent)ComponentManager.GetEntityComponentOrDefault(typeof(AmmoComponent), player);
             var AmmoPickupComponent = (AmmoPickupComponent)ComponentManager.GetEntityComponentOrDefault(typeof(AmmoPickupComponent), pickup);
@@ -77,7 +77,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
          This function tags the pickup for deletion. 
          Should only be called when the pickup was actually used up.
         */
-        private void DeletePickup(int pickup)
+        private void DeletePickup(uint pickup)
         {
             var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(pickup);
 

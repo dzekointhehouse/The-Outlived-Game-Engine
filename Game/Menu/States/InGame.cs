@@ -146,7 +146,7 @@ namespace Game.Menu.States
         }
 
         //The camera cage keeps players from reaching the edge of the screen
-        public int SetupCameraCage()
+        public uint SetupCameraCage()
         {
             var cameraCage = EntityManager.GetEntityManager().NewEntity();
 

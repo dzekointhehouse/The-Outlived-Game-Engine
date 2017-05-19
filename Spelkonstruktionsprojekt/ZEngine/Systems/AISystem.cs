@@ -20,16 +20,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private ComponentManager ComponentManager = ComponentManager.Instance;
         private Random Random = new Random();
 
-        private MoveComponent aiMoveComponent;
-        private AIComponent aiComponent;
-
         public void Update(GameTime gameTime)
         {
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
-                aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                var aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 var aiPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
-                aiComponent = entity.Value as AIComponent;
+                var aiComponent = entity.Value as AIComponent;
                 if (aiMoveComponent == null || aiPositionComponent == null || aiComponent == null) continue;
                 var aiPosition = aiPositionComponent.Position;
 
@@ -46,8 +43,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     var hasFlashlightOn = light.Light.Enabled;
 
                     var distance = Vector2.Distance(positionComponent.Position, aiPosition);
-
-                    //WallDetector(aiMoveComponent.CurrentAcceleration);
 
                     if (closestPlayerHasFlashlightOn && hasFlashlightOn)
                     {
@@ -80,7 +75,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     aiMoveComponent.Direction = (float) newDirection;
                     aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
                 }
-                else if (aiComponent.Wander == false || aiMoveComponent.CurrentAcceleration == 0)
+                else if (aiComponent.Wander == false)
                 {
                     aiComponent.Wander = true;
                     aiMoveComponent.CurrentAcceleration = 3;
@@ -89,23 +84,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        public void WallDetector(double zombieAcceleration)
-        {
-            if (zombieAcceleration == 0)
-            {
-                Timer timer = new Timer(1000);
-                timer.Elapsed += new ElapsedEventHandler(ContinueWandering);
-                timer.Enabled = true;
-            }
-        }
-
-        public void ContinueWandering(object source, ElapsedEventArgs e)
-        {
-            aiComponent.Wander = true;
-            aiMoveComponent.CurrentAcceleration = 3;
-        }
-
-        public void BeginWander(int entityId, double startTime)
+        public void BeginWander(uint entityId, double startTime)
         {
             var animationComponent = GetOrCreateDefault(entityId);
             var animation = new GeneralAnimation
@@ -119,7 +98,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             animationComponent.Animations.Add(animation);
         }
 
-        public void NewWanderAnimation(int entityId, GeneralAnimation generalAnimation)
+        public void NewWanderAnimation(uint entityId, GeneralAnimation generalAnimation)
         {
             var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
             var aiComponent = ComponentManager.GetEntityComponentOrDefault<AIComponent>(entityId);
@@ -159,7 +138,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             };
         }
 
-        private AnimationComponent GetOrCreateDefault(int entityId)
+        private AnimationComponent GetOrCreateDefault(uint entityId)
         {
             var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
             if (animationComponent != null) return animationComponent;

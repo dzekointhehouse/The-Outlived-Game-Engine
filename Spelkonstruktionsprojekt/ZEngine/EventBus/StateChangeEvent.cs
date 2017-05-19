@@ -10,11 +10,11 @@ namespace ZEngine.EventBus
     public class StateChangeEvent
     {
         public const string EventName = "StateChanged";
-        public readonly int EntityId;
+        public readonly uint EntityId;
         public readonly double EventTime;
         public readonly ImmutableList<State> NewState;
 
-        public StateChangeEvent(int entityId, double eventTime, IEnumerable<State> newState)
+        public StateChangeEvent(uint entityId, double eventTime, IEnumerable<State> newState)
         {
             EntityId = entityId;
             EventTime = eventTime;
@@ -24,10 +24,10 @@ namespace ZEngine.EventBus
 
     public class StateChangeEventBuilder
     {
-        private int _entityId = -1;
+        private uint _entityId = default(uint);
         private double _eventTime;
 
-        public StateChangeEventBuilder Entity(int id)
+        public StateChangeEventBuilder Entity(uint id)
         {
             _entityId = id;
             return this;

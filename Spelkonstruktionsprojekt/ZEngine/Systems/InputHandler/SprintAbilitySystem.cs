@@ -71,7 +71,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 //            moveComponent.Speed = moveComponent.MaxVelocitySpeed;
         }
 
-        private AnimationComponent GetOrCreateDefault(int entityId)
+        private AnimationComponent GetOrCreateDefault(uint entityId)
         {
             var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
             if (animationComponent == null)

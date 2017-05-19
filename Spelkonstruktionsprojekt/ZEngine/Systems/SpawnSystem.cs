@@ -128,37 +128,38 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
 
                 Random rand = new Random();
-                Rectangle SpawnArea = new Rectangle();
-
-                SpawnArea.Width = 100;
-                SpawnArea.Height = 100;
+                // Rectangle SpawnArea = new Rectangle();
+                Point spawnArea = Point.Zero;
+                //SpawnArea.Width = 100;
+                //SpawnArea.Height = 100;
 
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
                     do
                     {
-                        SpawnArea.X = rand.Next(0, 2200);
-                        SpawnArea.Y = rand.Next(0, 1100);
+                        spawnArea.X = rand.Next(0, 2200);
+                        spawnArea.Y = rand.Next(0, 1100);
                     }
-                    while (SpawnArea.Intersects(cameraComponent.View));
-                    CreateEnemy(SpawnArea.Center.X, SpawnArea.Center.Y, SpawnSpriteComponent);
-                }
-                for (int j= 0; j < GlobalSpawnComponent.WaveSize; j++) {
-                    
-                    if(/*rand.Next(0, 1)*/1 == 1)
+                    while (cameraComponent.View.Contains(spawnArea));
+                    CreateEnemy(spawnArea.X, spawnArea.Y, SpawnSpriteComponent);
+
+                    if (rand.Next(0, 1) == 1)
                     {
-                        if (/*rand.Next(1, 3)*/2 == 1)
+                        if (rand.Next(1, 3) == 1)
                         {
-                           // CreatePickup(1,HealthpickupComponent);
-                            
+                            CreatePickup(1, HealthpickupComponent);
+
                         }
-                        { CreatePickup(2, ammopickupComponent);}
+                        else
+                        {
+                            CreatePickup(2, ammopickupComponent);
+                        }
                     }
                 }
-                GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
             }
         }
-       public int CreatePickup(int type, SpriteComponent pickupComponent)
+        
+       public uint CreatePickup(int type, SpriteComponent pickupComponent)
         {
             var entity = EntityManager.GetEntityManager().NewEntity();
             var coll = new CollisionComponent();

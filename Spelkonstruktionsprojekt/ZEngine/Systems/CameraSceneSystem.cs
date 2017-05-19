@@ -34,9 +34,9 @@ namespace ZEngine.Systems
         {
             var cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
             if (cameras.Count < 1) return;
-            KeyValuePair<int, IComponent> camera = cameras.First();
+            var camera = cameras.First();
 
-            IEnumerable<KeyValuePair<int, IComponent>> fixedRenderables =
+            IEnumerable<KeyValuePair<uint, IComponent>> fixedRenderables =
                 ComponentManager.GetEntitiesWithComponent(typeof(RenderComponent))
                     .Where(entity =>
                     {
@@ -68,8 +68,8 @@ namespace ZEngine.Systems
         private void UpdateCamera(GameTime gameTime)
         {
             double delta = gameTime.ElapsedGameTime.TotalSeconds;
-            Dictionary<int, IComponent> followEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraFollowComponent));
-            Dictionary<int, IComponent> cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
+            var followEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraFollowComponent));
+            var cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
             // Average position of all the players to be used
             // when we are to calculate the cameras position.
@@ -104,7 +104,7 @@ namespace ZEngine.Systems
                 if (camera.Scale <= camera.MaxScale && camera.Scale >= camera.MinScale)
                 {
                     // We get an OK decimal by dividing camera dimension over itself and the max with.
-                    camera.Scale =(camera.View.Width / (maxDistance + camera.View.Width) ) + 0.5f;
+                    camera.Scale =(camera.View.Width / (maxDistance + camera.View.Width) );
                    // If we surpass the limit reset it.
                     if (camera.Scale < camera.MinScale)
                         camera.Scale = camera.MinScale;

@@ -31,7 +31,7 @@ namespace ZEngine.Systems
 
         private void HandleBulletCollisionScore(SpecificCollisionEvent CollisionEvent)
         {
-            int shooter = ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(CollisionEvent.Entity).ShooterEntityId;
+            uint shooter = ComponentManager.Instance.GetEntityComponentOrDefault<BulletComponent>(CollisionEvent.Entity).ShooterEntityId;
             if (shooter == CollisionEvent.Target) return;
 
             var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
@@ -41,7 +41,7 @@ namespace ZEngine.Systems
             var shooterScore = ComponentManager.Instance.GetEntityComponentOrDefault<EntityScoreComponent>(shooter);
             if (shooterScore == null) return;
 
-            if (DifferentTeams(CollisionEvent.Target, shooter))
+            if (DifferentTeams((uint) CollisionEvent.Target, shooter))
             { 
                 shooterScore.score += GameScore.damageScore;
             }
@@ -57,7 +57,7 @@ namespace ZEngine.Systems
             if (GameScoreList.Count <= 0) return;
             var GameScore = (GameScoreComponent)GameScoreList.First().Value;
 
-            if (DifferentTeams(CollisionEvent.Target, CollisionEvent.Entity))
+            if (DifferentTeams((uint) CollisionEvent.Target, CollisionEvent.Entity))
             {
                 EntityScore.score += GameScore.damagePenalty;
             }
@@ -97,7 +97,7 @@ namespace ZEngine.Systems
          * This function checks if the involved parties were on the same team or not
          * 
          */
-        private bool DifferentTeams(int target, int entity)
+        private bool DifferentTeams(uint target, uint entity)
         {
             var targetTeamComponent = (TeamComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(TeamComponent), target);
             var entityTeamComponent = (TeamComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(TeamComponent), entity);

@@ -62,7 +62,7 @@ namespace Game.Systems.Abilities
                 }
             }
 
-            var bulletIds = new int[1];
+            var bulletIds = new uint[1];
             for (var i = 0; i < bulletIds.Length; i++)
             {
                 bulletIds[i] =
@@ -89,7 +89,7 @@ namespace Game.Systems.Abilities
         }
 
         // Animation for when the bullet should be deleted.
-        public void NewBulletAnimation(GeneralAnimation generalAnimation, int[] bulletIds,
+        public void NewBulletAnimation(GeneralAnimation generalAnimation, uint[] bulletIds,
             MoveComponent shooterMoveComponent)
         {
             var lastFired = generalAnimation.StartOfAnimation;
