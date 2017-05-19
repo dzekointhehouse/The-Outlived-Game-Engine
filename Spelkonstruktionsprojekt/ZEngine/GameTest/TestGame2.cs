@@ -56,7 +56,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             CreateObjects();
 
-            //penumbraComponent = lightSystems.Initialize(gameDependencies);
+            //penumbraComponent = lightSystems.LoadPenumbra(gameDependencies);
         }
 
         protected override void UnloadContent()

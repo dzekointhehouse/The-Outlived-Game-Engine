@@ -212,13 +212,12 @@ namespace Game.Menu.States
             var cameraViewComponent = new CameraViewComponent()
             {
                 View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y),
-                MinScale = 0.5f
+                MinScale = 0.5f,
+                ViewportDimension = new Vector2(viewportDimensions.X, viewportDimensions.Y),
+               
             };
 
-            var position = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 500 };
-
             ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
-            ComponentManager.Instance.AddComponentToEntity(position, cameraEntity);
         }
     }
 }

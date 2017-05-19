@@ -56,7 +56,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                     inputEvent.EntityId,
                     inputEvent.EventTime,
                     weaponComponent.Damage);
-            if (bulletEntityId == -1) return;
+            if (bulletEntityId == default(uint)) return;
 
             var animationComponent = new AnimationComponent();
             ComponentManager.AddComponentToEntity(animationComponent, bulletEntityId);

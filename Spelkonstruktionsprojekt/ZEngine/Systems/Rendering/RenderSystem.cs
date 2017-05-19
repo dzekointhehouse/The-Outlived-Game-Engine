@@ -32,7 +32,7 @@ namespace ZEngine.Systems
 
         private RenderComponent renderComponent;
         private MoveComponent moveComponent;
-        private RenderOffsetComponent offsetComponent;
+        //private RenderOffsetComponent offsetComponent;
         private DimensionsComponent dimensionsComponent;
         public float GameScale { get; set; } = 1.0f;
         private CameraViewComponent cameraViewComponent;
@@ -55,27 +55,9 @@ namespace ZEngine.Systems
 
             Rectangle cameraView = cameraEntities.View;
 
-            //    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
-            // Using a matrix makes it easier for us to move the camera
-            // independently of all the sprites, which means that we easily can
-            // rotate, scale, etc. without much effort. plus its recommended.
-            // What we do when are multiplying matrices is that we combine them
-            // so the result will be a matrix that does the combination of it's 
-            // products. Now when we use this transform in the begindraw, it will
-            // affect all the stuff that is drawn after it.
-            // We create a translation matrix so we are able to move our points easily 
-            // from one place to another. 
-            // X,Y and Z, ofcourse Z will be 0.
-            // We won't be having any rotation.
-            // Our zoom effect will be doing its jobb here,
-            // as this matrix will easily help us achieve it.
 
-            Matrix transform = Matrix.Identity *
-                               Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
-                               Matrix.CreateRotationZ(0) *
-                               Matrix.CreateScale(new Vector3(cameraEntities.Scale, cameraEntities.Scale, 0));
 
-            gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, transform);
+            gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, cameraEntities.Transform);
             DrawEntities(gameDependencies.SpriteBatch);
             gameDependencies.SpriteBatch.End();
         }
@@ -99,17 +81,17 @@ namespace ZEngine.Systems
                 if (sprite == null) continue;
 
                 renderComponent = entity.Value as RenderComponent;
-                offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
+                //offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
                 moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 dimensionsComponent = ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(entity.Key);
                 
                 int zIndex = positionComponent.ZIndex;
-                var offset = offsetComponent?.Offset ?? default(Vector2);
+                //var offset = offsetComponent?.Offset ?? default(Vector2);
                 float angle = moveComponent?.Direction ?? 0;
                 var destinationRectangle =
                     new Rectangle(
-                        (int) (positionComponent.Position.X + offset.X),
-                        (int) (positionComponent.Position.Y + offset.Y),
+                        (int) (positionComponent.Position.X),
+                        (int) (positionComponent.Position.Y),
                         (int) (dimensionsComponent.Width * sprite.Scale),
                         (int) (dimensionsComponent.Width * sprite.Scale)
                     );
@@ -118,7 +100,8 @@ namespace ZEngine.Systems
                 // with the viewport.
                 var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
                 cameraViewComponent = camera.Value as CameraViewComponent;
-                if (true || cameraViewComponent.View.Intersects(destinationRectangle))
+
+                if ( true ||cameraViewComponent.View.Intersects(destinationRectangle))
                 {
                     var spriteCrop = new Rectangle(
                         sprite.Position,

@@ -31,7 +31,7 @@ namespace Game
         protected internal KeyboardState OldKeyboardState;
         protected internal GamePadState OldGamepadState;
         
-        protected internal FullZengineBundle Engine;
+        protected internal FullSystemBundle Engine;
         protected internal Viewport Viewport;
         protected internal SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         // To keep track of the game configurations made
@@ -64,7 +64,7 @@ namespace Game
             GameOver
         };
 
-        public GameManager(FullZengineBundle gameBundle)
+        public GameManager(FullSystemBundle gameBundle)
         {
             Engine = gameBundle;
             Viewport = Engine.Dependencies.Game.GraphicsDevice.Viewport;

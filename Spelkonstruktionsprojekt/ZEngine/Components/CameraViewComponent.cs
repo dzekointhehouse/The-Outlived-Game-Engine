@@ -14,6 +14,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         // this view rectangle.
         public Rectangle View { get; set; }
 
+        public Vector2 ViewportDimension { get; set; }
+
+        public Vector2 Center { get; set; }
+
         // Scale of all the stuff rendered.
         public float Scale { get; set; } = 1f;
 
@@ -24,5 +28,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         // We also need a min scale limit.
         public float MinScale { get; set; } = 0.1f;
+
+        public Matrix Transform { get; set; }
     }
 }

@@ -34,13 +34,13 @@ namespace Game
         private Vector2 viewportDimensions = new Vector2(1920, 1080); // HD baby!
         public SpriteBatch spriteBatch;
 
-        private readonly FullZengineBundle gameBundle;
+        private readonly FullSystemBundle gameBundle;
         private GameManager _gameManager;
 
 
         public OutlivedGame()
         {
-            gameBundle = new FullZengineBundle();
+            gameBundle = new FullSystemBundle();
 
             gameBundle.Dependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {

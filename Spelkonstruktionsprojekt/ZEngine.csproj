@@ -105,7 +105,7 @@
     <Compile Include="ZEngine\Helpers\DefaultMaps\MapPack.cs" />
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
     <Compile Include="ZEngine\Helpers\EntityBuilder.cs" />
-    <Compile Include="ZEngine\Helpers\FullZengineBundle.cs" />
+    <Compile Include="ZEngine\Helpers\FullSystemBundle.cs" />
     <Compile Include="ZEngine\Helpers\MapHelper.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Program.cs" />

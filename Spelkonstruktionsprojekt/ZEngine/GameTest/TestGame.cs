@@ -51,7 +51,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private SpriteFont scoreFont;
         private Texture2D gameOver;
 
-        private readonly FullZengineBundle gameBundle;
+        private readonly FullSystemBundle gameBundle;
 
         // Game states
         private enum GameState { Start, InGame, GameOver };
@@ -59,7 +59,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public TestGame()
         {
-            gameBundle = new FullZengineBundle();
+            gameBundle = new FullSystemBundle();
 
             gameBundle.Dependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
@@ -327,6 +327,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             {
                 View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y),
                 MinScale = 0.5f,
+                ViewportDimension = new Vector2(viewportDimensions.X, viewportDimensions.Y)
             };
 
             var position = new PositionComponent() { Position = new Vector2(0, 0), ZIndex = 500 };
@@ -436,7 +437,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 collision: true, 
                 isCaged: true, 
                 cageId: cageId);
-
+        
             CreatePlayer(new Vector2(1650, 1100), "Elvir", actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
                 collision: true, isCaged: true, cageId: cageId, disabled: false);
             //CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,

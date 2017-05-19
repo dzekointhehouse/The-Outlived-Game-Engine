@@ -27,7 +27,7 @@ namespace ZEngine.Systems
         public void Update(GameTime gameTime)
         {
             UpdateCamera(gameTime);
-            UpdateFixedRenderables();
+            //UpdateFixedRenderables();
         }
 
         private void UpdateFixedRenderables()
@@ -86,6 +86,7 @@ namespace ZEngine.Systems
                 CameraViewComponent camera = cameraEntity.Value as CameraViewComponent;
 
 
+
                 foreach (var entity in followEntities)
                 {
                     PositionComponent pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
@@ -93,46 +94,48 @@ namespace ZEngine.Systems
 
                     // Getting the maximum distance for scaling, to be used
                     // for the much wanted zooming effect later on.
-                    float distance = Vector2.Distance(camera.View.Center.ToVector2(), pos.Position);
+                    float distance = Vector2.Distance(camera.Center, pos.Position);
+
                     maxDistance = Math.Max(distance, maxDistance);
                 }
 
                 averagePosition /= followEntities.Count;
-
-
+                // set the cameras center
+                camera.Center = new Vector2(averagePosition.X, averagePosition.Y);
+               // camera.Center = new Vector2(averagePosition.X - (camera.ViewportDimension.X * 0.5f), averagePosition.Y - (camera.ViewportDimension.Y * 0.5f));
                 // Setting the zoom to  the camera.
                 if (camera.Scale <= camera.MaxScale && camera.Scale >= camera.MinScale)
                 {
                     // We get an OK decimal by dividing camera dimension over itself and the max with.
-                    camera.Scale =(camera.View.Width / (maxDistance + camera.View.Width) );
-                   // If we surpass the limit reset it.
+                    // If we surpass the limitthen we reset the scale.
+                    camera.Scale = (camera.View.Width / (maxDistance + camera.View.Width));
                     if (camera.Scale < camera.MinScale)
                         camera.Scale = camera.MinScale;
                     else if (camera.Scale > camera.MaxScale)
                         camera.Scale = camera.MaxScale;
 
-                    Debug.WriteLine(camera.Scale);
+                   // Debug.WriteLine(camera.Scale);
                 }
 
-                Point screenCenter = camera.View.Center;
-                PositionComponent cameraPositionComponent =
-                    ComponentManager.GetEntityComponentOrDefault<PositionComponent>(cameraEntity.Key);
+                //    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
+                // Using a matrix makes it easier for us to move the camera
+                // independently of all the sprites, which means that we easily can
+                // rotate, scale, etc. without much effort, plus its recommended.
+                // What we do when multiplying matrices is that we combine them
+                // so the result will be a matrix that does the combination of it's 
+                // products. Now when we use this transform in the begindraw, it will
+                // affect all the stuff that is drawn after it.
+                // We create a translation matrix so we are able to move our points easily 
+                // from one place to another, and we want to translate the point according to
+                // the players average position which is the center of the screen. 
+                // X,Y and Z, ofcourse Z will be 0. We won't be having any rotation.
+                // Our zoom effect will be doing its jobb here also , when we scale and adjust the points
+                // accordingly.
 
-                //Setting the position of the red dot (for debugging camera follow of multiple entities)
-                cameraPositionComponent.Position = averagePosition;
-
-                Vector2 centerVector = new Vector2(screenCenter.X, screenCenter.Y);
-                Vector2 direction = averagePosition - centerVector;
-                float cameraSpeed = (float) (5 * delta);
-                float ratioY = camera.View.Width / (float) camera.View.Height;
-                float ratioX = camera.View.Height / (float) camera.View.Width;
-                Vector2 speed = new Vector2(cameraSpeed * ratioX, cameraSpeed * ratioY);
-                Vector2 oldPosition = new Vector2(camera.View.X, camera.View.Y);
-                Vector2 newPosition = oldPosition + direction * speed;
-                camera.View = new Rectangle((int) Math.Ceiling(newPosition.X), (int) Math.Ceiling(newPosition.Y),
-                    camera.View.Width, camera.View.Height);
-
-                //Debug.WriteLine("CAMERA POSITION " + new Vector2(camera.View.X, camera.View.Y));
+                camera.Transform = Matrix.Identity *
+                                   Matrix.CreateTranslation(new Vector3(-camera.Center.X, -camera.Center.Y, 0)) *
+                                   Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, 0))*
+                                   Matrix.CreateTranslation(new Vector3(camera.ViewportDimension.X*0.5f, camera.ViewportDimension.Y * 0.5f, 0));
             }
         }
     }
