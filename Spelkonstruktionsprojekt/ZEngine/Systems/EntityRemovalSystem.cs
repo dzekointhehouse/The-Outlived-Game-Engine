@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Audio;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using UnityEngine;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -64,23 +65,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                     // We want to remove all the components for the entity except for the 
                     // spriteComponent and health, we need them still.
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(CameraFollowComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<CameraFollowComponent>(entity.Key);
                     //ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SoundComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(WeaponComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(ActionBindings), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(CollisionComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<SoundComponent>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<WeaponComponent>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<ActionBindings>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<CollisionComponent>(entity.Key);
 //                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entity.Key);
                     var moveComponent = ComponentManager.Instance
                         .GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                     if (moveComponent != null)
                     {
+                        moveComponent.Speed = 0;
                         moveComponent.CurrentAcceleration = 0;
                         moveComponent.AccelerationSpeed = 0;
                         moveComponent.RotationMomentum = 0;
                         moveComponent.RotationSpeed = 0;
                     }
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(AIComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<AIComponent>(entity.Key);
 
                     var lightComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
@@ -91,7 +93,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
                     if (animationComponent == null)
                     {
-                        animationComponent = new AnimationComponent();
+                        animationComponent = ComponentManager.Instance.ComponentFactory.NewComponent<AnimationComponent>();
                         ComponentManager.Instance.AddComponentToEntity(animationComponent, entity.Key);
                     }
 
@@ -129,14 +131,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                     // We want to remove all the components for the entity except for the 
                     // spriteComponent and health, we need them still.
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(CameraFollowComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SoundComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(WeaponComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(ActionBindings), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(CollisionComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(AIComponent), entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<CameraFollowComponent>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<PlayerComponent>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<SoundComponent>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<WeaponComponent>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<ActionBindings>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<CollisionComponent>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<MoveComponent>(entity.Key);
+                    ComponentManager.Instance.RemoveComponentFromEntity<AIComponent>(entity.Key);
                     //TODO reinsert removals
                     var lightComponent =
                         ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
@@ -147,7 +149,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
                     if (animationComponent == null)
                     {
-                        animationComponent = new AnimationComponent();
+                        animationComponent = ComponentManager.Instance.ComponentFactory.NewComponent<AnimationComponent>();
                         ComponentManager.Instance.AddComponentToEntity(animationComponent, entity.Key);
                     }
 

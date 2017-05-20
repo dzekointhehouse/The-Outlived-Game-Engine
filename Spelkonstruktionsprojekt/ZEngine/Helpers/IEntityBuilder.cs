@@ -128,7 +128,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        EntityBuilder SetRendering(int width, int height);
+        EntityBuilder SetRendering(int width, int height, bool isFixed);
 
         /// <summary>
         /// Entities with the movecomponent are able to move around in the

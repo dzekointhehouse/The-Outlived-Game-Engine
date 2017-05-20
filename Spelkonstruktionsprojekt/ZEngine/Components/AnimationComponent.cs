@@ -11,5 +11,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     public class AnimationComponent : IComponent
     {
         public List<GeneralAnimation> Animations = new List<GeneralAnimation>();
+
+        public IComponent Reset()
+        {
+            Animations.Clear();
+            return this;
+        }
     }
 }

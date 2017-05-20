@@ -23,7 +23,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class SpawnSystem : ISystem
     {
-        private ComponentManager ComponentManager = ComponentManager.Instance;
+        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void CreateEnemy(int x, int y, SpriteComponent SpawnSpriteComponent)
         {
@@ -158,49 +158,31 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 }
             }
         }
-        
+
        public uint CreatePickup(int type, SpriteComponent pickupComponent)
-        {
-            var entity = EntityManager.GetEntityManager().NewEntity();
-            var coll = new CollisionComponent();
-            var dim = new DimensionsComponent()
-            {
-                Height = 40,
-                Width = 40
-            };
-            var render = new RenderComponent()
-            {
-                IsVisible = true,
-            };
-           
-            var pos = new PositionComponent()
-            {
-                Position = new Vector2(40, 40),
-                ZIndex = 100
-            };
-            var sound = new SoundComponent()
-            {
-                SoundEffectName = "pickup"
-            };
-            var ligh = new LightComponent()
-            {
-                Light = new PointLight() { },
-            };
+       {
+           var entity = new EntityBuilder()
+               .SetSound("pickup")
+               .SetPosition(new Vector2(40, 40), 100)
+               .SetRendering(40, 40)
+               .SetLight(new PointLight())
+               .SetRectangleCollision()
+               .BuildAndReturnId();
             if (type == 1 )
             {
-                ComponentManager.Instance.AddComponentToEntity(new HealthPickupComponent(), entity);
+                ComponentManager.Instance.AddComponentToEntity(
+                    ComponentManager.Instance.ComponentFactory.NewComponent<HealthPickupComponent>(),
+                    entity
+                );
             }
             else
             {
-                ComponentManager.Instance.AddComponentToEntity(new AmmoPickupComponent(), entity);
+                ComponentManager.Instance.AddComponentToEntity(
+                    ComponentManager.Instance.ComponentFactory.NewComponent<AmmoPickupComponent>(),
+                    entity
+                );
             }
             ComponentManager.Instance.AddComponentToEntity(pickupComponent, entity);
-            ComponentManager.Instance.AddComponentToEntity(sound, entity);
-            ComponentManager.Instance.AddComponentToEntity(ligh, entity);
-            ComponentManager.Instance.AddComponentToEntity(coll, entity);
-            ComponentManager.Instance.AddComponentToEntity(pos, entity);
-            ComponentManager.Instance.AddComponentToEntity(dim, entity);
-            ComponentManager.Instance.AddComponentToEntity(render, entity);
             return entity;
             //var entity = EntityManager.GetEntityManager().NewEntity();
             //var coll = new CollisionComponent();

@@ -24,7 +24,6 @@ namespace ZEngine.Systems
 
         public ISystem Start()
         {
-            
             EventBus.Subscribe<InputEvent>(EventConstants.WalkForward, WalkForwards);
             EventBus.Subscribe<InputEvent>(EventConstants.WalkBackward, WalkBackwards);
             EventBus.Subscribe<InputEvent>(EventConstants.TurnLeft, TurnLeft);
@@ -36,78 +35,65 @@ namespace ZEngine.Systems
         {
             return this;
         }
-        
+
         public void WalkForwards(InputEvent moveEvent)
         {
-            UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
+            var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(moveEvent.EntityId);
+            if (moveComponent == null) return;
+            if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
-                if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
-                {
 //                    Debug.WriteLine("WALKING FORWARDS");
-                    moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
-                    StateManager.TryAddState(moveEvent.EntityId, State.WalkingForward, moveEvent.EventTime);
-                }
-                else if(moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
-                {
-                    moveComponent.CurrentAcceleration = 0;
-                    StateManager.TryRemoveState(moveEvent.EntityId, State.WalkingForward, moveEvent.EventTime);
-                }
-            });
+                moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
+                StateManager.TryAddState(moveEvent.EntityId, State.WalkingForward, moveEvent.EventTime);
+            }
+            else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
+            {
+                moveComponent.CurrentAcceleration = 0;
+                StateManager.TryRemoveState(moveEvent.EntityId, State.WalkingForward, moveEvent.EventTime);
+            }
         }
 
         public void WalkBackwards(InputEvent moveEvent)
         {
-            UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
+            var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(moveEvent.EntityId);
+            if (moveComponent == null) return;
+            if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
-                if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
-                {
-                    moveComponent.CurrentAcceleration = -moveComponent.AccelerationSpeed;
-                    StateManager.TryAddState(moveEvent.EntityId, State.WalkingBackwards, moveEvent.EventTime);
-                }
-                else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
-                {
-                    moveComponent.CurrentAcceleration = 0;
-                    StateManager.TryRemoveState(moveEvent.EntityId, State.WalkingBackwards, moveEvent.EventTime);
-                }
-            });
+                moveComponent.CurrentAcceleration = -moveComponent.AccelerationSpeed;
+                StateManager.TryAddState(moveEvent.EntityId, State.WalkingBackwards, moveEvent.EventTime);
+            }
+            else if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyReleased)
+            {
+                moveComponent.CurrentAcceleration = 0;
+                StateManager.TryRemoveState(moveEvent.EntityId, State.WalkingBackwards, moveEvent.EventTime);
+            }
         }
 
         public void TurnRight(InputEvent moveEvent)
         {
-            UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
+            var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(moveEvent.EntityId);
+            if (moveComponent == null) return;
+            if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyDown)
             {
-                if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyDown)
-                {
-                    moveComponent.RotationMomentum = moveComponent.RotationSpeed;
-                }
-                else if(moveComponent.RotationMomentum > 0)
-                {
-                    moveComponent.RotationMomentum = 0;
-                }
-            });
+                moveComponent.RotationMomentum = moveComponent.RotationSpeed;
+            }
+            else if (moveComponent.RotationMomentum > 0)
+            {
+                moveComponent.RotationMomentum = 0;
+            }
         }
 
         public void TurnLeft(InputEvent moveEvent)
         {
-            UpdateMoveComponentIfApplicable(moveEvent.EntityId, moveComponent =>
+            var moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(moveEvent.EntityId);
+            if (moveComponent == null) return;
+            if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyDown)
             {
-                if (moveEvent.KeyEvent == ActionBindings.KeyEvent.KeyDown)
-                {
-                    moveComponent.RotationMomentum = -moveComponent.RotationSpeed;
-                }
-                else if(moveComponent.RotationMomentum < 0)
-                {
-                    moveComponent.RotationMomentum = 0;
-                }
-            });
-        }
-
-        public void UpdateMoveComponentIfApplicable(uint entityId, Action<MoveComponent> updateAction)
-        {
-            if (ComponentManager.EntityHasComponent<MoveComponent>(entityId))
+                moveComponent.RotationMomentum = -moveComponent.RotationSpeed;
+            }
+            else if (moveComponent.RotationMomentum < 0)
             {
-                var component = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
-                updateAction(component);
+                moveComponent.RotationMomentum = 0;
             }
         }
     }

@@ -22,6 +22,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         private readonly List<IComponent> components = new List<IComponent>();
         private readonly uint _key = EntityManager.GetEntityManager().NewEntity();
 
+        private ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
+
         public uint GetEntityKey()
         {
             return _key;
@@ -29,23 +31,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public EntityBuilder SetPosition(Vector2 position, int layerDepth = 400)
         {
-            PositionComponent component = new PositionComponent()
-            {
-                Position = new Vector2(position.X, position.Y),
-                ZIndex = layerDepth
-            };
+            var component = ComponentFactory.NewComponent<PositionComponent>();
+            component.Position = new Vector2(position.X, position.Y);
+            component.ZIndex = layerDepth;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetHUD(bool isOnlyHUD,string text = null, bool showStats = false)
         {
-            RenderHUDComponent component = new RenderHUDComponent()
-            {
-                HUDtext = text,
-                ShowStats = showStats,
-                IsOnlyHUD = isOnlyHUD
-            };
+
+            var component = ComponentFactory.NewComponent<RenderHUDComponent>();
+            component.HUDtext = text;
+            component.ShowStats = showStats;
+            component.IsOnlyHUD = isOnlyHUD;
             components.Add(component);
             return this;
         }
@@ -53,58 +52,47 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         public EntityBuilder SetSprite(string spriteName, Point startPosition = default(Point), int tileWidth = 0,
             int tileHeight = 0, float scale = 1f, float alpha = 1f, Texture2D sprite = null)
         {
-            SpriteComponent component = new SpriteComponent()
-            {
-                Alpha = alpha,
-                Position = startPosition,
-                Sprite = sprite,
-                Scale = scale,
-                SpriteName = spriteName,
-                TileHeight = tileHeight,
-                TileWidth = tileWidth
-            };
+            var component = ComponentFactory.NewComponent<SpriteComponent>();
+            component.Alpha = alpha;
+            component.Position = startPosition;
+            component.Sprite = sprite;
+            component.Scale = scale;
+            component.SpriteName = spriteName;
+            component.TileHeight = tileHeight;
+            component.TileWidth = tileWidth;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetLight(Light light)
         {
-            LightComponent component = new LightComponent()
-            {
-                Light = light,
-            };
+            var component = ComponentFactory.NewComponent<LightComponent>();
+            component.Light = light;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetDimensions(int width, int height)
         {
-            DimensionsComponent component = new DimensionsComponent()
-            {
-                Width = width,
-                Height = height,
-            };
+            var component = ComponentFactory.NewComponent<DimensionsComponent>();
+            component.Width = width;
+            component.Height = height;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetArtificialIntelligence(float followingDistance = 250)
         {
-            AIComponent component = new AIComponent()
-            {
-                FollowDistance = followingDistance,
-            };
+            var component = ComponentFactory.NewComponent<AIComponent>();
+            component.FollowDistance = followingDistance;
             components.Add(component);
             return this;
         }
         public EntityBuilder SetSpawn(int Wavesize)
         {
-            SpawnComponent component = new SpawnComponent()
-            {
-               WaveSize = Wavesize,
-               EnemiesDead = 0,
-
-            };
+            var component = ComponentFactory.NewComponent<SpawnComponent>();
+            component.WaveSize = Wavesize;
+            component.EnemiesDead = 0;
             components.Add(component);
             return this;
         }
@@ -112,141 +100,124 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public EntityBuilder SetPlayer(string name)
         {
-            PlayerComponent component = new PlayerComponent()
-            {
-                Name = name,
-            };
+            var component = ComponentFactory.NewComponent<PlayerComponent>();
+            component.Name = name;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetRectangleCollision(bool isCage = false)
         {
-            CollisionComponent component = new CollisionComponent()
-            {
-                IsCage = isCage,
-            };
+            var component = ComponentFactory.NewComponent<CollisionComponent>();
+            component.IsCage = isCage;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetHealth(int maxhealth = 100, int currentHealth = 100, bool alive = true)
         {
-            HealthComponent component = new HealthComponent()
-            {
-                Alive = alive,
-                CurrentHealth = currentHealth,
-                MaxHealth = maxhealth
-            };
+            var component = ComponentFactory.NewComponent<HealthComponent>();
+            component.Alive = alive;
+            component.CurrentHealth = currentHealth;
+            component.MaxHealth = maxhealth;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetScore()
         {
-            EntityScoreComponent component = new EntityScoreComponent()
-            {
-                score = 0,
-            };
+            var component = ComponentFactory.NewComponent <EntityScoreComponent>();
+            component.score = 0;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetAmmo()
         {
-            AmmoComponent component = new AmmoComponent()
-            {
-                Amount = 100,
-                SpareAmmoAmount = 10,
-                OutOfAmmo = 0,
-            };
+            var component = ComponentFactory.NewComponent<AmmoComponent>();
+            component.Amount = 100;
+            component.SpareAmmoAmount = 10;
+            component.OutOfAmmo = 0;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetTeam(int teamId)
         {
-            TeamComponent component = new TeamComponent()
-            {
-                TeamId = teamId,
-            };
+            var component = ComponentFactory.NewComponent<TeamComponent>();
+            component.TeamId = teamId;
             components.Add(component);
             return this;
         }
+
         public EntityBuilder SetSpawn(int WaveSize = 10, int EnemiesDead = 0, bool FirstRound = true)
         {
-            SpawnComponent component = new SpawnComponent()
-            {
-                WaveSize = WaveSize,
-                EnemiesDead = EnemiesDead,
-                FirstRound = FirstRound
-            };
+            var component = ComponentFactory.NewComponent<SpawnComponent>();
+            component.WaveSize = WaveSize;
+            component.EnemiesDead = EnemiesDead;
+            component.FirstRound = FirstRound;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetSound(string soundname, float volume = 1)
         {
-            SoundComponent component = new SoundComponent()
-            {
-                SoundEffectName = soundname,
-                Volume = volume
-            };
+            var component = ComponentFactory.NewComponent<SoundComponent>();
+            component.SoundEffectName = soundname;
+            component.Volume = volume;
             components.Add(component);
             return this;
         }
 
-        public EntityBuilder SetRendering(int width, int height)
+        public EntityBuilder SetRendering(int width, int height, bool isFixed = false)
         {
-            RenderComponent component = new RenderComponent();
-            this.SetDimensions(width, height);
+            var component = ComponentFactory.NewComponent<RenderComponent>();
+            SetDimensions(width, height);
+            component.Fixed = isFixed;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetMovement(float maxVelocity, float acceleration, float rotationSpeed, float direction)
         {
-            MoveComponent component = new MoveComponent()
-            {
-                MaxVelocitySpeed = maxVelocity,
-                AccelerationSpeed = acceleration,
-                RotationSpeed = rotationSpeed,
-                Direction = direction
-            };
+            var component = ComponentFactory.NewComponent<MoveComponent>();
+            component.MaxVelocitySpeed = maxVelocity;
+            component.AccelerationSpeed = acceleration;
+            component.RotationSpeed = rotationSpeed;
+            component.Direction = direction;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetInertiaDampening()
         {
-            InertiaDampeningComponent component = new InertiaDampeningComponent();
+            var component = ComponentFactory.NewComponent<InertiaDampeningComponent>();
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetBackwardsPenalty()
         {
-            BackwardsPenaltyComponent component = new BackwardsPenaltyComponent();
+            var component = ComponentFactory.NewComponent<BackwardsPenaltyComponent>();
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetCameraFollow(int id)
         {
-            CameraFollowComponent component = new CameraFollowComponent() {CameraId = id};
+            var component = ComponentFactory.NewComponent<CameraFollowComponent>();
+            component.CameraId = id;
             components.Add(component);
             return this;
         }
 
         public EntityBuilder SetCameraView(Viewport view, float minScale, int CameraId)
         {
-            var component = new CameraViewComponent()
-            {
-                View = view,
-                MinScale = minScale,
-                CameraId = CameraId,
-                ViewportDimension = new Vector2(view.Width, view.Height)
-            };
+            var component = ComponentFactory.NewComponent<CameraViewComponent>();
+            component.View = view;
+            component.MinScale = minScale;
+            component.CameraId = CameraId;
+            component.ViewportDimension = new Vector2(view.Width, view.Height);
             components.Add(component);
             return this;
         }

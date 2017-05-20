@@ -9,6 +9,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents
 {
     public class HealthPickupComponent : IComponent
     {
-        public int Amount { get; set; } = 50;
+        public int Amount { get; set; }
+
+        public HealthPickupComponent()
+        {
+            Reset();
+        }
+        
+        public IComponent Reset()
+        {
+            Amount = 50;
+            return this;
+        }
     }
 }

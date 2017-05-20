@@ -16,6 +16,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         public Dictionary<int, string> TileTypes { get; set; }
         public List<int> Collisions { get; set; } = new List<int>(10);
 
+        private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
+
         // the user defines which tiles to be used in the MapPack 
         // here, the key will be used as the position in the matrix
         // that is given in the CreateMap method.
@@ -47,14 +49,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     int positionNumber = map[y, x];
 
                     // where to place it.
-                    PositionComponent position = new PositionComponent{ Position = new Vector2(x * size, y * size), ZIndex = 1 };
-                    DimensionsComponent dimensionsComponent = new DimensionsComponent() { Height = size, Width = size };
-                    RenderComponent renderComponent = new RenderComponent() { IsVisible = true, Fixed = true};
-                
+                    PositionComponent position = ComponentFactory.NewComponent<PositionComponent>();
+                    position.Position = new Vector2(x * size, y * size);
+                    position.ZIndex = 1;
+
+                    DimensionsComponent dimensionsComponent = ComponentFactory.NewComponent<DimensionsComponent>();
+                    dimensionsComponent.Width = size;
+                    dimensionsComponent.Height = size;
+
+                    RenderComponent renderComponent = ComponentFactory.NewComponent<RenderComponent>();
+                    renderComponent.IsVisible = true;
+                    renderComponent.Fixed = true;
 
                     // We use the positionNumber from the MapPack in the dictionary so
                     // we can find which tile to use there that the user specifies.
-                    SpriteComponent spriteComponent = new SpriteComponent{ SpriteName = TileTypes[positionNumber] };
+                    SpriteComponent spriteComponent = ComponentFactory.NewComponent<SpriteComponent>();
+                    spriteComponent.SpriteName = TileTypes[positionNumber];
 
                     var id = EntityManager.GetEntityManager().NewEntity();
 
@@ -68,7 +78,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     // collision component (for walls or other obstacles)
                     if (Collisions.Contains(positionNumber))
                     {
-                        var collision = new CollisionComponent();
+                        var collision = ComponentFactory.NewComponent<CollisionComponent>();
                         ComponentManager.Instance.AddComponentToEntity(collision, id);
                     }
                 }

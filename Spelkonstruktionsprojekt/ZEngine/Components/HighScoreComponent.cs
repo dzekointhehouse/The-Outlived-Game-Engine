@@ -12,5 +12,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public string[] name = new string[10];
         public string[] score = new string[10];
         public string path;
+        public IComponent Reset()
+        {
+            return this;
+        }
     }
 }

@@ -31,21 +31,55 @@ namespace ZEngine.Systems
         private GraphicsDevice graphicsDevice;
 
         private RenderComponent renderComponent;
+
         private MoveComponent moveComponent;
+
         //private RenderOffsetComponent offsetComponent;
         private DimensionsComponent dimensionsComponent;
+
         public float GameScale { get; set; } = 1.0f;
         private CameraViewComponent cameraViewComponent;
 
         // _____________________________________________________________________________________________________________________ //
 
+        private readonly Dictionary<uint, Tuple<PositionComponent, DimensionsComponent, SpriteComponent, MoveComponent>> _cache =
+            new Dictionary<uint, Tuple<PositionComponent, DimensionsComponent, SpriteComponent, MoveComponent>>();
+
+        public Tuple<PositionComponent, DimensionsComponent, SpriteComponent, MoveComponent>
+            GetOrRetrieveComponents(uint entityId)
+        {
+            Tuple<PositionComponent, DimensionsComponent, SpriteComponent, MoveComponent> data;
+            var foundDataInCache = _cache.TryGetValue(entityId, out data);
+            if (foundDataInCache) return data;
+
+            var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entityId);
+            if (positionComponent == null) return null;
+
+            var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entityId);
+            if (sprite == null) return null;
+
+            moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entityId);
+
+            dimensionsComponent = ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(entityId);
+            if (dimensionsComponent == null) return null;
+
+            data =
+                new Tuple<PositionComponent, DimensionsComponent, SpriteComponent, MoveComponent>(
+                    positionComponent,
+                    dimensionsComponent,
+                    sprite,
+                    moveComponent
+                );
+
+            _cache[entityId] = data;
+            return data;
+        }
 
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
         public void Render(GameDependencies gameDependencies)
         {
-
             graphicsDevice = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             graphicsDevice.Clear(Color.Black); // Maybe done outside
 
@@ -65,14 +99,13 @@ namespace ZEngine.Systems
 
                 gameDependencies.SpriteBatch.Draw(border, Vector2.Zero, Color.White);
                 //---------
-
+                var timer = Stopwatch.StartNew();
                 DrawEntities(gameDependencies.SpriteBatch);
-
                 gameDependencies.SpriteBatch.End();
+                timer.Stop();
+                Debug.WriteLine("DrawEntities TOTAL: " + timer.ElapsedTicks);
             }
         }
-
-
 
         // This method will render all the entities that are associated 
         // with the render component. 1. we use our Component manager instance
@@ -84,47 +117,36 @@ namespace ZEngine.Systems
 
             foreach (var entity in renderableEntities)
             {
-                var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
-                if (positionComponent == null) continue;
+                var components = GetOrRetrieveComponents(entity.Key);
+                if (components == null) continue;
 
-                var sprite = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entity.Key);
-                if (sprite == null) continue;
-
-                renderComponent = entity.Value as RenderComponent;
-                //offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
-                moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-                dimensionsComponent = ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(entity.Key);
-                
-                int zIndex = positionComponent.ZIndex;
+                var zIndex = components.Item1.ZIndex;
                 //var offset = offsetComponent?.Offset ?? default(Vector2);
-                float angle = moveComponent?.Direction ?? 0;
+                var angle = components.Item4?.Direction ?? 0;
                 var destinationRectangle =
                     new Rectangle(
-                        (int) (positionComponent.Position.X),
-                        (int) (positionComponent.Position.Y),
-                        (int) (dimensionsComponent.Width * sprite.Scale),
-                        (int) (dimensionsComponent.Width * sprite.Scale)
+                        (int) (components.Item1.Position.X),
+                        (int) (components.Item1.Position.Y),
+                        (int) (components.Item2.Width * components.Item3.Scale),
+                        (int) (components.Item2.Width * components.Item3.Scale)
                     );
 
-                if ( true)
-                {
-                    var spriteCrop = new Rectangle(
-                        sprite.Position,
-                        new Point(sprite.TileWidth, sprite.TileHeight)
-                    );
+                var spriteCrop = new Rectangle(
+                    components.Item3.Position,
+                    new Point(components.Item3.TileWidth, components.Item3.TileHeight)
+                );
 
-                    spriteBatch.Draw(
-                        texture: sprite.Sprite,
-                        destinationRectangle: destinationRectangle,
-                        sourceRectangle: spriteCrop,
-                        color: Color.White * sprite.Alpha,
-                        rotation: (float) angle,
-                        origin: new Vector2(x: (float) (sprite.TileWidth * 0.5), y: (float) (sprite.TileHeight * 0.5)),
-                        effects: SpriteEffects.None,
-                        layerDepth: (float) zIndex / SystemConstants.LayerDepthMaxLimit
-                        //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
-                    );
-                }
+                spriteBatch.Draw(
+                    texture: components.Item3.Sprite,
+                    destinationRectangle: destinationRectangle,
+                    sourceRectangle: spriteCrop,
+                    color: Color.White * components.Item3.Alpha,
+                    rotation: (float) angle,
+                    origin: new Vector2(x: (float) (components.Item3.TileWidth * 0.5), y: (float) (components.Item3.TileHeight * 0.5)),
+                    effects: SpriteEffects.None,
+                    layerDepth: (float) zIndex / SystemConstants.LayerDepthMaxLimit
+                    //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
+                );
             }
         }
     }

@@ -76,7 +76,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
             if (animationComponent == null)
             {
-                animationComponent = new AnimationComponent();
+                animationComponent = ComponentManager.ComponentFactory.NewComponent<AnimationComponent>();
                 ComponentManager.AddComponentToEntity(animationComponent, entityId);
             }
             return animationComponent;

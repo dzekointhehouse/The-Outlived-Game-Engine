@@ -29,12 +29,13 @@ namespace ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private Dictionary<Tuple<uint, Point>, Color[]> cache = new Dictionary<Tuple<uint, Point>, Color[]>();
+        private Dictionary<Tuple<string, Point>, Color[]> cache = new Dictionary<Tuple<string, Point>, Color[]>();
 
-        public Color[] TextureCache(uint entityId, SpriteComponent spriteComponent)
+        //TODO Move to perform on game load
+        public Color[] TextureCache(SpriteComponent spriteComponent)
         {
             Color[] data;
-            var key = new Tuple<uint, Point>(entityId, spriteComponent.Position);
+            var key = new Tuple<string, Point>(spriteComponent.SpriteName, spriteComponent.Position);
             var status = cache.TryGetValue(key, out data);
             if (!status)
             {
@@ -52,7 +53,7 @@ namespace ZEngine.Systems
             return data;
         }
 
-        private const bool PROFILING_COLLISIONS = true;
+        private const bool PROFILING_COLLISIONS = false;
         public void DetectCollisions()
         {
 
@@ -185,9 +186,9 @@ namespace ZEngine.Systems
                 timer = Stopwatch.StartNew();
             }
 
-            var colorA = TextureCache(movingEntity, movingSpriteComponent);
+            var colorA = TextureCache(movingSpriteComponent);
 
-            var colorB = TextureCache(stillEntity, stillSpriteComponent);
+            var colorB = TextureCache(stillSpriteComponent);
 
             if (PROFILING)
             {

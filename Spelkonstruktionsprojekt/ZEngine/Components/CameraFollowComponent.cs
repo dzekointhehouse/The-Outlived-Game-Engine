@@ -12,5 +12,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     {
         public int CameraId { get; set; }  
 
+        public IComponent Reset()
+        {
+            return this;
+        }
     }
 }
