@@ -55,20 +55,30 @@ namespace ZEngine.Systems
             {
                 var camera = cameraComponent.Value as CameraViewComponent;
                 graphicsDevice.Viewport = camera.View;
+                var border = GameDependencies.Instance.Game.Content.Load<Texture2D>("border");
+                
 
                 gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null,
                     camera.Transform);
 
-                //Temporary
 
-                var border = GameDependencies.Instance.Game.Content.Load<Texture2D>("border");
-
-                gameDependencies.SpriteBatch.Draw(border, Vector2.Zero, Color.White);
-                //---------
 
                 DrawEntities(gameDependencies.SpriteBatch);
 
+
                 gameDependencies.SpriteBatch.End();
+
+                gameDependencies.SpriteBatch.Begin(sortMode:SpriteSortMode.Immediate);
+
+                gameDependencies.SpriteBatch.Draw(
+                    texture: border,
+                    destinationRectangle: new Rectangle(camera.View.X, camera.View.Y, camera.View.Width, camera.View.Height),
+                    color: Color.White
+                    //  layerDepth: 1f
+                    //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
+                );
+                gameDependencies.SpriteBatch.End();
+
             }
         }
 
@@ -94,19 +104,19 @@ namespace ZEngine.Systems
                 //offsetComponent = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(entity.Key);
                 moveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 dimensionsComponent = ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(entity.Key);
-                
+
                 int zIndex = positionComponent.ZIndex;
                 //var offset = offsetComponent?.Offset ?? default(Vector2);
                 float angle = moveComponent?.Direction ?? 0;
                 var destinationRectangle =
                     new Rectangle(
-                        (int) (positionComponent.Position.X),
-                        (int) (positionComponent.Position.Y),
-                        (int) (dimensionsComponent.Width * sprite.Scale),
-                        (int) (dimensionsComponent.Width * sprite.Scale)
+                        (int)(positionComponent.Position.X),
+                        (int)(positionComponent.Position.Y),
+                        (int)(dimensionsComponent.Width * sprite.Scale),
+                        (int)(dimensionsComponent.Width * sprite.Scale)
                     );
 
-                if ( true)
+                if (true)
                 {
                     var spriteCrop = new Rectangle(
                         sprite.Position,
@@ -118,11 +128,11 @@ namespace ZEngine.Systems
                         destinationRectangle: destinationRectangle,
                         sourceRectangle: spriteCrop,
                         color: Color.White * sprite.Alpha,
-                        rotation: (float) angle,
-                        origin: new Vector2(x: (float) (sprite.TileWidth * 0.5), y: (float) (sprite.TileHeight * 0.5)),
+                        rotation: (float)angle,
+                        origin: new Vector2(x: (float)(sprite.TileWidth * 0.5), y: (float)(sprite.TileHeight * 0.5)),
                         effects: SpriteEffects.None,
-                        layerDepth: (float) zIndex / SystemConstants.LayerDepthMaxLimit
-                        //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
+                        layerDepth: (float)zIndex / SystemConstants.LayerDepthMaxLimit
+                    //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
                     );
                 }
             }

@@ -23,7 +23,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     class SpawnSystem : ISystem
     {
-        private ComponentManager ComponentManager = ComponentManager.Instance;
+        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void CreateEnemy(int x, int y, SpriteComponent SpawnSpriteComponent)
         {
