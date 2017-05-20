@@ -101,9 +101,9 @@ namespace ZEngine.Systems
                 //---------
                 var timer = Stopwatch.StartNew();
                 DrawEntities(gameDependencies.SpriteBatch);
+                gameDependencies.SpriteBatch.End();
                 timer.Stop();
                 Debug.WriteLine("DrawEntities TOTAL: " + timer.ElapsedTicks);
-                gameDependencies.SpriteBatch.End();
             }
         }
 
