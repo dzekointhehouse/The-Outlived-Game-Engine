@@ -53,6 +53,7 @@
     <Compile Include="Menu\States\GameOver.cs" />
     <Compile Include="Services\ControlsConfig.cs" />
     <Compile Include="Services\GameConfig.cs" />
+    <Compile Include="Services\GameViewports.cs" />
     <Compile Include="Services\ScalingBackground.cs" />
     <Compile Include="Menu\States\GameModeMenu.cs" />
     <Compile Include="Menu\States\MainMenu.cs" />

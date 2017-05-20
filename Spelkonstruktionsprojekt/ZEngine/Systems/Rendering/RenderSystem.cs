@@ -28,7 +28,7 @@ namespace ZEngine.Systems
 
         public static string SystemName = "Render";
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        private GraphicsDevice graphics;
+        private GraphicsDevice graphicsDevice;
 
         private RenderComponent renderComponent;
         private MoveComponent moveComponent;
@@ -45,21 +45,31 @@ namespace ZEngine.Systems
         // method.
         public void Render(GameDependencies gameDependencies)
         {
-            graphics = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
 
-            CameraViewComponent cameraEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent))
-                .First()
-                .Value as CameraViewComponent;
+            graphicsDevice = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
+            graphicsDevice.Clear(Color.Black); // Maybe done outside
 
-            graphics.Clear(Color.Black); // Maybe done outside
+            var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
-            Rectangle cameraView = cameraEntities.View;
+            foreach (var cameraComponent in cameraComponents)
+            {
+                var camera = cameraComponent.Value as CameraViewComponent;
+                graphicsDevice.Viewport = camera.View;
 
+                gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null,
+                    camera.Transform);
 
+                //Temporary
 
-            gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, cameraEntities.Transform);
-            DrawEntities(gameDependencies.SpriteBatch);
-            gameDependencies.SpriteBatch.End();
+                var border = GameDependencies.Instance.Game.Content.Load<Texture2D>("border");
+
+                gameDependencies.SpriteBatch.Draw(border, Vector2.Zero, Color.White);
+                //---------
+
+                DrawEntities(gameDependencies.SpriteBatch);
+
+                gameDependencies.SpriteBatch.End();
+            }
         }
 
 
@@ -96,12 +106,7 @@ namespace ZEngine.Systems
                         (int) (dimensionsComponent.Width * sprite.Scale)
                     );
 
-                // render the sprite only if it's visible (sourceRectangle) intersects
-                // with the viewport.
-                var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
-                cameraViewComponent = camera.Value as CameraViewComponent;
-
-                if ( true ||cameraViewComponent.View.Intersects(destinationRectangle))
+                if ( true)
                 {
                     var spriteCrop = new Rectangle(
                         sprite.Position,

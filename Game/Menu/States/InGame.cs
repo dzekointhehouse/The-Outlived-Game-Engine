@@ -31,11 +31,13 @@ namespace Game.Menu.States
         private ControlsConfig controls;
         private bool isInitialized = false;
         private Boolean isIngame = true;
-        private GamePlayers players = new GamePlayers();
+        private GamePlayers players;
         private GameMap maps = new GameMap();
         private GameEnemies enemies = new GameEnemies();
         private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
+
+        private GameViewports viewports;
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
@@ -46,6 +48,9 @@ namespace Game.Menu.States
         {
             this.gameManager = gameManager;
             controls = new ControlsConfig(gameManager);
+
+            viewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
+            players = new GamePlayers(gameManager.gameConfig, viewports.GetViewports());
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -81,8 +86,9 @@ namespace Game.Menu.States
         // to this state.
         public void InitializeGameContent()
         {
+            viewports.InitializeViewports();
             maps.SetupMap(gameManager.gameConfig);
-            players.CreatePlayers(gameManager.gameConfig);
+            players.CreatePlayers();
             enemies.CreateMonster("player_sprites");
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
@@ -94,7 +100,7 @@ namespace Game.Menu.States
         {
             var cameraCageId = SetupCameraCage();
            // SetupBackgroundTiles();
-            SetupCamera();
+            //SetupCamera();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
@@ -211,7 +217,7 @@ namespace Game.Menu.States
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
             var cameraViewComponent = new CameraViewComponent()
             {
-                View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y),
+                View = gameManager.Viewport,
                 MinScale = 0.5f,
                 ViewportDimension = new Vector2(viewportDimensions.X, viewportDimensions.Y),
                

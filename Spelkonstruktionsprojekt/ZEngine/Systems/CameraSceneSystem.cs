@@ -89,6 +89,12 @@ namespace ZEngine.Systems
 
                 foreach (var entity in followEntities)
                 {
+                    var follow = entity.Value as CameraFollowComponent;
+
+                    // Skip the entity if it doesn't belong to this camera.
+                    if(follow.CameraId != camera.CameraId)
+                        continue;
+
                     PositionComponent pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                     averagePosition += pos.Position;
 

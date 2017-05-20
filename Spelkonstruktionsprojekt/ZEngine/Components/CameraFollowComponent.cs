@@ -10,7 +10,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class CameraFollowComponent : IComponent
     {
-
+        public int CameraId { get; set; }  
         public Rectangle CameraCage { get; set; }
 
     }

@@ -31,7 +31,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <param name="spriteName"> the name of the texture file </param>
         /// <param name="tileWidth"></param>
         /// <param name="tileHeight"></param>
-        /// <param name="scale"> texture scale </param>
+        /// <param name="scale"> texture minScale </param>
         /// <param name="alpha"> alpha value between 0-1, 0 will make it transparent </param>
         /// <returns></returns>
         EntityBuilder SetSprite(string spriteName, Point startPosition, int tileWidth, int tileHeight, float scale = 1,
@@ -106,11 +106,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         EntityBuilder SetPlayer(string name);
 
         /// <summary>
-        /// 
+        /// Gives the entity a team it will
+        /// belong to.
         /// </summary>
-        /// <param name="maxhealth"></param>
-        /// <param name="currentHealth"></param>
-        /// <param name="alive"></param>
+        /// <param name="teamId"></param>
         /// <returns></returns>
         EntityBuilder SetTeam(int teamId);
 
@@ -124,7 +123,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         EntityBuilder SetSound(string soundname, float volume = 1f);
 
         /// <summary>
-        /// 
+        /// Makes the entity visible on screen.
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -149,7 +148,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         EntityBuilder SetInertiaDampening();
 
         /// <summary>
-        /// 
+        /// Gives the entity a speed penalty
+        /// when moving backwards.
         /// </summary>
         /// <returns></returns>
         EntityBuilder SetBackwardsPenalty();
@@ -157,8 +157,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <summary>
         /// Entities that have the camerafollow component added, will be
         /// followed by the game camera so they should not go ofscreen.
+        /// The id is which camera to be followed by.
         /// </summary>
         /// <returns></returns>
-        EntityBuilder SetCameraFollow();
+        EntityBuilder SetCameraFollow(int id);
+
+        /// <summary>
+        /// The entitys camera, everything will
+        /// be rendered after the camera.
+        /// </summary>
+        /// <returns></returns>
+        EntityBuilder SetCameraView(Viewport view, float minScale, int CameraId);
     }
 }

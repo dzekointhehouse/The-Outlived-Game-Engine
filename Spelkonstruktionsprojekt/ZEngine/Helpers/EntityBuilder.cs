@@ -231,9 +231,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetCameraFollow()
+        public EntityBuilder SetCameraFollow(int id)
         {
-            CameraFollowComponent component = new CameraFollowComponent();
+            CameraFollowComponent component = new CameraFollowComponent() {CameraId = id};
+            components.Add(component);
+            return this;
+        }
+
+        public EntityBuilder SetCameraView(Viewport view, float minScale, int CameraId)
+        {
+            var component = new CameraViewComponent()
+            {
+                View = view,
+                MinScale = minScale,
+                CameraId = CameraId,
+                ViewportDimension = new Vector2(view.Width, view.Height)
+            };
             components.Add(component);
             return this;
         }

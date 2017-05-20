@@ -140,7 +140,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         spawnArea.X = rand.Next(0, 2200);
                         spawnArea.Y = rand.Next(0, 1100);
                     }
-                    while (cameraComponent.View.Contains(spawnArea));
+                    while (cameraComponent.View.TitleSafeArea.Contains(spawnArea));
                     CreateEnemy(spawnArea.X, spawnArea.Y, SpawnSpriteComponent);
 
                     if (rand.Next(0, 1) == 1)

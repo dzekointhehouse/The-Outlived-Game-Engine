@@ -42,6 +42,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private Video video;
         private VideoPlayer player;
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
+
+        private Viewport defaultView;
+        private Viewport leftView;
+        private Viewport rightView;
         private PenumbraComponent penumbraComponent;
         // testing
         private FPS fps;
@@ -79,6 +83,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             IsFixedTimeStep = false;
             gameBundle.Dependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
+
+
         }
 
         protected override void Initialize()
@@ -86,7 +92,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             //Init systems that require initialization
             gameBundle.InitializeSystems(this);
             spriteBatch = new SpriteBatch(this.GraphicsDevice);
+            defaultView = GraphicsDevice.Viewport;
+            leftView = defaultView;
+            rightView = defaultView;
 
+            // from left to middle
+            leftView.Width = leftView.Width / 2;
+            // from middle to right
+            rightView.Width = rightView.Width / 2;
+            rightView.X = leftView.Width;
             CreateTestEntities();
             base.Initialize();
         }
@@ -97,7 +111,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var cameraCageId = SetupCameraCage();
             InitPlayers(cameraCageId);
             SetupBackgroundTiles(5, 5);
-            SetupCamera();
+           // SetupCamera();
           //  SetupEnemy();
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
@@ -325,7 +339,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
             var cameraViewComponent = new CameraViewComponent()
             {
-                View = new Rectangle(0, 0, (int)viewportDimensions.X, (int)viewportDimensions.Y),
+                View = this.defaultView,
                 MinScale = 0.5f,
                 ViewportDimension = new Vector2(viewportDimensions.X, viewportDimensions.Y)
             };
@@ -436,10 +450,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 cameraFollow: true,
                 collision: true, 
                 isCaged: true, 
-                cageId: cageId);
+                cageId: 1,
+                view: leftView);
         
-            CreatePlayer(new Vector2(1650, 1100), "Elvir", actionBindings2, position: new Vector2(400, 400), cameraFollow: true,
-                collision: true, isCaged: true, cageId: cageId, disabled: false);
+            CreatePlayer(
+                new Vector2(1650, 1100), 
+                "Elvir", actionBindings2, 
+                position: new Vector2(400, 400), 
+                cameraFollow: true,
+                collision: true, 
+                isCaged: true, 
+                cageId: 2, 
+                disabled: false,
+                view: rightView);
             //CreatePlayer("Markus", player3, actionBindings3, position: new Vector2(300, 300), cameraFollow: true,
             //    collision: true, isCaged: false, cageId: cageId, disabled: true);
         }
@@ -448,7 +471,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public void CreatePlayer(Vector2 HUDposition, string name, ActionBindings actionBindings,
             Vector2 position = default(Vector2), bool movable = true,
             MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false,
-            bool disabled = false, bool isCaged = false, uint cageId = 0)
+            bool disabled = false, bool isCaged = false, uint cageId = 0, Viewport view = default(Viewport))
         {
             if (disabled) return;
 
@@ -470,7 +493,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetRectangleCollision()
-                .SetCameraFollow()
+                .SetCameraFollow((int) cageId)
                 .SetPlayer(name)
                 .SetHealth()
                 .SetAmmo()
@@ -533,11 +556,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             };
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
 
-            /*
-            if(name == "Elvir")
+            var cameraViewComponent = new CameraViewComponent()
             {
-                ComponentManager.Instance.AddComponentToEntity(new HealthPickupComponent(), playerEntity.GetEntityKey());
-            }*/
+                CameraId = (int) cageId,
+                View = view,
+                MinScale = 0.5f,
+                ViewportDimension = new Vector2(view.X, view.Y)
+            };
+
+            ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, playerEntity.GetEntityKey());
+
         }
 
         protected override void LoadContent()

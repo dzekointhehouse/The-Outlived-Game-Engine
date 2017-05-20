@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
@@ -12,7 +13,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     {
         // We store the cameras dimension in
         // this view rectangle.
-        public Rectangle View { get; set; }
+        public Viewport View { get; set; }
 
         public Vector2 ViewportDimension { get; set; }
 
@@ -30,5 +31,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public float MinScale { get; set; } = 0.1f;
 
         public Matrix Transform { get; set; }
+        public int CameraId { get; set; }
     }
 }

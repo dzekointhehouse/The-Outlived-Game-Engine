@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Game.Menu.States;
 using Game.Services;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
@@ -20,14 +21,17 @@ using static Game.Menu.States.CharacterMenu;
 namespace Game.Entities
 {
    public class GamePlayers
-    {
-        public GamePlayers()
+   {
+       private GameConfig config;
+       private Dictionary<PlayerIndex, Viewport> viewports;
+        public GamePlayers(GameConfig config, Dictionary<PlayerIndex, Viewport> viewports)
         {
-            
+            this.config = config;
+            this.viewports = viewports;
         }
 
 
-        public void CreatePlayers(GameConfig config)
+        public void CreatePlayers()
         {
             foreach (var player in config.Players)
             {
@@ -36,16 +40,16 @@ namespace Game.Entities
                     switch (player.Index)
                     {
                         case PlayerIndex.One:
-                            this.InitPlayerOne(1, player.Character);
+                            this.InitPlayerOne(player.CameraId, player.Character);
                             break;
                         case PlayerIndex.Two:
-                            this.InitPlayerTwo(1, player.Character);
+                            this.InitPlayerTwo(player.CameraId, player.Character);
                             break;
                         case PlayerIndex.Three:
-                            this.InitPlayerThree(1, player.Character);
+                            this.InitPlayerThree(player.CameraId, player.Character);
                             break;
                         case PlayerIndex.Four:
-                            this.InitPlayerFour(1, player.Character);
+                            this.InitPlayerFour(player.CameraId, player.Character);
                             break;
                     };
                 }
@@ -54,16 +58,16 @@ namespace Game.Entities
                     switch (player.Index)
                     {
                         case PlayerIndex.One:
-                            this.InitPlayerOne(2, player.Character);
+                            this.InitPlayerOne(player.CameraId, player.Character);
                             break;
                         case PlayerIndex.Two:
-                            this.InitPlayerTwo(2, player.Character);
+                            this.InitPlayerTwo(player.CameraId, player.Character);
                             break;
                         case PlayerIndex.Three:
-                            this.InitPlayerThree(2, player.Character);
+                            this.InitPlayerThree(player.CameraId, player.Character);
                             break;
                         case PlayerIndex.Four:
-                            this.InitPlayerFour(2, player.Character);
+                            this.InitPlayerFour(player.CameraId, player.Character);
                             break;
                     };
                 }
@@ -73,8 +77,9 @@ namespace Game.Entities
 
         }
 
+
         // TODO should get spawn positions depending on map
-        private void InitPlayerOne(int cageId, string character)
+        private void InitPlayerOne(int cameraId, string character)
         {
             var actionBindings1 = new ActionBindingsBuilder()
                 .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
@@ -88,11 +93,11 @@ namespace Game.Entities
                 .Build();
 
             CreatePlayer(
-                new Vector2(1650, 1100),
                 sprite: character,
                 actionBindings: actionBindings1,
                 position: new Vector2(200, 200), // spawn point
-                cageId: cageId
+                viewport: viewports[PlayerIndex.One],
+                cageId: cameraId
             );
         }
 
@@ -111,10 +116,10 @@ namespace Game.Entities
                 .Build();
 
             CreatePlayer(
-                new Vector2(1650, 1100),
                 character,
                 actionBindings2,
-                position: new Vector2(400, 400), // spawn point
+                position: new Vector2(400, 400), // spawn point,
+                viewport: viewports[PlayerIndex.Two],
                 cageId: cageId,
                 disabled: false
             );
@@ -134,10 +139,10 @@ namespace Game.Entities
                 .Build();
 
             CreatePlayer(
-                new Vector2(1650, 1100),
                 character,
                 actionBindings,
-                position: new Vector2(300, 400), // spawn point
+                position: new Vector2(300, 400), // spawn point,
+                viewport: viewports[PlayerIndex.Three],
                 cageId: cageId,
                 disabled: false
                 );
@@ -158,10 +163,10 @@ namespace Game.Entities
                 .Build();
 
             CreatePlayer(
-                new Vector2(1650, 1100),
                 character,
                 actionBindings,
-                position: new Vector2(250, 250), // spawn point
+                position: new Vector2(250, 250), // spawn point,
+                viewport: viewports[PlayerIndex.Four],
                 cageId: cageId,
                 disabled: false
                 );
@@ -169,9 +174,9 @@ namespace Game.Entities
         }
 
         //The multitude of options here is for easy debug purposes
-        private void CreatePlayer(Vector2 playerPosition, string sprite, ActionBindings actionBindings,
+        private void CreatePlayer(string sprite, ActionBindings actionBindings,
             Vector2 position,
-            MoveComponent customMoveComponent = null,
+            Viewport viewport,
             bool disabled = false, int cageId = 0)
         {
             if (disabled) return;
@@ -194,10 +199,11 @@ namespace Game.Entities
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10) // Random direction
                 .SetRectangleCollision()
-                .SetCameraFollow()
+                .SetCameraFollow(cageId)
                 .SetPlayer(sprite)
                 .SetTeam(cageId)
                 .SetHealth()
+                .SetCameraView(viewport, 0.5f, cageId)
                 .SetScore()
                 .SetAmmo()
                 .SetHUD(false, showStats: true)
