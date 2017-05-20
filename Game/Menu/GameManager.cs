@@ -173,6 +173,7 @@ namespace Game
                     break;
 
                 case GameState.Paused:
+                    Engine.Dependencies.Game.GraphicsDevice.Viewport = Viewport;
                     pausedMenu.Update(gameTime);
                     break;
                 case GameState.MultiplayerMenu:

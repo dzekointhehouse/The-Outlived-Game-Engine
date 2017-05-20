@@ -83,7 +83,7 @@ namespace ZEngine.Systems
         {
             graphicsDevice = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             graphicsDevice.Clear(Color.Black); // Maybe done outside
-
+          //  var timer = Stopwatch.StartNew();
             var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
             foreach (var cameraComponent in cameraComponents)
@@ -91,19 +91,27 @@ namespace ZEngine.Systems
                 var camera = cameraComponent.Value as CameraViewComponent;
                 graphicsDevice.Viewport = camera.View;
 
+                penumbra.GraphicsDevice.Viewport = camera.View;
+                //penumbra.Transform = camera.Transform;
+                //gameDependencies.GraphicsDeviceManager.ApplyChanges();
+                //penumbra.BeginDraw();
+
                 gameDependencies.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
                     camera.Transform);
-
-                var border = GameDependencies.Instance.Game.Content.Load<Texture2D>("border");
-
-                gameDependencies.SpriteBatch.Draw(border, Vector2.Zero, Color.White);
-                //---------
-                var timer = Stopwatch.StartNew();
+                //var border = GameDependencies.Instance.Game.Content.Load<Texture2D>("border");
+                //gameDependencies.SpriteBatch.Draw(border, Vector2.Zero, Color.White);
                 DrawEntities(gameDependencies.SpriteBatch);
                 gameDependencies.SpriteBatch.End();
-                timer.Stop();
-                Debug.WriteLine("DrawEntities TOTAL: " + timer.ElapsedTicks);
+
+               // penumbra.Draw(gameTime);
+
+
+
+
+              //  Debug.WriteLine("DrawEntities TOTAL: " + timer.ElapsedTicks);
             }
+
+            //timer.Stop();
         }
 
         // This method will render all the entities that are associated 

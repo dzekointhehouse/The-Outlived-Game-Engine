@@ -46,8 +46,10 @@ namespace Game
             {
                 PreferredBackBufferWidth = (int)viewportDimensions.X,
                 PreferredBackBufferHeight = (int)viewportDimensions.Y,
+                GraphicsProfile = GraphicsProfile.HiDef
+
             };
-            gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = false;
+            gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = true;
             Content.RootDirectory = "Content";
             
         }
