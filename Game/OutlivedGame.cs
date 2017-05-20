@@ -40,16 +40,17 @@ namespace Game
 
         public OutlivedGame()
         {
+            
             gameBundle = new FullSystemBundle();
 
             gameBundle.Dependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = (int) viewportDimensions.X,
-                PreferredBackBufferHeight = (int) viewportDimensions.Y,
+                PreferredBackBufferWidth = (int)viewportDimensions.X,
+                PreferredBackBufferHeight = (int)viewportDimensions.Y,
             };
             gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = false;
             Content.RootDirectory = "Content";
-          
+            
         }
 
         protected override void Initialize()
@@ -57,7 +58,7 @@ namespace Game
             //Init systems that require initialization
             gameBundle.InitializeSystems(this);
             _gameManager = new GameManager(gameBundle);
-
+            
             base.Initialize();
         }
 
