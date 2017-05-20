@@ -50,7 +50,7 @@ namespace Game.Services
             // bottom views start is the top views height.
             // the height is the remaining of the pixels.
             leftBottomView.Width = leftBottomView.Width / 2;
-            leftBottomView.X = leftTopView.Height;
+            leftBottomView.Y = leftTopView.Height;
             leftBottomView.Height = defaultView.Height / 2;
 
             // start from the lefts width ending
@@ -66,15 +66,15 @@ namespace Game.Services
             RightBottomView.Y = RightTopView.Height;
             RightBottomView.Height = RightBottomView.Height / 2;
             RightBottomView.X = leftBottomView.Width;
-            RightBottomView.Width = defaultView.Width / 2;
+            RightBottomView.Width = RightBottomView.Width / 2;
 
             // Redo the vieport for two players;
             top = defaultView;
             bottom = defaultView;
             top.Height = top.Height / 2;
-            bottom.X = top.Height;
+            bottom.Y = top.Height;
             bottom.Height = bottom.Height / 2;
-
+            
             foreach (var player in config.Players)
             {
                 if (player.Team == MultiplayerMenu.TeamState.TeamOne)
