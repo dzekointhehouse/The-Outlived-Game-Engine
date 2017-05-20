@@ -30,6 +30,8 @@ namespace ZEngine.Systems
             //UpdateFixedRenderables();
         }
 
+
+        // Don't need this shit?
         private void UpdateFixedRenderables()
         {
             var cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
@@ -71,11 +73,8 @@ namespace ZEngine.Systems
             var followEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraFollowComponent));
             var cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
-            // Average position of all the players to be used
-            // when we are to calculate the cameras position.
-            Vector2 averagePosition = new Vector2(0, 0);
-            float maxDistance = 0;
 
+            
 
 
             // Remember: Change the camera scale depending on the distance of the farthest
@@ -85,16 +84,26 @@ namespace ZEngine.Systems
             {
                 CameraViewComponent camera = cameraEntity.Value as CameraViewComponent;
 
+                // To count the players that are associated
+                // with the camera and not all the players.
+                var playerCount = 0;
+                // Average position of all the players to be used
+                // when we are to calculate the cameras position.
+                Vector2 averagePosition = Vector2.Zero;
+                float maxDistance = 0;
 
 
                 foreach (var entity in followEntities)
                 {
                     var follow = entity.Value as CameraFollowComponent;
 
+
                     // Skip the entity if it doesn't belong to this camera.
-                    if(follow.CameraId != camera.CameraId)
+
+                    if (follow.CameraId != camera.CameraId)
                         continue;
 
+                    playerCount++;
                     PositionComponent pos = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                     averagePosition += pos.Position;
 
@@ -105,23 +114,23 @@ namespace ZEngine.Systems
                     maxDistance = Math.Max(distance, maxDistance);
                 }
 
-                averagePosition /= followEntities.Count;
+                averagePosition /= playerCount;
                 // set the cameras center
                 camera.Center = new Vector2(averagePosition.X, averagePosition.Y);
                // camera.Center = new Vector2(averagePosition.X - (camera.ViewportDimension.X * 0.5f), averagePosition.Y - (camera.ViewportDimension.Y * 0.5f));
                 // Setting the zoom to  the camera.
-                if (camera.Scale <= camera.MaxScale && camera.Scale >= camera.MinScale)
-                {
-                    // We get an OK decimal by dividing camera dimension over itself and the max with.
-                    // If we surpass the limitthen we reset the scale.
-                    camera.Scale = (camera.View.Width / (maxDistance + camera.View.Width));
-                    if (camera.Scale < camera.MinScale)
-                        camera.Scale = camera.MinScale;
-                    else if (camera.Scale > camera.MaxScale)
-                        camera.Scale = camera.MaxScale;
+                //if (camera.Scale <= camera.MaxScale && camera.Scale >= camera.MinScale)
+                //{
+                //    // We get an OK decimal by dividing camera dimension over itself and the max with.
+                //    // If we surpass the limitthen we reset the scale.
+                //    camera.Scale = (camera.View.Width / (maxDistance + camera.View.Width));
+                //    if (camera.Scale < camera.MinScale)
+                //        camera.Scale = camera.MinScale;
+                //    else if (camera.Scale > camera.MaxScale)
+                //        camera.Scale = camera.MaxScale;
 
-                   // Debug.WriteLine(camera.Scale);
-                }
+                //   // Debug.WriteLine(camera.Scale);
+                //}
 
                 //    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
                 // Using a matrix makes it easier for us to move the camera
@@ -141,7 +150,7 @@ namespace ZEngine.Systems
                 camera.Transform = Matrix.Identity *
                                    Matrix.CreateTranslation(new Vector3(-camera.Center.X, -camera.Center.Y, 0)) *
                                    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, 0))*
-                                   Matrix.CreateTranslation(new Vector3(camera.ViewportDimension.X*0.5f, camera.ViewportDimension.Y * 0.5f, 0));
+                                   Matrix.CreateTranslation(new Vector3(camera.View.Width*0.5f, camera.View.Height * 0.5f, 0));
             }
         }
     }

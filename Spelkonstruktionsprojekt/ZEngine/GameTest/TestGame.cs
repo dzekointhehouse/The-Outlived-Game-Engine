@@ -99,8 +99,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             // from left to middle
             leftView.Width = leftView.Width / 2;
             // from middle to right
-            rightView.Width = rightView.Width / 2;
             rightView.X = leftView.Width;
+            rightView.Width = rightView.Width / 2;
+
             CreateTestEntities();
             base.Initialize();
         }
@@ -108,8 +109,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private void CreateTestEntities()
         {
             // var button = new Button();
-            var cameraCageId = SetupCameraCage();
-            InitPlayers(cameraCageId);
+           // var cameraCageId = SetupCameraCage();
+            InitPlayers();
             SetupBackgroundTiles(5, 5);
            // SetupCamera();
           //  SetupEnemy();
@@ -405,7 +406,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
         }
 
-        public void InitPlayers(uint cageId)
+        public void InitPlayers()
         {
             var player1 = EntityManager.GetEntityManager().NewEntity();
             var actionBindings1 = new ActionBindingsBuilder()
@@ -449,7 +450,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 position: new Vector2(200, 200),
                 cameraFollow: true,
                 collision: true, 
-                isCaged: true, 
                 cageId: 1,
                 view: leftView);
         
@@ -459,7 +459,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 position: new Vector2(400, 400), 
                 cameraFollow: true,
                 collision: true, 
-                isCaged: true, 
                 cageId: 2, 
                 disabled: false,
                 view: rightView);
@@ -471,7 +470,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         public void CreatePlayer(Vector2 HUDposition, string name, ActionBindings actionBindings,
             Vector2 position = default(Vector2), bool movable = true,
             MoveComponent customMoveComponent = null, bool cameraFollow = false, bool collision = false,
-            bool disabled = false, bool isCaged = false, uint cageId = 0, Viewport view = default(Viewport))
+            bool disabled = false, uint cageId = 0, Viewport view = default(Viewport))
         {
             if (disabled) return;
 
@@ -539,16 +538,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
             ComponentManager.Instance.AddComponentToEntity(actionBindings, playerEntity.GetEntityKey());
             ComponentManager.Instance.AddComponentToEntity(animationBindings, playerEntity.GetEntityKey());
 
-
-            if (isCaged)
-            {
-                var cageComponent = new CageComponent()
-                {
-                    CageId = (int) cageId
-                };
-                ComponentManager.Instance.AddComponentToEntity(cageComponent, playerEntity.GetEntityKey());
-            }
-
             var weaponComponent = new WeaponComponent()
             {
                 Damage = 1000,
@@ -561,13 +550,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 CameraId = (int) cageId,
                 View = view,
                 MinScale = 0.5f,
-                ViewportDimension = new Vector2(view.X, view.Y)
             };
 
             ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, playerEntity.GetEntityKey());
 
         }
-
+        //_________________________________________________________________________________//
         protected override void LoadContent()
         {
 
