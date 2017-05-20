@@ -89,9 +89,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public void Draw(GameTime gameTime)
         {
-            manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
-            manager.Get<RenderSystem>().Render(Dependencies); // lowers FPS by half (2000)
-            manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
+           // manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
+            manager.Get<RenderSystem>().Render(Dependencies, penumbraComponent, gameTime); // lowers FPS by half (2000)
+          //  manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
             manager.Get<RenderHUDSystem>().Draw(Dependencies); // not noticable
         }
     }

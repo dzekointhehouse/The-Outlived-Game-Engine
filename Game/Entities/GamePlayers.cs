@@ -95,7 +95,7 @@ namespace Game.Entities
                 sprite: player.SpriteName,
                 actionBindings: actionBindings1,
                 position: new Vector2(200, 200), // spawn point
-                viewport: viewports[PlayerIndex.One],
+                viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
 
@@ -116,7 +116,7 @@ namespace Game.Entities
                 sprite: player.SpriteName,
                 actionBindings: actionBindings2,
                 position: new Vector2(400, 400), // spawn point,
-                viewport: viewports[PlayerIndex.Two],
+                viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
 
@@ -136,7 +136,7 @@ namespace Game.Entities
                 sprite: player.SpriteName,
                 actionBindings: actionBindings,
                 position: new Vector2(300, 400), // spawn point,
-                viewport: viewports[PlayerIndex.Three],
+                viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
 
@@ -156,7 +156,7 @@ namespace Game.Entities
                 sprite: player.SpriteName,
                 actionBindings: actionBindings,
                 position: new Vector2(250, 250), // spawn point,
-                viewport: viewports[PlayerIndex.Four],
+                viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
 

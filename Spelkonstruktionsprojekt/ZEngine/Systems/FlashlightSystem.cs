@@ -28,7 +28,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.
-                AmbientColor = new Color(new Vector3(1f)) // should be an entity?
+                AmbientColor = new Color(new Vector3(0.5f)) // should be an entity?
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
 
@@ -37,7 +37,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var lightComponent = instance.Value as LightComponent;
                 penumbra.Lights.Add(lightComponent.Light);
             }
-
+            
             penumbra.Initialize();
             return penumbra;
         }

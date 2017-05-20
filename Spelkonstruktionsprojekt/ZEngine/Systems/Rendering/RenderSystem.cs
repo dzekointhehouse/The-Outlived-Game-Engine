@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
@@ -78,7 +79,7 @@ namespace ZEngine.Systems
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
-        public void Render(GameDependencies gameDependencies)
+        public void Render(GameDependencies gameDependencies, PenumbraComponent penumbra, GameTime gameTime)
         {
             graphicsDevice = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             graphicsDevice.Clear(Color.Black); // Maybe done outside
@@ -90,10 +91,8 @@ namespace ZEngine.Systems
                 var camera = cameraComponent.Value as CameraViewComponent;
                 graphicsDevice.Viewport = camera.View;
 
-                gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null,
+                gameDependencies.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
                     camera.Transform);
-
-                //Temporary
 
                 var border = GameDependencies.Instance.Game.Content.Load<Texture2D>("border");
 

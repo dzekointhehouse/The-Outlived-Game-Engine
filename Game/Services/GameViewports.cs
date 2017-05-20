@@ -99,8 +99,8 @@ namespace Game.Services
                             playerOne.CameraId = 1;
                             var playerTwo = config.Players[1];
                             playerTwo.CameraId = 2;
-                            playerView.Add(PlayerIndex.One, top);
-                            playerView.Add(PlayerIndex.Two, bottom);
+                            playerView.Add(playerOne.Index, top);
+                            playerView.Add(playerTwo.Index, bottom);
                         }
                         else
                         {
