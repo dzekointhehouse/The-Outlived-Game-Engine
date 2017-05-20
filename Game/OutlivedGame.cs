@@ -37,7 +37,6 @@ namespace Game
         private readonly FullSystemBundle gameBundle;
         private GameManager _gameManager;
 
-
         public OutlivedGame()
         {
             gameBundle = new FullSystemBundle();

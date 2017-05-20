@@ -24,7 +24,7 @@ namespace Game.Systems.Abilities
         public void Start(BulletFactory bulletFactory)
         {
             BulletFactory = bulletFactory;
-            EventBus.Subscribe<InputEvent>(EventConstants.FireWeapon, HandleFireWeapon);
+            EventBus.Subscribe<InputEvent>(EventConstants.FirePistolWeapon, HandleFireWeapon);
         }
 
         public void HandleFireWeapon(InputEvent inputEvent)
@@ -36,7 +36,8 @@ namespace Game.Systems.Abilities
 
             var weaponComponent =
                 ComponentManager.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
-            if (weaponComponent == default(WeaponComponent)) return;
+            if (weaponComponent == null) return;
+            if (weaponComponent.WeaponType != WeaponComponent.WeaponTypes.Rifle) return;
             if (weaponComponent.LastFiredMoment + RateOfFire > inputEvent.EventTime) return;
             weaponComponent.LastFiredMoment = inputEvent.EventTime;
 
@@ -74,7 +75,7 @@ namespace Game.Systems.Abilities
                         moveComponent.Direction);
             }
 
-            var animationComponent = new AnimationComponent();
+            var animationComponent = ComponentManager.ComponentFactory.NewComponent<AnimationComponent>();
             ComponentManager.AddComponentToEntity(animationComponent, bulletIds[0]);
 
             var animation = new GeneralAnimation()

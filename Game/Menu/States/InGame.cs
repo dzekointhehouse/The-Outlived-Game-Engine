@@ -27,6 +27,7 @@ namespace Game.Menu.States
     class InGame : IMenu
     {
 
+        private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
         private GameManager gameManager;
         private ControlsConfig controls;
         private bool isInitialized = false;
@@ -109,7 +110,7 @@ namespace Game.Menu.States
 
         private void SetupGameScoreEntity()
         {
-            var gameScoreComponent = new GameScoreComponent();
+            var gameScoreComponent = ComponentManager.Instance.ComponentFactory.NewComponent<GameScoreComponent>();
             ComponentManager.Instance.AddComponentToEntity(gameScoreComponent, EntityManager.GetEntityManager().NewEntity());
         }        
 
@@ -136,60 +137,29 @@ namespace Game.Menu.States
 
         private static void CreateGlobalBulletSpriteEntity()
         {
-            var bulletSprite = EntityManager.GetEntityManager().NewEntity();
-            var bulletSpriteSprite = new SpriteComponent()
-            {
-                SpriteName = "dot"
-            };
-            var bulletSpriteComponent = new BulletFlyweightComponent();
-            var soundComponent = new SoundComponent()
-            {
-                SoundEffectName = "bullet9mm"
-            };
-            ComponentManager.Instance.AddComponentToEntity(soundComponent, bulletSprite);
-            ComponentManager.Instance.AddComponentToEntity(bulletSpriteSprite, bulletSprite);
-            ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, bulletSprite);
+            var entityId = EntityManager.GetEntityManager().NewEntity();
+            var bulletSprite = ComponentFactory.NewComponent<SpriteComponent>();
+            bulletSprite.SpriteName = "dot";
+            var bulletSpriteComponent = ComponentFactory.NewComponent<BulletFlyweightComponent>();
+            var soundComponent = ComponentFactory.NewComponent<SoundComponent>();
+            soundComponent.SoundEffectName = "bullet9mm";
+            ComponentManager.Instance.AddComponentToEntity(soundComponent, entityId);
+            ComponentManager.Instance.AddComponentToEntity(bulletSprite, entityId);
+            ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, entityId);
         }
 
         //The camera cage keeps players from reaching the edge of the screen
         public uint SetupCameraCage()
         {
-            var cameraCage = EntityManager.GetEntityManager().NewEntity();
+            var cameraCage = new EntityBuilder()
+                .SetRendering((int) (viewportDimensions.X * 0.8), (int) (viewportDimensions.Y * 0.8), isFixed: true)
+                .SetRectangleCollision(isCage: true)
+                .SetPosition(Vector2.Zero, 2)
+                .Build()
+                .GetEntityKey();
 
-            var renderComponentCage = new RenderComponent()
-            {
-                Fixed = true
-            };
-
-            var dimensionsComponent = new DimensionsComponent()
-            {
-                Width = (int)(viewportDimensions.X * 0.8),
-                Height = (int)(viewportDimensions.Y * 0.8)
-            };
-
-            var position = new PositionComponent()
-            {
-                Position = new Vector2(0, 0),
-                ZIndex = 2
-            };
-
-            var cageSprite = new SpriteComponent()
-            {
-                SpriteName = "dot"
-            };
-            var collisionComponentCage = new CollisionComponent()
-            {
-                IsCage = true,
-            };
-            var offsetComponent = new RenderOffsetComponent()
-            {
-                Offset = new Vector2((float)(viewportDimensions.X * 0.25), (float)(viewportDimensions.Y * 0.25))
-            };
-            ComponentManager.Instance.AddComponentToEntity(renderComponentCage, cameraCage);
-            ComponentManager.Instance.AddComponentToEntity(dimensionsComponent, cameraCage);
-            //            ComponentManager.Instance.AddComponentToEntity(cageSprite, cameraCage);
-            ComponentManager.Instance.AddComponentToEntity(position, cameraCage);
-            ComponentManager.Instance.AddComponentToEntity(collisionComponentCage, cameraCage);
+            var offsetComponent = ComponentFactory.NewComponent<RenderOffsetComponent>();
+            offsetComponent.Offset = new Vector2((float) (viewportDimensions.X * 0.25), (float) (viewportDimensions.Y * 0.25));
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
         }
@@ -215,13 +185,14 @@ namespace Game.Menu.States
         public void SetupCamera()
         {
             var cameraEntity = EntityManager.GetEntityManager().NewEntity();
-            var cameraViewComponent = new CameraViewComponent()
-            {
-                View = gameManager.Viewport,
-                MinScale = 0.5f,
-                ViewportDimension = new Vector2(viewportDimensions.X, viewportDimensions.Y),
-               
-            };
+            var cameraViewComponent = ComponentFactory.NewComponent<CameraViewComponent>();
+            cameraViewComponent.View = gameManager.Viewport;
+            cameraViewComponent.MinScale = 0.5f;
+            cameraViewComponent.ViewportDimension = new Vector2(viewportDimensions.X, viewportDimensions.Y);
+
+            var position = ComponentFactory.NewComponent<PositionComponent>();
+            position.Position = Vector2.Zero;
+            position.ZIndex = 500;
 
             ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
         }

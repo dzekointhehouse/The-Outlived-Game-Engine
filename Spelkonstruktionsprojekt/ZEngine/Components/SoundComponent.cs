@@ -18,7 +18,18 @@ namespace ZEngine.Components
         public SoundEffect SoundEffect { get; set; }
         public float Volume { get; set; } = 1f;
 
+        public SoundComponent()
+        {
+            Reset();
+        }
 
+        public IComponent Reset()
+        {
+            Volume = 1f;
+            SoundEffectName = string.Empty;
+            SoundEffect = null;
+            return this;
+        }
     }
 
 }

@@ -12,7 +12,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
             {Buttons.DPadDown, EventConstants.WalkBackward},
             {Buttons.DPadLeft, EventConstants.TurnLeft},
             {Buttons.DPadRight, EventConstants.TurnRight},
-            {Buttons.RightTrigger, EventConstants.FireWeapon},
+            {Buttons.RightTrigger, EventConstants.FirePistolWeapon},
             {Buttons.LeftTrigger, EventConstants.Running},
             {Buttons.A, EventConstants.TurnAround},
             {Buttons.Y, EventConstants.LightStatus}

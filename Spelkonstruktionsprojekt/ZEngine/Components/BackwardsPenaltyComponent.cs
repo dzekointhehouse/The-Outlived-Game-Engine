@@ -2,7 +2,19 @@
 {
     public class BackwardsPenaltyComponent : IComponent
     {
-        public double AccelerationBeforeBackwardsPenaltyApplied { get; set; } = 0;
-        public double BackwardsPenaltyFactor { get; set; } = 0.5;
+        public double AccelerationBeforeBackwardsPenaltyApplied { get; set; }
+        public double BackwardsPenaltyFactor { get; set; }
+
+        public BackwardsPenaltyComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            AccelerationBeforeBackwardsPenaltyApplied = 0;
+            BackwardsPenaltyFactor = 0.5;
+            return this;
+        }
     }
 }

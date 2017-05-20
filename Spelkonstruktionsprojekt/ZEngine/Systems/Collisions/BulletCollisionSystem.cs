@@ -22,23 +22,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         {
             if (TargetIsShooter(collisionEvent)) return;
             if (TargetIsBullet(collisionEvent)) return;
-            if (ComponentManager.EntityHasComponent<HealthComponent>(collisionEvent.Target))
-            {
-//                Debug.WriteLine("Added damage");
-                var healthComponent =
-                    ComponentManager.GetEntityComponentOrDefault<HealthComponent>(collisionEvent.Target);
-                if (healthComponent != null)
-                {
-                    var bulletComponent =
-                        ComponentManager.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Entity);
-                    if (bulletComponent != null)
-                    {
-                        var damage = bulletComponent.Damage;
-                        healthComponent.Damage.Add(damage);
-                    }
-                }
-            }
             StopBulletAnimation(collisionEvent.EventTime, collisionEvent.Entity);
+
+            var healthComponent =
+                ComponentManager.GetEntityComponentOrDefault<HealthComponent>(collisionEvent.Target);
+            if (healthComponent == null) return;
+            var bulletComponent =
+                ComponentManager.GetEntityComponentOrDefault<BulletComponent>(collisionEvent.Entity);
+            if (bulletComponent == null) return;
+
+            var damage = bulletComponent.Damage;
+            healthComponent.Damage.Add(damage);
         }
 
         private bool TargetIsShooter(SpecificCollisionEvent collisionEvent)

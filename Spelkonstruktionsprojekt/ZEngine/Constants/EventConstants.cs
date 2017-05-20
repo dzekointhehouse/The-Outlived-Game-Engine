@@ -18,10 +18,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public const string TurnLeft = "entityTurnLeft";
         public const string TurnRight = "entityTurnRight";
         public const string TurnAround = "entityTurnAround";
-        public const string FireWeapon = "entityFireWeapon";
         public const string ReloadWeapon = "entityReloadWeapon";
         public const string Running = "entityRun";
 
+        // Weapons
+        public const string FireRifleWeapon = "entityFireRifleWeapon";
+        public const string FirePistolWeapon = "entityFirePistolWeapon";
+        public const string FireShotgunWeapon = "entityFireShotgunWeapon";
 
         // Collisions
         public const string WallCollision = "WallCollision";

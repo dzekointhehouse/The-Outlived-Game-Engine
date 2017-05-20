@@ -32,8 +32,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // will be necessary for this system.
         public ISystem Start()
         {
-//            PistolAbilitySystem.Start(BulletFactory);
+            PistolAbilitySystem.Start(BulletFactory);
             RifleAbilitySystem.Start(BulletFactory);
+            ShotgunAbilitySystem.Start(BulletFactory);
             return this;
         }
 

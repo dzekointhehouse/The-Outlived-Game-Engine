@@ -8,5 +8,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class FlyweightPickupComponent : IComponent
     {
+        public IComponent Reset()
+        {
+            return this;
+        }
     }
 }

@@ -143,7 +143,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var animationComponent = ComponentManager.GetEntityComponentOrDefault<AnimationComponent>(entityId);
             if (animationComponent != null) return animationComponent;
 
-            animationComponent = new AnimationComponent();
+            animationComponent = ComponentManager.ComponentFactory.NewComponent<AnimationComponent>();
             ComponentManager.AddComponentToEntity(animationComponent, entityId);
             return animationComponent;
         }

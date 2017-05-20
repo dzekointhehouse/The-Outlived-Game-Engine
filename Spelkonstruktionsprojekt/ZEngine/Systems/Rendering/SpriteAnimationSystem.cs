@@ -41,16 +41,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private void UpdateAnimationState(StateChangeEvent stateChangeEvent)
         {
             var entityId = stateChangeEvent.EntityId;
-            if (!ComponentManager.ContainsAllComponents(
-                entityId,
-                typeof(SpriteAnimationBindings)
-            )) return;
             var animationBindings = ComponentManager.GetEntityComponentOrDefault<SpriteAnimationBindings>(entityId);
+            if (animationBindings == null) return;
 
             var spriteAnimation = ComponentManager.GetEntityComponentOrDefault<SpriteAnimationComponent>(entityId);
             if (spriteAnimation == null)
             {
-                spriteAnimation = new SpriteAnimationComponent();
+                spriteAnimation = ComponentManager.ComponentFactory.NewComponent<SpriteAnimationComponent>();
                 ComponentManager.AddComponentToEntity(spriteAnimation, entityId);
                 spriteAnimation.AnimationStarted = stateChangeEvent.EventTime;
             }
@@ -87,12 +84,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         private void ProcessAnimation(GameTime gameTime, uint entityId, SpriteAnimationComponent spriteAnimation)
         {
-            if (!ComponentManager.ContainsAllComponents(
-                entityId,
-                typeof(SpriteComponent)
-            )) return;
             var spriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(entityId);
-
+            if (spriteComponent == null) return;
             if (spriteAnimation.CurrentAnimatedState == null && spriteAnimation.NextAnimatedState != null)
             {
 //                Debug.WriteLine("SWITCHING TO NEXT ANIMATION STATE");

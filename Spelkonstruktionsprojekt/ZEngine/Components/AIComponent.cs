@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-
-namespace ZEngine.Components
+﻿namespace ZEngine.Components
 {
     class AIComponent : IComponent
     {
        // public Vector2 Target;
 
-        public bool Wander { get; set; } = false;
+        public bool Wander { get; set; }
 
-        public float FollowDistance { get; set; } = 250;
+        public float FollowDistance { get; set; }
+
+        public AIComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            Wander = false;
+            FollowDistance = 250;
+            return this;
+        }
     }
 }
     

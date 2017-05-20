@@ -26,8 +26,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         {
             if (inputEvent.KeyEvent != ActionBindings.KeyEvent.KeyPressed) { return; }
             //Debug.WriteLine(inputEvent.EntityId + ": Reloading!");
-            var ammoComponent = (AmmoComponent) ComponentManager.Instance.GetEntityComponentOrDefault(typeof(AmmoComponent), inputEvent.EntityId);
-            var weaponComponent = (WeaponComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(WeaponComponent), inputEvent.EntityId);
+            var ammoComponent = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(inputEvent.EntityId);
+            var weaponComponent = ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
             if (ammoComponent == null || weaponComponent == null) { return; } 
             if (weaponComponent.ClipSize == ammoComponent.Amount) { return; } // Return if clip is full
 

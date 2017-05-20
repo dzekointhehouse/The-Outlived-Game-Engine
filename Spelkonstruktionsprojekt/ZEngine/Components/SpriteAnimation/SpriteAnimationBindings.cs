@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation
@@ -10,6 +11,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation
     public class SpriteAnimationBindings : IComponent
     {
         public List<SpriteAnimationBinding> Bindings = new List<SpriteAnimationBinding>();
+
+        public IComponent Reset()
+        {
+            Bindings.Clear();
+            return this;
+        }
     }
 
     public class SpriteAnimationBinding
@@ -58,7 +65,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation
 
     public class SpriteAnimationBindingsBuilder
     {
-        private readonly SpriteAnimationBindings _spriteAnimationBindings = new SpriteAnimationBindings();
+        private readonly SpriteAnimationBindings _spriteAnimationBindings = ComponentManager.Instance.ComponentFactory.NewComponent<SpriteAnimationBindings>();
 
         public SpriteAnimationBindingsBuilder Binding(SpriteAnimationBinding binding)
         {

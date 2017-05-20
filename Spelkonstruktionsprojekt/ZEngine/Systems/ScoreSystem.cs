@@ -78,7 +78,7 @@ namespace ZEngine.Systems
             foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityScoreComponent)))
             {
                 var scoreComponent = entity.Value as EntityScoreComponent;
-                var health = (HealthComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(HealthComponent), entity.Key);
+                var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
                 if (health == null) continue;
                 if (health.Alive)
                 {
@@ -99,8 +99,8 @@ namespace ZEngine.Systems
          */
         private bool DifferentTeams(uint target, uint entity)
         {
-            var targetTeamComponent = (TeamComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(TeamComponent), target);
-            var entityTeamComponent = (TeamComponent)ComponentManager.Instance.GetEntityComponentOrDefault(typeof(TeamComponent), entity);
+            var targetTeamComponent = ComponentManager.Instance.GetEntityComponentOrDefault<TeamComponent>(target);
+            var entityTeamComponent = ComponentManager.Instance.GetEntityComponentOrDefault<TeamComponent>(entity);
 
             if (targetTeamComponent == null || entityTeamComponent == null)
                 return true;
@@ -109,8 +109,6 @@ namespace ZEngine.Systems
                 return true;
             else return false;
         }
-
-
 
         public int TotalScore()
         {

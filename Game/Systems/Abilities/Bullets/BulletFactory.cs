@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Components;
@@ -11,7 +12,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
 {
     public class BulletFactory
     {
-        private ComponentManager ComponentManager = ComponentManager.Instance;
+        private static ComponentManager ComponentManager = ComponentManager.Instance;
+        private static ComponentFactory ComponentFactory = ComponentManager.ComponentFactory;
         private SpriteComponent PistolBulletSprite;
 
         private float xOffset = 65;
@@ -30,16 +32,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
 
         public void FireBullet(uint bulletEntityId, float direction)
         {
-            var bulletRenderComponent = new RenderComponent();
+            var bulletRenderComponent = ComponentFactory.NewComponent<RenderComponent>();
 
-            var bulletMoveComponent = new MoveComponent()
-            {
-                AccelerationSpeed = 0,
-                Speed = 2000,
-                MaxVelocitySpeed = 2000,
-                Direction = (float) direction
-            };
-            var bulletCollisionComponent = new CollisionComponent();
+            var bulletMoveComponent = ComponentFactory.NewComponent<MoveComponent>();
+            bulletMoveComponent.AccelerationSpeed = 0;
+            bulletMoveComponent.Speed = 2000;
+            bulletMoveComponent.MaxVelocitySpeed = 2000;
+            bulletMoveComponent.Direction = (float) direction;
+            var bulletCollisionComponent = ComponentFactory.NewComponent<CollisionComponent>();
 
             ComponentManager.AddComponentToEntity(bulletMoveComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
@@ -68,21 +68,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
             var bulletEntityId = EntityManager.GetEntityManager().NewEntity();
 
 
-            var bulletshooterPosition = new PositionComponent()
-            {
-                Position = finalPosition,
-                ZIndex = shooterPosition.ZIndex
-            };
-            var bulletDimensionsComponent = new DimensionsComponent()
-            {
-                Height = 10,
-                Width = 10
-            };
-            var bulletComponent = new BulletComponent()
-            {
-                Damage = damage,
-                ShooterEntityId = shooterId
-            };
+            var bulletshooterPosition = ComponentFactory.NewComponent<PositionComponent>();
+            bulletshooterPosition.Position = finalPosition;
+            bulletshooterPosition.ZIndex = shooterPosition.ZIndex;
+            var bulletDimensionsComponent = ComponentFactory.NewComponent<DimensionsComponent>();
+            bulletDimensionsComponent.Height = 10;
+            bulletDimensionsComponent.Width = 10;
+            var bulletComponent = ComponentFactory.NewComponent<BulletComponent>();
+            bulletComponent.Damage = damage;
+            bulletComponent.ShooterEntityId = shooterId;
             ComponentManager.AddComponentToEntity(bulletshooterPosition, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletDimensionsComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletComponent, bulletEntityId);

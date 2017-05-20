@@ -2,6 +2,17 @@
 {
     public class InertiaDampeningComponent : IComponent
     {
-        public int StabilisingSpeed = 1000;
+        public int StabilisingSpeed;
+
+        public InertiaDampeningComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            StabilisingSpeed = 1000;
+            return this;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Game.Services;
@@ -19,21 +20,22 @@ namespace Game.Menu.States
     {
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
+
         private readonly GameManager gameManager;
         private readonly ControlsConfig controls;
-        private CharacterState currentPosition = CharacterState.FirstCharacter;
+        private CharacterType characterType = CharacterType.Bob;
         private Player currentPlayer;
         private int playerIndex = 0;
 
 
         // enum so we can keep track on which option
         // we currently are at.
-        public enum CharacterState
+        public enum CharacterType
         {
-            FirstCharacter,
-            SecondCharacter,
-            ThirdCharacter,
-            FourthCharacter
+            Bob,
+            Edgar,
+            Ward,
+            Jimmy
         }
 
         public CharacterMenu(GameManager gameManager)
@@ -42,7 +44,6 @@ namespace Game.Menu.States
             game = this.gameManager.Engine.Dependencies.Game;
             // Adding the options interval and gamemanager.
             controls = new ControlsConfig(0, 3, gameManager);
-
         }
 
         // Draws the character names and the button at the option that
@@ -62,23 +63,23 @@ namespace Game.Menu.States
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
 
             var viewport = game.GraphicsDevice.Viewport;
-            sb.DrawString(gameManager.MenuContent.MenuFont, "Player " + currentPlayer.Index.ToString(), new Vector2(viewport.Width * 0.5f, viewport.Height * 0.15f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, "Player " + currentPlayer.Index.ToString(),
+                new Vector2(viewport.Width * 0.5f, viewport.Height * 0.15f), Color.White);
 
-            switch (currentPosition)
+            switch (characterType)
             {
-                case CharacterState.FirstCharacter:
+                case CharacterType.Bob:
                     sb.Draw(gameManager.MenuContent.HighlightFirst, viewport.Bounds, Color.White);
                     break;
-                case CharacterState.SecondCharacter:
+                case CharacterType.Edgar:
                     sb.Draw(gameManager.MenuContent.HighlightSecond, viewport.Bounds, Color.White);
                     break;
-                case CharacterState.ThirdCharacter:
+                case CharacterType.Ward:
                     sb.Draw(gameManager.MenuContent.HighlightThird, viewport.Bounds, Color.White);
                     break;
-                case CharacterState.FourthCharacter:
+                case CharacterType.Jimmy:
                     sb.Draw(gameManager.MenuContent.HighlightFourth, viewport.Bounds, Color.White);
                     break;
-
             }
         }
 
@@ -103,8 +104,8 @@ namespace Game.Menu.States
             if (currentPlayer == null)
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
             // Change character position
-            currentPosition = (CharacterState)controls.MoveOptionPositionHorizontally((int)currentPosition, currentPlayer.Index);
-           
+            characterType =
+                (CharacterType) controls.MoveOptionPositionHorizontally((int) characterType, currentPlayer.Index);
 
 
             // If the player pressed continue button but there are players left..
@@ -112,42 +113,41 @@ namespace Game.Menu.States
             {
                 if (controls.ContinueButton(GameManager.GameState.CharacterMenu))
                 {
-                    
-                
-                // Set the current character to that player
-                // get the next player and then reset.
-                currentPlayer.Character = GetCharacter(currentPosition);
-                currentPlayer = gameManager.gameConfig.Players[playerIndex++];
-                currentPosition = CharacterState.FirstCharacter;
+                    // Set the current character to that player
+                    // get the next player and then reset.
+                    currentPlayer.SpriteName = GetCharacterSpriteName(characterType);
+                    currentPlayer.CharacterType = characterType;
+                    currentPlayer = gameManager.gameConfig.Players[playerIndex++];
+                    characterType = CharacterType.Bob;
                 }
             }
 
             // If there are no players left to choose character.
             // Continue to next state when done with the players.
-            if (controls.ContinueButton(GameManager.GameState.PlaySurvivalGame) && gameManager.gameConfig.Players.Count == playerIndex)
-            { 
+            if (controls.ContinueButton(GameManager.GameState.PlaySurvivalGame) &&
+                gameManager.gameConfig.Players.Count == playerIndex)
+            {
                 // set the last player's character.
-                currentPlayer.Character = GetCharacter(currentPosition);
+                currentPlayer.SpriteName = GetCharacterSpriteName(characterType);
+                currentPlayer.CharacterType = characterType;
                 // Reset values if this state is re-visited.
                 playerIndex = 0;
                 currentPlayer = null;
-                currentPosition = CharacterState.FirstCharacter;
+                characterType = CharacterType.Bob;
             }
-
-
         }
 
-        private string GetCharacter(CharacterState choice)
+        private string GetCharacterSpriteName(CharacterType choice)
         {
             switch (choice)
             {
-                case CharacterState.FirstCharacter:
+                case CharacterType.Bob:
                     return "player_sprites";
-                case CharacterState.SecondCharacter:
+                case CharacterType.Edgar:
                     return "player_sprites2";
-                case CharacterState.ThirdCharacter:
+                case CharacterType.Ward:
                     return "player_sprites3";
-                case CharacterState.FourthCharacter:
+                case CharacterType.Jimmy:
                     return "player_sprites4";
                 default:
                     return "player_sprites";

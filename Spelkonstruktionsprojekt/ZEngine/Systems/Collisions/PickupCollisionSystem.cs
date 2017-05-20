@@ -55,8 +55,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         private void HandleHealthPickup(uint player, uint pickup)
         {
-            var HealthComponent = (HealthComponent)ComponentManager.GetEntityComponentOrDefault(typeof(HealthComponent), player);
-            var HealthPickupComponent = (HealthPickupComponent) ComponentManager.GetEntityComponentOrDefault(typeof(HealthPickupComponent), pickup);
+            var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(player);
+            var HealthPickupComponent = ComponentManager.GetEntityComponentOrDefault<HealthPickupComponent>(pickup);
             //if (HealthComponent.CurrentHealth < HealthComponent.MaxHealth)
             {
                 HealthComponent.Damage.Add(-HealthPickupComponent.Amount);
@@ -67,8 +67,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         private void HandleAmmoPickup(uint player, uint pickup)
         {
-            var AmmoComponent = (AmmoComponent)ComponentManager.GetEntityComponentOrDefault(typeof(AmmoComponent), player);
-            var AmmoPickupComponent = (AmmoPickupComponent)ComponentManager.GetEntityComponentOrDefault(typeof(AmmoPickupComponent), pickup);
+            var AmmoComponent = ComponentManager.GetEntityComponentOrDefault<AmmoComponent>(player);
+            var AmmoPickupComponent = ComponentManager.GetEntityComponentOrDefault<AmmoPickupComponent>(pickup);
             AmmoComponent.SpareAmmoAmount += AmmoPickupComponent.Amount;
             DeletePickup(pickup);
         }
@@ -83,7 +83,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
             if (tagComponent == null)
             {
-                tagComponent = new TagComponent();
+                tagComponent = ComponentManager.ComponentFactory.NewComponent<TagComponent>();
                 ComponentManager.AddComponentToEntity(tagComponent, pickup);
             }
             tagComponent.Tags.Add(Tag.Delete);

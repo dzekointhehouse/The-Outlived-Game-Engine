@@ -37,7 +37,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // We subscribe to the input inputEvent for when the entity fires a
             // weapon, then we use the WeaponSounds method to "say" what should
             // be done. 
-            EventBus.Subscribe<InputEvent>(EventConstants.FireWeapon, WeaponSounds);
+            EventBus.Subscribe<InputEvent>(EventConstants.FirePistolWeapon, WeaponSounds);
             EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.PickupCollision, PickupSounds);
             //EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
             return this;
@@ -149,7 +149,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entityId);
             if (animationComponent == null)
             {
-                animationComponent = new AnimationComponent();
+                animationComponent = ComponentManager.Instance.ComponentFactory.NewComponent<AnimationComponent>();
                 ComponentManager.Instance.AddComponentToEntity(animationComponent, entityId);
             }
 

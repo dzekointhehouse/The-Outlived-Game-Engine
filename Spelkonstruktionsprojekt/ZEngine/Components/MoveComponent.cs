@@ -6,13 +6,31 @@ namespace ZEngine.Components
     {
         public Vector2 PreviousPosition { get; set; }
         public float PreviousDirection { get; set; }
-        public float Direction { get; set; } = 0;
-        public float Speed = 0;
-        public double CurrentAcceleration = 0;
+        public float Direction { get; set; }
+        public float Speed;
+        public double CurrentAcceleration;
         public double AccelerationSpeed = 10;
-        public double BackwardsPenaltyFactor = 0.5;
-        public float MaxVelocitySpeed = 0;
-        public double RotationMomentum = 0;
-        public double RotationSpeed = 0;
+        public float MaxVelocitySpeed;
+        public double RotationMomentum;
+        public double RotationSpeed;
+
+        public MoveComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            PreviousPosition = Vector2.Zero;
+            PreviousDirection = 0;
+            Direction = 0;
+            Speed = 0;
+            CurrentAcceleration = 0;
+            AccelerationSpeed = 10;
+            MaxVelocitySpeed = 0;
+            RotationMomentum = 0;
+            RotationSpeed = 0;
+            return this;
+        }
     }
 }
