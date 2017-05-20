@@ -1,8 +1,22 @@
-﻿namespace ZEngine.Components
+﻿using System.Dynamic;
+
+namespace ZEngine.Components
 {
     public class RenderComponent : IComponent
     {
-        public bool IsVisible = true;
-        public bool Fixed = false;
+        public bool IsVisible { get; set; }
+        public bool Fixed { get; set; }
+
+        public RenderComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            IsVisible = true;
+            Fixed = false;
+            return this;
+        }
     }
 }

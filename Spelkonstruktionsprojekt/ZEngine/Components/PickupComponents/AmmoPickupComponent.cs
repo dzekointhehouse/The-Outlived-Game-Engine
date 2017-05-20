@@ -7,8 +7,19 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents
 {
-    class AmmoPickupComponent : IComponent
+    public class AmmoPickupComponent : IComponent
     {
-        public int Amount { get; set; } = 10;
+        public int Amount { get; set; }
+
+        public AmmoPickupComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            Amount = 10;
+            return this;
+        }
     }
 }

@@ -85,7 +85,6 @@
     <Compile Include="ZEngine\Components\RenderComponent\PositionComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderOffsetComponent.cs" />
-    <Compile Include="ZEngine\Components\RenderComponent\RenderPaintComponent.cs" />
     <Compile Include="ZEngine\Components\SoundComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteAnimationComponent.cs" />
     <Compile Include="ZEngine\Components\SpriteAnimation\SpriteAnimationBindings.cs" />

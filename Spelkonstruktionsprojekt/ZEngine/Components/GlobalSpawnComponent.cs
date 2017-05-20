@@ -12,5 +12,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public bool EnemiesDead { get; set; } = true;
 
         public int WaveSizeIncreaseConstant = 1;
+
+        public GlobalSpawnComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            WaveSize = 2;
+            EnemiesDead = true;
+            WaveSizeIncreaseConstant = 1;
+            return this;
+        }
     }
 }

@@ -8,5 +8,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class SpawnFlyweightComponent : IComponent
     {
+        public IComponent Reset()
+        {
+            return this;
+        }
     }
 }

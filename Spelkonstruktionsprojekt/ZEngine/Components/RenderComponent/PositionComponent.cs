@@ -12,5 +12,11 @@ namespace ZEngine.Components
     {
         public Vector2 Position { get; set; }
         public int ZIndex { get; set; }
+        public IComponent Reset()
+        {
+            Position = Vector2.Zero;
+            ZIndex = 0;
+            return this;
+        }
     }
 }

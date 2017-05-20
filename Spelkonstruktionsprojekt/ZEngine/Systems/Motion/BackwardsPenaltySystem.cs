@@ -22,7 +22,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (isMovingBackwards && backwardsPenaltyComponent.AccelerationBeforeBackwardsPenaltyApplied == 0)
                 {
                     backwardsPenaltyComponent.AccelerationBeforeBackwardsPenaltyApplied = moveComponent.CurrentAcceleration;
-                    moveComponent.CurrentAcceleration *= moveComponent.BackwardsPenaltyFactor;
+                    moveComponent.CurrentAcceleration *= backwardsPenaltyComponent.BackwardsPenaltyFactor;
                 }
                 else if (isMovingBackwards)
                 {

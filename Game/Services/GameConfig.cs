@@ -17,7 +17,8 @@ namespace Game.Services
     {
         public TeamState Team { get; set; }
         public PlayerIndex Index { get; set; }
-        public string Character { get; set; }
+        public string SpriteName { get; set; }
+        public CharacterType CharacterType { get; set; }
         public int CameraId { get; set; }
     }
 }

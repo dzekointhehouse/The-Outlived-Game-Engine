@@ -11,5 +11,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     public class LightComponent : IComponent
     {
         public Light Light { get; set; }
+
+        public LightComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            Light = null;
+            return this;
+        }
     }
 }

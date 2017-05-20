@@ -11,5 +11,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     {
         public int TeamId { get; set; }
         public List<int> members { get; set; } = new List<int>();
+        public IComponent Reset()
+        {
+            TeamId = 0;
+            members.Clear();
+            return this;
+        }
     }
 }

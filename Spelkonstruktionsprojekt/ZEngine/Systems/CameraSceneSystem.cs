@@ -38,22 +38,16 @@ namespace ZEngine.Systems
             if (cameras.Count < 1) return;
             var camera = cameras.First();
 
-            IEnumerable<KeyValuePair<uint, IComponent>> fixedRenderables =
-                ComponentManager.GetEntitiesWithComponent(typeof(RenderComponent))
-                    .Where(entity =>
-                    {
-                        var renderComponent = entity.Value as RenderComponent;
-                        return renderComponent.Fixed
-                               && ComponentManager.Instance.EntityHasComponent<RenderOffsetComponent>(entity.Key);
-                    });
-
-            foreach (var fixedEntity in fixedRenderables)
+            foreach (var fixedEntity in ComponentManager.GetEntitiesWithComponent(typeof(RenderComponent)))
             {
+                var renderComponent = fixedEntity.Value as RenderComponent;
+                if (!renderComponent.Fixed) return;
                 var offsetComponent =
                     ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(fixedEntity.Key);
+                if (offsetComponent == null) return;
                 var positionComponent =
                     ComponentManager.GetEntityComponentOrDefault<PositionComponent>(fixedEntity.Key);
-
+                if (positionComponent == null) return;
 
                 var cameraViewComponent = camera.Value as CameraViewComponent;
                 positionComponent.Position = new Vector2(
@@ -72,10 +66,6 @@ namespace ZEngine.Systems
             double delta = gameTime.ElapsedGameTime.TotalSeconds;
             var followEntities = ComponentManager.GetEntitiesWithComponent(typeof(CameraFollowComponent));
             var cameras = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
-
-
-            
-
 
             // Remember: Change the camera scale depending on the distance of the farthest
             // players. And if the distance gets smaller we should increase scale.
@@ -137,12 +127,12 @@ namespace ZEngine.Systems
                 // independently of all the sprites, which means that we easily can
                 // rotate, scale, etc. without much effort, plus its recommended.
                 // What we do when multiplying matrices is that we combine them
-                // so the result will be a matrix that does the combination of it's 
+                // so the result will be a matrix that does the combination of it's
                 // products. Now when we use this transform in the begindraw, it will
                 // affect all the stuff that is drawn after it.
-                // We create a translation matrix so we are able to move our points easily 
+                // We create a translation matrix so we are able to move our points easily
                 // from one place to another, and we want to translate the point according to
-                // the players average position which is the center of the screen. 
+                // the players average position which is the center of the screen.
                 // X,Y and Z, ofcourse Z will be 0. We won't be having any rotation.
                 // Our zoom effect will be doing its jobb here also , when we scale and adjust the points
                 // accordingly.

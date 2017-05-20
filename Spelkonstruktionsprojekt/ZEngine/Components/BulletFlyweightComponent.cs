@@ -9,5 +9,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     public class BulletFlyweightComponent : IComponent
     {
+        public IComponent Reset()
+        {
+            return this;
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
         public void Start(BulletFactory bulletFactory)
         {
             BulletFactory = bulletFactory;
-            EventBus.Subscribe<InputEvent>(EventConstants.FireWeapon, HandleFireWeapon);
+            EventBus.Subscribe<InputEvent>(EventConstants.FirePistolWeapon, HandleFireWeapon);
         }
 
         public void HandleFireWeapon(InputEvent inputEvent)
@@ -28,7 +28,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 
             var weaponComponent =
                 ComponentManager.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
-            if (weaponComponent == default(WeaponComponent)) return;
+            if (weaponComponent == null) return;
+            if (weaponComponent.WeaponType != WeaponComponent.WeaponTypes.Shotgun) return;
             if (weaponComponent.LastFiredMoment + RateOfFire > inputEvent.EventTime) return;
             weaponComponent.LastFiredMoment = inputEvent.EventTime;
 
@@ -54,7 +55,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                     weaponComponent.Damage);
             if (bulletIds.Length == 0) return;
 
-            var animationComponent = new AnimationComponent();
+            var animationComponent = ComponentManager.ComponentFactory.NewComponent<AnimationComponent>();
             ComponentManager.AddComponentToEntity(animationComponent, bulletIds[0]);
 
             var animation = new GeneralAnimation()

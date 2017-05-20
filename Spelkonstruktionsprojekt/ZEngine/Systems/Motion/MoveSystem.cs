@@ -20,13 +20,15 @@ namespace ZEngine.Systems
         public void Move(GameTime gameTime)
         {
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
-            var moveEntities = ComponentManager.GetEntitiesWithComponent(typeof(MoveComponent));
-            var positionComponents =
-                ComponentManager.GetEntitiesWithComponent(typeof(PositionComponent))
-                    .Where(entry => moveEntities.ContainsKey(entry.Key));
-            foreach (var entity in positionComponents)
+            foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(MoveComponent)))
             {
-                var moveComponent = moveEntities[entity.Key] as MoveComponent;
+                var moveComponent = entity.Value as MoveComponent;
+
+                var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
+                if (positionComponent == null) continue;
+                var backwardsPenaltyComponent =
+                    ComponentManager.GetEntityComponentOrDefault<BackwardsPenaltyComponent>(entity.Key);
+
 
                 //Play direction based on angular momentum
                 moveComponent.PreviousDirection = moveComponent.Direction;
@@ -38,7 +40,7 @@ namespace ZEngine.Systems
                 moveComponent.Speed += (float) (moveComponent.CurrentAcceleration * delta);
 
                 //Limit velocity if above max velocity
-                ApplyVelocityLimits(moveComponent);
+                ApplyVelocityLimits(moveComponent, backwardsPenaltyComponent);
 
                 //Play Velocity based on current direction and acceleration
                 var oldVector = new Vector2(0, 0);
@@ -46,7 +48,6 @@ namespace ZEngine.Systems
                     moveComponent.Speed);
 
                 // Play position with current velocity.
-                var positionComponent = entity.Value as PositionComponent;
                 var valuePosition = positionComponent.Position;
 
                 moveComponent.PreviousPosition = positionComponent.Position;
@@ -78,17 +79,21 @@ namespace ZEngine.Systems
             //}
         }
 
-
-
-        public void ApplyVelocityLimits(MoveComponent moveComponent)
+        public void ApplyVelocityLimits(MoveComponent moveComponent, BackwardsPenaltyComponent backwardsPenaltyComponent = null)
         {
+            double backwardsPenaltyFactor = 1;
+            if (backwardsPenaltyComponent != null)
+            {
+                backwardsPenaltyFactor = backwardsPenaltyComponent.BackwardsPenaltyFactor;
+            }
+
             if (moveComponent.Speed > moveComponent.MaxVelocitySpeed)
             {
                 moveComponent.Speed = moveComponent.MaxVelocitySpeed;
             }
-            else if (moveComponent.Speed < -moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor)
+            else if (moveComponent.Speed < -moveComponent.MaxVelocitySpeed * backwardsPenaltyFactor)
             {
-                moveComponent.Speed = (float) (-moveComponent.MaxVelocitySpeed * moveComponent.BackwardsPenaltyFactor);
+                moveComponent.Speed = (float) (-moveComponent.MaxVelocitySpeed * backwardsPenaltyFactor);
             }
         }
 
@@ -119,12 +124,9 @@ namespace ZEngine.Systems
 
         public bool HasCollided(uint entityId)
         {
-            if (ComponentManager.EntityHasComponent<CollisionComponent>(entityId))
-            {
-                var collisionComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(entityId);
-                return collisionComponent.collisions.Count > 0;
-            }
-            return false;
+            var collisionComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(entityId);
+            if (collisionComponent == null) return false;
+            return collisionComponent.collisions.Count > 0;
         }
     }
 }

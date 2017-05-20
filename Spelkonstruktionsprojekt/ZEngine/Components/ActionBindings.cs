@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.AccessControl;
 using Microsoft.Xna.Framework.Input;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
@@ -20,12 +21,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
             KeyReleased,
             KeySustain
         }
+
+        public IComponent Reset()
+        {
+            Actions.Clear();
+            return this;
+        }
     }
 
     public class ActionBindingsBuilder
     {
 
-        private readonly ActionBindings _actionBindings = new ActionBindings();
+        private readonly ActionBindings _actionBindings =
+            ComponentManager.Instance.ComponentFactory.NewComponent<ActionBindings>();
 
         public ActionBindingsBuilder SetAction(Keys key, string eventName)
         {

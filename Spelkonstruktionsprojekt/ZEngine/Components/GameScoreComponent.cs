@@ -15,13 +15,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public int TotalGameScore { get; set; }
 
+        public double multiplier;
+        public double survivalScoreFactor;
+        public int damageScore;
+        public int damagePenalty;
 
-        public double multiplier = 1;
-        public double survivalScoreFactor = 5;
-        public int damageScore = 50;
-        public int damagePenalty = -500;
+        public GameScoreComponent()
+        {
+            Reset();
+        }
 
-
-
+        public IComponent Reset()
+        {
+            TotalGameScore = 0;
+            multiplier = 1;
+            survivalScoreFactor = 5;
+            damageScore = 50;
+            damagePenalty = -500;
+            return this;
+        }
     }
 }

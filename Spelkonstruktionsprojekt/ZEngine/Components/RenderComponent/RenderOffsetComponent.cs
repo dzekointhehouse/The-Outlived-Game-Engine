@@ -10,6 +10,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent
 {
     public class RenderOffsetComponent : IComponent
     {
-        public Vector2 Offset = default(Vector2);
+        public Vector2 Offset;
+
+        public RenderOffsetComponent()
+        {
+            Reset();
+        }
+
+        public IComponent Reset()
+        {
+            Offset = Vector2.Zero;
+            return this;
+        }
     }
 }

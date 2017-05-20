@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 
@@ -54,14 +55,15 @@ namespace ZEngine.Managers
         {
             _existingEntities.Add(_nextEntityId);
             var entityId = _nextEntityId++;
+//            Debug.WriteLine("Next entity: " + entityId);
             AddMandatoryComponents(entityId);
             return entityId;
         }
 
         private void AddMandatoryComponents(uint entityId)
         {
-            var stateComponent = new StateComponent();
-            var tagComponent = new TagComponent();
+            var tagComponent = ComponentManager.Instance.ComponentFactory.NewComponent<TagComponent>();
+            var stateComponent = ComponentManager.Instance.ComponentFactory.NewComponent<StateComponent>();
             ComponentManager.Instance.AddComponentToEntity(stateComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(tagComponent, entityId);
         }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework.Graphics;
+using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Managers
@@ -23,7 +25,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
         //second dictionary to get all components in one entity
         // _____________________________________________________________________________________________________________________ //
 
-        
+        //Used to create and recycle components
+        //Most recycling is done automatically by the ComponentManager
+        public ComponentFactory ComponentFactory { get; } = new ComponentFactory();
+
         // Returns a dictionary with all the entities that have an instance 
         // of the component type that is given as a parameter.        
         public Dictionary<uint, IComponent> GetEntitiesWithComponent(Type componentType)
@@ -105,7 +110,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
 
             var entityComponents = _components[componentInstance.GetType()];
             entityComponents.Add(entityId, componentInstance);
-
         }
 
         // Completely deletes the entity key and all the usages of it
@@ -116,16 +120,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
         {
             foreach (var component in _components.Keys)
             {
-                _components[component].Remove(entityId);
+                if (_components[component].ContainsKey(entityId))
+                {
+                    ComponentFactory.Recycle(component, _components[component][entityId]);
+                    _components[component].Remove(entityId);
+                }
             }
         }
 
         // Deletes the entity from a given component's dictionary.
-        public void RemoveComponentFromEntity(Type component, uint entityId)
+        public void RemoveComponentFromEntity<T>(uint entityId)
         {
-            if (!_components.ContainsKey(component)) return;
-            var entityComponents = _components[component];
-            entityComponents?.Remove(entityId);
+            if (!_components.ContainsKey(typeof(T))) return;
+            var entityComponents = _components[typeof(T)];
+            if (entityComponents == null) return;
+            if (!entityComponents.ContainsKey(entityId)) return;
+            ComponentFactory.Recycle<T>(entityComponents[entityId]);
+            entityComponents.Remove(entityId);
         }
 
         // This method adds the component type as the key to the dictionary that 

@@ -9,6 +9,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     public class StateComponent : IComponent
     {
         public HashSet<State> State { get; set; } = new HashSet<State>();
+
+        public IComponent Reset()
+        {
+            State.Clear();
+            return this;
+        }
     }
 
     public enum State
