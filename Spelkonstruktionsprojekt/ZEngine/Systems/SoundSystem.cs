@@ -110,14 +110,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // Atlest one pickup needs to exist.
                 if (health == null && pickup == null) return;
 
-            var globalPickUpEntity =
-               ComponentManager.Instance.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
-            if (globalPickUpEntity.Count <= 0) return;
+            //var globalPickUpEntity =
+            //   ComponentManager.Instance.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+            //if (globalPickUpEntity.Count <= 0) return;
 
 
             // Get the sound instance for this entity
+                    //ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(globalPickUpEntity.First().Key);
             var sound =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(globalPickUpEntity.First().Key);
+                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(inputEvent.Target);
                 if (sound == null) return;
                 // We create a SoundEffectInstance which gives us more control
                 var soundInstance = sound.SoundEffect.CreateInstance();

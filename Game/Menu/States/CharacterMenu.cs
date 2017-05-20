@@ -63,8 +63,10 @@ namespace Game.Menu.States
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
 
             var viewport = game.GraphicsDevice.Viewport;
-            sb.DrawString(gameManager.MenuContent.MenuFont, "Player " + currentPlayer.Index.ToString(),
-                new Vector2(viewport.Width * 0.5f, viewport.Height * 0.15f), Color.White);
+            var message = "Player " + currentPlayer.Index.ToString() + " Choose your character!";
+
+            sb.DrawString(gameManager.MenuContent.MenuFont, message,
+                new Vector2(viewport.Width * 0.1f, viewport.Height * 0.1f), Color.BlueViolet);
 
             switch (characterType)
             {
@@ -142,15 +144,15 @@ namespace Game.Menu.States
             switch (choice)
             {
                 case CharacterType.Bob:
-                    return "player_sprites";
+                    return "Bob";
                 case CharacterType.Edgar:
-                    return "player_sprites2";
+                    return "Edgar";
                 case CharacterType.Ward:
-                    return "player_sprites3";
+                    return "Ward";
                 case CharacterType.Jimmy:
-                    return "player_sprites4";
+                    return "Jimmy";
                 default:
-                    return "player_sprites";
+                    return "Bob";
             }
         }
     }
