@@ -73,18 +73,29 @@ namespace Game.Menu.States
             {
                 case GameModes.Survival:
                     if (controls.ContinueButton(GameManager.GameState.MultiplayerMenu))
+                    {
+                        gameManager.MenuContent.ClickSound.Play();
                         gameManager.gameConfig.GameMode = GameModes.Survival;
+                        }
                     break;
                 case GameModes.Extinction:
                     if (controls.ContinueButton(GameManager.GameState.MultiplayerMenu))
+                    {
+                        gameManager.MenuContent.ClickSound.Play();
                         gameManager.gameConfig.GameMode = GameModes.Extinction;
+                    }
                     break;
                 case GameModes.Exit:
-                    controls.ContinueButton(GameManager.GameState.MultiplayerMenu);
+                    if(controls.ContinueButton(GameManager.GameState.MultiplayerMenu))
+                        gameManager.MenuContent.ClickSound.Play();
+
                     break;
                 case GameModes.Blockworld:
                     if (controls.ContinueButton(GameManager.GameState.MultiplayerMenu))
+                    {
+                        gameManager.MenuContent.ClickSound.Play();
                         gameManager.gameConfig.GameMode = GameModes.Blockworld;
+                    }
                     break;
             }
         }

@@ -115,6 +115,7 @@ namespace Game.Menu.States
             {
                 if (controls.ContinueButton(GameManager.GameState.CharacterMenu))
                 {
+                    gameManager.MenuContent.ClickSound.Play();
                     // Set the current character to that player
                     // get the next player and then reset.
                     currentPlayer.SpriteName = GetCharacterSpriteName(characterType);
@@ -129,6 +130,7 @@ namespace Game.Menu.States
             if (controls.ContinueButton(GameManager.GameState.PlaySurvivalGame) &&
                 gameManager.gameConfig.Players.Count == playerIndex)
             {
+                gameManager.MenuContent.ClickSound.Play();
                 // set the last player's character.
                 currentPlayer.SpriteName = GetCharacterSpriteName(characterType);
                 currentPlayer.CharacterType = characterType;

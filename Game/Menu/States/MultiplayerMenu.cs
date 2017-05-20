@@ -136,10 +136,13 @@ namespace Game.Menu.States
 
             // Need atleast one player to proceed
             // Proceed if continue is pressed
-            if (controls.ContinueButton(GameManager.GameState.CharacterMenu) && (PlayerOneChoice != TeamState.NoTeam || PlayerTwoChoice != TeamState.NoTeam
-                || PlayerThreeChoice != TeamState.NoTeam || PlayerFourChoice != TeamState.NoTeam))
+            if (controls.ContinueButton(GameManager.GameState.CharacterMenu) &&
+                (PlayerOneChoice != TeamState.NoTeam || PlayerTwoChoice != TeamState.NoTeam
+                 || PlayerThreeChoice != TeamState.NoTeam || PlayerFourChoice != TeamState.NoTeam))
+            {
+                gameManager.MenuContent.ClickSound.Play();
                 UpdateGameConfigurations();
-
+            }
         }
 
         private void UpdateGameConfigurations()

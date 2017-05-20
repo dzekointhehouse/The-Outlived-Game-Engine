@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -16,6 +17,7 @@ namespace Game
     public class MenuContent
     {
         public Video IntroVideo;
+        public SoundEffect ClickSound;
         public Song BackgroundSong;
         public Texture2D Background;
         public Texture2D BackgroundFog;
@@ -60,7 +62,8 @@ namespace Game
 
             // Intro
             IntroVideo = game.Content.Load<Video>("version1");
-
+            // Click
+            ClickSound = game.Content.Load<SoundEffect>("sound/click2");
             // Multiplayer
             GamePadIcon = game.Content.Load<Texture2D>("Images/Gamepad/gamepad");
             GamePadIconHighlight = game.Content.Load<Texture2D>("Images/Gamepad/gamepad_h");

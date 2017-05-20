@@ -110,16 +110,20 @@ namespace Game.Menu.States
             switch (currentPosition)
             {
                 case OptionsState.Continue:
-                    controls.ContinueButton(GameManager.GameState.GameModesMenu);
+                    if(controls.ContinueButton(GameManager.GameState.GameModesMenu))
+                        gameManager.MenuContent.ClickSound.Play();
                     break;
                 case OptionsState.About:
-                    controls.ContinueButton(GameManager.GameState.About);
+                    if(controls.ContinueButton(GameManager.GameState.About))
+                        gameManager.MenuContent.ClickSound.Play();
                     break;
                 case OptionsState.Credits:
-                    controls.ContinueButton(GameManager.GameState.Credits);
+                    if(controls.ContinueButton(GameManager.GameState.Credits))
+                    gameManager.MenuContent.ClickSound.Play();
                     break;
                 case OptionsState.Exit:
-                    controls.ContinueButton(GameManager.GameState.Quit);
+                   if(controls.ContinueButton(GameManager.GameState.Quit))
+                        gameManager.MenuContent.ClickSound.Play();
                     break;
             }
         }
