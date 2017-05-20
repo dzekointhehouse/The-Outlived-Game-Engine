@@ -107,20 +107,20 @@ namespace ZEngine.Systems
                 averagePosition /= playerCount;
                 // set the cameras center
                 camera.Center = new Vector2(averagePosition.X, averagePosition.Y);
-               // camera.Center = new Vector2(averagePosition.X - (camera.ViewportDimension.X * 0.5f), averagePosition.Y - (camera.ViewportDimension.Y * 0.5f));
+                // camera.Center = new Vector2(averagePosition.X - (camera.ViewportDimension.X * 0.5f), averagePosition.Y - (camera.ViewportDimension.Y * 0.5f));
                 // Setting the zoom to  the camera.
-                //if (camera.Scale <= camera.MaxScale && camera.Scale >= camera.MinScale)
-                //{
-                //    // We get an OK decimal by dividing camera dimension over itself and the max with.
-                //    // If we surpass the limitthen we reset the scale.
-                //    camera.Scale = (camera.View.Width / (maxDistance + camera.View.Width));
-                //    if (camera.Scale < camera.MinScale)
-                //        camera.Scale = camera.MinScale;
-                //    else if (camera.Scale > camera.MaxScale)
-                //        camera.Scale = camera.MaxScale;
+                if (camera.Scale <= camera.MaxScale && camera.Scale >= camera.MinScale)
+                {
+                    // We get an OK decimal by dividing camera dimension over itself and the max with.
+                    // If we surpass the limitthen we reset the scale.
+                    camera.Scale = (camera.View.Width / (maxDistance + camera.View.Width));
+                    if (camera.Scale < camera.MinScale)
+                        camera.Scale = camera.MinScale;
+                    else if (camera.Scale > camera.MaxScale)
+                        camera.Scale = camera.MaxScale;
 
-                //   // Debug.WriteLine(camera.Scale);
-                //}
+                    // Debug.WriteLine(camera.Scale);
+                }
 
                 //    Matrix.CreateScale(new Vector3(camera.Scale, camera.Scale, camera.Scale));
                 // Using a matrix makes it easier for us to move the camera

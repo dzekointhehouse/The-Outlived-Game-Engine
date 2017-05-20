@@ -20,13 +20,13 @@ namespace ZEngine.Systems
 {
     public class ScoreSystem : ISystem
     {
-        private readonly EventBus.EventBus E = EventBus.EventBus.Instance;
+        private readonly EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
 
 
         public void Start()
         {
-            E.Subscribe<SpecificCollisionEvent>(EventConstants.BulletCollision, HandleBulletCollisionScore);
-            E.Subscribe<SpecificCollisionEvent>(EventConstants.EnemyCollision, HandleEnemyCollisionScore);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.BulletCollision, HandleBulletCollisionScore);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.EnemyCollision, HandleEnemyCollisionScore);
         }
 
         private void HandleBulletCollisionScore(SpecificCollisionEvent CollisionEvent)
