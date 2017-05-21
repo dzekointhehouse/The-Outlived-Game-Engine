@@ -11,12 +11,12 @@ namespace Game.Services
 {
     public class GameViewports
     {
-        private Viewport defaultView;
-        private Viewport leftTopView;
-        private Viewport leftBottomView;
-        private Viewport RightTopView;
-        private Viewport RightBottomView;
-        private Viewport top, bottom;
+        public Viewport defaultView;
+        public Viewport leftTopView;
+        public Viewport leftBottomView;
+        public Viewport RightTopView;
+        public Viewport RightBottomView;
+        public Viewport top, bottom;
         private GameConfig config;
         public bool IsTeamOne { get; set; } = false;
         public bool IsTeamTwo { get; set; } = false;

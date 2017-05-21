@@ -25,17 +25,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void CreateEnemy(int x, int y, SpriteComponent SpawnSpriteComponent)
+        public void CreateEnemy(int x, int y, SpriteComponent sprite)
         {
-
             var monster = new EntityBuilder()
+                .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1252, 206), 313, 206)
                 .SetPosition(new Vector2(x, y), layerDepth: 20)
                 .SetRendering(200, 200)
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
-                .SetRectangleCollision()
                 .SetSpawn()
+                .SetRectangleCollision()
                 .SetHealth()
                 .BuildAndReturnId();
 
@@ -72,8 +72,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         .Build()
                 )
                 .Build();
-            ComponentManager.AddComponentToEntity(SpawnSpriteComponent, monster);
-            ComponentManager.AddComponentToEntity(animationBindings, monster);
+
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
         }
         public void HandleWaves()
         {
@@ -84,7 +84,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var GlobalSpawnComponent =
                 ComponentManager.GetEntityComponentOrDefault<GlobalSpawnComponent>(GlobalSpawnEntities.First().Key);
 
-            //GlobalSpawnComponent.EnemiesDead = true;
+            GlobalSpawnComponent.EnemiesDead = true;
 
 
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent)))
@@ -107,6 +107,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 //SpawnSprite, the sprite for all monsters.
                 var SpawnSpriteEntities =
                 ComponentManager.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+
                 if (SpawnSpriteEntities.Count <= 0) return;
                 var SpawnSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
@@ -116,20 +117,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (cameraEntities.Count <= 0) return;
                 var cameraComponent =
                     (CameraViewComponent)cameraEntities.First().Value;
-                //Health
-                var HealthpickupEntities =
-               ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
-                if (HealthpickupEntities.Count <= 0) return;
-                var HealthpickupComponent =
-                    ComponentManager
-                        .GetEntityComponentOrDefault<SpriteComponent>(HealthpickupEntities.First().Key);
-                //Ammo
-                var ammoPickUpEntities =
-               ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
-                if (ammoPickUpEntities.Count <= 0) return;
-                var ammopickupComponent =
-                    ComponentManager
-                        .GetEntityComponentOrDefault<SpriteComponent>(ammoPickUpEntities.Last().Key);
 
 
                 Random rand = new Random();
@@ -142,8 +129,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                    // do
                     //{
-                        spawnArea.X = rand.Next(0, 2200);
-                        spawnArea.Y = rand.Next(0, 1100);
+                        spawnArea.X = rand.Next(0, 600);
+                        spawnArea.Y = rand.Next(0, 600);
                    // }
                     //while (cameraComponent.View.TitleSafeArea.Contains(spawnArea));
                     CreateEnemy(spawnArea.X, spawnArea.Y, SpawnSpriteComponent);
@@ -152,12 +139,29 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     {
                         if (rand.Next(1, 3) == 1)
                         {
-                            CreatePickup(1, HealthpickupComponent);
-
+                            // Health
+                            var HealthpickupEntities =
+                            ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+                            if (HealthpickupEntities.Count == 0)
+                            {
+                                var HealthpickupComponent =
+                                    ComponentManager
+                                        .GetEntityComponentOrDefault<SpriteComponent>(HealthpickupEntities.First().Key);
+                                CreatePickup(1, HealthpickupComponent);
+                            }
                         }
                         else
                         {
-                            CreatePickup(2, ammopickupComponent);
+                            //Ammo
+                            var ammoPickUpEntities =
+                           ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+                            if (ammoPickUpEntities.Count == 0)
+                            {
+                                var ammopickupComponent =
+                                    ComponentManager
+                                        .GetEntityComponentOrDefault<SpriteComponent>(ammoPickUpEntities.Last().Key);
+                                CreatePickup(2, ammopickupComponent);
+                            }
                         }
                     }
                 }

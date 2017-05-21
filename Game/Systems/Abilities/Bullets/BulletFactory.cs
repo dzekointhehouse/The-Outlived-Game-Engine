@@ -80,7 +80,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
             ComponentManager.AddComponentToEntity(bulletshooterPosition, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletDimensionsComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletComponent, bulletEntityId);
-            ComponentManager.AddComponentToEntity(PistolBulletSprite, bulletEntityId);
+
+            var spriteComponent = ComponentFactory.NewComponentFromLoadedSprite(PistolBulletSprite.Sprite,
+                PistolBulletSprite.SpriteName);
+            spriteComponent.Position = PistolBulletSprite.Position;
+            spriteComponent.Alpha = PistolBulletSprite.Alpha;
+            spriteComponent.TileHeight = PistolBulletSprite.TileHeight;
+            spriteComponent.TileWidth = PistolBulletSprite.TileWidth;
+            ComponentManager.AddComponentToEntity(spriteComponent, bulletEntityId);
 
             return bulletEntityId;
         }
