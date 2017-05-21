@@ -47,7 +47,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public void Update(GameTime gameTime, Vector2 gameDimensions)
         {
             var cameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
-            if (cameras.Count < 1) return;
+            if (cameras.Count() > 1 || !cameras.Any()) return;
             var camera = cameras.First();
             var cameraViewComponent = camera.Value as CameraViewComponent;
             var cameraView = cameraViewComponent.View;
@@ -87,8 +87,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // are rendered betweend this BeginDraw and EndDraw will be affected.
         public void BeginDraw(PenumbraComponent penumbraComponent)
         {
-            var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).First();
-            var cameraViewComponent = camera.Value as CameraViewComponent;
+            var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
+            if (camera.Count() > 1 || !camera.Any())
+            {
+                // disable penumbra if more than one camera.
+                penumbraComponent.Enabled = false;
+                return;
+            }
+           
+            var cameraViewComponent = camera.First().Value as CameraViewComponent;
             var cameraView = cameraViewComponent.View;
 
             penumbraComponent.Transform = Matrix.Identity *
@@ -104,7 +111,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // all the items drawn after this call won't be affected.
         public void EndDraw(PenumbraComponent penumbraComponent, GameTime gameTime)
         {
-            penumbraComponent.Draw(gameTime);
+            var cameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
+            if (cameras.Count() > 1 || !cameras.Any())
+            {
+                return;
+            }
+            else
+            {
+                penumbraComponent.Draw(gameTime);
+            }
+
         }
     }
 }
