@@ -21,7 +21,7 @@ namespace Game.Entities
             var monster = new EntityBuilder()
                 .SetPosition(new Vector2(x, y), layerDepth: 20)
                 .SetRendering(200, 200)
-                .SetSprite("player_sprites", new Point(1252, 206), 313, 206)
+                .SetSprite("zombie1", new Point(1244, 311), 311, 311)
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()

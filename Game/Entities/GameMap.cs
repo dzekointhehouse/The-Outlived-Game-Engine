@@ -14,10 +14,10 @@ namespace Game.Entities
 {
     public class GameMap
     {
-        private Vector2 spawnPositionOne = new Vector2(50, 50);
-        private Vector2 spawnPositionTwo = new Vector2(70, 70);
-        private Vector2 spawnPositionThree = new Vector2(80, 80);
-        private Vector2 spawnPositionFour = new Vector2(30, 30);
+        public Vector2 spawnPositionOne;
+        public Vector2 spawnPositionTwo;
+        public Vector2 spawnPositionThree;
+        public Vector2 spawnPositionFour;
 
         // TODO: Spawn points for players
 
@@ -33,6 +33,10 @@ namespace Game.Entities
                     tileTypes.Add(0, "grass");
                     mapHelper = new MapHelper(tileTypes);
                     mapHelper.CreateMapTiles(map, 128);
+                    spawnPositionOne = new Vector2(2500, 2400);
+                    spawnPositionTwo = new Vector2(2450, 2520);
+                    spawnPositionThree = new Vector2(2300, 2300);
+                    spawnPositionFour = new Vector2(2300, 2450);
                     break;
                 case GameModes.Extinction:
                     tileTypes.Clear();
@@ -41,6 +45,10 @@ namespace Game.Entities
                     mapHelper = new MapHelper(tileTypes);
                     mapHelper.AddNumberToCollisionList(2);
                     mapHelper.CreateMapTiles(MapPack.TheWallMap, 100);
+                    spawnPositionOne = new Vector2(80, 80);
+                    spawnPositionTwo = new Vector2(85, 150);
+                    spawnPositionThree = new Vector2(1840, 1840);
+                    spawnPositionFour = new Vector2(1760, 1840);
                     break;
                 case GameModes.Blockworld:
                     tileTypes.Clear();
@@ -48,10 +56,13 @@ namespace Game.Entities
                     tileTypes.Add(2, "blue64");
                     tileTypes.Add(0, "red64");
                     tileTypes.Add(1, "green64");
-
                     mapHelper = new MapHelper(tileTypes);
                     mapHelper.AddNumberToCollisionList(4);
                     mapHelper.CreateMapTiles(MapPack.Blockworld2, 64);
+                    spawnPositionOne = new Vector2(150, 150);
+                    spawnPositionTwo = new Vector2(350, 150);
+                    spawnPositionThree = new Vector2(5800, 3600);
+                    spawnPositionFour = new Vector2(5600, 3600);
                     break;
             }
         }

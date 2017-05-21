@@ -25,10 +25,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
+        // Creates the enemy to be spawned.
         public void CreateEnemy(Vector2 position, SpriteComponent sprite)
         {
             var monster = new EntityBuilder()
-                .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1252, 206), 313, 206)
+                .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1244, 311), 311, 311)
                 .SetPosition(position, layerDepth: 20)
                 .SetRendering(100, 100)
                 .SetSound("zombiewalking")

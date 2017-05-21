@@ -27,6 +27,7 @@ namespace Game.Entities
         private GameViewports gameViewports;
         private Dictionary<PlayerIndex, Viewport> viewports;
         private bool createdCamera = false;
+        private GameMap maps;
 
         public GamePlayers(GameConfig config,  GameViewports gameViewports)
         {
@@ -36,8 +37,9 @@ namespace Game.Entities
         }
 
 
-        public void CreatePlayers()
+        public void CreatePlayers(GameMap maps)
         {
+            this.maps = maps;
             foreach (var player in config.Players)
             {
                 if (player.Team == MultiplayerMenu.TeamState.TeamOne)
@@ -98,7 +100,7 @@ namespace Game.Entities
             CreatePlayer(
                 sprite: player.SpriteName,
                 actionBindings: actionBindings1,
-                position: new Vector2(200, 200), // spawn point
+                position: maps.spawnPositionOne, // spawn point
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
@@ -119,7 +121,7 @@ namespace Game.Entities
             CreatePlayer(
                 sprite: player.SpriteName,
                 actionBindings: actionBindings2,
-                position: new Vector2(300, 300), // spawn point,
+                position: maps.spawnPositionTwo, // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
@@ -139,7 +141,7 @@ namespace Game.Entities
             CreatePlayer(
                 sprite: player.SpriteName,
                 actionBindings: actionBindings,
-                position: new Vector2(300, 400), // spawn point,
+                position: maps.spawnPositionThree, // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
@@ -159,7 +161,7 @@ namespace Game.Entities
             CreatePlayer(
                 sprite: player.SpriteName,
                 actionBindings: actionBindings,
-                position: new Vector2(250, 250), // spawn point,
+                position: maps.spawnPositionFour, // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
