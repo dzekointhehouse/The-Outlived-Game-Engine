@@ -91,7 +91,7 @@ namespace Game
         // state we are we use that state's draw method.
         public void Draw(GameTime gameTime)
         {
-            sb.GraphicsDevice.Clear(Color.Black);
+            //sb.GraphicsDevice.Clear(Color.Black);
             switch (CurrentGameState)
             {
 
