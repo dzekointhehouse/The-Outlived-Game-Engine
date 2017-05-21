@@ -25,11 +25,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void CreateEnemy(int x, int y, SpriteComponent sprite)
+        public void CreateEnemy(Vector2 position, SpriteComponent sprite)
         {
             var monster = new EntityBuilder()
                 .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1252, 206), 313, 206)
-                .SetPosition(new Vector2(x, y), layerDepth: 20)
+                .SetPosition(position, layerDepth: 20)
                 .SetRendering(200, 200)
                 .SetSound("zombiewalking")
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
@@ -112,72 +112,90 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var SpawnSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
                 //camera
+                List<CameraViewComponent> cameras = new List<CameraViewComponent>(4);
                 var cameraEntities =
                 ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
-                if (cameraEntities.Count <= 0) return;
-                var cameraComponent =
-                    (CameraViewComponent)cameraEntities.First().Value;
 
 
-                Random rand = new Random();
-                // Rectangle SpawnArea = new Rectangle();
-                Point spawnArea = Point.Zero;
-                //SpawnArea.Width = 100;
-                //SpawnArea.Height = 100;
+                Random random = new Random();
 
+                // Looping through the next zombie wave and then
+                // adding them if their position is outside of the
+                // the players view bounds.
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
-                   // do
-                    //{
-                        spawnArea.X = rand.Next(0, 600);
-                        spawnArea.Y = rand.Next(0, 600);
-                   // }
-                    //while (cameraComponent.View.TitleSafeArea.Contains(spawnArea));
-                    CreateEnemy(spawnArea.X, spawnArea.Y, SpawnSpriteComponent);
+                    CreateEnemy(GetSpawnPosition(cameras, random), SpawnSpriteComponent);
+                }
+                // When done, increase the wave size...
+                if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
+                    GlobalSpawnComponent.WaveSize+= GlobalSpawnComponent.WaveSizeIncreaseConstant;
 
-                    if (rand.Next(0, 1) == 1)
+
+
+                if (random.Next(0, 1) == 1)
+                {
+                    if (random.Next(1, 3) == 1)
                     {
-                        if (rand.Next(1, 3) == 1)
+                        // Health
+                        var HealthpickupEntities =
+                        ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+                        if (HealthpickupEntities.Count == 0)
                         {
-                            // Health
-                            var HealthpickupEntities =
-                            ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
-                            if (HealthpickupEntities.Count == 0)
-                            {
-                                var HealthpickupComponent =
-                                    ComponentManager
-                                        .GetEntityComponentOrDefault<SpriteComponent>(HealthpickupEntities.First().Key);
-                                CreatePickup(1, HealthpickupComponent);
-                            }
+                            var HealthpickupComponent =
+                                ComponentManager
+                                    .GetEntityComponentOrDefault<SpriteComponent>(HealthpickupEntities.First().Key);
+                            CreatePickup(1, HealthpickupComponent);
                         }
-                        else
+                    }
+                    else
+                    {
+                        //Ammo
+                        var ammoPickUpEntities =
+                       ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+                        if (ammoPickUpEntities.Count == 0)
                         {
-                            //Ammo
-                            var ammoPickUpEntities =
-                           ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
-                            if (ammoPickUpEntities.Count == 0)
-                            {
-                                var ammopickupComponent =
-                                    ComponentManager
-                                        .GetEntityComponentOrDefault<SpriteComponent>(ammoPickUpEntities.Last().Key);
-                                CreatePickup(2, ammopickupComponent);
-                            }
+                            var ammopickupComponent =
+                                ComponentManager
+                                    .GetEntityComponentOrDefault<SpriteComponent>(ammoPickUpEntities.Last().Key);
+                            CreatePickup(2, ammopickupComponent);
                         }
                     }
                 }
+
             }
         }
 
-       public uint CreatePickup(int type, SpriteComponent pickupComponent)
-       {
-           var entity = new EntityBuilder()
-               .SetSound("pickup")
-               .SetPosition(new Vector2(40, 40), 100)
-               .SetRendering(40, 40)
-               .SetLight(new PointLight())
-               .SetRectangleCollision()
-               .BuildAndReturnId();
-            if (type == 1 )
+        private Vector2 GetSpawnPosition(List<CameraViewComponent> cameras, Random random)
+        {
+            int x = 0, y = 0;
+            bool isInside = true;
+            //while (isInside)
+            //{
+                x = random.Next(0, 5000);
+                y = random.Next(0, 5000);
+                //foreach (var camera in cameras)
+                //{
+                //    if (!camera.View.Bounds.Contains(x, y))
+                //    {
+                //        isInside = false;
+                //    }
+                //}
+                Debug.WriteLine("not working");
+          //  }
+            
+            return new Vector2(x, y);
+        }
+
+        public uint CreatePickup(int type, SpriteComponent pickupComponent)
+        {
+            var entity = new EntityBuilder()
+                .SetSound("pickup")
+                .SetPosition(new Vector2(40, 40), 100)
+                .SetRendering(40, 40)
+                .SetLight(new PointLight())
+                .SetRectangleCollision()
+                .BuildAndReturnId();
+            if (type == 1)
             {
                 ComponentManager.Instance.AddComponentToEntity(
                     ComponentManager.Instance.ComponentFactory.NewComponent<HealthPickupComponent>(),
@@ -193,80 +211,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
             ComponentManager.Instance.AddComponentToEntity(pickupComponent, entity);
             return entity;
-            //var entity = EntityManager.GetEntityManager().NewEntity();
-            //var coll = new CollisionComponent();
-            //var dim = new DimensionsComponent()
-            //{
-            //    Height = 40,
-            //    Width = 40
-            //};
-            //var render = new RenderComponent()
-            //{
-            //    IsVisible = true,
-            //};
-            //var pos = new PositionComponent()
-            //{
-            //    Position = new Vector2(500, 500),
-            //    ZIndex = 100
-            //};
-
-            //var sound = new SoundComponent()
-            //{
-            //    SoundEffectName = "pickup"
-            //};
-            //var ligh = new LightComponent()
-            //{
-            //    Light = new PointLight() { },
-            //};
-
-            //var pick = new HealthPickupComponent();
-
-            //var sprite = new SpriteComponent()
-            //{
-            //    SpriteName = "knife",
-            //};
-            //ComponentManager.Instance.AddComponentToEntity(sprite, entity);
-            ////Debug.WriteLine("YYYEEEEEEEEEEEEEEEEEAAAAAAAAAAHHHHHHHHHHHHH");
-
-            //ComponentManager.Instance.AddComponentToEntity(pick, entity);
-
-            ////if (type == 1)
-            ////{
-            ////    var pick = new HealthPickupComponent();
-
-            ////    var sprite = new SpriteComponent()
-            ////    {
-            ////        SpriteName = "knife",
-            ////    };
-            ////    //ComponentManager.Instance.AddComponentToEntity(sprite, entity);
-            ////    Debug.WriteLine("YYYEEEEEEEEEEEEEEEEEAAAAAAAAAAHHHHHHHHHHHHH");
-
-            ////    ComponentManager.Instance.AddComponentToEntity(pick, entity);
-
-            ////}
-            ////else
-            ////{
-            ////    var pick = new AmmoPickupComponent();
-
-            ////    var sprite = new SpriteComponent()
-            ////    {
-            ////        SpriteName = "knife",
-            ////    };
-            ////    //ComponentManager.Instance.AddComponentToEntity(sprite, entity);
-            ////    Debug.WriteLine("YYYEEEEEEEEEEEEEEEEEAAAAAAAAAAHHHHHHHHHHHHH");
-
-            ////    ComponentManager.Instance.AddComponentToEntity(pick, entity);
-            ////}
-
-
-            //ComponentManager.Instance.AddComponentToEntity(sound, entity);
-            //ComponentManager.Instance.AddComponentToEntity(ligh, entity);
-            //ComponentManager.Instance.AddComponentToEntity(coll, entity);
-            //ComponentManager.Instance.AddComponentToEntity(pos, entity);
-            //ComponentManager.Instance.AddComponentToEntity(dim, entity);
-            //ComponentManager.Instance.AddComponentToEntity(render, entity);
-
-            //return entity;
 
         }
     }

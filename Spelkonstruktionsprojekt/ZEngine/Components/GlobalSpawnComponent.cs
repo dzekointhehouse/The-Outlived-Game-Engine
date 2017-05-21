@@ -8,8 +8,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     public class GlobalSpawnComponent : IComponent
     {
-        public int WaveSize { get; set; } = 2;
+        public int WaveSize { get; set; } = 3;
         public bool EnemiesDead { get; set; } = true;
+        public int MaxLimitWaveSize { get; set; } = 150;
 
         public int WaveSizeIncreaseConstant = 2;
 
