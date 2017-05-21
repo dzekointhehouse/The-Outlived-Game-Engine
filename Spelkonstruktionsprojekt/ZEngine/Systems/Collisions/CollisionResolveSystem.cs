@@ -32,7 +32,6 @@ namespace ZEngine.Systems
 //For each collidable entity
             foreach (var entity in collidableEntities)
             {
-                nEntriesBefore = collidableEntities.Count();
                 var collisions = new List<uint>();
                 var collisionComponent = entity.Value as CollisionComponent;
                 collisionComponent.collisions.ForEach(c => collisions.Add(c));

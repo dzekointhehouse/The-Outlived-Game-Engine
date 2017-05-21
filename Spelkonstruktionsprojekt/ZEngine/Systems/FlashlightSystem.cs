@@ -47,10 +47,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public void Update(GameTime gameTime, Vector2 gameDimensions)
         {
             var cameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
+            // Return if there is not only one camera, because
+            // penumbra didn't work so well with several cameras.
             if (cameras.Count() > 1 || !cameras.Any()) return;
-            var camera = cameras.First();
-            var cameraViewComponent = camera.Value as CameraViewComponent;
-            var cameraView = cameraViewComponent.View;
+
             var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
             foreach (var lightEntity in lightEntities)
             {
@@ -65,8 +65,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 lightComponent.Light.Position =
                     new Vector2(
-                        //positionComponent.Position.X - cameraView.X,
-                        //positionComponent.Position.Y - cameraView.Y
                         //when using Matrix!
                         positionComponent.Position.X,
                         positionComponent.Position.Y
@@ -96,14 +94,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
            
             var cameraViewComponent = camera.First().Value as CameraViewComponent;
-            var cameraView = cameraViewComponent.View;
-
-            penumbraComponent.Transform = Matrix.Identity *
-                                          Matrix.CreateTranslation(new Vector3(-cameraView.X, -cameraView.Y, 0)) *
-                                          Matrix.CreateRotationZ(0) *
-                                          Matrix.CreateScale(new Vector3(cameraViewComponent.Scale, cameraViewComponent.Scale, 0));
-
-
+            // Transforming the matrix so it's in line with the transformation in rendersystem
+            // where rendererable entities that have light will be transformed.
+            penumbraComponent.Transform = cameraViewComponent.Transform;
+            // Begin draw, where everything after this call will be 
+            // affected by the penumbra light.
             penumbraComponent.BeginDraw();
         }
 
@@ -111,6 +106,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // all the items drawn after this call won't be affected.
         public void EndDraw(PenumbraComponent penumbraComponent, GameTime gameTime)
         {
+            // E dont do the draw call if there is not just one camera.
             var cameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
             if (cameras.Count() > 1 || !cameras.Any())
             {
