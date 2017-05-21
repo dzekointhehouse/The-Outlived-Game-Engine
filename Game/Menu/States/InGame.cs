@@ -129,7 +129,7 @@ namespace Game.Menu.States
             // Game stuff
             maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers();
-            enemies.CreateMonster("player_sprites");
+            enemies.CreateMonster("zombie1");
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
             pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));            
@@ -229,7 +229,7 @@ namespace Game.Menu.States
         {
             var spawnSprite = EntityManager.GetEntityManager().NewEntity();
             var spawnSpriteSprite = ComponentFactory.NewComponent<SpriteComponent>();
-            spawnSpriteSprite.SpriteName = "Player_Sprites";
+            spawnSpriteSprite.SpriteName = "zombie1";
             var SpawnSpriteComponent = ComponentFactory.NewComponent<SpawnFlyweightComponent>();
             ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
             ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
