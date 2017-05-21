@@ -47,6 +47,7 @@ namespace Game.Systems
         // fire the sound.
         private void WeaponSounds(InputEvent inputEvent)
         {
+            
             // First things first, we only handle this event if the key is pressed
             // that is associated with this event "entityFireWeapon"
             if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
@@ -59,21 +60,43 @@ namespace Game.Systems
 
                 // To play the bullet sound the entity needs to have
                 // the BulletFlyweightComponent
-                var bulletFlyweightComponent =
-                    ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
-                if (bulletFlyweightComponent.Count <= 0) return;
+                //var bulletFlyweightComponent =
+                //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
+                //if (bulletFlyweightComponent.Count <= 0) return;
 
-                // Get the sound instance for this entity
-                var sound =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(bulletFlyweightComponent
-                        .First()
-                        .Key);
-
-                // We create a SoundEffectInstance which gives us more control
-                var soundInstance = sound.SoundEffect.CreateInstance();
+                var weaponComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId) as WeaponComponent;
+                if (weaponComponent == null) return;
 
 
-                var positionComponent =
+                SoundEffectInstance soundEffectInstance = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire").CreateInstance();
+                if (weaponComponent.WeaponType == WeaponComponent.WeaponTypes.Pistol)
+                {
+                    soundEffectInstance = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Weapon/gun_fire").CreateInstance();
+                    soundEffectInstance.IsLooped = false;
+                }
+                if (weaponComponent.WeaponType == WeaponComponent.WeaponTypes.Shotgun)
+                {
+                    soundEffectInstance = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Weapon/shotgun_fire").CreateInstance();
+                    soundEffectInstance.IsLooped = false;
+                }
+                if (weaponComponent.WeaponType == WeaponComponent.WeaponTypes.Rifle)
+                {
+                    soundEffectInstance.IsLooped = false;
+                    soundEffectInstance = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire").CreateInstance();
+                }
+
+                    // Get the sound instance for this entity
+                    //var sound =
+                    //    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(bulletFlyweightComponent
+                    //        .First()
+                    //        .Key);
+
+                    // We create a SoundEffectInstance which gives us more control
+                    //var soundInstance = sound.SoundEffect.CreateInstance();
+
+
+                    var positionComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
                 
                 // it's logical that the sound comes from the weapon which is the source of the
@@ -82,13 +105,13 @@ namespace Game.Systems
                 listener.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
 
                 // Applying the 3d sound effect to the sound instance
-                //soundInstance.Apply3D(listener, emitter);
+                soundEffectInstance.Apply3D(listener, emitter);
 
                 // If it is not already playing then play it
-                if (soundInstance.State != SoundState.Playing)
+                if (soundEffectInstance.State != SoundState.Playing)
                 {
-                    soundInstance.IsLooped = false;
-                    soundInstance.Play();
+                    //soundEffectInstance.IsLooped = false;
+                    soundEffectInstance.Play();
                 }
             }
         }

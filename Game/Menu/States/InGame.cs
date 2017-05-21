@@ -164,8 +164,8 @@ namespace Game.Menu.States
             bulletSprite.SpriteName = "dot";
             var bulletSpriteComponent = ComponentFactory.NewComponent<BulletFlyweightComponent>();
             var soundComponent = ComponentFactory.NewComponent<SoundComponent>();
-            soundComponent.SoundEffectName = "bullet9mm";
-            ComponentManager.Instance.AddComponentToEntity(soundComponent, entityId);
+            //soundComponent.SoundEffectName = "winchester_fire";
+           // ComponentManager.Instance.AddComponentToEntity(soundComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(bulletSprite, entityId);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, entityId);
         }

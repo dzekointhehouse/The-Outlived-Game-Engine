@@ -1207,3 +1207,21 @@
 /processorParam:Quality=Best
 /build:Sound/bg_music1.mp3
 
+#begin Sound/Weapon/gun_fire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Weapon/gun_fire.wav
+
+#begin Sound/Weapon/m4a1_fire.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Weapon/m4a1_fire.mp3
+
+#begin Sound/Weapon/shotgun_fire.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Weapon/shotgun_fire.mp3
+
