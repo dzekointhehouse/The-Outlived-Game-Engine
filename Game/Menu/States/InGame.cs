@@ -129,7 +129,7 @@ namespace Game.Menu.States
             // Game stuff
             maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers();
-            enemies.CreateMonster("zombie1");
+//            enemies.CreateMonster("player_sprites");
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
             pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));            
@@ -229,7 +229,7 @@ namespace Game.Menu.States
         {
             var spawnSprite = EntityManager.GetEntityManager().NewEntity();
             var spawnSpriteSprite = ComponentFactory.NewComponent<SpriteComponent>();
-            spawnSpriteSprite.SpriteName = "zombie1";
+            spawnSpriteSprite.SpriteName = "Player_Sprites";
             var SpawnSpriteComponent = ComponentFactory.NewComponent<SpawnFlyweightComponent>();
             ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
             ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
@@ -239,7 +239,6 @@ namespace Game.Menu.States
         {
             var spawn = EntityManager.GetEntityManager().NewEntity();
             var spawncomponent = ComponentFactory.NewComponent<GlobalSpawnComponent>();
-            spawncomponent.WaveSize = 3;
             //var spawnSpawnComponent = new GlobalSpawnComponent();
             ComponentManager.Instance.AddComponentToEntity(spawncomponent, spawn);
             //ComponentManager.Instance.AddComponentToEntity(spawnSpawnComponent, spawn);

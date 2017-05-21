@@ -49,7 +49,7 @@ namespace Game
                 GraphicsProfile = GraphicsProfile.HiDef
 
             };
-            gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = false;
+            gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 

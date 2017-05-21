@@ -29,7 +29,7 @@ namespace Game.Entities
             {
                 case GameModes.Survival:
                     tileTypes.Clear();
-                    int[,] map = new int[256, 256];
+                    int[,] map = new int[40, 40];
                     tileTypes.Add(0, "grass");
                     mapHelper = new MapHelper(tileTypes);
                     mapHelper.CreateMapTiles(map, 128);
