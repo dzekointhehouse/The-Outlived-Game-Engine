@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +22,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     // Optimus prime
     class EntityRemovalSystem : ISystem
     {
+        public void Start()
+        {
+            EventBus.Instance.Subscribe<StateChangeEvent>("StateChanged", _DeadEntities);
+        }
+
         public void Update(GameTime gameTime)
         {
 //            DeadEntities(gameTime);
-            _DeadEntities(gameTime);
             ImmediateRemoval();
         }
 
@@ -52,125 +57,117 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 });
         }
 
-        private void _DeadEntities(GameTime gameTime)
+        private void _DeadEntities(StateChangeEvent stateChangeEvent)
         {
-            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
-
-            foreach (var entity in healthEntities)
+            if (stateChangeEvent.NewState.Contains(State.Dead))
             {
-                // Better yet would be to use a component to determine if they should be deleted
-                // then when they should be deleted, and be able to get the associated components.
-                var healthComponent = entity.Value as HealthComponent;
-                if (!healthComponent.Alive)
+                var entityId = stateChangeEvent.EntityId;
+                // We want to remove all the components for the entity except for the 
+                // spriteComponent and health, we need them still.
+                ComponentManager.Instance.RemoveComponentFromEntity<CameraFollowComponent>(entityId);
+                //ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entityId);
+                ComponentManager.Instance.RemoveComponentFromEntity<SoundComponent>(entityId);
+                ComponentManager.Instance.RemoveComponentFromEntity<WeaponComponent>(entityId);
+                ComponentManager.Instance.RemoveComponentFromEntity<ActionBindings>(entityId);
+                ComponentManager.Instance.RemoveComponentFromEntity<CollisionComponent>(entityId);
+//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entityId);
+                var moveComponent = ComponentManager.Instance
+                    .GetEntityComponentOrDefault<MoveComponent>(entityId);
+                if (moveComponent != null)
                 {
-                    // We want to remove all the components for the entity except for the 
-                    // spriteComponent and health, we need them still.
-                    ComponentManager.Instance.RemoveComponentFromEntity<CameraFollowComponent>(entity.Key);
-                    //ComponentManager.Instance.RemoveComponentFromEntity(typeof(PlayerComponent), entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<SoundComponent>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<WeaponComponent>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<ActionBindings>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<CollisionComponent>(entity.Key);
-//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(MoveComponent), entity.Key);
-                    var moveComponent = ComponentManager.Instance
-                        .GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-                    if (moveComponent != null)
-                    {
-                        moveComponent.Speed = 0;
-                        moveComponent.CurrentAcceleration = 0;
-                        moveComponent.AccelerationSpeed = 0;
-                        moveComponent.RotationMomentum = 0;
-                        moveComponent.RotationSpeed = 0;
-                    }
-                    ComponentManager.Instance.RemoveComponentFromEntity<AIComponent>(entity.Key);
-
-                    var lightComponent =
-                        ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
-                    if (lightComponent != null)
-                        lightComponent.Light.Enabled = false;
-
-                    var animationComponent =
-                        ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
-                    if (animationComponent == null)
-                    {
-                        animationComponent = ComponentManager.Instance.ComponentFactory.NewComponent<AnimationComponent>();
-                        ComponentManager.Instance.AddComponentToEntity(animationComponent, entity.Key);
-                    }
-
-
-                    // For this animation we need the lenght (to when we'll start fading the blood)
-                    // this animation also needs to be unique, which means we won't create it 
-                    // every time we come to this system. Also the gametime is needed.
-                    var animation = new GeneralAnimation()
-                    {
-                        AnimationType = "BloodPool",
-                        StartOfAnimation = gameTime.TotalGameTime.TotalMilliseconds,
-                        Length = 6000,
-                        Unique = true
-                    };
-
-                    // Now we add it.
-                    AttachNewDeathFadeAwayAnimation(animation, entity.Key);
-                    animationComponent.Animations.Add(animation);
+                    moveComponent.Speed = 0;
+                    moveComponent.CurrentAcceleration = 0;
+                    moveComponent.AccelerationSpeed = 0;
+                    moveComponent.RotationMomentum = 0;
+                    moveComponent.RotationSpeed = 0;
                 }
+                ComponentManager.Instance.RemoveComponentFromEntity<AIComponent>(entityId);
+
+                var lightComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entityId);
+                if (lightComponent != null)
+                    lightComponent.Light.Enabled = false;
+
+                var animationComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entityId);
+                if (animationComponent == null)
+                {
+                    animationComponent = ComponentManager.Instance.ComponentFactory.NewComponent<AnimationComponent>();
+                    ComponentManager.Instance.AddComponentToEntity(animationComponent, entityId);
+                }
+
+                // For this animation we need the lenght (to when we'll start fading the blood)
+                // this animation also needs to be unique, which means we won't create it 
+                // every time we come to this system. Also the gametime is needed.
+                var animation = new GeneralAnimation()
+                {
+                    AnimationType = "BloodPool",
+                    StartOfAnimation = stateChangeEvent.EventTime,
+                    Length = 6000,
+                    Unique = true
+                };
+
+                // Now we add it.
+                AttachNewDeathFadeAwayAnimation(animation, entityId);
+                animationComponent.Animations.Add(animation);
             }
         }
 
-        // Used for animating blood when entities die.
-        // They will ned to have the SpriteAnimationComponent.
-        private void DeadEntities(GameTime gameTime)
-        {
-            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
-
-            foreach (var entity in healthEntities)
-            {
-                // Better yet would be to use a component to determine if they should be deleted
-                // then when they should be deleted, and be able to get the associated components.
-                var healthComponent = entity.Value as HealthComponent;
-                if (!healthComponent.Alive)
-                {
-                    // We want to remove all the components for the entity except for the 
-                    // spriteComponent and health, we need them still.
-                    ComponentManager.Instance.RemoveComponentFromEntity<CameraFollowComponent>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<PlayerComponent>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<SoundComponent>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<WeaponComponent>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<ActionBindings>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<CollisionComponent>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<MoveComponent>(entity.Key);
-                    ComponentManager.Instance.RemoveComponentFromEntity<AIComponent>(entity.Key);
-                    //TODO reinsert removals
-                    var lightComponent =
-                        ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
-                    if (lightComponent != null)
-                        lightComponent.Light.Enabled = false;
-
-                    var animationComponent =
-                        ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
-                    if (animationComponent == null)
-                    {
-                        animationComponent = ComponentManager.Instance.ComponentFactory.NewComponent<AnimationComponent>();
-                        ComponentManager.Instance.AddComponentToEntity(animationComponent, entity.Key);
-                    }
-
-
-                    // For this animation we need the lenght (to when we'll start fading the blood)
-                    // this animation also needs to be unique, which means we won't create it 
-                    // every time we come to this system. Also the gametime is needed.
-                    var animation = new GeneralAnimation()
-                    {
-                        AnimationType = "BloodPool",
-                        StartOfAnimation = gameTime.TotalGameTime.TotalMilliseconds,
-                        Length = 6000,
-                        Unique = true
-                    };
-
-                    // Now we add it.
-                    AttachNewDeathFadeAwayAnimation(animation, entity.Key);
-                    animationComponent.Animations.Add(animation);
-                }
-            }
-        }
+//        // Used for animating blood when entities die.
+//        // They will ned to have the SpriteAnimationComponent.
+//        private void DeadEntities(GameTime gameTime)
+//        {
+//            var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
+//
+//            foreach (var entity in healthEntities)
+//            {
+//                // Better yet would be to use a component to determine if they should be deleted
+//                // then when they should be deleted, and be able to get the associated components.
+//                var healthComponent = entity.Value as HealthComponent;
+//                if (!healthComponent.Alive)
+//                {
+//                    // We want to remove all the components for the entity except for the
+//                    // spriteComponent and health, we need them still.
+//                    ComponentManager.Instance.RemoveComponentFromEntity<CameraFollowComponent>(entity.Key);
+//                    ComponentManager.Instance.RemoveComponentFromEntity<PlayerComponent>(entity.Key);
+//                    ComponentManager.Instance.RemoveComponentFromEntity<SoundComponent>(entity.Key);
+//                    ComponentManager.Instance.RemoveComponentFromEntity<WeaponComponent>(entity.Key);
+//                    ComponentManager.Instance.RemoveComponentFromEntity<ActionBindings>(entity.Key);
+//                    ComponentManager.Instance.RemoveComponentFromEntity<CollisionComponent>(entity.Key);
+//                    ComponentManager.Instance.RemoveComponentFromEntity<MoveComponent>(entity.Key);
+//                    ComponentManager.Instance.RemoveComponentFromEntity<AIComponent>(entity.Key);
+//                    //TODO reinsert removals
+//                    var lightComponent =
+//                        ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
+//                    if (lightComponent != null)
+//                        lightComponent.Light.Enabled = false;
+//
+//                    var animationComponent =
+//                        ComponentManager.Instance.GetEntityComponentOrDefault<AnimationComponent>(entity.Key);
+//                    if (animationComponent == null)
+//                    {
+//                        animationComponent = ComponentManager.Instance.ComponentFactory.NewComponent<AnimationComponent>();
+//                        ComponentManager.Instance.AddComponentToEntity(animationComponent, entity.Key);
+//                    }
+//
+//
+//                    // For this animation we need the lenght (to when we'll start fading the blood)
+//                    // this animation also needs to be unique, which means we won't create it
+//                    // every time we come to this system. Also the gametime is needed.
+//                    var animation = new GeneralAnimation()
+//                    {
+//                        AnimationType = "BloodPool",
+//                        StartOfAnimation = gameTime.TotalGameTime.TotalMilliseconds,
+//                        Length = 6000,
+//                        Unique = true
+//                    };
+//
+//                    // Now we add it.
+//                    AttachNewDeathFadeAwayAnimation(animation, entity.Key);
+//                    animationComponent.Animations.Add(animation);
+//                }
+//            }
+//        }
 
         // This one is fascinating. We add this to our entitys animation component instance which
         // contains a list of GeneralAnimations, this method is the action that is stored in the
@@ -197,7 +194,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         sprite.Alpha -= 0.0001f;
                         return;
                     }
-
 
 
 //                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
