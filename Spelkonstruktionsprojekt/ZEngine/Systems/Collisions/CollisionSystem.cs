@@ -1,27 +1,26 @@
-﻿using Microsoft.Xna.Framework;
+﻿﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZEngine.Managers;
-using ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Wrappers;
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Remoting;
+using ZEngine;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
-using UnityEngine;
+using ZEngine.Components;
 using Color = Microsoft.Xna.Framework.Color;
 using Debug = System.Diagnostics.Debug;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
-using ShapeRendering2D;
-using Spelkonstruktionsprojekt.ZEngine.Helpers;
+using ZEngine.Helpers;
+using ZEngine.Managers;
 
 namespace ZEngine.Systems
 {
@@ -54,73 +53,51 @@ namespace ZEngine.Systems
         }
 
         private const bool PROFILING_COLLISIONS = false;
+
         public void DetectCollisions()
         {
-
             Stopwatch timer;
             if (PROFILING_COLLISIONS)
             {
                 timer = Stopwatch.StartNew();
             }
+//
+            var quadTree = QuadTree.CreateTree(
+                ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent)).Keys,
+                new Rectangle(0, 0, 5000, 5000));
 
-            var collisionEntities = ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent));
-
-            foreach(var movingEntity in collisionEntities)
+            if (PROFILING_COLLISIONS)
             {
-                if (ComponentManager.GetEntityComponentOrDefault<MoveComponent>(movingEntity.Key) == null) continue;
-                var movingEntityId = movingEntity.Key;
-                var movingEntityCollisionComponent = movingEntity.Value as CollisionComponent;
-
-                foreach (var stillEntity in collisionEntities)
+                Debug.WriteLine("QUAD TREE CONSTR." + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
+            foreach (var movingEntity in QuadTree.MovingEntities(quadTree))
+            {
+                foreach (var stillEntity in QuadTree.StillEntities(movingEntity.Item1, movingEntity.Item2))
                 {
-                    if (ComponentManager.GetEntityComponentOrDefault<BulletComponent>(stillEntity.Key) != null) continue;
-                    var stillEntityId = stillEntity.Key;
-                    if (movingEntityId == stillEntityId) continue;
-
-                    var stillEntityCollisionComponent = stillEntity.Value as CollisionComponent;
-
-                    if (stillEntityCollisionComponent.IsCage)
+                    if (ComponentManager.GetEntityComponentOrDefault<BulletComponent>(stillEntity) != null) continue;
+                    var movingCollision =
+                        ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity.Item1);
+                    if (EntitiesCollide(movingEntity.Item1, stillEntity))
                     {
-                        continue;
-//                        var cageComponent = ComponentManager.GetEntityComponentOrDefault<CageComponent>(movingEntityId);
-//                        var shouldBeCaged = cageComponent != null && cageComponent.CageId == stillEntityId;
-//                        var isCaged = EntitiesCollide(stillEntityId, movingEntityId) == ContainmentType.Contains;
-//                        if (shouldBeCaged && isCaged)
-//                        {
-//                            if (!movingEntityCollisionComponent.collisions.Contains(stillEntityId))
-//                            {
-//                                movingEntityCollisionComponent.collisions.Add(stillEntityId);
-//                            }
-//                            if (!stillEntityCollisionComponent.collisions.Contains(movingEntityId))
-//                            {
-//                                stillEntityCollisionComponent.collisions.Add(movingEntityId);
-//                            }
-//                        }
-                    }
-                    if (EntitiesCollide(movingEntityId, stillEntityId))
-                    {
-                        if (!movingEntityCollisionComponent.collisions.Contains(stillEntityId))
-                        {
-                            movingEntityCollisionComponent.collisions.Add(stillEntityId);
-                        }
-                        if (!stillEntityCollisionComponent.collisions.Contains(movingEntityId))
-                        {
-                            stillEntityCollisionComponent.collisions.Add(movingEntityId);
-                        }
+                        movingCollision.collisions.Add(stillEntity);
+                        //TODO might be that we need to add collision id to stillEntity as well
                     }
                 }
             }
+
             if (PROFILING_COLLISIONS)
             {
-                Debug.WriteLine("COLLISION TOTAL " + timer.ElapsedTicks);
+                Debug.WriteLine("QUAD COL. TOTAL " + timer.ElapsedTicks);
             }
         }
 
         private const bool PROFILING = false;
+
         private bool EntitiesCollide(uint movingEntity, uint stillEntity)
         {
             Stopwatch timer;
-            if(PROFILING) timer = Stopwatch.StartNew();
+            if (PROFILING) timer = Stopwatch.StartNew();
             var movingDimensionsComponent =
                 ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(movingEntity);
             if (movingDimensionsComponent == null) return false;
@@ -155,10 +132,9 @@ namespace ZEngine.Systems
                 Debug.WriteLine("APPROX: " + timer.ElapsedTicks);
             }
             if (approxResult) return false;
-            if(PROFILING) timer = Stopwatch.StartNew();
+            if (PROFILING) timer = Stopwatch.StartNew();
             var movingMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(movingEntity);
             if (movingMoveComponent == null) return false;
-            var movingCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity);
             var movingEntityOffset = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(movingEntity);
             var movingOffset = Vector2.Zero;
 //            movingEntityOffset != null
@@ -235,7 +211,6 @@ namespace ZEngine.Systems
                         movingSpriteComponent.TileHeight
                     ),
                     0,
-                    movingCollisionBox,
                     movingOffset,
                     matrixA
                 );
@@ -249,11 +224,9 @@ namespace ZEngine.Systems
                         stillSpriteComponent.TileHeight
                     ),
                     0,
-                    stillCollisionBox,
                     stillOffset,
                     matrixB
                 );
-
 
 
 //            var shapeRenderer = CollisionRendering.renderer;
@@ -301,8 +274,8 @@ namespace ZEngine.Systems
             return false;
         }
 
-        public Rectangle CalculateCollisionBounds(Rectangle spriteBounds, float angle,
-            CollisionComponent collisionComponent, Vector2 offset, Matrix transformation)
+        public Rectangle CalculateCollisionBounds(Rectangle spriteBounds, float angle, Vector2 offset,
+            Matrix transformation)
         {
             Vector2 leftTop = new Vector2(spriteBounds.Left, spriteBounds.Top);
             Vector2 rightTop = new Vector2(spriteBounds.Right, spriteBounds.Top);
