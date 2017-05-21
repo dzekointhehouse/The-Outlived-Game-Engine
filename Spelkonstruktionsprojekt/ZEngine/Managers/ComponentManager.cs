@@ -80,7 +80,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
             return component; //returns component if it was found
         }
 
-        public bool ContainsAllComponents(uint entityId, params Type[] componentTypes)
+        public bool ContainsAllComponents(uint entityId, List<Type> componentTypes)
         {
             var containsAll = true;
             foreach (var componentType in componentTypes)

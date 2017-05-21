@@ -80,12 +80,8 @@ namespace ZEngine.Systems
         private bool MatchesCollisionEvent(CollisionRequirement collisionRequirements, uint movingEntityId,
             uint targetId)
         {
-            return collisionRequirements.MovingEntityRequirements
-                       .Count(componentType => ComponentManager.EntityHasComponent(componentType, (uint) movingEntityId))
-                   == collisionRequirements.MovingEntityRequirements.Count
-                   && collisionRequirements.TargetEntityRequirements
-                       .Count(componentType => ComponentManager.EntityHasComponent(componentType, targetId))
-                   == collisionRequirements.TargetEntityRequirements.Count;
+            return ComponentManager.ContainsAllComponents(movingEntityId, collisionRequirements.MovingEntityRequirements)
+                && ComponentManager.ContainsAllComponents(targetId, collisionRequirements.TargetEntityRequirements);
         }
     }
 
@@ -145,16 +141,10 @@ namespace ZEngine.Systems
             new Dictionary<CollisionRequirement, CollisionEvent>()
             {
                 {
-                    new CollisionRequirement()
+                    new CollisionRequirement
                     {
-                        MovingEntityRequirements = new List<Type>()
-                        {
-                            typeof(MoveComponent)
-                        },
+                        MovingEntityRequirements = new List<Type>(),
                         TargetEntityRequirements = new List<Type>()
-                        {
-                            typeof(CollisionComponent)
-                        }
                     },
                     CollisionEvent.Wall
                 },
@@ -163,13 +153,10 @@ namespace ZEngine.Systems
                     {
                         MovingEntityRequirements = new List<Type>()
                         {
-                            typeof(MoveComponent),
                             typeof(PlayerComponent)
                         },
                         TargetEntityRequirements = new List<Type>()
                         {
-                            typeof(CollisionComponent),
-                            typeof(MoveComponent),
                             typeof(AIComponent)
                         }
                     },
@@ -178,14 +165,12 @@ namespace ZEngine.Systems
                 {
                     new CollisionRequirement()
                     {
-                        MovingEntityRequirements = new List<Type>()
+                        MovingEntityRequirements = new List<Type>
                         {
-                            typeof(MoveComponent),
                             typeof(PlayerComponent)
                         },
-                        TargetEntityRequirements = new List<Type>()
+                        TargetEntityRequirements = new List<Type>
                         {
-                            typeof(CollisionComponent),
                             typeof(AmmoPickupComponent)
                         }
                     },
@@ -194,14 +179,12 @@ namespace ZEngine.Systems
                 {
                     new CollisionRequirement()
                     {
-                        MovingEntityRequirements = new List<Type>()
+                        MovingEntityRequirements = new List<Type>
                         {
-                            typeof(MoveComponent),
                             typeof(PlayerComponent)
                         },
-                        TargetEntityRequirements = new List<Type>()
+                        TargetEntityRequirements = new List<Type>
                         {
-                            typeof(CollisionComponent),
                             typeof(HealthPickupComponent)
                         }
                     },
@@ -215,9 +198,6 @@ namespace ZEngine.Systems
                             typeof(BulletComponent)
                         },
                         TargetEntityRequirements = new List<Type>()
-                        {
-                            typeof(CollisionComponent),
-                        }
                     },
                     CollisionEvent.Bullet
                 },
