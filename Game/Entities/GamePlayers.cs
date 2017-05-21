@@ -26,7 +26,7 @@ namespace Game.Entities
         private GameConfig config;
         private GameViewports gameViewports;
         private Dictionary<PlayerIndex, Viewport> viewports;
-
+        private bool createdCamera = false;
 
         public GamePlayers(GameConfig config,  GameViewports gameViewports)
         {
@@ -196,11 +196,13 @@ namespace Game.Entities
                 .SetHUD(false, showStats: true)
                 .Build();
 
-            // Add camera view only if there are two teams or if it is the first camera.
-            if (gameViewports.IsTeamOne && gameViewports.IsTeamTwo || cageId == 1)
+            // Add camera view only if there are two teams or if it is the first camera,
+            // and the same .
+            if (gameViewports.IsTeamOne && gameViewports.IsTeamTwo || 
+                gameViewports.IsTeamOne && !gameViewports.IsTeamTwo && cageId == 1 && !createdCamera
+                || !gameViewports.IsTeamOne && gameViewports.IsTeamTwo && cageId == 1 && !createdCamera)
             {
-
-
+                createdCamera = true;
                 var cameraView = new CameraViewComponent()
                 {
                     CameraId = cageId,
