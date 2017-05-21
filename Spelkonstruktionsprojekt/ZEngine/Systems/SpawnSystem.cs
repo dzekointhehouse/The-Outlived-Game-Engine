@@ -30,9 +30,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var monster = new EntityBuilder()
                 .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1252, 206), 313, 206)
                 .SetPosition(position, layerDepth: 20)
-                .SetRendering(200, 200)
+                .SetRendering(100, 100)
                 .SetSound("zombiewalking")
-                .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
+                .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetSpawn()
                 .SetRectangleCollision()
@@ -86,7 +86,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
             GlobalSpawnComponent.EnemiesDead = true;
 
-
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent)))
             {
                 var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
@@ -128,8 +127,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 }
                 // When done, increase the wave size...
                 if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
-                    //  GlobalSpawnComponent.WaveSize+= GlobalSpawnComponent.WaveSizeIncreaseConstant;
-                    GlobalSpawnComponent.WaveSize *= 2;
+                    GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
 
 
 
@@ -181,7 +179,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 //        isInside = false;
                 //    }
                 //}
-                Debug.WriteLine("not working");
           //  }
             
             return new Vector2(x, y);

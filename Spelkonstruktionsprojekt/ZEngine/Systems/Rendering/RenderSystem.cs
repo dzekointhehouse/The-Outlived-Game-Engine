@@ -105,9 +105,6 @@ namespace ZEngine.Systems
 
                // penumbra.Draw(gameTime);
 
-
-
-
               //  Debug.WriteLine("DrawEntities TOTAL: " + timer.ElapsedTicks);
             }
 

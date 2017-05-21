@@ -90,7 +90,8 @@ namespace Game.Entities
                 .SetAction(Keys.D, EventConstants.TurnRight)
                 .SetAction(Keys.Q, EventConstants.TurnAround)
                 .SetAction(Keys.E, EventConstants.FirePistolWeapon)
-                .SetAction(Keys.LeftShift, EventConstants.LightStatus)
+                .SetAction(Keys.F, EventConstants.LightStatus)
+                .SetAction(Keys.F, EventConstants.LightStatus)
                 .SetAction(Keys.R, EventConstants.ReloadWeapon)
                 .Build();
 
@@ -256,27 +257,27 @@ namespace Game.Entities
             switch (characterType)
             {
                 case CharacterType.Bob:
-                    weaponComponent.Damage = 15;
+                    weaponComponent.Damage = 40;
                     weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Pistol;
                     playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
                     break;
                 case CharacterType.Edgar:
                     Debug.WriteLine("1111");
-                    weaponComponent.Damage = 5;
+                    weaponComponent.Damage = 10;
                     weaponComponent.ClipSize = 128;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Rifle;
                     playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
                     break;
                 case CharacterType.Ward:
-                    weaponComponent.Damage = 10;
+                    weaponComponent.Damage = 75;
                     weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Shotgun;
                     playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
                     break;
                 case CharacterType.Jimmy:
                     weaponComponent.Damage = 100;
-                    weaponComponent.ClipSize = 8;
+                    weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Pistol;
                     playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
                     break;
