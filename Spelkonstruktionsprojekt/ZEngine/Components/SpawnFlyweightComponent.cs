@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ZEngine.Components;
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class SpawnFlyweightComponent : IComponent
+    public class SpawnFlyweightComponent : IComponent
     {
         public IComponent Reset()
         {

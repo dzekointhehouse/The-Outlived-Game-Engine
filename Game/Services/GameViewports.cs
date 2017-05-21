@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Game.Services
 {
-    class GameViewports
+    public class GameViewports
     {
         private Viewport defaultView;
         private Viewport leftTopView;
@@ -18,8 +18,8 @@ namespace Game.Services
         private Viewport RightBottomView;
         private Viewport top, bottom;
         private GameConfig config;
-        private bool IsTeamOne = false;
-        private bool IsTeamTwo = false;
+        public bool IsTeamOne { get; set; } = false;
+        public bool IsTeamTwo { get; set; } = false;
 
         private Dictionary<PlayerIndex, Viewport> playerView = new Dictionary<PlayerIndex, Viewport>(4);
 
@@ -107,7 +107,7 @@ namespace Game.Services
                             var playerOne = config.Players[0];
                             playerOne.CameraId = 1;
                             var playerTwo = config.Players[1];
-                            playerTwo.CameraId = 2;
+                            playerTwo.CameraId = 1;
                             playerView.Add(playerOne.Index, defaultView);
                             playerView.Add(playerTwo.Index, defaultView);
 

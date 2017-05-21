@@ -24,12 +24,15 @@ namespace Game.Entities
     public class GamePlayers
     {
         private GameConfig config;
+        private GameViewports gameViewports;
         private Dictionary<PlayerIndex, Viewport> viewports;
 
-        public GamePlayers(GameConfig config, Dictionary<PlayerIndex, Viewport> viewports)
+
+        public GamePlayers(GameConfig config,  GameViewports gameViewports)
         {
             this.config = config;
-            this.viewports = viewports;
+            this.gameViewports = gameViewports;
+            this.viewports = gameViewports.GetViewports();
         }
 
 
@@ -187,13 +190,26 @@ namespace Game.Entities
                 .SetPlayer(sprite)
                 .SetTeam(cageId)
                 .SetHealth()
-                .SetCameraView(viewport, 0.5f, cageId)
+                //.SetCameraView(viewport, 0.5f, cageId)
                 .SetScore()
                 .SetAmmo()
                 .SetHUD(false, showStats: true)
                 .Build();
 
+            // Add camera view only if there are two teams or if it is the first camera.
+            if (gameViewports.IsTeamOne && gameViewports.IsTeamTwo || cageId == 1)
+            {
 
+
+                var cameraView = new CameraViewComponent()
+                {
+                    CameraId = cageId,
+                    View = viewport,
+                    MinScale = 0.5f,
+                    MaxScale = 1.5f
+                };
+                ComponentManager.Instance.AddComponentToEntity(cameraView, playerEntity.GetEntityKey());
+            }
             var animationBindings = new SpriteAnimationBindingsBuilder()
                 .Binding(
                     new SpriteAnimationBindingBuilder()

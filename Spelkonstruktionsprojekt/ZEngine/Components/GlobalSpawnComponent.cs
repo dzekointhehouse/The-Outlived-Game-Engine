@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using ZEngine.Components;
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class GlobalSpawnComponent : IComponent
+    public class GlobalSpawnComponent : IComponent
     {
         public int WaveSize { get; set; } = 2;
         public bool EnemiesDead { get; set; } = true;
 
-        public int WaveSizeIncreaseConstant = 1;
+        public int WaveSizeIncreaseConstant = 2;
 
         public GlobalSpawnComponent()
         {

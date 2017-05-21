@@ -42,7 +42,7 @@ namespace Game.Menu.States
         private HealthSystem life = new HealthSystem();
         private SoundSystem soundSystem;
 
-        private GameViewports viewports;
+        private GameViewports gameViewports;
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
@@ -57,8 +57,8 @@ namespace Game.Menu.States
             soundSystem = new SoundSystem();
             // other stuff
             controls = new ControlsConfig(gameManager);
-            viewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
-            players = new GamePlayers(gameManager.gameConfig, viewports.GetViewports());
+            gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
+            players = new GamePlayers(gameManager.gameConfig, gameViewports);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -107,10 +107,10 @@ namespace Game.Menu.States
             // Loading this projects content to be used by the game engine.
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
 
-            viewports.InitializeViewports();
+            gameViewports.InitializeViewports();
             soundSystem.Start();
             // Game stuff
-            maps.SetupMap(gameManager.gameConfig);
+            //maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers();
             enemies.CreateMonster("player_sprites");
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));
@@ -127,6 +127,8 @@ namespace Game.Menu.States
             SetupHUD();
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
+            CreateGlobalSpawnSpriteEntity();
+            CreateGlobalSpawnEntity();
             // SetupTempPlayerDeadSpriteFlyweight();
         }
 
@@ -155,6 +157,12 @@ namespace Game.Menu.States
                .SetPosition(new Vector2(550, 1000))
                .SetSprite("ammo")
                .Build();
+
+            //new EntityBuilder()
+            //   .SetHUD(true)
+            //   .SetPosition(new Vector2(0, 0))
+            //   .SetSprite("bg_hud")
+            //   .Build();
         }
 
         private static void CreateGlobalBulletSpriteEntity()
@@ -184,6 +192,28 @@ namespace Game.Menu.States
             offsetComponent.Offset = new Vector2((float) (viewportDimensions.X * 0.25), (float) (viewportDimensions.Y * 0.25));
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
+        }
+
+
+
+        private static void CreateGlobalSpawnSpriteEntity()
+        {
+            var spawnSprite = EntityManager.GetEntityManager().NewEntity();
+            var spawnSpriteSprite = ComponentFactory.NewComponent<SpriteComponent>();
+            spawnSpriteSprite.SpriteName = "Player_Sprites";
+            var SpawnSpriteComponent = ComponentFactory.NewComponent<SpawnFlyweightComponent>();
+            ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
+            ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
+        }
+
+        private static void CreateGlobalSpawnEntity()
+        {
+            var spawn = EntityManager.GetEntityManager().NewEntity();
+            var spawncomponent = ComponentFactory.NewComponent<GlobalSpawnComponent>();
+            spawncomponent.WaveSize = 3;
+            //var spawnSpawnComponent = new GlobalSpawnComponent();
+            ComponentManager.Instance.AddComponentToEntity(spawncomponent, spawn);
+            //ComponentManager.Instance.AddComponentToEntity(spawnSpawnComponent, spawn);
         }
 
     }

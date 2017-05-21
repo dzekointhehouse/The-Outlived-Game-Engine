@@ -83,27 +83,32 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             if (GlobalSpawnEntities.Count <= 0) return;
             var GlobalSpawnComponent =
                 ComponentManager.GetEntityComponentOrDefault<GlobalSpawnComponent>(GlobalSpawnEntities.First().Key);
-            GlobalSpawnComponent.EnemiesDead = true;
+
+            //GlobalSpawnComponent.EnemiesDead = true;
+
+
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent)))
             {
                 var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
                 if (HealthComponent == null) continue;
+
+                // if anyone is alive then we set EnemiesDead
+                // to false and break out of the loop.
                 if (HealthComponent.Alive)
                 {
                     GlobalSpawnComponent.EnemiesDead = false;
-                    // if anyone is alive break
                     break;
                 }
             }
+
+            // If they are all dead
             if (GlobalSpawnComponent.EnemiesDead)
             {
                 //SpawnSprite, the sprite for all monsters.
                 var SpawnSpriteEntities =
                 ComponentManager.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
                 if (SpawnSpriteEntities.Count <= 0) return;
-                var SpawnSpriteComponent =
-                    ComponentManager
-                        .GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+                var SpawnSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
                 //camera
                 var cameraEntities =
@@ -135,12 +140,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
-                    do
-                    {
+                   // do
+                    //{
                         spawnArea.X = rand.Next(0, 2200);
                         spawnArea.Y = rand.Next(0, 1100);
-                    }
-                    while (cameraComponent.View.TitleSafeArea.Contains(spawnArea));
+                   // }
+                    //while (cameraComponent.View.TitleSafeArea.Contains(spawnArea));
                     CreateEnemy(spawnArea.X, spawnArea.Y, SpawnSpriteComponent);
 
                     if (rand.Next(0, 1) == 1)
