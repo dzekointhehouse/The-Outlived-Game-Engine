@@ -79,7 +79,7 @@ namespace ZEngine.Systems
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
-        public void Render(GameDependencies gameDependencies, PenumbraComponent penumbra, GameTime gameTime)
+        public void Render(GameDependencies gameDependencies, GameTime gameTime)
         {
             graphicsDevice = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             graphicsDevice.Clear(Color.Black); // Maybe done outside
@@ -91,7 +91,7 @@ namespace ZEngine.Systems
                 var camera = cameraComponent.Value as CameraViewComponent;
                 graphicsDevice.Viewport = camera.View;
 
-                penumbra.GraphicsDevice.Viewport = camera.View;
+               // penumbra.GraphicsDevice.Viewport = camera.View;
                 //penumbra.Transform = camera.Transform;
                 //gameDependencies.GraphicsDeviceManager.ApplyChanges();
                 //penumbra.BeginDraw();
