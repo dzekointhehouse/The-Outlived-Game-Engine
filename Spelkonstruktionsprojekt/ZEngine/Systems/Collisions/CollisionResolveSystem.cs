@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
@@ -11,6 +10,7 @@ using static ZEngine.Systems.CollisionEvents;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Debug = System.Diagnostics.Debug;
 
 namespace ZEngine.Systems
 {
@@ -19,34 +19,29 @@ namespace ZEngine.Systems
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
+        private const bool PROFILING_COLLISIONS = false;
         public void ResolveCollisions(Dictionary<CollisionRequirement, CollisionEvent> collisionEvents,
             GameTime gameTime)
         {
-            var collidableEntities = ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent))
-                .Select(pair => new KeyValuePair<uint, IComponent>(pair.Key, pair.Value));
-
-            var nEntriesBefore = 0;
-            var nEntriesAfter = 0;
-            var nEntriesBetween = 0;
-
-//For each collidable entity
-            foreach (var entity in collidableEntities)
+            Stopwatch timer;
+            if (PROFILING_COLLISIONS)
             {
-                nEntriesBefore = collidableEntities.Count();
-                var collisions = new List<uint>();
+                timer = Stopwatch.StartNew();
+            }
+//For each collidable entity
+            foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent)))
+            {
+//                var collisions = new List<uint>();
                 var collisionComponent = entity.Value as CollisionComponent;
-                collisionComponent.collisions.ForEach(c => collisions.Add(c));
+//                collisionComponent.collisions.ForEach(c => collisions.Add(c));
 
 //Check every occured collision
-                foreach (uint collisionTarget in collisions)
+                for (var i = 0; i < collisionComponent.collisions.Count; i++)
                 {
+                    var collisionTarget = collisionComponent.collisions[i];
                     //If the collision matches any valid collision event
                     foreach (var collisionEvent in collisionEvents)
                     {
-                        if (collisionEvent.Value == CollisionEvent.Bullet)
-                        {
-//                            Debug.WriteLine("");
-                        }
                         //Collision events are made up from requirement of each party
                         //If both entities (parties) fulfil the component requirements
                         //Then there is a match for a collision event
@@ -71,9 +66,15 @@ namespace ZEngine.Systems
                             EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
                         }
                     }
-                    collisionComponent.collisions.Remove(collisionTarget);
+//                    collisionComponent.collisions.Remove(collisionTarget);
                 }
+                collisionComponent.collisions.Clear();
                 StateManager.TryRemoveState(entity.Key, State.Collided, 0);
+            }
+
+            if (PROFILING_COLLISIONS)
+            {
+                Debug.WriteLine("COLLISION RESOLVE" + timer.ElapsedTicks);
             }
         }
 
@@ -105,6 +106,15 @@ namespace ZEngine.Systems
             {EventConstants.PickupCollision, CollisionEvent.Pickup}
         };
 
+        public static Dictionary<CollisionEvent, string> EventNames = new Dictionary<CollisionEvent, string>()
+        {
+            {CollisionEvent.Wall, EventConstants.WallCollision},
+            {CollisionEvent.Bullet, EventConstants.BulletCollision},
+            {CollisionEvent.Enemy, EventConstants.EnemyCollision},
+            {CollisionEvent.Neutral, "NeutralCollision"},
+            {CollisionEvent.Pickup, EventConstants.PickupCollision}
+        };
+
         public static CollisionEvent FromCollisionEventName(string collisionEventName)
         {
             return EventTypes[collisionEventName];
@@ -112,7 +122,7 @@ namespace ZEngine.Systems
 
         public static string FromCollisionEventType(CollisionEvent collisionEvent)
         {
-            return EventTypes.First(e => e.Value == collisionEvent).Key;
+            return EventNames[collisionEvent];
         }
     }
 

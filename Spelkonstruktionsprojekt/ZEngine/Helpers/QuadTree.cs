@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
@@ -34,6 +35,10 @@ namespace ZEngine.Helpers
                 {
                     yield return new Tuple<uint, QuadNode>(current.PermanentMovingEntities[i].Item1, current);
                 }
+                for (var i = 0; i < current.TempMovingEntitiesCount; i++)
+                {
+                    yield return new Tuple<uint, QuadNode>(current.TempMovingEntities[i].Item1, current);
+                }
                 if (current.ChildNodes != null)
                 {
                     for (var i = 0; i < current.ChildNodes.Length; i++)
@@ -59,6 +64,16 @@ namespace ZEngine.Helpers
                 {
                     if (movingEntityId == current.PermanentMovingEntities[i].Item1) continue;
                     yield return current.PermanentMovingEntities[i].Item1;
+                }
+                for (var i = 0; i < current.TempMovingEntitiesCount; i++)
+                {
+                    if(movingEntityId == current.TempMovingEntities[i].Item1) continue;
+                    yield return current.TempMovingEntities[i].Item1;
+                }
+
+                for (var i = 0; i < current.TempStillEntitiesCount; i++)
+                {
+                    yield return current.TempStillEntities[i].Item1;
                 }
                 if (current.ChildNodes != null)
                 {
