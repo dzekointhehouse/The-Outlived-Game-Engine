@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -58,6 +59,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                     inputEvent.EventTime,
                     weaponComponent.Damage);
             if (bulletEntityId == default(uint)) return;
+            FireSound(WeaponComponent.WeaponTypes.Pistol);
 
             var animationComponent = ComponentManager.ComponentFactory.NewComponent<AnimationComponent>();
             ComponentManager.AddComponentToEntity(animationComponent, bulletEntityId);
@@ -90,6 +92,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                     generalAnimation.IsDone = true;
                 }
             };
+        }
+
+        public async void FireSound(WeaponComponent.WeaponTypes weaponType)
+        {
+            await Task.Delay(1);
+            EventBus.Publish(EventConstants.FireWeaponSound, weaponType);
         }
     }
 }

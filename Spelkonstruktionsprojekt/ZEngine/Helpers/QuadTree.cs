@@ -199,10 +199,6 @@ namespace ZEngine.Helpers
                 }
                 else
                 {
-                    if (node.PermanentStillEntities.Count > 1000)
-                    {
-                        Debug.WriteLine("");
-                    }
                     node.TempStillEntities[node.TempStillEntitiesCount++] = entity;
                 }
             }
@@ -231,10 +227,6 @@ namespace ZEngine.Helpers
             }
             else
             {
-                if (parent.PermanentStillEntities.Count > 1000)
-                {
-                    Debug.WriteLine("");
-                }
                 parent.PermanentStillEntities.Add(entity);
             }
         }

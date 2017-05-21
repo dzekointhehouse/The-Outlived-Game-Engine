@@ -176,7 +176,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             else
                             {
                                 ammoGameHUD.AppendLine();
-                                ammoGameHUD.Append(ammo.OutOfAmmo);
+                                ammoGameHUD.Append(0);
                             }
 
 

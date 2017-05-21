@@ -6,7 +6,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
     {
         public int Amount { get; set; }
         public int SpareAmmoAmount { get; set; }
-        public int OutOfAmmo { get; set; }
 
         public AmmoComponent()
         {
@@ -17,7 +16,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         {
             Amount = 0;
             SpareAmmoAmount = 0;
-            OutOfAmmo = 0;
             return this;
         }
     }

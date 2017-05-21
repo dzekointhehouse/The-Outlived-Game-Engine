@@ -20,6 +20,7 @@ namespace ZEngine.Systems
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
         private const bool PROFILING_COLLISIONS = false;
+
         public void ResolveCollisions(Dictionary<CollisionRequirement, CollisionEvent> collisionEvents,
             GameTime gameTime)
         {
@@ -28,14 +29,12 @@ namespace ZEngine.Systems
             {
                 timer = Stopwatch.StartNew();
             }
-//For each collidable entity
+            //For each collidable entity
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent)))
             {
-//                var collisions = new List<uint>();
                 var collisionComponent = entity.Value as CollisionComponent;
-//                collisionComponent.collisions.ForEach(c => collisions.Add(c));
 
-//Check every occured collision
+                //Check every occured collision
                 for (var i = 0; i < collisionComponent.collisions.Count; i++)
                 {
                     var collisionTarget = collisionComponent.collisions[i];
@@ -49,10 +48,8 @@ namespace ZEngine.Systems
                         var collisionRequirements = collisionEvent.Key;
                         var collisionEventType = collisionEvent.Value;
 
-//                        Debug.WriteLine("Testing match for " + FromCollisionEventType(collisionEventType));
                         if (MatchesCollisionEvent(collisionRequirements, movingEntityId, (uint) collisionTarget))
                         {
-//                            Debug.WriteLine("Matched with " + FromCollisionEventType(collisionEventType));
                             //When there is a match for a collision-event, an event is published
                             // for any system to pickup and resolve
                             var collisionEventTypeName = FromCollisionEventType(collisionEventType);
@@ -66,7 +63,6 @@ namespace ZEngine.Systems
                             EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
                         }
                     }
-//                    collisionComponent.collisions.Remove(collisionTarget);
                 }
                 collisionComponent.collisions.Clear();
                 StateManager.TryRemoveState(entity.Key, State.Collided, 0);
@@ -81,8 +77,9 @@ namespace ZEngine.Systems
         private bool MatchesCollisionEvent(CollisionRequirement collisionRequirements, uint movingEntityId,
             uint targetId)
         {
-            return ComponentManager.ContainsAllComponents(movingEntityId, collisionRequirements.MovingEntityRequirements)
-                && ComponentManager.ContainsAllComponents(targetId, collisionRequirements.TargetEntityRequirements);
+            return ComponentManager.ContainsAllComponents(movingEntityId,
+                       collisionRequirements.MovingEntityRequirements)
+                   && ComponentManager.ContainsAllComponents(targetId, collisionRequirements.TargetEntityRequirements);
         }
     }
 
@@ -97,15 +94,6 @@ namespace ZEngine.Systems
             Pickup
         }
 
-        public static Dictionary<string, CollisionEvent> EventTypes = new Dictionary<string, CollisionEvent>()
-        {
-            {EventConstants.WallCollision, CollisionEvent.Wall},
-            {EventConstants.BulletCollision, CollisionEvent.Bullet},
-            {EventConstants.EnemyCollision, CollisionEvent.Enemy},
-            {"NeutralCollision", CollisionEvent.Neutral},
-            {EventConstants.PickupCollision, CollisionEvent.Pickup}
-        };
-
         public static Dictionary<CollisionEvent, string> EventNames = new Dictionary<CollisionEvent, string>()
         {
             {CollisionEvent.Wall, EventConstants.WallCollision},
@@ -114,11 +102,6 @@ namespace ZEngine.Systems
             {CollisionEvent.Neutral, "NeutralCollision"},
             {CollisionEvent.Pickup, EventConstants.PickupCollision}
         };
-
-        public static CollisionEvent FromCollisionEventName(string collisionEventName)
-        {
-            return EventTypes[collisionEventName];
-        }
 
         public static string FromCollisionEventType(CollisionEvent collisionEvent)
         {

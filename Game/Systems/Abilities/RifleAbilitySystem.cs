@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -19,7 +20,7 @@ namespace Game.Systems.Abilities
 
         private BulletFactory BulletFactory { get; set; }
 
-        private const double RateOfFire = 100;
+        private const double RateOfFire = 80;
 
         public void Start(BulletFactory bulletFactory)
         {
@@ -85,13 +86,13 @@ namespace Game.Systems.Abilities
                 Length = 2000,
                 Unique = true
             };
-            NewBulletAnimation(animation, bulletIds, moveComponent);
+            NewBulletAnimation(animation, bulletIds, moveComponent, weaponComponent.WeaponType);
             animationComponent.Animations.Add(animation);
         }
 
         // Animation for when the bullet should be deleted.
         public void NewBulletAnimation(GeneralAnimation generalAnimation, uint[] bulletIds,
-            MoveComponent shooterMoveComponent)
+            MoveComponent shooterMoveComponent, WeaponComponent.WeaponTypes weaponType)
         {
             var lastFired = generalAnimation.StartOfAnimation;
             var counter = 0;
@@ -116,8 +117,15 @@ namespace Game.Systems.Abilities
                 {
                     lastFired = currentTimeInMilliseconds;
                     BulletFactory.FireBullet(bulletIds[counter++], shooterMoveComponent.Direction);
+                    FireSound(weaponType);
                 }
             };
+        }
+
+        public async void FireSound(WeaponComponent.WeaponTypes weaponType)
+        {
+            await Task.Delay(1);
+            EventBus.Publish(EventConstants.FireWeaponSound, weaponType);
         }
     }
 }

@@ -64,6 +64,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
+        public EntityBuilder FromLoadedSprite(Texture2D sprite, string spriteName, Point startPosition = default(Point), int tileWidth = 0,
+            int tileHeight = 0, float scale = 1f, float alpha = 1f)
+        {
+            var component = ComponentFactory.NewComponentFromLoadedSprite(sprite, spriteName);
+            component.Alpha = alpha;
+            component.Position = startPosition;
+            component.Scale = scale;
+            component.TileHeight = tileHeight;
+            component.TileWidth = tileWidth;
+            components.Add(component);
+            return this;
+        }
+
         public EntityBuilder SetLight(Light light)
         {
             var component = ComponentFactory.NewComponent<LightComponent>();
@@ -132,12 +145,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetAmmo()
+        public EntityBuilder SetAmmo(int cap = 12, int startSpare = 100)
         {
             var component = ComponentFactory.NewComponent<AmmoComponent>();
-            component.Amount = 100;
-            component.SpareAmmoAmount = 10;
-            component.OutOfAmmo = 0;
+            component.Amount = cap;
+            component.SpareAmmoAmount = startSpare;
             components.Add(component);
             return this;
         }

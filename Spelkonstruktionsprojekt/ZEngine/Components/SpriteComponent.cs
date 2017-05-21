@@ -34,9 +34,9 @@ namespace ZEngine.Components
             TileWidth = 0;
             TileHeight = 0;
             Position = Point.Zero;
-            SpriteIsLoaded = false;
-            Sprite = null;
-            SpriteName = Empty;
+//            SpriteIsLoaded = false;
+//            Sprite = null;
+//            SpriteName = Empty;
             Scale = 1;
             Alpha = 1;
             return this;

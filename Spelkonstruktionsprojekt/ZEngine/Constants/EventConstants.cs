@@ -22,6 +22,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public const string Running = "entityRun";
 
         // Weapons
+        public const string FireWeaponSound = "fireWeaponSound"; //Command
         public const string FireRifleWeapon = "entityFireRifleWeapon";
         public const string FirePistolWeapon = "entityFirePistolWeapon";
         public const string FireShotgunWeapon = "entityFireShotgunWeapon";

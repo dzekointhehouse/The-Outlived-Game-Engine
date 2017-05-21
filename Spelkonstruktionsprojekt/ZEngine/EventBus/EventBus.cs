@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace ZEngine.EventBus
 {
@@ -10,7 +11,7 @@ namespace ZEngine.EventBus
 
         private static ParameterlessEventBus LocalEventBus = new ParameterlessEventBus();
         private static TypedEventBus LocalTypedEventBus = new TypedEventBus();
-        
+
         public void Publish(string message)
         {
             LocalEventBus.Publish(message);

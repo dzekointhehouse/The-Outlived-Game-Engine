@@ -79,11 +79,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<SpriteAnimationSystem>().Update(gameTime);
             manager.Get<FlashlightSystem>().Update(gameTime, viewportDimensions);
             manager.Get<HealthSystem>().Update(gameTime);
-            manager.Get<EntityRemovalSystem>().Update(gameTime);
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();
             manager.Get<SpawnSystem>().HandleWaves();
             manager.Get<ScoreSystem>().Update(gameTime);
+            manager.Get<EntityRemovalSystem>().Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)

@@ -441,9 +441,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetCameraFollow((int) cageId)
                 .SetPlayer(name)
                 .SetHealth()
-                .SetAmmo()
                 .SetScore()
                 .SetHUD(false, showStats: true)
+                .SetAmmo()
                 .Build();
 
 

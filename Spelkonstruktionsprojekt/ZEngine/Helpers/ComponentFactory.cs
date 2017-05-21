@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
+using Vector2 = UnityEngine.Vector2;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
@@ -43,6 +46,33 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                 _scrapyard[typeof(T)] = newStack;
             }
             return newComponent;
+        }
+
+        public SpriteComponent NewComponentFromLoadedSprite(Texture2D sprite, string spriteName)
+        {
+            Stack<IComponent> components;
+            var status = _scrapyard.TryGetValue(typeof(SpriteComponent), out components);
+            SpriteComponent spriteComponent;
+            if (status && components.Count > 0)
+            {
+                spriteComponent = (components.Pop().Reset() as SpriteComponent);
+            }
+            else
+            {
+                spriteComponent = new SpriteComponent();
+            }
+
+            spriteComponent.Sprite = sprite;
+            spriteComponent.SpriteName = spriteName;
+            spriteComponent.SpriteIsLoaded = true;
+
+            if (!status)
+            {
+                var newStack = new Stack<IComponent>();
+                _scrapyard[typeof(SpriteComponent)] = newStack;
+            }
+
+            return spriteComponent;
         }
     }
 }

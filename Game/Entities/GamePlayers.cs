@@ -176,7 +176,7 @@ namespace Game.Entities
                 Intensity = (float) 0.6,
                 ShadowType = ShadowType.Solid // Will not lit hulls themselves
             };
-            IEntityBuilder playerEntity = new EntityBuilder()
+            EntityBuilder playerEntity = new EntityBuilder()
                 .SetPosition(position, 10)
                 .SetRendering(100, 100)
                 .SetInertiaDampening()
@@ -192,9 +192,7 @@ namespace Game.Entities
                 .SetHealth()
                 //.SetCameraView(viewport, 0.5f, cageId)
                 .SetScore()
-                .SetAmmo()
-                .SetHUD(false, showStats: true)
-                .Build();
+                .SetHUD(false, showStats: true);
 
             // Add camera view only if there are two teams or if it is the first camera,
             // and the same .
@@ -261,24 +259,30 @@ namespace Game.Entities
                     weaponComponent.Damage = 15;
                     weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Pistol;
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
                     break;
                 case CharacterType.Edgar:
                     Debug.WriteLine("1111");
                     weaponComponent.Damage = 5;
                     weaponComponent.ClipSize = 128;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Rifle;
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
                     break;
                 case CharacterType.Ward:
                     weaponComponent.Damage = 10;
                     weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Shotgun;
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
                     break;
                 case CharacterType.Jimmy:
                     weaponComponent.Damage = 100;
                     weaponComponent.ClipSize = 8;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Pistol;
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
                     break;
             }
+
+            playerEntity.Build();
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
         }
     }

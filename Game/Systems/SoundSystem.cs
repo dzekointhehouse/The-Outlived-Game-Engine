@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Win32;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Spelkonstruktionsprojekt.ZEngine.Components;
@@ -31,7 +32,7 @@ namespace Game.Systems
             // We subscribe to the input inputEvent for when the entity fires a
             // weapon, then we use the WeaponSounds method to "say" what should
             // be done. 
-            EventBus.Subscribe<InputEvent>(EventConstants.FirePistolWeapon, WeaponSounds);
+            EventBus.Subscribe<WeaponComponent.WeaponTypes>(EventConstants.FireWeaponSound, WeaponSounds);
             EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.PickupCollision, PickupSounds);
             //EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
             return this;
@@ -45,87 +46,70 @@ namespace Game.Systems
         // We want to subscribe this method to events where a entity fires
         // a weapon. We check if the bullet fire key has been pressed, then we
         // fire the sound.
-        private void WeaponSounds(InputEvent inputEvent)
+        private void WeaponSounds(WeaponComponent.WeaponTypes weaponType)
         {
-            
-            // First things first, we only handle this event if the key is pressed
-            // that is associated with this event "entityFireWeapon"
-            if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
+            // To play the bullet sound the entity needs to have
+            // the BulletFlyweightComponent
+            //var bulletFlyweightComponent =
+            //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
+            //if (bulletFlyweightComponent.Count <= 0) return;
+
+            SoundEffectInstance soundEffectInstance = OutlivedGame.Instance()
+                .Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire")
+                .CreateInstance();
+
+            switch (weaponType)
             {
-                var ammoComponent =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(inputEvent.EntityId);
-                // No ammo no sound
-                if (ammoComponent == null) return;
-                if (ammoComponent.Amount == 0) return;
-
-                // To play the bullet sound the entity needs to have
-                // the BulletFlyweightComponent
-                //var bulletFlyweightComponent =
-                //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
-                //if (bulletFlyweightComponent.Count <= 0) return;
-
-                var weaponComponent =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId) as WeaponComponent;
-                if (weaponComponent == null) return;
-
-
-                SoundEffectInstance soundEffectInstance = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire").CreateInstance();
-                if (weaponComponent.WeaponType == WeaponComponent.WeaponTypes.Pistol)
-                {
-                    soundEffectInstance = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Weapon/gun_fire").CreateInstance();
+                case WeaponComponent.WeaponTypes.Pistol:
+                    soundEffectInstance = OutlivedGame.Instance()
+                        .Content.Load<SoundEffect>("Sound/Weapon/gun_fire")
+                        .CreateInstance();
                     soundEffectInstance.IsLooped = false;
-                }
-                if (weaponComponent.WeaponType == WeaponComponent.WeaponTypes.Shotgun)
-                {
-                    soundEffectInstance = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Weapon/shotgun_fire").CreateInstance();
+                    break;
+                case WeaponComponent.WeaponTypes.Rifle:
                     soundEffectInstance.IsLooped = false;
-                }
-                if (weaponComponent.WeaponType == WeaponComponent.WeaponTypes.Rifle)
-                {
+                    soundEffectInstance = OutlivedGame.Instance()
+                        .Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire")
+                        .CreateInstance();
+                    break;
+                case WeaponComponent.WeaponTypes.Shotgun:
+                    soundEffectInstance = OutlivedGame.Instance()
+                        .Content.Load<SoundEffect>("Sound/Weapon/shotgun_fire")
+                        .CreateInstance();
                     soundEffectInstance.IsLooped = false;
-                    soundEffectInstance = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire").CreateInstance();
-                }
 
-                    // Get the sound instance for this entity
-                    //var sound =
-                    //    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(bulletFlyweightComponent
-                    //        .First()
-                    //        .Key);
+                    break;
+            }
 
-                    // We create a SoundEffectInstance which gives us more control
-                    //var soundInstance = sound.SoundEffect.CreateInstance();
+//            var positionComponent =
+//                ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
+//
+//            // it's logical that the sound comes from the weapon which is the source of the
+//            // sound and the location where the sound will be the strongest.
+//            emitter.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
+//            listener.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
+//
+//            // Applying the 3d sound effect to the sound instance
+//            soundEffectInstance.Apply3D(listener, emitter);
 
-
-                    var positionComponent =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
-                
-                // it's logical that the sound comes from the weapon which is the source of the
-                // sound and the location where the sound will be the strongest.
-                emitter.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
-                listener.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
-
-                // Applying the 3d sound effect to the sound instance
-                soundEffectInstance.Apply3D(listener, emitter);
-
-                // If it is not already playing then play it
-                if (soundEffectInstance.State != SoundState.Playing)
-                {
-                    //soundEffectInstance.IsLooped = false;
-                    soundEffectInstance.Play();
-                }
+            // If it is not already playing then play it
+            if (soundEffectInstance.State != SoundState.Playing)
+            {
+                //soundEffectInstance.IsLooped = false;
+                soundEffectInstance.Play();
             }
         }
 
         private void PickupSounds(SpecificCollisionEvent inputEvent)
         {
-                // We get the entities pickup components, we don't know which
-                // so we try them all.
-                var pickup =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<AmmoPickupComponent>(inputEvent.Target);
-                var health =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<HealthPickupComponent>(inputEvent.Target);
-                // Atlest one pickup needs to exist.
-                if (health == null && pickup == null) return;
+            // We get the entities pickup components, we don't know which
+            // so we try them all.
+            var pickup =
+                ComponentManager.Instance.GetEntityComponentOrDefault<AmmoPickupComponent>(inputEvent.Target);
+            var health =
+                ComponentManager.Instance.GetEntityComponentOrDefault<HealthPickupComponent>(inputEvent.Target);
+            // Atlest one pickup needs to exist.
+            if (health == null && pickup == null) return;
 
             //var globalPickUpEntity =
             //   ComponentManager.Instance.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
@@ -133,19 +117,19 @@ namespace Game.Systems
 
 
             // Get the sound instance for this entity
-                    //ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(globalPickUpEntity.First().Key);
+            //ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(globalPickUpEntity.First().Key);
             var sound =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(inputEvent.Target);
-                if (sound == null) return;
-                // We create a SoundEffectInstance which gives us more control
-                var soundInstance = sound.SoundEffect.CreateInstance();
+                ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(inputEvent.Target);
+            if (sound == null) return;
+            // We create a SoundEffectInstance which gives us more control
+            var soundInstance = sound.SoundEffect.CreateInstance();
 
-                // If it is not already playing then play it
-                if (soundInstance.State != SoundState.Playing)
-                {
-                    soundInstance.IsLooped = false;
-                    soundInstance.Play();
-                }
+            // If it is not already playing then play it
+            if (soundInstance.State != SoundState.Playing)
+            {
+                soundInstance.IsLooped = false;
+                soundInstance.Play();
+            }
         }
 
 
@@ -196,7 +180,7 @@ namespace Game.Systems
         public Action<double> NewWalkingSoundAnimation(GeneralAnimation animation, SoundEffectInstance sound,
             MoveComponent moveComponent)
         {
-            return delegate (double currentTime)
+            return delegate(double currentTime)
             {
                 var elapsedTime = currentTime - animation.StartOfAnimation;
                 if (elapsedTime > animation.Length && moveComponent.Speed > -5 && moveComponent.Speed < 5)
