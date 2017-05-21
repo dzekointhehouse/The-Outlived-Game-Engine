@@ -51,7 +51,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<ScoreSystem>().Start();
             manager.Get<PickupCollisionSystem>().Start();
             manager.Get<ReloadSystem>().Start();
-
+            manager.Get<EntityRemovalSystem>().Start();
         }
 
         public void LoadContent()

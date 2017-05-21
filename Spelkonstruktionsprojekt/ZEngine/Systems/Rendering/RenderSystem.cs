@@ -96,7 +96,7 @@ namespace ZEngine.Systems
                 //gameDependencies.GraphicsDeviceManager.ApplyChanges();
                 //penumbra.BeginDraw();
 
-                gameDependencies.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null,
                     camera.Transform);
                 //var border = GameDependencies.Instance.Game.Content.Load<Texture2D>("border");
                 //gameDependencies.SpriteBatch.Draw(border, Vector2.Zero, Color.White);
@@ -128,6 +128,7 @@ namespace ZEngine.Systems
                 if (components == null) continue;
 
                 var zIndex = components.Item1.ZIndex;
+
                 //var offset = offsetComponent?.Offset ?? default(Vector2);
                 var angle = components.Item4?.Direction ?? 0;
                 var destinationRectangle =

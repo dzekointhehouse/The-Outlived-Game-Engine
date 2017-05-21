@@ -177,7 +177,7 @@ namespace Game.Entities
                 ShadowType = ShadowType.Solid // Will not lit hulls themselves
             };
             EntityBuilder playerEntity = new EntityBuilder()
-                .SetPosition(position, 10)
+                .SetPosition(position, 500)
                 .SetRendering(100, 100)
                 .SetInertiaDampening()
                 .SetBackwardsPenalty()

@@ -32,7 +32,7 @@ namespace Game.Entities
                     int[,] map = new int[256, 256];
                     tileTypes.Add(0, "grass");
                     mapHelper = new MapHelper(tileTypes);
-                    mapHelper.CreateMapTiles(map, 32);
+                    mapHelper.CreateMapTiles(map, 128);
                     break;
                 case GameModes.Extinction:
                     tileTypes.Clear();
