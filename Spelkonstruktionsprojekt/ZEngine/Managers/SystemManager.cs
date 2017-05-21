@@ -40,7 +40,6 @@ namespace ZEngine.Managers
             { typeof(CameraSceneSystem), new CameraSceneSystem() },
             { typeof(AISystem), new AISystem() },
             { typeof(AnimationSystem), new AnimationSystem() },
-            { typeof(SoundSystem), new SoundSystem() },
             { typeof(BulletCollisionSystem), new BulletCollisionSystem() },
             { typeof(HealthSystem), new HealthSystem() },
             { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },

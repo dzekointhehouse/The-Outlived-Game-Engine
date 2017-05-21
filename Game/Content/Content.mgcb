@@ -1201,3 +1201,9 @@
 /processorParam:Quality=Best
 /build:Sound/click2.wav
 
+#begin Sound/bg_music1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/bg_music1.mp3
+

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using ZEngine.Wrappers;
 
 namespace Game.Menu.States
@@ -138,6 +139,9 @@ namespace Game.Menu.States
                 playerIndex = 0;
                 currentPlayer = null;
                 characterType = CharacterType.Bob;
+
+                if(MediaPlayer.State != MediaState.Stopped)
+                 MediaPlayer.Stop();
             }
         }
 

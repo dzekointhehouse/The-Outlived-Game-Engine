@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Schema;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
@@ -18,7 +12,7 @@ using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Systems;
 
-namespace Spelkonstruktionsprojekt.ZEngine.Systems
+namespace Game.Systems
 {
     // Optimus prime
     public class SoundSystem : ISystem

@@ -42,7 +42,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             //Init systems that require initialization
             manager.Get<TankMovementSystem>().Start();
             manager.Get<WallCollisionSystem>().Start();
-            manager.Get<SoundSystem>().Start();
             manager.Get<EnemyCollisionSystem>().Start();
             manager.Get<BulletCollisionSystem>().Start();
             manager.Get<LightAbilitySystem>().Start();

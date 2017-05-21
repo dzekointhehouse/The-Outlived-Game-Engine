@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Game.Entities;
 using Game.Services;
+using Game.Systems;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -21,6 +23,7 @@ using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
+using ZEngine.Systems;
 
 namespace Game.Menu.States
 {
@@ -37,6 +40,7 @@ namespace Game.Menu.States
         private GameEnemies enemies = new GameEnemies();
         private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
+        private SoundSystem soundSystem;
 
         private GameViewports viewports;
 
@@ -48,8 +52,11 @@ namespace Game.Menu.States
         public InGame(GameManager gameManager)
         {
             this.gameManager = gameManager;
-            controls = new ControlsConfig(gameManager);
 
+            // Initializing systems
+            soundSystem = new SoundSystem();
+            // other stuff
+            controls = new ControlsConfig(gameManager);
             viewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
             players = new GamePlayers(gameManager.gameConfig, viewports.GetViewports());
         }
@@ -58,7 +65,7 @@ namespace Game.Menu.States
         {
             if (!isInitialized)
             {
-                InitializeGameContent();
+                Initialize();
                 gameManager.Engine.LoadContent();
                 weaponSystem.Start();
                 weaponSystem.LoadBulletSpriteEntity();
@@ -70,11 +77,21 @@ namespace Game.Menu.States
         public void Update(GameTime gameTime)
         {            
 
-            if (MediaPlayer.State != MediaState.Stopped)
-            {
-                MediaPlayer.Stop();
-            }
+            //if (MediaPlayer.State != MediaState.Stopped)
+            //{
+            //    MediaPlayer.Stop();
+            //}
             controls.PauseButton();
+           var bgMusic =  OutlivedGame.Instance().Content.Load<Song>("Sound/bg_music1");
+
+            if (MediaPlayer.State == MediaState.Stopped)
+            {
+                MediaPlayer.Volume = 0.7f;
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Play(bgMusic);
+            }
+
+
             gameManager.Engine.Update(gameTime);
 
             if (life.CheckIfNotAlive())
@@ -85,9 +102,14 @@ namespace Game.Menu.States
 
         // To initialize game content when navigating
         // to this state.
-        public void InitializeGameContent()
+        public void Initialize()
         {
+            // Loading this projects content to be used by the game engine.
+            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+
             viewports.InitializeViewports();
+            soundSystem.Start();
+            // Game stuff
             maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers();
             enemies.CreateMonster("player_sprites");
@@ -164,37 +186,5 @@ namespace Game.Menu.States
             return cameraCage;
         }
 
-
-        public void SetupBackgroundTiles()
-        {
-            var tileTypes = new Dictionary<int, string>();
-
-            //tileTypes.Add(0, "blue64");
-            tileTypes.Add(2, "yellowwall64");
-            tileTypes.Add(28, "grass");
-            //tileTypes.Add(4, "yellowwall64");
-
-
-            MapHelper mapcreator = new MapHelper(tileTypes);
-
-            mapcreator.AddNumberToCollisionList(2);
-
-            mapcreator.CreateMapTiles(MapPack.TheWallMap, 100);
-        }
-
-        public void SetupCamera()
-        {
-            var cameraEntity = EntityManager.GetEntityManager().NewEntity();
-            var cameraViewComponent = ComponentFactory.NewComponent<CameraViewComponent>();
-            cameraViewComponent.View = gameManager.Viewport;
-            cameraViewComponent.MinScale = 0.5f;
-            cameraViewComponent.ViewportDimension = new Vector2(viewportDimensions.X, viewportDimensions.Y);
-
-            var position = ComponentFactory.NewComponent<PositionComponent>();
-            position.Position = Vector2.Zero;
-            position.ZIndex = 500;
-
-            ComponentManager.Instance.AddComponentToEntity(cameraViewComponent, cameraEntity);
-        }
     }
 }

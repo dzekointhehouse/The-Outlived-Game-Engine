@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using Game.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -30,16 +31,15 @@ namespace Game
     {
         private readonly GameDependencies _gameDependencies = GameDependencies.Instance;
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
-
         private Vector2 viewportDimensions = new Vector2(1920, 1080); // HD baby!
         public SpriteBatch spriteBatch;
-
         private readonly FullSystemBundle gameBundle;
         private GameManager _gameManager;
+        private static OutlivedGame outlivedGame;
 
         public OutlivedGame()
         {
-            
+            outlivedGame = this;
             gameBundle = new FullSystemBundle();
 
             gameBundle.Dependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -49,9 +49,8 @@ namespace Game
                 GraphicsProfile = GraphicsProfile.HiDef
 
             };
-            gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = true;
+            gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = false;
             Content.RootDirectory = "Content";
-            
         }
 
         protected override void Initialize()
@@ -69,6 +68,7 @@ namespace Game
 
         protected override void UnloadContent()
         {
+            Content.Unload();
             // TODO: Unload any non ContentManager content here
         }
 
@@ -83,5 +83,17 @@ namespace Game
             _gameManager.Draw(gameTime);
             base.Draw(gameTime);
         }
+
+
+        public static OutlivedGame Instance()
+        {
+            return outlivedGame;
+        }
+        public T GetContent<T>(string assetName)
+        {
+            var loaded = this.Content.Load<T>(assetName);
+            return loaded;
+        }
+
     }
 }

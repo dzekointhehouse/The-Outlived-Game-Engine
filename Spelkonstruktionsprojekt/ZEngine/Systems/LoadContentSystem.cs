@@ -15,7 +15,7 @@ using ZEngine.Wrappers;
 
 namespace ZEngine.Systems
 {
-    class LoadContentSystem : ISystem
+    public class LoadContentSystem : ISystem
     {
         public void LoadContent(ContentManager contentManager)
         {
