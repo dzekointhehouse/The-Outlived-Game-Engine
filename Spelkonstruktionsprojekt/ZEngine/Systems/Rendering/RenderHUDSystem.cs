@@ -35,6 +35,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
         public void Draw(GameDependencies gameDependencies)
         {
             this._gameDependencies = gameDependencies;
+            GraphicsDevice graphicsDevice = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
+            var viewportComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(DefaultViewport)).First().Value as DefaultViewport;
+
+            graphicsDevice.Viewport = viewportComponent.Viewport;
 
             _gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
             DrawTitlesafeStrings();
@@ -48,8 +52,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
         // have it's own row, and each component will be sorted by column.
         private void DrawTitlesafeStrings()
         {
-            GraphicsDevice graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
-            Rectangle titlesafearea = graphics.Viewport.TitleSafeArea;
+            GraphicsDevice graphicsDevice = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
+            Rectangle titlesafearea = graphicsDevice.Viewport.TitleSafeArea;
 
             Dictionary<uint, IComponent> HUDComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderHUDComponent));
 

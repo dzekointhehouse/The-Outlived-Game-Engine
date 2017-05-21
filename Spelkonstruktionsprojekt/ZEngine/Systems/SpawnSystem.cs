@@ -128,7 +128,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 }
                 // When done, increase the wave size...
                 if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
-                    GlobalSpawnComponent.WaveSize+= GlobalSpawnComponent.WaveSizeIncreaseConstant;
+                    //  GlobalSpawnComponent.WaveSize+= GlobalSpawnComponent.WaveSizeIncreaseConstant;
+                    GlobalSpawnComponent.WaveSize *= 2;
 
 
 

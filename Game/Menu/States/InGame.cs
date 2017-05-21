@@ -81,7 +81,7 @@ namespace Game.Menu.States
             switch (nCameras)
             {
                 case 2:
-                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), Vector2.Zero, Color.White);
+                  //  spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), Vector2.Zero, Color.White);
                     break;
                 case 3:
                     break;
@@ -134,6 +134,18 @@ namespace Game.Menu.States
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
             pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));            
             CreateGameEntities();
+            CreateDefaultViewport();
+        }
+
+        private void CreateDefaultViewport()
+        {
+            var entity = EntityManager.GetEntityManager().NewEntity();
+
+            var def = new DefaultViewport()
+            {
+                Viewport = gameViewports.defaultView
+            };
+            ComponentManager.Instance.AddComponentToEntity(def, entity);
         }
 
         private void CreateGameEntities()
