@@ -110,7 +110,7 @@ namespace Game.Menu.States
             gameViewports.InitializeViewports();
             soundSystem.Start();
             // Game stuff
-            //maps.SetupMap(gameManager.gameConfig);
+            maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers();
             enemies.CreateMonster("player_sprites");
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));

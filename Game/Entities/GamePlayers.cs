@@ -118,7 +118,7 @@ namespace Game.Entities
             CreatePlayer(
                 sprite: player.SpriteName,
                 actionBindings: actionBindings2,
-                position: new Vector2(400, 400), // spawn point,
+                position: new Vector2(300, 300), // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId);
         }
