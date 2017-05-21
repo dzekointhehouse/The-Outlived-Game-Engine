@@ -72,6 +72,23 @@ namespace Game.Menu.States
                 isInitialized = true;
             }
             gameManager.Engine.Draw(gameTime);
+
+            // Reset to default view
+            OutlivedGame.Instance().GraphicsDevice.Viewport = gameViewports.defaultView;
+
+            // Should move to HUD which should render defaultview
+            var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
+            switch (nCameras)
+            {
+                case 2:
+                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), Vector2.Zero, Color.White);
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+
+            }
         }
 
         public void Update(GameTime gameTime)
