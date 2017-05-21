@@ -106,6 +106,7 @@
     <Compile Include="ZEngine\Helpers\EntityBuilder.cs" />
     <Compile Include="ZEngine\Helpers\FullSystemBundle.cs" />
     <Compile Include="ZEngine\Helpers\MapHelper.cs" />
+    <Compile Include="ZEngine\Helpers\QuadTree.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
