@@ -116,6 +116,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (SpawnSpriteEntities.Count <= 0) return;
                 var SpawnSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
+                var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
+
 
                 Random random = new Random();
 
@@ -124,7 +126,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // the players view bounds.
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
-                    CreateEnemy(GetSpawnPosition(null, random), SpawnSpriteComponent);
+                    CreateEnemy(GetSpawnPosition(cameraComponents, random), SpawnSpriteComponent);
                 }
                 // When done, increase the wave size...
                 if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
@@ -165,23 +167,27 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        private Vector2 GetSpawnPosition(List<CameraViewComponent> cameras, Random random)
+        private Vector2 GetSpawnPosition(Dictionary<uint, IComponent> cameraComponents, Random random)
         {
+            if (cameraComponents == null) return default(Vector2);
             int x = 0, y = 0;
             bool isInside = true;
-            //while (isInside)
-            //{
+            while (isInside)
+            {
                 x = random.Next(0, 5000);
                 y = random.Next(0, 5000);
-                //foreach (var camera in cameras)
-                //{
-                //    if (!camera.View.Bounds.Contains(x, y))
-                //    {
-                //        isInside = false;
-                //    }
-                //}
-          //  }
-            
+                foreach (var cameraComponent in cameraComponents)
+                {
+                    var camera = cameraComponent.Value as CameraViewComponent;
+                    if (!camera.View.TitleSafeArea.Contains(x, y))
+                    {
+                        isInside = false;
+                    }
+                    Debug.WriteLine("Inside");
+                }
+            }
+            Debug.WriteLine("outside");
+
             return new Vector2(x, y);
         }
 
