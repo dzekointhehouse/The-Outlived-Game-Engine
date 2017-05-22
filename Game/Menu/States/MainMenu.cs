@@ -99,6 +99,7 @@ namespace Game.Menu.States
             // playing beatiful mainBackground music.
             if (MediaPlayer.State == MediaState.Stopped)
             {
+
                 MediaPlayer.Volume = 0.8f;
                 MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(gameManager.MenuContent.BackgroundSong);

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZEngine.Wrappers;
 using Game.Services;
+using Microsoft.Xna.Framework.Media;
 
 namespace Game.Menu.States
 {
@@ -75,6 +76,7 @@ namespace Game.Menu.States
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
+                MediaPlayer.Stop();
                 gameManager.PreviousGameState = gameManager.CurrentGameState;
                 gameManager.CurrentGameState = GameManager.GameState.MainMenu;
 
