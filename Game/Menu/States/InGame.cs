@@ -38,8 +38,9 @@ namespace Game.Menu.States
         private GamePlayers players;
         private GameMap maps = new GameMap();
         private GameEnemies enemies = new GameEnemies();
-        private GamePickups pickups = new GamePickups();
+      //  private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
+        private Pickups pickups = new Pickups();
         private SoundSystem soundSystem;
 
         private GameViewports gameViewports;
@@ -78,18 +79,21 @@ namespace Game.Menu.States
             OutlivedGame.Instance().GraphicsDevice.Viewport = gameViewports.defaultView;
 
             // Should move to HUD which should render defaultview
+            spriteBatch.Begin();
             var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
             switch (nCameras)
             {
-                case 2:
-                  //  spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), Vector2.Zero, Color.White);
+                case 0:
                     break;
-                case 3:
+                case 2:
+                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), gameViewports.defaultView.TitleSafeArea, Color.White);
                     break;
                 default:
+                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("Images/4border"), gameViewports.defaultView.TitleSafeArea, Color.White);
                     break;
 
             }
+            spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
@@ -135,9 +139,10 @@ namespace Game.Menu.States
             maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers(maps);
 //            enemies.CreateMonster("player_sprites");
-            pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
-            pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
-            pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));            
+          //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
+          //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
+          //  pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200)); 
+           pickups.CreatePickups();           
             CreateGameEntities();
             CreateDefaultViewport();
         }

@@ -46,6 +46,7 @@
     <Compile Include="Entities\GameEnemies.cs" />
     <Compile Include="Entities\GameHUD.cs" />
     <Compile Include="Entities\GameMap.cs" />
+    <Compile Include="Entities\Pickups.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
     <Compile Include="GameContent.cs" />
     <Compile Include="MenuContent.cs" />
