@@ -61,7 +61,7 @@ namespace ZEngine.Systems
 //
             var quadTree = QuadTree.CreateTree(
                 ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent)).Keys,
-                new Rectangle(0, 0, 5000, 5000));
+                new Rectangle(0, 0, 8000, 8000));
 
             if (PROFILING_COLLISIONS)
             {

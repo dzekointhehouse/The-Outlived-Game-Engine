@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -16,21 +18,24 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
         private static ComponentFactory ComponentFactory = ComponentManager.ComponentFactory;
         private SpriteComponent PistolBulletSprite;
 
-        private float xOffset = 65;
-        private float yOffset = 52;
+        public static float xOffset = 65;
+
+        public static float yOffset = 52;
+
         //Loads available bullet sprites, given that the neccesary entities containing
         // these sprites are created.
         public void LoadBulletSprites()
         {
             var bulletSpriteEntities =
                 ComponentManager.Instance.GetEntitiesWithComponent(typeof(BulletFlyweightComponent));
-            if (bulletSpriteEntities.Count <= 0) throw new Exception("Global bullet sprite not yet loaded! Cannot create bullet.");
+            if (bulletSpriteEntities.Count <= 0)
+                throw new Exception("Global bullet sprite not yet loaded! Cannot create bullet.");
             PistolBulletSprite =
                 ComponentManager.Instance
                     .GetEntityComponentOrDefault<SpriteComponent>(bulletSpriteEntities.First().Key);
         }
 
-        public void FireBullet(uint bulletEntityId, float direction)
+        public void FireBullet(uint bulletEntityId, uint shooterEntityId, float direction)
         {
             var bulletRenderComponent = ComponentFactory.NewComponent<RenderComponent>();
 
@@ -41,9 +46,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
             bulletMoveComponent.Direction = (float) direction;
             var bulletCollisionComponent = ComponentFactory.NewComponent<CollisionComponent>();
 
+            var barrelFlash = ComponentManager.GetEntityComponentOrDefault<BarrelFlashComponent>(shooterEntityId);
+            if (barrelFlash != null)
+            {
+                barrelFlash.Light.Enabled = true;
+                Flash(barrelFlash.Light);
+            }
+
             ComponentManager.AddComponentToEntity(bulletMoveComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletRenderComponent, bulletEntityId);
             ComponentManager.AddComponentToEntity(bulletCollisionComponent, bulletEntityId);
+        }
+
+        public async void Flash(Light light)
+        {
+            await Task.Delay(100);
+            light.Enabled = false;
         }
 
         public uint CreateBullet(
@@ -72,8 +90,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
             bulletshooterPosition.Position = finalPosition;
             bulletshooterPosition.ZIndex = shooterPosition.ZIndex;
             var bulletDimensionsComponent = ComponentFactory.NewComponent<DimensionsComponent>();
-            bulletDimensionsComponent.Height = 10;
-            bulletDimensionsComponent.Width = 10;
+            bulletDimensionsComponent.Height = 18;
+            bulletDimensionsComponent.Width = 18;
             var bulletComponent = ComponentFactory.NewComponent<BulletComponent>();
             bulletComponent.Damage = damage;
             bulletComponent.ShooterEntityId = shooterId;
@@ -115,6 +133,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
 
             FireBullet(
                 bulletEntityId,
+                shooterEntityId,
                 moveComponent.Direction);
 
             return bulletEntityId;
@@ -126,7 +145,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
                 ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(shooterEntityId);
             var shooterDimensionsComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<DimensionsComponent>(shooterEntityId);
-            if (shooterDimensionsComponent == null) return new uint[]{};
+            if (shooterDimensionsComponent == null) return new uint[] { };
             var moveComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(shooterEntityId);
 
@@ -141,7 +160,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
             var bulletEntityIds = new uint[spread.Length];
             for (var i = 0; i < spread.Length; i++)
             {
-
                 uint bulletEntityId = CreateBullet(
                     shooterEntityId,
                     shooterPosition,
@@ -152,6 +170,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Bullets
                 bulletEntityIds[i] = bulletEntityId;
                 FireBullet(
                     bulletEntityId,
+                    shooterEntityId,
                     (float) (moveComponent.Direction + spread[i])
                 );
             }

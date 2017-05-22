@@ -79,7 +79,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private void ProcessAnimations(GameTime gameTime)
         {
             var entities = ComponentManager.GetEntitiesWithComponent(typeof(SpriteAnimationComponent));
-            entities.ForEach(e => ProcessAnimation(gameTime, e.Key, (SpriteAnimationComponent) e.Value));
+            foreach (var entity in entities)
+            {
+                ProcessAnimation(gameTime, entity.Key, (SpriteAnimationComponent) entity.Value);
+            }
         }
 
         private void ProcessAnimation(GameTime gameTime, uint entityId, SpriteAnimationComponent spriteAnimation)

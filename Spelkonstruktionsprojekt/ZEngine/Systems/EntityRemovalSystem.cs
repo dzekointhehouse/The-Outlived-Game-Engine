@@ -81,6 +81,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     moveComponent.RotationMomentum = 0;
                     moveComponent.RotationSpeed = 0;
                 }
+
                 ComponentManager.Instance.RemoveComponentFromEntity<AIComponent>(entityId);
 
                 var lightComponent =
