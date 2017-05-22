@@ -48,6 +48,7 @@ namespace Game.Menu.States
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
         private WeaponSystem weaponSystem = new WeaponSystem();
+        private SpawnSystem SpawnSystem = new SpawnSystem();
 
         public InGame(GameManager gameManager)
         {
@@ -108,6 +109,10 @@ namespace Game.Menu.States
                 MediaPlayer.Play(bgMusic);
             }
 
+            if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
+            {
+                SpawnSystem.HandleWaves();
+            }
 
             gameManager.Engine.Update(gameTime);
 
@@ -154,10 +159,14 @@ namespace Game.Menu.States
            // SetupBackgroundTiles();
             //SetupCamera();
             SetupHUD();
+
+            if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
+            {
+                CreateGlobalSpawnSpriteEntity();
+                CreateGlobalSpawnEntity();
+            }
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
-            CreateGlobalSpawnSpriteEntity();
-            CreateGlobalSpawnEntity();
             // SetupTempPlayerDeadSpriteFlyweight();
         }
 

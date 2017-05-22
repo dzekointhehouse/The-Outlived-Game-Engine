@@ -8,9 +8,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using UnityEngine;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
+using Color = Microsoft.Xna.Framework.Color;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
+using Vector3 = Microsoft.Xna.Framework.Vector3;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
@@ -32,6 +36,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
 
+            foreach (var barrelFlash in ComponentManager.Instance.GetEntitiesWithComponent(typeof(BarrelFlashComponent)))
+            {
+                var barrelFlashComponent = barrelFlash.Value as BarrelFlashComponent;
+                penumbra.Lights.Add(barrelFlashComponent.Light);
+            }
             foreach (var instance in lights)
             {
                 var lightComponent = instance.Value as LightComponent;
@@ -52,6 +61,41 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             if (cameras.Count() > 1 || !cameras.Any()) return;
 
             var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
+            foreach (var barrelFlash in ComponentManager.Instance
+                .GetEntitiesWithComponent(typeof(BarrelFlashComponent)))
+            {
+                var lightComponent = barrelFlash.Value as BarrelFlashComponent;
+
+                // If it has no render component than we should skip this entity.
+                if (!ComponentManager.Instance.EntityHasComponent<RenderComponent>(barrelFlash.Key))
+                    continue;
+
+                var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(barrelFlash.Key);
+                var dimensionsComponent = ComponentManager.Instance.GetEntityComponentOrDefault<DimensionsComponent>(barrelFlash.Key);
+                if(dimensionsComponent == null) continue;
+                var moveComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(barrelFlash.Key);
+                if (moveComponent == null) continue;
+
+
+                //TODO MOVE BULLET OFFSETS TO A GLOBALLY ACCESSABLE AREA
+                var barrelOffsetX = 65;
+                var barrelOffsetY = 52;
+                var transformation =
+                    Matrix.CreateTranslation(new Vector3(
+                        (float) (-positionComponent.Position.X - dimensionsComponent.Width * 0.5 + barrelOffsetX),
+                        (float) (-positionComponent.Position.Y - dimensionsComponent.Height * 0.5 + barrelOffsetY), 0)) *
+                    Matrix.CreateRotationZ(moveComponent.Direction) *
+                    Matrix.CreateTranslation(positionComponent.Position.X, positionComponent.Position.Y, 0f);
+
+                lightComponent.Light.Position =
+                    Vector2.Transform(
+                        new Vector2(positionComponent.Position.X + 50, positionComponent.Position.Y + 24),
+                        transformation);
+                lightComponent.Light.Rotation = (float) moveComponent.Direction;
+
+
+            }
             foreach (var lightEntity in lightEntities)
             {
 

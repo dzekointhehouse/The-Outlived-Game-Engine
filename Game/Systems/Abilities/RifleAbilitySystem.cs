@@ -2,6 +2,8 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -86,13 +88,13 @@ namespace Game.Systems.Abilities
                 Length = 2000,
                 Unique = true
             };
-            NewBulletAnimation(animation, bulletIds, moveComponent, weaponComponent.WeaponType);
+            NewBulletAnimation(animation, bulletIds, moveComponent, inputEvent.EntityId, weaponComponent.WeaponType);
             animationComponent.Animations.Add(animation);
         }
 
         // Animation for when the bullet should be deleted.
         public void NewBulletAnimation(GeneralAnimation generalAnimation, uint[] bulletIds,
-            MoveComponent shooterMoveComponent, WeaponComponent.WeaponTypes weaponType)
+            MoveComponent shooterMoveComponent, uint shooterId, WeaponComponent.WeaponTypes weaponType)
         {
             var lastFired = generalAnimation.StartOfAnimation;
             var counter = 0;
@@ -116,7 +118,7 @@ namespace Game.Systems.Abilities
                 else if (counter < bulletIds.Length && currentTimeInMilliseconds - lastFired > RateOfFire)
                 {
                     lastFired = currentTimeInMilliseconds;
-                    BulletFactory.FireBullet(bulletIds[counter++], shooterMoveComponent.Direction);
+                    BulletFactory.FireBullet(bulletIds[counter++], shooterId, shooterMoveComponent.Direction);
                     FireSound(weaponType);
                 }
             };

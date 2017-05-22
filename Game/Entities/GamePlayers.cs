@@ -29,7 +29,7 @@ namespace Game.Entities
         private bool createdCamera = false;
         private GameMap maps;
 
-        public GamePlayers(GameConfig config,  GameViewports gameViewports)
+        public GamePlayers(GameConfig config, GameViewports gameViewports)
         {
             this.config = config;
             this.gameViewports = gameViewports;
@@ -167,16 +167,17 @@ namespace Game.Entities
         }
 
         //The multitude of options here is for easy debug purposes
-        private void CreatePlayer(string sprite, ActionBindings actionBindings, Vector2 position, Viewport viewport, CharacterType characterType, int cageId = 0, bool disabled = false)
+        private void CreatePlayer(string sprite, ActionBindings actionBindings, Vector2 position, Viewport viewport,
+            CharacterType characterType, int cageId = 0, bool disabled = false)
         {
             if (disabled) return;
 
             var light = new Spotlight()
             {
                 Position = position,
-                Scale = new Vector2(850f),
-                Radius = (float) 0.0001,
-                Intensity = (float) 0.6,
+                Scale = new Vector2(650f),
+                Radius = (float) 0.0008f,
+                Intensity = (float) 0.5,
                 ShadowType = ShadowType.Solid // Will not lit hulls themselves
             };
             EntityBuilder playerEntity = new EntityBuilder()
@@ -187,7 +188,7 @@ namespace Game.Entities
                 .SetSprite(sprite, new Point(1252, 206), 313, 206)
                 .SetLight(light)
                 .SetSound("walking")
-                .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10) // Random direction
+                .SetMovement(200, 380, 2f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10) // Random direction
                 .SetRectangleCollision()
                 .SetCameraFollow(cageId)
                 .SetPlayer(sprite)
@@ -199,7 +200,7 @@ namespace Game.Entities
 
             // Add camera view only if there are two teams or if it is the first camera,
             // and the same .
-            if (gameViewports.IsTeamOne && gameViewports.IsTeamTwo || 
+            if (gameViewports.IsTeamOne && gameViewports.IsTeamTwo ||
                 gameViewports.IsTeamOne && !gameViewports.IsTeamTwo && cageId == 1 && !createdCamera
                 || !gameViewports.IsTeamOne && gameViewports.IsTeamTwo && cageId == 1 && !createdCamera)
             {
@@ -285,8 +286,22 @@ namespace Game.Entities
                     break;
             }
 
+            var barrelFlash = new BarrelFlashComponent
+            {
+                Light = new PointLight
+                {
+                    ShadowType = ShadowType.Solid,
+                    Radius = 0.008f,
+                    Intensity = 0.4f,
+                    Scale = new Vector2(1800f),
+                    Enabled = false,
+                    Color = Color.AntiqueWhite
+                }
+            };
+
             playerEntity.Build();
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
+            ComponentManager.Instance.AddComponentToEntity(barrelFlash, playerEntity.GetEntityKey());
         }
     }
 }

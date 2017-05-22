@@ -21,7 +21,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class SpawnSystem : ISystem
+    public class SpawnSystem : ISystem
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
@@ -31,7 +31,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var monster = new EntityBuilder()
                 .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1244, 311), 311, 311)
                 .SetPosition(position, layerDepth: 20)
-                .SetRendering(100, 100)
+                .SetRendering(200, 200)
                 .SetSound("zombiewalking")
                 .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
@@ -43,14 +43,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var animationBindings = new SpriteAnimationBindingsBuilder()
                 .Binding(
                     new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(1252, 206), new Point(0, 1030))
+                        .Positions(new Point(1244, 311), new Point(622, 1244))
                         .StateConditions(State.WalkingForward)
-                        .Length(40)
+                        .Length(60)
                         .Build()
                 )
                 .Binding(
                     new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .Positions(new Point(0, 0), new Point(933, 311))
                         .StateConditions(State.Dead, State.WalkingForward)
                         .IsTransition(true)
                         .Length(30)
@@ -58,7 +58,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 )
                 .Binding(
                     new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .Positions(new Point(0, 0), new Point(933, 311))
                         .StateConditions(State.Dead, State.WalkingBackwards)
                         .IsTransition(true)
                         .Length(30)
@@ -66,7 +66,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 )
                 .Binding(
                     new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(939, 206))
+                        .Positions(new Point(0, 0), new Point(933, 311))
                         .StateConditions(State.Dead)
                         .IsTransition(true)
                         .Length(30)
@@ -75,9 +75,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 .Build();
 
             ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
+
+            //TODO SEND STATE MANAGER A GAME TIME VALUE AND NOT 0
+            StateManager.TryAddState(monster, State.WalkingForward, 0);
         }
+
         public void HandleWaves()
         {
+
             //GlobalSpawn
             var GlobalSpawnEntities =
              ComponentManager.GetEntitiesWithComponent(typeof(GlobalSpawnComponent));
@@ -111,11 +116,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (SpawnSpriteEntities.Count <= 0) return;
                 var SpawnSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
-                //camera
-                List<CameraViewComponent> cameras = new List<CameraViewComponent>(4);
-                var cameraEntities =
-                ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
-
 
                 Random random = new Random();
 
@@ -124,7 +124,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // the players view bounds.
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
-                    CreateEnemy(GetSpawnPosition(cameras, random), SpawnSpriteComponent);
+                    CreateEnemy(GetSpawnPosition(null, random), SpawnSpriteComponent);
                 }
                 // When done, increase the wave size...
                 if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
