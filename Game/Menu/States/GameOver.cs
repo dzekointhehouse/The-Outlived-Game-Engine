@@ -72,8 +72,13 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                gameManager.PreviousGameState = gameManager.CurrentGameState;
                 gameManager.CurrentGameState = GameManager.GameState.MainMenu;
+
+            }
 
         }
     }

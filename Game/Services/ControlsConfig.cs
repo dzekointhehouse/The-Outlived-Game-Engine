@@ -141,6 +141,7 @@ namespace Game.Services
 
             if (newState.IsKeyDown(Keys.Q) && gameManager.CurrentGameState == GameManager.GameState.Paused)
             {
+                gameManager.PreviousGameState = gameManager.CurrentGameState;
                 gameManager.CurrentGameState = GameManager.GameState.MainMenu;
             }
             // With this button we want to continue to the next phase of the game initialization
