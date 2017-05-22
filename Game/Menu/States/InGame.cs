@@ -85,6 +85,8 @@ namespace Game.Menu.States
             {
                 case 0:
                     break;
+                case 1:
+                    break;
                 case 2:
                     spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), gameViewports.defaultView.TitleSafeArea, Color.White);
                     break;
@@ -187,6 +189,12 @@ namespace Game.Menu.States
                 .SetHUD(true)
                 .SetPosition(new Vector2(590, 900))
                 .SetSprite("health3_small")
+                .Build();
+
+            new EntityBuilder()
+                .SetHUD(true)
+                .SetPosition(new Vector2(gameViewports.defaultView.Width*0.4f, gameViewports.defaultView.Height * 0.1f))
+                .SetSprite("nextwave")
                 .Build();
 
             new EntityBuilder()
