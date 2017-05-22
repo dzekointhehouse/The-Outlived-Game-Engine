@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Game.Services
 {
@@ -147,8 +148,8 @@ namespace Game.Services
             {
                 gameManager.PreviousGameState = gameManager.CurrentGameState;
                 gameManager.CurrentGameState = GameManager.GameState.MainMenu;
+                MediaPlayer.Stop();
             }
-            // With this button we want to continue to the next phase of the game initialization
             if (gamePadState.Buttons.Start == ButtonState.Pressed && gameManager.OldGamepadState.IsButtonUp(Buttons.Start)
                 || newState.IsKeyDown(Keys.Escape) && gameManager.OldKeyboardState.IsKeyUp(Keys.Escape))
             {
