@@ -13,6 +13,7 @@ namespace Game.Services
         // MinLimit and MaxLimit are the state interval limits.
         public int MinLimit { get; set; } = 0;
         public int MaxLimit { get; set; } = 0;
+        private GamePadState newGamepadState;
 
         // we need a reference to the gm to change states.
         private readonly GameManager gameManager;
@@ -46,6 +47,7 @@ namespace Game.Services
                 || newState.IsKeyDown(Keys.Up) && gameManager.OldKeyboardState.IsKeyUp(Keys.Up))
             {
                 gameManager.OldKeyboardState = newState;
+                this.newGamepadState = gamePadState;
                 gameManager.OldGamepadState = gamePadState;
 
                 if (currentPosition != MinLimit)
@@ -89,6 +91,8 @@ namespace Game.Services
                 if (currentPosition != MaxLimit)
                     return currentPosition + 1;
             }
+            //gameManager.OldKeyboardState = newState;
+            //gameManager.OldGamepadState = gamePadState;
 
 
             return currentPosition;
@@ -162,6 +166,11 @@ namespace Game.Services
             gameManager.OldKeyboardState = newState;
             gameManager.OldGamepadState = gamePadState;
 
+        }
+
+        public void OldState()
+        {
+            gameManager.OldGamepadState = newGamepadState;
         }
 
     }

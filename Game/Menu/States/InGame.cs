@@ -135,7 +135,7 @@ namespace Game.Menu.States
             maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers(maps);
 //            enemies.CreateMonster("player_sprites");
-            pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(40, 40));
+            pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
             pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
             pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));            
             CreateGameEntities();

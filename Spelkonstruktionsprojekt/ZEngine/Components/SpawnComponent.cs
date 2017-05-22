@@ -8,6 +8,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class SpawnComponent : IComponent
     {
+        /// <summary>
+        /// DEPRECATED
+        /// </summary>
         public int WaveSize { get; set; }
         public int EnemiesDead { get; set; }
         public bool FirstRound;
@@ -21,10 +24,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public IComponent Reset()
         {
-            WaveSize = 40;
+            WaveSize = 1;
             EnemiesDead = 0;
             FirstRound = true;
-            WaveSizeIncreaseConstant = 10;
+            WaveSizeIncreaseConstant = 1;
             return this;
         }
     }

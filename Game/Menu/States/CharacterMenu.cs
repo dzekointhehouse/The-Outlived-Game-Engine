@@ -108,7 +108,7 @@ namespace Game.Menu.States
                 currentPlayer = gameManager.gameConfig.Players.ElementAt(playerIndex++);
             // Change character position
             characterType =
-                (CharacterType) controls.MoveOptionPositionHorizontally((int) characterType, currentPlayer.Index);
+                (CharacterType) controls.MoveOptionPositionHorizontally((int) characterType);
 
 
             // If the player pressed continue button but there are players left..

@@ -34,9 +34,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Motion
                     var direction = Math.Atan2(-leftStickPosition.Y, leftStickPosition.X);
                     Debug.WriteLine("X:" + leftStickPosition.X + " Y:" + leftStickPosition.Y + " D:" + direction);
                     moveComponent.Direction = (float) direction;
-                    moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
-                    StateManager.TryAddState(entity.Key, State.WalkingForward,
-                        gameTime.TotalGameTime.TotalMilliseconds);
+
+                    var xThreshold = 0.99f;
+                    if (leftStickPosition.X > xThreshold || leftStickPosition.X < -xThreshold ||
+                        leftStickPosition.Y > xThreshold || leftStickPosition.Y < -xThreshold)
+                    {
+                        moveComponent.CurrentAcceleration = moveComponent.AccelerationSpeed;
+                        StateManager.TryAddState(entity.Key, State.WalkingForward,
+                            gameTime.TotalGameTime.TotalMilliseconds);
+                    }
                 }
                 else
                 {

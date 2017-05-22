@@ -143,6 +143,8 @@ namespace Game.Menu.States
                 gameManager.MenuContent.ClickSound.Play();
                 UpdateGameConfigurations();
             }
+
+            controls.OldState();
         }
 
         private void UpdateGameConfigurations()
@@ -179,6 +181,8 @@ namespace Game.Menu.States
             PlayerTwoChoice = TeamState.NoTeam;
             PlayerThreeChoice = TeamState.NoTeam;
             PlayerFourChoice = TeamState.NoTeam;
+
+            
         }
     }
 }

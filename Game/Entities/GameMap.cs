@@ -60,8 +60,8 @@ namespace Game.Entities
                     mapHelper.AddNumberToCollisionList(4);
                     mapHelper.CreateMapTiles(MapPack.Blockworld2, 64);
                     spawnPositionOne = new Vector2(150, 150);
-                    spawnPositionTwo = new Vector2(350, 150);
-                    spawnPositionThree = new Vector2(5800, 3600);
+                    spawnPositionTwo = new Vector2(5800, 3600);
+                    spawnPositionThree = new Vector2(350, 150);
                     spawnPositionFour = new Vector2(5600, 3600);
                     break;
             }

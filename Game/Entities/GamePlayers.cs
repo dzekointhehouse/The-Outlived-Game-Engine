@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.Input;
 using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
@@ -18,6 +19,7 @@ using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using static Game.Menu.States.CharacterMenu;
+using Game = Microsoft.Xna.Framework.Game;
 
 namespace Game.Entities
 {
@@ -93,16 +95,17 @@ namespace Game.Entities
                 .SetAction(Keys.Q, EventConstants.TurnAround)
                 .SetAction(Keys.E, EventConstants.FirePistolWeapon)
                 .SetAction(Keys.F, EventConstants.LightStatus)
-                .SetAction(Keys.F, EventConstants.LightStatus)
                 .SetAction(Keys.R, EventConstants.ReloadWeapon)
                 .Build();
-
+            
             CreatePlayer(
                 sprite: player.SpriteName,
                 actionBindings: actionBindings1,
                 position: maps.spawnPositionOne, // spawn point
                 viewport: viewports[player.Index],
-                characterType: player.CharacterType, cageId: player.CameraId);
+                characterType: player.CharacterType, cageId: player.CameraId,
+                useGamePad: true,
+                gamePadIndex: 0);
         }
 
         private void InitPlayerTwo(Player player)
@@ -118,12 +121,25 @@ namespace Game.Entities
                 .SetAction(Keys.P, EventConstants.ReloadWeapon)
                 .Build();
 
+
+            var actionBindings1 = new ActionBindingsBuilder()
+                .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
+                .SetAction(Keys.S, EventConstants.WalkBackward)
+                .SetAction(Keys.A, EventConstants.TurnLeft)
+                .SetAction(Keys.D, EventConstants.TurnRight)
+                .SetAction(Keys.Q, EventConstants.TurnAround)
+                .SetAction(Keys.E, EventConstants.FirePistolWeapon)
+                .SetAction(Keys.F, EventConstants.LightStatus)
+                .SetAction(Keys.R, EventConstants.ReloadWeapon)
+                .Build();
+
             CreatePlayer(
                 sprite: player.SpriteName,
-                actionBindings: actionBindings2,
+                actionBindings: actionBindings1,
                 position: maps.spawnPositionTwo, // spawn point,
                 viewport: viewports[player.Index],
-                characterType: player.CharacterType, cageId: player.CameraId);
+                characterType: player.CharacterType, cageId: player.CameraId,
+                useGamePad: true, gamePadIndex: 1);
         }
 
         private void InitPlayerThree(Player player)
@@ -138,12 +154,25 @@ namespace Game.Entities
                 .SetAction(Keys.RightControl, EventConstants.Running)
                 .Build();
 
+
+            var actionBindings1 = new ActionBindingsBuilder()
+                .SetAction(Keys.W, EventConstants.WalkForward) //Use of the next gen constants :)
+                .SetAction(Keys.S, EventConstants.WalkBackward)
+                .SetAction(Keys.A, EventConstants.TurnLeft)
+                .SetAction(Keys.D, EventConstants.TurnRight)
+                .SetAction(Keys.Q, EventConstants.TurnAround)
+                .SetAction(Keys.E, EventConstants.FirePistolWeapon)
+                .SetAction(Keys.F, EventConstants.LightStatus)
+                .SetAction(Keys.R, EventConstants.ReloadWeapon)
+                .Build();
+
             CreatePlayer(
                 sprite: player.SpriteName,
-                actionBindings: actionBindings,
+                actionBindings: actionBindings1,
                 position: maps.spawnPositionThree, // spawn point,
                 viewport: viewports[player.Index],
-                characterType: player.CharacterType, cageId: player.CameraId);
+                characterType: player.CharacterType, cageId: player.CameraId,
+                useGamePad: true, gamePadIndex: 2);
         }
 
         private void InitPlayerFour(Player player)
@@ -168,7 +197,7 @@ namespace Game.Entities
 
         //The multitude of options here is for easy debug purposes
         private void CreatePlayer(string sprite, ActionBindings actionBindings, Vector2 position, Viewport viewport,
-            CharacterType characterType, int cageId = 0, bool disabled = false)
+            CharacterType characterType, int cageId = 0, bool disabled = false, bool useGamePad = false, int gamePadIndex = 0)
         {
             if (disabled) return;
 
@@ -260,29 +289,29 @@ namespace Game.Entities
             switch (characterType)
             {
                 case CharacterType.Bob:
-                    weaponComponent.Damage = 40;
+                    weaponComponent.Damage = 50;
                     weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Pistol;
-                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 14);
                     break;
                 case CharacterType.Edgar:
                     Debug.WriteLine("1111");
-                    weaponComponent.Damage = 10;
+                    weaponComponent.Damage = 15;
                     weaponComponent.ClipSize = 128;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Rifle;
-                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 8);
                     break;
                 case CharacterType.Ward:
                     weaponComponent.Damage = 75;
                     weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Shotgun;
-                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 6);
                     break;
                 case CharacterType.Jimmy:
                     weaponComponent.Damage = 100;
                     weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Pistol;
-                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 4);
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 8);
                     break;
             }
 
@@ -302,6 +331,12 @@ namespace Game.Entities
             playerEntity.Build();
             ComponentManager.Instance.AddComponentToEntity(weaponComponent, playerEntity.GetEntityKey());
             ComponentManager.Instance.AddComponentToEntity(barrelFlash, playerEntity.GetEntityKey());
+            if (useGamePad)
+            {
+                var gamePadComponent = ComponentManager.Instance.ComponentFactory.NewComponent<GamePadComponent>();
+                gamePadComponent.GamePadPlayerIndex = gamePadIndex;
+                ComponentManager.Instance.AddComponentToEntity(gamePadComponent, playerEntity.GetEntityKey());
+            }
         }
     }
 }

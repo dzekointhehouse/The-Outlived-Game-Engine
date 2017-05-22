@@ -13,9 +13,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
             {Buttons.DPadLeft, EventConstants.TurnLeft},
             {Buttons.DPadRight, EventConstants.TurnRight},
             {Buttons.RightTrigger, EventConstants.FirePistolWeapon},
-            {Buttons.LeftTrigger, EventConstants.Running},
-            {Buttons.A, EventConstants.TurnAround},
-            {Buttons.Y, EventConstants.LightStatus}
+            {Buttons.A, EventConstants.Running},
+            {Buttons.Y, EventConstants.LightStatus},
+            {Buttons.B, EventConstants.ReloadWeapon},
         };
 
         //For easy single player demo of gamepad. When GamePadMovementSystem is implemented, this will no longer
@@ -27,9 +27,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
             {Buttons.DPadLeft, Keys.A},
             {Buttons.DPadRight, Keys.D},
             {Buttons.RightTrigger, Keys.E},
-            {Buttons.LeftTrigger, Keys.R},
             {Buttons.A, Keys.Q},
-            {Buttons.Y, Keys.LeftShift}
+            {Buttons.Y, Keys.F},
+            {Buttons.B, Keys.R},
         };
     }
 }
