@@ -104,7 +104,7 @@ namespace Game.Entities
                 position: maps.spawnPositionOne, // spawn point
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: true,
+                useGamePad: false,
                 gamePadIndex: 0);
         }
 
@@ -139,7 +139,7 @@ namespace Game.Entities
                 position: maps.spawnPositionTwo, // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: true, gamePadIndex: 1);
+                useGamePad: false, gamePadIndex: 1);
         }
 
         private void InitPlayerThree(Player player)
@@ -172,7 +172,7 @@ namespace Game.Entities
                 position: maps.spawnPositionThree, // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: true, gamePadIndex: 2);
+                useGamePad: false, gamePadIndex: 2);
         }
 
         private void InitPlayerFour(Player player)

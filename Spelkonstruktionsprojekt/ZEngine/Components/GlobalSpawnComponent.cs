@@ -21,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public IComponent Reset()
         {
-            WaveSize = 1;
+            WaveSize = 10;
             EnemiesDead = true;
             WaveSizeIncreaseConstant = 1;
             return this;
