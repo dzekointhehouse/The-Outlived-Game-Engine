@@ -1267,3 +1267,10 @@
 /processorParam:Quality=Best
 /build:Sound/Poltergeist.mp3
 
+#begin Fonts/ZlargeFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ZlargeFont.spritefont
+

@@ -89,7 +89,15 @@ namespace Game
         {
             return outlivedGame;
         }
-        public T GetContent<T>(string assetName)
+
+        /// <summary>
+        /// Easy way to get an asset anywhere in
+        /// this game.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="assetName"></param>
+        /// <returns></returns>
+        public T Get<T>(string assetName)
         {
             var loaded = this.Content.Load<T>(assetName);
             return loaded;

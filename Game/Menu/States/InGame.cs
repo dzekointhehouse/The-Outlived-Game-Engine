@@ -61,10 +61,10 @@ namespace Game.Menu.States
             soundSystem = new SoundSystem();
             spawnSystem = new SpawnSystem();
             // other stuff
-            timer = new Timer(10, gameManager.MenuContent.ScoreFont);
             controls = new ControlsConfig(gameManager);
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
             players = new GamePlayers(gameManager.gameConfig, gameViewports);
+            timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"), gameViewports.defaultView);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -105,33 +105,32 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {            
-
-            //if (MediaPlayer.State != MediaState.Stopped)
-            //{
-            //    MediaPlayer.Stop();
-            //}
             controls.PauseButton();
-           var bgMusic =  OutlivedGame.Instance().Content.Load<Song>("Sound/bg_music1");
-
-            if (MediaPlayer.State == MediaState.Stopped)
-            {
-                MediaPlayer.Volume = 0.7f;
-                MediaPlayer.IsRepeating = true;
-                MediaPlayer.Play(bgMusic);
-            }
-
             timer.Update(gameTime);
-            gameManager.Engine.Update(gameTime);
-
-            if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
+            // Waiting for the countdown to finnish
+            if (!timer.IsCounting)
             {
-                spawnSystem.HandleWaves();
-            }
+                var bgMusic = OutlivedGame.Instance().Content.Load<Song>("Sound/bg_music1");
+
+                if (MediaPlayer.State == MediaState.Stopped)
+                {
+                    MediaPlayer.Volume = 0.7f;
+                    MediaPlayer.IsRepeating = true;
+                    MediaPlayer.Play(bgMusic);
+                }
+
+                gameManager.Engine.Update(gameTime);
+
+                if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
+                {
+                    spawnSystem.HandleWaves();
+                }
 
 
-            if (life.CheckIfNotAlive())
-            {
-                gameManager.CurrentGameState = GameManager.GameState.GameOver;
+                if (life.CheckIfNotAlive())
+                {
+                    gameManager.CurrentGameState = GameManager.GameState.GameOver;
+                }
             }
         }
 
@@ -261,7 +260,7 @@ namespace Game.Menu.States
             //var spawn = EntityManager.GetEntityManager().NewEntity();
 
             var global = new EntityBuilder()
-                .SetHUD(true, "Zlarge", "1")
+                .SetHUD(true, "Zlarge", "")
                 .SetPosition(new Vector2(100, 8))
                 .Build();
 
