@@ -142,7 +142,6 @@
     <Compile Include="ZEngine\Systems\Rendering\SpriteAnimationSystem.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderHUDSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
-    <Compile Include="ZEngine\Systems\SpawnSystem.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />

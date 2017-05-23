@@ -41,15 +41,17 @@ namespace Game.Menu.States
       //  private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
         private Pickups pickups = new Pickups();
+        // Systems
         private SoundSystem soundSystem;
+        private SpawnSystem spawnSystem;
+        private WeaponSystem weaponSystem = new WeaponSystem();
 
         private GameViewports gameViewports;
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
-        private WeaponSystem weaponSystem = new WeaponSystem();
-        private SpawnSystem SpawnSystem = new SpawnSystem();
+
 
         public InGame(GameManager gameManager)
         {
@@ -57,6 +59,7 @@ namespace Game.Menu.States
 
             // Initializing systems
             soundSystem = new SoundSystem();
+            spawnSystem = new SpawnSystem();
             // other stuff
             controls = new ControlsConfig(gameManager);
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
@@ -115,12 +118,13 @@ namespace Game.Menu.States
                 MediaPlayer.Play(bgMusic);
             }
 
+            gameManager.Engine.Update(gameTime);
+
             if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
             {
-                SpawnSystem.HandleWaves();
+                spawnSystem.HandleWaves();
             }
 
-            gameManager.Engine.Update(gameTime);
 
             if (life.CheckIfNotAlive())
             {

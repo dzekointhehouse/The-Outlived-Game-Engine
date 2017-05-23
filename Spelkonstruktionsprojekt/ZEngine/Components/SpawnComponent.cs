@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ZEngine.Components;
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class SpawnComponent : IComponent
+    public class SpawnComponent : IComponent
     {
         /// <summary>
         /// DEPRECATED

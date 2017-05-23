@@ -75,6 +75,7 @@
     <Compile Include="Systems\Abilities\ShotgunAbilitySystem.cs" />
     <Compile Include="Systems\Abilities\WeaponSystem.cs" />
     <Compile Include="Systems\SoundSystem.cs" />
+    <Compile Include="Systems\SpawnSystem.cs" />
     <Compile Include="Testing\FPS.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,25 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Spelkonstruktionsprojekt.ZEngine.Components;
-using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
-using Spelkonstruktionsprojekt.ZEngine.Constants;
-using Spelkonstruktionsprojekt.ZEngine.Helpers;
-using Spelkonstruktionsprojekt.ZEngine.Managers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using ZEngine.Components;
-using ZEngine.EventBus;
-using ZEngine.Managers;
-using ZEngine.Systems;
+using Microsoft.Xna.Framework;
 using Penumbra;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
+using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
+using Spelkonstruktionsprojekt.ZEngine.Helpers;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
+using ZEngine.Components;
+using ZEngine.Managers;
 
-namespace Spelkonstruktionsprojekt.ZEngine.Systems
+namespace Game.Systems
 {
     public class SpawnSystem : ISystem
     {
@@ -132,7 +125,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
                     GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
 
-
+                
 
                 if (random.Next(0, 1) == 1)
                 {
@@ -167,6 +160,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
+        // Spawing the zombies outside of the players view.
         private Vector2 GetSpawnPosition(Dictionary<uint, IComponent> cameraComponents, Random random)
         {
             if (cameraComponents == null) return default(Vector2);
