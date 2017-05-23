@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
@@ -11,6 +13,7 @@ using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
+using ZEngine.Wrappers;
 
 namespace Game.Systems
 {
@@ -125,7 +128,13 @@ namespace Game.Systems
                 if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
                     GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
 
-                
+                var waveSound = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Poltergeist").CreateInstance();
+                waveSound.Volume = 0.7f;
+                if (waveSound.State == SoundState.Stopped)
+                {
+                    waveSound.Play();
+                }
+
 
                 if (random.Next(0, 1) == 1)
                 {

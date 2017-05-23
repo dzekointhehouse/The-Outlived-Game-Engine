@@ -124,7 +124,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             healthSpacing += 0.06f;
 
                             position = new Vector2(xPosition, yPosition);
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);                            
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.Color);                            
 
                         }
 
@@ -142,7 +142,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             Vector2 scorePosition = new Vector2(playerXPosition, playerYPosition);
 
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, playerGameHUD, scorePosition, HUD.FontColor);
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, playerGameHUD, scorePosition, HUD.Color);
                         }
 
                         // adding score
@@ -160,7 +160,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             Vector2 scorePosition = new Vector2(scoreXPosition, scoreYPosition);
 
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, scoreGameHUD, scorePosition, HUD.FontColor);
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, scoreGameHUD, scorePosition, HUD.Color);
                         }
 
                         // adding ammo here the same way.
@@ -192,13 +192,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             Vector2 ammoPosition = new Vector2(ammoXPosition, ammoYPosition);
 
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, ammoGameHUD, ammoPosition, HUD.FontColor);
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, ammoGameHUD, ammoPosition, HUD.Color);
 
                         }
                     }
                 }
 
-                _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.FontColor);
+                _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.Color);
 
             }
 
@@ -236,7 +236,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         texture: sprite.Sprite,
                         destinationRectangle: destinationRectangle,
                         sourceRectangle: null,
-                        color: Color.White * sprite.Alpha
+                        color: HUD.Color * sprite.Alpha
                         );
                 }
             }
