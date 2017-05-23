@@ -36,22 +36,26 @@ namespace Game.Menu.States
 
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
         private GameManager gameManager;
+        private ControlsConfig controls;
         private bool isInitialized = false;
         private Boolean isIngame = true;
         private GamePlayers players;
         private GameMap maps = new GameMap();
         private GameEnemies enemies = new GameEnemies();
-        private GamePickups pickups = new GamePickups();
+      //  private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
+        private Pickups pickups = new Pickups();
+        // Systems
         private SoundSystem soundSystem;
-
+        private SpawnSystem spawnSystem;
+        private WeaponSystem weaponSystem = new WeaponSystem();
+        private Timer timer;
         private GameViewports gameViewports;
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
-        private WeaponSystem weaponSystem = new WeaponSystem();
-        private SpawnSystem SpawnSystem = new SpawnSystem();
+        private float timeSincelastCount;
 
         public InGame(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
@@ -61,9 +65,11 @@ namespace Game.Menu.States
 
             // Initializing systems
             soundSystem = new SoundSystem();
+            spawnSystem = new SpawnSystem();
             // other stuff
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
             players = new GamePlayers(gameManager.gameConfig, gameViewports);
+            timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"), gameViewports.defaultView);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -77,56 +83,63 @@ namespace Game.Menu.States
                 isInitialized = true;
             }
             gameManager.Engine.Draw(gameTime);
+            timer.Draw(spriteBatch);
 
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = gameViewports.defaultView;
 
             // Should move to HUD which should render defaultview
+            spriteBatch.Begin();
             var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
             switch (nCameras)
             {
-                case 2:
-                  //  spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), Vector2.Zero, Color.White);
+                case 0:
                     break;
-                case 3:
+                case 1:
+                    break;
+                case 2:
+                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), gameViewports.defaultView.TitleSafeArea, Color.White);
                     break;
                 default:
+                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("Images/4border"), gameViewports.defaultView.TitleSafeArea, Color.White);
                     break;
 
             }
+            spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
         {            
-
-            //if (MediaPlayer.State != MediaState.Stopped)
-            //{
-            //    MediaPlayer.Stop();
-            //}
+        
             if (VirtualGamePad.Is(Pause, Pressed))
             {
                 MenuNavigator.Pause();
             }
-
-            var bgMusic =  OutlivedGame.Instance().Content.Load<Song>("Sound/bg_music1");
-
-            if (MediaPlayer.State == MediaState.Stopped)
+            timer.Update(gameTime);
+            // Waiting for the countdown to finnish
+            if (!timer.IsCounting)
             {
-                MediaPlayer.Volume = 0.7f;
-                MediaPlayer.IsRepeating = true;
-                MediaPlayer.Play(bgMusic);
-            }
+                var bgMusic = OutlivedGame.Instance().Content.Load<Song>("Sound/bg_music1");
 
-            if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
-            {
-                SpawnSystem.HandleWaves();
-            }
+                if (MediaPlayer.State == MediaState.Stopped)
+                {
+                    MediaPlayer.Volume = 0.7f;
+                    MediaPlayer.IsRepeating = true;
+                    MediaPlayer.Play(bgMusic);
+                }
 
-            gameManager.Engine.Update(gameTime);
+                gameManager.Engine.Update(gameTime);
 
-            if (life.CheckIfNotAlive())
-            {
-                gameManager.CurrentGameState = GameManager.GameState.GameOver;
+                if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
+                {
+                    spawnSystem.HandleWaves();
+                }
+
+
+                if (life.CheckIfNotAlive())
+                {
+                    gameManager.CurrentGameState = GameManager.GameState.GameOver;
+                }
             }
         }
 
@@ -143,9 +156,10 @@ namespace Game.Menu.States
             maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers(maps);
 //            enemies.CreateMonster("player_sprites");
-            pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
-            pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
-            pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200));            
+          //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
+          //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
+          //  pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200)); 
+           pickups.CreatePickups();           
             CreateGameEntities();
             CreateDefaultViewport();
         }
@@ -164,8 +178,6 @@ namespace Game.Menu.States
         private void CreateGameEntities()
         {
             var cameraCageId = SetupCameraCage();
-           // SetupBackgroundTiles();
-            //SetupCamera();
             SetupHUD();
 
             if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
@@ -242,7 +254,7 @@ namespace Game.Menu.States
 
 
 
-        private static void CreateGlobalSpawnSpriteEntity()
+        private void CreateGlobalSpawnSpriteEntity()
         {
             var spawnSprite = EntityManager.GetEntityManager().NewEntity();
             var spawnSpriteSprite = ComponentFactory.NewComponent<SpriteComponent>();
@@ -252,13 +264,17 @@ namespace Game.Menu.States
             ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
         }
 
-        private static void CreateGlobalSpawnEntity()
+        private void CreateGlobalSpawnEntity()
         {
-            var spawn = EntityManager.GetEntityManager().NewEntity();
+            //var spawn = EntityManager.GetEntityManager().NewEntity();
+
+            var global = new EntityBuilder()
+                .SetHUD(true, "Zlarge", "")
+                .SetPosition(new Vector2(100, 8))
+                .Build();
+
             var spawncomponent = ComponentFactory.NewComponent<GlobalSpawnComponent>();
-            //var spawnSpawnComponent = new GlobalSpawnComponent();
-            ComponentManager.Instance.AddComponentToEntity(spawncomponent, spawn);
-            //ComponentManager.Instance.AddComponentToEntity(spawnSpawnComponent, spawn);
+            ComponentManager.Instance.AddComponentToEntity(spawncomponent, global.GetEntityKey());
         }
 
     }

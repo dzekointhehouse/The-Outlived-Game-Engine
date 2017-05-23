@@ -38,7 +38,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent
 
         public string SpriteFont { get; set; }
 
-        public Color FontColor { get; set; }
+        public Color Color { get; set; }
 
         public RenderHUDComponent()
         {
@@ -51,7 +51,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent
             ShowStats = false;
             IsOnlyHUD = false;
             SpriteFont = "ZEone";
-            FontColor = Color.White;
+            Color = Color.White;
             return this;
         }
     }

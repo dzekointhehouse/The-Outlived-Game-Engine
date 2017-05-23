@@ -1,25 +1,22 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Spelkonstruktionsprojekt.ZEngine.Components;
-using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
-using Spelkonstruktionsprojekt.ZEngine.Constants;
-using Spelkonstruktionsprojekt.ZEngine.Helpers;
-using Spelkonstruktionsprojekt.ZEngine.Managers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using ZEngine.Components;
-using ZEngine.EventBus;
-using ZEngine.Managers;
-using ZEngine.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Penumbra;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
+using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
+using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
+using Spelkonstruktionsprojekt.ZEngine.Helpers;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
+using ZEngine.Components;
+using ZEngine.Managers;
+using ZEngine.Wrappers;
 
-namespace Spelkonstruktionsprojekt.ZEngine.Systems
+namespace Game.Systems
 {
     public class SpawnSystem : ISystem
     {
@@ -109,12 +106,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // If they are all dead
             if (GlobalSpawnComponent.EnemiesDead)
             {
+                var waveHud = ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities.First().Key);
+                if (waveHud != null)
+                {
+
+                    waveHud.HUDtext = "Wave " + GlobalSpawnComponent.WaveLevel.ToString();
+                    waveHud.IsOnlyHUD = true;
+                    waveHud.Color = Color.Green;
+                }
+
                 //SpawnSprite, the sprite for all monsters.
                 var SpawnSpriteEntities =
                 ComponentManager.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
 
                 if (SpawnSpriteEntities.Count <= 0) return;
                 var SpawnSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+
+                var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
 
                 Random random = new Random();
@@ -124,12 +132,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 // the players view bounds.
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
-                    CreateEnemy(GetSpawnPosition(null, random), SpawnSpriteComponent);
+                    CreateEnemy(GetSpawnPosition(cameraComponents, random), SpawnSpriteComponent);
                 }
                 // When done, increase the wave size...
                 if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
                     GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
 
+                // We increase the wave level, this is used to display progress.
+                GlobalSpawnComponent.WaveLevel++;
+
+                var waveSound = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Poltergeist").CreateInstance();
+                waveSound.Volume = 0.7f;
+                if (waveSound.State == SoundState.Stopped)
+                {
+                    waveSound.Play();
+                }
 
 
                 if (random.Next(0, 1) == 1)
@@ -165,23 +182,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
         }
 
-        private Vector2 GetSpawnPosition(List<CameraViewComponent> cameras, Random random)
+        // Spawing the zombies outside of the players view.
+        private Vector2 GetSpawnPosition(Dictionary<uint, IComponent> cameraComponents, Random random)
         {
+            if (cameraComponents == null) return default(Vector2);
             int x = 0, y = 0;
             bool isInside = true;
-            //while (isInside)
-            //{
+            while (isInside)
+            {
                 x = random.Next(0, 5000);
                 y = random.Next(0, 5000);
-                //foreach (var camera in cameras)
-                //{
-                //    if (!camera.View.Bounds.Contains(x, y))
-                //    {
-                //        isInside = false;
-                //    }
-                //}
-          //  }
-            
+                foreach (var cameraComponent in cameraComponents)
+                {
+                    var camera = cameraComponent.Value as CameraViewComponent;
+                    if (!camera.View.TitleSafeArea.Contains(x, y))
+                    {
+                        isInside = false;
+                    }
+
+                }
+            }
+            //Debug.WriteLine("outside");
+
             return new Vector2(x, y);
         }
 

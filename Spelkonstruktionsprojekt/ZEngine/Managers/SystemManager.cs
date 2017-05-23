@@ -53,7 +53,6 @@ namespace ZEngine.Managers
             { typeof(GamePadMovementSystem), new GamePadMovementSystem() },
             { typeof(ReloadSystem), new ReloadSystem() },
             { typeof(ScoreSystem), new ScoreSystem() },
-            { typeof(SpawnSystem), new SpawnSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

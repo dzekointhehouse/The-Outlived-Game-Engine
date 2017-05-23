@@ -7,7 +7,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
-    class HealthComponent : IComponent
+    public class HealthComponent : IComponent
     {
         /*
         *  MaxHealth is the maximum health for a character. for now we set it to 100

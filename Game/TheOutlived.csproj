@@ -46,6 +46,7 @@
     <Compile Include="Entities\GameEnemies.cs" />
     <Compile Include="Entities\GameHUD.cs" />
     <Compile Include="Entities\GameMap.cs" />
+    <Compile Include="Entities\Pickups.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
     <Compile Include="GameContent.cs" />
     <Compile Include="MenuContent.cs" />
@@ -79,7 +80,10 @@
     <Compile Include="Systems\Abilities\ShotgunAbilitySystem.cs" />
     <Compile Include="Systems\Abilities\WeaponSystem.cs" />
     <Compile Include="Systems\SoundSystem.cs" />
+    <Compile Include="Systems\SpawnSystem.cs" />
     <Compile Include="Testing\FPS.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="TimerComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

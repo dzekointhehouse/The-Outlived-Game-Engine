@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +8,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     public class GlobalSpawnComponent : IComponent
     {
-        public int WaveSize { get; set; } = 20;
+        public int WaveSize { get; set; } = 5;
         public bool EnemiesDead { get; set; } = true;
         public int MaxLimitWaveSize { get; set; } = 500;
+        public int WaveLevel { get; set; } = 1;
 
         public int WaveSizeIncreaseConstant = 10;
 
@@ -18,13 +19,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         {
             Reset();
         }
-        
 
         public IComponent Reset()
         {
-            WaveSize = 20;
+            WaveSize = 10;
             EnemiesDead = true;
-            WaveSizeIncreaseConstant = 10;
+            WaveSizeIncreaseConstant = 1;
             return this;
         }
     }

@@ -104,7 +104,7 @@ namespace Game.Entities
                 position: maps.spawnPositionOne, // spawn point
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: false,
+                useGamePad: true,
                 gamePadIndex: 0);
         }
 

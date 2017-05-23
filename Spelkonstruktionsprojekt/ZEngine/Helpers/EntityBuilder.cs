@@ -38,7 +38,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetHUD(bool isOnlyHUD,string text = null, bool showStats = false)
+        public EntityBuilder SetHUD(bool isOnlyHUD, string spritefont = "ZEone", string text = null, bool showStats = false)
         {
 
             var component = ComponentFactory.NewComponent<RenderHUDComponent>();
@@ -46,6 +46,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             component.ShowStats = showStats;
             component.IsOnlyHUD = isOnlyHUD;
             components.Add(component);
+            component.SpriteFont = spritefont;
             return this;
         }
 
