@@ -251,7 +251,7 @@ namespace Game.Menu.States
 
 
 
-        private static void CreateGlobalSpawnSpriteEntity()
+        private void CreateGlobalSpawnSpriteEntity()
         {
             var spawnSprite = EntityManager.GetEntityManager().NewEntity();
             var spawnSpriteSprite = ComponentFactory.NewComponent<SpriteComponent>();
@@ -261,13 +261,17 @@ namespace Game.Menu.States
             ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
         }
 
-        private static void CreateGlobalSpawnEntity()
+        private void CreateGlobalSpawnEntity()
         {
-            var spawn = EntityManager.GetEntityManager().NewEntity();
+            //var spawn = EntityManager.GetEntityManager().NewEntity();
+
+            var global = new EntityBuilder()
+                .SetHUD(true, "Zlarge", "1")
+                .SetPosition(new Vector2(100, 8))
+                .Build();
+
             var spawncomponent = ComponentFactory.NewComponent<GlobalSpawnComponent>();
-            //var spawnSpawnComponent = new GlobalSpawnComponent();
-            ComponentManager.Instance.AddComponentToEntity(spawncomponent, spawn);
-            //ComponentManager.Instance.AddComponentToEntity(spawnSpawnComponent, spawn);
+            ComponentManager.Instance.AddComponentToEntity(spawncomponent, global.GetEntityKey());
         }
 
     }

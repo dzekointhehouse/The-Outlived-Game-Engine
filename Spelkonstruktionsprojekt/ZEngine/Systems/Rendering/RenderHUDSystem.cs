@@ -197,8 +197,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         }
                     }
                 }
+                // Drawing other strings
 
-                _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.Color);
+                if (HUD.IsOnlyHUD)
+                {
+                    var pos =
+                        ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(instance.Key);
+                    _gameDependencies.SpriteBatch.DrawString(
+                        spriteFont, 
+                        gameHUD, 
+                        new Vector2(titlesafearea.X + pos.Position.X, titlesafearea.Y + pos.Position.Y), 
+                        HUD.Color);
+                }
+
 
             }
 

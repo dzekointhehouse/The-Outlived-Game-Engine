@@ -484,3 +484,10 @@
 /processorParam:TextureFormat=Color
 /build:nextwave.png
 
+#begin Zlarge.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Zlarge.spritefont
+

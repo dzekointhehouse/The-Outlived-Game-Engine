@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
+using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -105,6 +106,15 @@ namespace Game.Systems
             // If they are all dead
             if (GlobalSpawnComponent.EnemiesDead)
             {
+                var waveHud = ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities.First().Key);
+                if (waveHud != null)
+                {
+
+                    waveHud.HUDtext = "Wave " + GlobalSpawnComponent.WaveLevel.ToString();
+                    waveHud.IsOnlyHUD = true;
+                    waveHud.Color = Color.Green;
+                }
+
                 //SpawnSprite, the sprite for all monsters.
                 var SpawnSpriteEntities =
                 ComponentManager.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
@@ -127,6 +137,9 @@ namespace Game.Systems
                 // When done, increase the wave size...
                 if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
                     GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
+
+                // We increase the wave level, this is used to display progress.
+                GlobalSpawnComponent.WaveLevel++;
 
                 var waveSound = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Poltergeist").CreateInstance();
                 waveSound.Volume = 0.7f;
@@ -186,10 +199,10 @@ namespace Game.Systems
                     {
                         isInside = false;
                     }
-                    Debug.WriteLine("Inside");
+
                 }
             }
-            Debug.WriteLine("outside");
+            //Debug.WriteLine("outside");
 
             return new Vector2(x, y);
         }
