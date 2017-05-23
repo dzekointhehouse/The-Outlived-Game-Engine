@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ZEngine.Wrappers;
+using static Game.Services.VirtualGamePad.MenuKeys;
+using static Game.Services.VirtualGamePad.MenuKeyStates;
 
 namespace Game.Menu.States
 {
@@ -18,14 +20,16 @@ namespace Game.Menu.States
     class AboutMenu : IMenu
     {
         private readonly GameManager gameManager;
-        private readonly ControlsConfig controls;
+        private MenuNavigator MenuNavigator { get; }
+        public VirtualGamePad VirtualGamePad { get; }
         private Viewport viewport;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
-        public AboutMenu(GameManager gameManager)
+        public AboutMenu(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
+            MenuNavigator = menuNavigator;
+            VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
-            controls = new ControlsConfig(gameManager);
             viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
         }
 
@@ -42,7 +46,10 @@ namespace Game.Menu.States
         // then we go back to the previous state.
         public void Update(GameTime gameTime)
         {
-            controls.GoBackButton();
+            if (VirtualGamePad.Is(Cancel, Pressed))
+            {
+                MenuNavigator.GoBack();
+            }
         }
     }
 }

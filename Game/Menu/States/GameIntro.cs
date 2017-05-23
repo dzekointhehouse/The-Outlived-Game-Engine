@@ -7,24 +7,30 @@ using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using static Game.GameManager.GameState;
+using static Game.Services.VirtualGamePad;
 
 namespace Game.Menu.States
 {
     class GameIntro : IMenu
     {
         private GameManager gameManager;
-       // private SpriteBatch sb;
+
+        // private SpriteBatch sb;
         private Viewport viewport;
+
         private readonly VideoPlayer videoPlayer;
-        private readonly ControlsConfig controls;
-        public GameIntro(GameManager gameManager)
+        private MenuNavigator MenuNavigator { get; }
+        public VirtualGamePad VirtualGamePad { get; }
+
+        public GameIntro(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
             this.gameManager = gameManager;
-           // sb = gameManager.engine.Dependencies.SpriteBatch;
             viewport = gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
-            controls = new ControlsConfig(gameManager);
+            MenuNavigator = menuNavigator;
+            VirtualGamePad = virtualGamePad;
             videoPlayer = new VideoPlayer();
-            videoPlayer.Play(gameManager.MenuContent.IntroVideo);
+//            videoPlayer.Play(gameManager.MenuContent.IntroVideo);
         }
 
 
@@ -38,11 +44,10 @@ namespace Game.Menu.States
 
             if (videoTexture != null)
             {
-               // spriteBatch.Begin();
-               // use viewport
+                // spriteBatch.Begin();
+                // use viewport
                 spriteBatch.Draw(videoTexture, new Rectangle(0, 0, 1920, 1080), Color.White);
                 //spriteBatch.End();
-
             }
             else gameManager.CurrentGameState = GameManager.GameState.MainMenu;
             spriteBatch.End();
@@ -51,7 +56,10 @@ namespace Game.Menu.States
         public void Update(GameTime gameTime)
         {
             // Skipping the intro.
-            controls.ContinueButton(GameManager.GameState.MainMenu);
+            if (VirtualGamePad.Is(MenuKeys.Cancel, MenuKeyStates.Pressed))
+            {
+                MenuNavigator.GoTo(GameManager.GameState.MainMenu);
+            }
 
             // We want to stop playing the video and dispose it if 
             // the game state has been set to main menu.
@@ -61,7 +69,6 @@ namespace Game.Menu.States
                 videoPlayer.Video.Dispose();
                 videoPlayer.Dispose();
             }
-                
         }
     }
 }

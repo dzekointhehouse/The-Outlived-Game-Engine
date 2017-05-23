@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,12 +29,15 @@ namespace Game
         // Here we just say that the first state is the Intro
         protected internal GameState CurrentGameState = GameState.Intro;
         protected internal GameState PreviousGameState;
-        protected internal KeyboardState OldKeyboardState;
-        protected internal GamePadState OldGamepadState;
+//        protected internal KeyboardState OldKeyboardState;
+//        protected internal GamePadState OldGamepadState;
+        
+        public VirtualGamePad Controller { get; set; }
+        public MenuNavigator MenuNavigator { get; set; }
         
         protected internal FullSystemBundle Engine;
         protected internal Viewport Viewport;
-        protected internal SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
+        protected internal SpriteBatch spriteBatch = GameDependencies.Instance.SpriteBatch;
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
 
@@ -64,26 +68,38 @@ namespace Game
             GameOver
         };
 
+        private PlayerVirtualInputCollection virtualInputCollection;
+
         public GameManager(FullSystemBundle gameBundle)
         {
             Engine = gameBundle;
             Viewport = Engine.Dependencies.Game.GraphicsDevice.Viewport;
             MenuContent = new MenuContent(gameBundle.Dependencies.Game);
             gameConfig = new GameConfig();
+            
+            virtualInputCollection = new PlayerVirtualInputCollection(new []
+            {
+                new VirtualGamePad(0), 
+                new VirtualGamePad(1), 
+                new VirtualGamePad(2), 
+                new VirtualGamePad(3)
+            });
+            
+            MenuNavigator = new MenuNavigator(this);
 
             // initializing the states, remember:
             // all the states need to exist in the 
             // manager.
-            mainMenu = new MainMenu(this);
-            gameModesMenu = new GameModeMenu(this);
-            characterMenu = new CharacterMenu(this);
-            credits = new Credits(this);
-            gameIntro = new GameIntro(this);
-            survivalGame = new InGame(this);
-            pausedMenu = new PausedMenu(this);
-            multiplayerMenu = new MultiplayerMenu(this);
-            aboutMenu = new AboutMenu(this);
-            gameOver = new GameOver(this);
+            mainMenu = new MainMenu(this, virtualInputCollection.PlayerOne(), MenuNavigator);
+            gameModesMenu = new GameModeMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            characterMenu = new CharacterMenu(this, virtualInputCollection.PlayerOne());
+            credits = new Credits(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            gameIntro = new GameIntro(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            survivalGame = new InGame(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            pausedMenu = new PausedMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            multiplayerMenu = new MultiplayerMenu(this, MenuNavigator, virtualInputCollection);
+            aboutMenu = new AboutMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            gameOver = new GameOver(this, MenuNavigator, virtualInputCollection.PlayerOne());
         }
 
         // Draw method consists of a switch case with all
@@ -96,15 +112,15 @@ namespace Game
             {
 
                 case GameState.Intro:
-                    gameIntro.Draw(gameTime, sb);
+                    gameIntro.Draw(gameTime, spriteBatch);
                     break;
 
                 case GameState.MainMenu:
-                    mainMenu.Draw(gameTime, sb);
+                    mainMenu.Draw(gameTime, spriteBatch);
                     break;
 
                 case GameState.PlaySurvivalGame:
-                    survivalGame.Draw(gameTime, sb);
+                    survivalGame.Draw(gameTime, spriteBatch);
                     break;
 
                 case GameState.Quit:
@@ -112,27 +128,27 @@ namespace Game
                     break;
 
                 case GameState.GameModesMenu:
-                    gameModesMenu.Draw(gameTime, sb);
+                    gameModesMenu.Draw(gameTime, spriteBatch);
                     break;
 
                 case GameState.CharacterMenu:
-                    characterMenu.Draw(gameTime, sb);
+                    characterMenu.Draw(gameTime, spriteBatch);
                     break;
 
                 case GameState.Credits:
-                    credits.Draw(gameTime, sb);
+                    credits.Draw(gameTime, spriteBatch);
                     break;
                 case GameState.Paused:
-                    pausedMenu.Draw(gameTime, sb);
+                    pausedMenu.Draw(gameTime, spriteBatch);
                     break;
                 case GameState.MultiplayerMenu:
-                    multiplayerMenu.Draw(gameTime, sb);
+                    multiplayerMenu.Draw(gameTime, spriteBatch);
                     break;
                 case GameState.About:
-                    aboutMenu.Draw(gameTime, sb);
+                    aboutMenu.Draw(gameTime, spriteBatch);
                     break;
                 case GameState.GameOver:
-                    gameOver.Draw(gameTime, sb);
+                    gameOver.Draw(gameTime, spriteBatch);
                     break;
             }
         }
@@ -141,7 +157,10 @@ namespace Game
         // we execute is the one of the current state.
         public void Update(GameTime gameTime)
         {
-            
+            foreach (var virtualGamePad in virtualInputCollection.VirtualGamePads)
+            {
+                virtualGamePad.UpdateKeyboardState();
+            }
             switch (CurrentGameState)
             {
                 case GameState.Intro:
@@ -185,6 +204,11 @@ namespace Game
                 case GameState.GameOver:
                     gameOver.Update(gameTime);
                     break;
+            }
+            
+            foreach (var virtualGamePad in virtualInputCollection.VirtualGamePads)
+            {
+                virtualGamePad.MoveCurrentStatesToOld();
             }
         }
     }

@@ -7,21 +7,26 @@ using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ZEngine.Wrappers;
+using static Game.Services.VirtualGamePad.MenuKeys;
+using static Game.Services.VirtualGamePad.MenuKeyStates;
 
 namespace Game.Menu.States
 {
     class Credits : IMenu
     {
         private readonly GameManager gameManager;
-        private readonly ControlsConfig controls;
+        private MenuNavigator MenuNavigator { get; }
+        public VirtualGamePad VirtualGamePad { get; }
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         private Viewport viewport;
-        
-        public Credits(GameManager gameManager)
+
+        public Credits(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
+            MenuNavigator = menuNavigator;
+            VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
             viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
-            controls = new ControlsConfig(gameManager);
+//            controls = new ControlsConfig(gameManager);
         }
 
         // Draws a simple background which contains
@@ -39,7 +44,10 @@ namespace Game.Menu.States
         // state.
         public void Update(GameTime gameTime)
         {
-            controls.GoBackButton();
+            if (VirtualGamePad.Is(Cancel, Pressed))
+            {
+                MenuNavigator.GoBack();
+            }
         }
     }
 }

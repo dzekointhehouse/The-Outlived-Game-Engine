@@ -8,7 +8,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     public class GlobalSpawnComponent : IComponent
     {
-        public int WaveSize { get; set; } = 10;
+        public int WaveSize { get; set; } = 20;
         public bool EnemiesDead { get; set; } = true;
         public int MaxLimitWaveSize { get; set; } = 500;
 
@@ -18,12 +18,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         {
             Reset();
         }
+        
 
         public IComponent Reset()
         {
-            WaveSize = 10;
+            WaveSize = 20;
             EnemiesDead = true;
-            WaveSizeIncreaseConstant = 1;
+            WaveSizeIncreaseConstant = 10;
             return this;
         }
     }

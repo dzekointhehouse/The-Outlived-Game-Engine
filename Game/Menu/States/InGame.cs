@@ -24,15 +24,18 @@ using ZEngine.Managers;
 using ZEngine.Wrappers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Systems;
+using static Game.Services.VirtualGamePad.MenuKeys;
+using static Game.Services.VirtualGamePad.MenuKeyStates;
 
 namespace Game.Menu.States
 {
     class InGame : IMenu
     {
+        public MenuNavigator MenuNavigator { get; }
+        public VirtualGamePad VirtualGamePad { get; }
 
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
         private GameManager gameManager;
-        private ControlsConfig controls;
         private bool isInitialized = false;
         private Boolean isIngame = true;
         private GamePlayers players;
@@ -50,14 +53,15 @@ namespace Game.Menu.States
         private WeaponSystem weaponSystem = new WeaponSystem();
         private SpawnSystem SpawnSystem = new SpawnSystem();
 
-        public InGame(GameManager gameManager)
+        public InGame(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
+            MenuNavigator = menuNavigator;
+            VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
 
             // Initializing systems
             soundSystem = new SoundSystem();
             // other stuff
-            controls = new ControlsConfig(gameManager);
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
             players = new GamePlayers(gameManager.gameConfig, gameViewports);
         }
@@ -99,8 +103,12 @@ namespace Game.Menu.States
             //{
             //    MediaPlayer.Stop();
             //}
-            controls.PauseButton();
-           var bgMusic =  OutlivedGame.Instance().Content.Load<Song>("Sound/bg_music1");
+            if (VirtualGamePad.Is(Pause, Pressed))
+            {
+                MenuNavigator.Pause();
+            }
+
+            var bgMusic =  OutlivedGame.Instance().Content.Load<Song>("Sound/bg_music1");
 
             if (MediaPlayer.State == MediaState.Stopped)
             {

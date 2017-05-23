@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using ZEngine.Wrappers;
+using static Game.GameManager;
+using static Game.Menu.States.MainMenu.OptionsState;
 
 namespace Game.Menu.States
 {
@@ -15,17 +19,19 @@ namespace Game.Menu.States
     /// </summary>
     class MainMenu : IMenu
     {
+        public VirtualGamePad VirtualGamePad { get; }
+        public MenuNavigator MenuNavigator { get; }
         private Microsoft.Xna.Framework.Game game;
         private GameManager gameManager;
-        private ControlsConfig controls;
-        private OptionsState currentPosition = OptionsState.Continue;
         private Viewport viewport;
-        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
+        private SpriteBatch spriteBatch = GameDependencies.Instance.SpriteBatch;
         private SidewaysBackground fogBackground;
         private SidewaysBackground mainBackground;
 
+        public GenericButtonNavigator<OptionsState> MenuPosition { get; set; }
+        
         // different menu options
-        private enum OptionsState
+        internal enum OptionsState
         {
             Continue,
             About,
@@ -33,15 +39,23 @@ namespace Game.Menu.States
             Exit
         }
 
-        public MainMenu(GameManager gameManager)
+        public OptionsState[] Options =
         {
+            Continue, About, OptionsState.Credits, Exit
+        };
+        
+        public MainMenu(GameManager gameManager, VirtualGamePad virtualGamePad, MenuNavigator menuNavigator)
+        {
+            VirtualGamePad = virtualGamePad;
+            MenuNavigator = menuNavigator;
+            MenuPosition = new GenericButtonNavigator<OptionsState>(Options);
             this.gameManager = gameManager;
             game = this.gameManager.Engine.Dependencies.Game;
-            controls = new ControlsConfig(0, 3, gameManager);
             viewport = game.GraphicsDevice.Viewport;
             mainBackground = new SidewaysBackground(gameManager.MenuContent.Background, new Vector2(10, 10), 1.5f);
             fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
         }
+
 
 
         // This method displays all the options
@@ -53,26 +67,26 @@ namespace Game.Menu.States
             string textAbout = "WHAT HAPPENED?";
             string textExit = "TAKE THE EASY WAY OUT";
 
-            sb.Draw(gameManager.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
-            fogBackground.Draw(sb);
-            sb.DrawString(gameManager.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
-            sb.DrawString(gameManager.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(gameManager.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
-            sb.DrawString(gameManager.MenuContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
+            spriteBatch.Draw(gameManager.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
+            fogBackground.Draw(spriteBatch);
+            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
+            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
+            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
+            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
 
-            switch (currentPosition)
+            switch (MenuPosition.CurrentPosition)
             {
-                case OptionsState.Continue:
-                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.40f), Color.White);
+                case Continue:
+                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.40f), Color.White);
                     break;
-                case OptionsState.About:
-                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
+                case About:
+                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
                     break;
                 case OptionsState.Credits:
-                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.60f), Color.White);
+                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.60f), Color.White);
                     break;
-                case OptionsState.Exit:
-                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
+                case Exit:
+                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
                     break;
 
             }
@@ -99,33 +113,34 @@ namespace Game.Menu.States
             // playing beatiful mainBackground music.
             if (MediaPlayer.State == MediaState.Stopped)
             {
-
                 MediaPlayer.Volume = 0.8f;
                 MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(gameManager.MenuContent.BackgroundSong);
-
             }
-
-            currentPosition = (OptionsState) controls.MoveOptionPositionVertically((int) currentPosition);
-
-            switch (currentPosition)
+            
+//            Debug.WriteLine("Up: " + VirtualGamePad.GetGamePadButtonState(VirtualGamePad.MenuKeys.Up));
+//            Debug.WriteLine("Down: " + VirtualGamePad.GetGamePadButtonState(VirtualGamePad.MenuKeys.Down));
+            
+            MenuPosition.UpdatePosition(VirtualGamePad);
+            
+            if (VirtualGamePad.Is(VirtualGamePad.MenuKeys.Accept, VirtualGamePad.MenuKeyStates.Pressed))
             {
-                case OptionsState.Continue:
-                    if(controls.ContinueButton(GameManager.GameState.GameModesMenu))
-                        gameManager.MenuContent.ClickSound.Play();
-                    break;
-                case OptionsState.About:
-                    if(controls.ContinueButton(GameManager.GameState.About))
-                        gameManager.MenuContent.ClickSound.Play();
-                    break;
-                case OptionsState.Credits:
-                    if(controls.ContinueButton(GameManager.GameState.Credits))
-                    gameManager.MenuContent.ClickSound.Play();
-                    break;
-                case OptionsState.Exit:
-                   if(controls.ContinueButton(GameManager.GameState.Quit))
-                        gameManager.MenuContent.ClickSound.Play();
-                    break;
+                gameManager.MenuContent.ClickSound.Play();
+                switch (MenuPosition.CurrentPosition)
+                {
+                    case Continue:
+                        MenuNavigator.GoTo(GameState.GameModesMenu);
+                        break;
+                    case About:
+                        MenuNavigator.GoTo(GameState.About);
+                        break;
+                    case OptionsState.Credits:
+                        MenuNavigator.GoTo(GameState.Credits);
+                        break;
+                    case Exit:
+                        MenuNavigator.GoTo(GameState.Quit);
+                        break;
+                }
             }
         }
     }
