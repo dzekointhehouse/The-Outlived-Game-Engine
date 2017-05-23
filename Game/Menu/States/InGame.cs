@@ -45,13 +45,13 @@ namespace Game.Menu.States
         private SoundSystem soundSystem;
         private SpawnSystem spawnSystem;
         private WeaponSystem weaponSystem = new WeaponSystem();
-
+        private Timer timer;
         private GameViewports gameViewports;
 
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
-
+        private float timeSincelastCount;
 
         public InGame(GameManager gameManager)
         {
@@ -61,6 +61,7 @@ namespace Game.Menu.States
             soundSystem = new SoundSystem();
             spawnSystem = new SpawnSystem();
             // other stuff
+            timer = new Timer(10, gameManager.MenuContent.ScoreFont);
             controls = new ControlsConfig(gameManager);
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
             players = new GamePlayers(gameManager.gameConfig, gameViewports);
@@ -77,6 +78,7 @@ namespace Game.Menu.States
                 isInitialized = true;
             }
             gameManager.Engine.Draw(gameTime);
+            timer.Draw(spriteBatch);
 
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = gameViewports.defaultView;
@@ -118,6 +120,7 @@ namespace Game.Menu.States
                 MediaPlayer.Play(bgMusic);
             }
 
+            timer.Update(gameTime);
             gameManager.Engine.Update(gameTime);
 
             if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
@@ -167,8 +170,6 @@ namespace Game.Menu.States
         private void CreateGameEntities()
         {
             var cameraCageId = SetupCameraCage();
-           // SetupBackgroundTiles();
-            //SetupCamera();
             SetupHUD();
 
             if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
@@ -193,12 +194,6 @@ namespace Game.Menu.States
                 .SetHUD(true)
                 .SetPosition(new Vector2(590, 900))
                 .SetSprite("health3_small")
-                .Build();
-
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(gameViewports.defaultView.Width*0.4f, gameViewports.defaultView.Height * 0.1f))
-                .SetSprite("nextwave")
                 .Build();
 
             new EntityBuilder()

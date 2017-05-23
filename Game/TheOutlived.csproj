@@ -77,6 +77,7 @@
     <Compile Include="Systems\SoundSystem.cs" />
     <Compile Include="Systems\SpawnSystem.cs" />
     <Compile Include="Testing\FPS.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="TimerComponent.cs" />
   </ItemGroup>
   <ItemGroup>
