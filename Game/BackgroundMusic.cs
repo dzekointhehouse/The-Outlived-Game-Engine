@@ -20,7 +20,7 @@ namespace Game
             MediaPlayer.MediaStateChanged += MediaPlayerOnMediaStateChanged;
         }
 
-
+        // Adds the songs to the list that can be played.
         public void LoadSongs(params string[] songNames)
         {
             Playlist = new List<Song>(songNames.Length);
