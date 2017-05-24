@@ -706,12 +706,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/zombieCharacter.jpg
 
-#begin Sound/creepyPiano.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Sound/creepyPiano.mp3
-
 #begin ak-47.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1273,4 +1267,10 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/ZlargeFont.spritefont
+
+#begin Sound/bg_music2.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/bg_music2.mp3
 

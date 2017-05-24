@@ -48,6 +48,7 @@
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Entities\Pickups.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
+    <Compile Include="BackgroundMusic.cs" />
     <Compile Include="GameContent.cs" />
     <Compile Include="MenuContent.cs" />
     <Compile Include="Menu\States\About.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="Systems\SpawnSystem.cs" />
     <Compile Include="Testing\FPS.cs" />
     <Compile Include="Timer.cs" />
-    <Compile Include="TimerComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

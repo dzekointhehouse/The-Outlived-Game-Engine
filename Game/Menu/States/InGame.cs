@@ -46,6 +46,7 @@ namespace Game.Menu.States
         private SpawnSystem spawnSystem;
         private WeaponSystem weaponSystem = new WeaponSystem();
         private Timer timer;
+        private BackgroundMusic backgroundMusic;
         private GameViewports gameViewports;
 
         // SOME BUG NEED THIS.
@@ -65,6 +66,7 @@ namespace Game.Menu.States
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
             players = new GamePlayers(gameManager.gameConfig, gameViewports);
             timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"), gameViewports.defaultView);
+            backgroundMusic = new BackgroundMusic();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -73,6 +75,7 @@ namespace Game.Menu.States
             {
                 Initialize();
                 gameManager.Engine.LoadContent();
+                backgroundMusic.LoadSongs("bg_music1","bg_music2");
                 weaponSystem.Start();
                 weaponSystem.LoadBulletSpriteEntity();
                 isInitialized = true;
@@ -110,14 +113,15 @@ namespace Game.Menu.States
             // Waiting for the countdown to finnish
             if (!timer.IsCounting)
             {
-                var bgMusic = OutlivedGame.Instance().Content.Load<Song>("Sound/bg_music1");
+               // var bgMusic = Outlived.Instance().Content.Load<Song>("Sound/bg_music1");
 
-                if (MediaPlayer.State == MediaState.Stopped)
-                {
-                    MediaPlayer.Volume = 0.7f;
-                    MediaPlayer.IsRepeating = true;
-                    MediaPlayer.Play(bgMusic);
-                }
+                //if (MediaPlayer.State == MediaState.Stopped)
+                //{
+                //    MediaPlayer.Volume = 0.7f;
+                //    MediaPlayer.IsRepeating = true;
+                //    MediaPlayer.Play(bgMusic);
+                //}
+                backgroundMusic.PlayMusic();
 
                 gameManager.Engine.Update(gameTime);
 

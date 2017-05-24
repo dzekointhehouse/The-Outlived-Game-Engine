@@ -35,11 +35,11 @@ namespace Game
         public SpriteBatch spriteBatch;
         private readonly FullSystemBundle gameBundle;
         private GameManager _gameManager;
-        private static OutlivedGame outlivedGame;
+        private static OutlivedGame _outlived;
 
         public OutlivedGame()
         {
-            outlivedGame = this;
+            _outlived = this;
             gameBundle = new FullSystemBundle();
 
             gameBundle.Dependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
@@ -87,7 +87,7 @@ namespace Game
 
         public static OutlivedGame Instance()
         {
-            return outlivedGame;
+            return _outlived;
         }
 
         /// <summary>
