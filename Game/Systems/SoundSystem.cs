@@ -34,7 +34,7 @@ namespace Game.Systems
             // be done. 
             EventBus.Subscribe<WeaponComponent.WeaponTypes>(EventConstants.FireWeaponSound, WeaponSounds);
             EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.PickupCollision, PickupSounds);
-            //EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
+//            EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
             return this;
         }
 

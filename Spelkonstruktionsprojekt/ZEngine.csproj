@@ -24,7 +24,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>bin1\Windows\x86\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;WINDOWS,__DEMO__,__DEMO_EXPERIMENTAL__</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,7 +33,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>bin1\Windows\x86\Release\</OutputPath>
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

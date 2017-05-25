@@ -35,10 +35,11 @@ namespace Game.Menu.States
 //        private int playerIndex = 0;
 
         private GameManager GameManager { get; }
+        
 
         private int CurrentPlayerIndex;
-
-        public VirtualGamePad VirtualGamePad { get; set; }
+        private VirtualGamePad Player { get; set; }
+        public PlayerVirtualInputCollection VirtualInputs { get; }
         public MenuNavigator MenuNavigator { get; set; }
         public GameConfig GameConfig { get; }
 
@@ -62,10 +63,11 @@ namespace Game.Menu.States
         public CharacterMenu(GameManager gameManager, PlayerVirtualInputCollection virtualInputs)
         {
             GameManager = gameManager;
-            VirtualGamePad = gameManager.Controller;
+            VirtualInputs = virtualInputs;
+            Player = VirtualInputs.PlayerOne();
             MenuNavigator = gameManager.MenuNavigator;
             GameConfig = gameManager.gameConfig;
-            VirtualGamePad = virtualInputs.PlayerOne();
+            
             game = gameManager.Engine.Dependencies.Game;
         }
 
@@ -110,9 +112,27 @@ namespace Game.Menu.States
         private void NextPlayerOrStartGame()
         {
             CurrentPlayerIndex++;
-            if(CurrentPlayerIndex >= GameConfig.Players.Count)
+            if (CurrentPlayerIndex >= GameConfig.Players.Count)
             {
                 StartGame();
+            }
+            else
+            {
+                Player = VirtualInputs.VirtualGamePads[CurrentPlayerIndex]; 
+            }
+            ResetCharacterSelection();
+        }
+
+        private void PreviousPlayerOrGoBack()
+        {
+            CurrentPlayerIndex--;
+            if (CurrentPlayerIndex < 0)
+            {
+                MenuNavigator.GoBack();
+            }
+            else
+            {
+                Player = VirtualInputs.VirtualGamePads[CurrentPlayerIndex]; 
             }
             ResetCharacterSelection();
         }
@@ -165,22 +185,22 @@ namespace Game.Menu.States
             {
                 MenuNavigator.GoBack();
             }
-            else if (VirtualGamePad.Is(Cancel, Pressed))
+            else if (Player.Is(Cancel, Pressed))
             {
-                MenuNavigator.GoBack();
+                PreviousPlayerOrGoBack();
             }
-            else if (VirtualGamePad.Is(Accept, Pressed))
+            else if (Player.Is(Accept, Pressed))
             {
                 GameManager.MenuContent.ClickSound.Play();
                 CurrentPlayer().CharacterType = CurrentSelectedCharacter;
                 CurrentPlayer().SpriteName = GetCharacterSpriteName(CurrentSelectedCharacter);
                 NextPlayerOrStartGame();
             }
-            else if (VirtualGamePad.Is(Up, Pressed))
+            else if (Player.Is(Right, Pressed))
             {
                 SelectNextCharacter();
             }
-            else if (VirtualGamePad.Is(Down, Pressed))
+            else if (Player.Is(Left, Pressed))
             {
                 SelectPreviousCharacter();
             }
