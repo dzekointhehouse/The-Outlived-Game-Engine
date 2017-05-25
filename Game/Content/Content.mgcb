@@ -1286,3 +1286,21 @@
 /processorParam:TextureFormat=Color
 /build:crawler_spritesheet.png
 
+#begin Sound/bg_music3.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/bg_music3.mp3
+
+#begin Sound/bg_music4.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/bg_music4.mp3
+
+#begin Sound/GameOver.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/GameOver.mp3
+

@@ -91,7 +91,8 @@ namespace ZEngine.Systems
             Bullet,
             Enemy,
             Neutral,
-            Pickup
+            Pickup,
+            AiWall
         }
 
         public static Dictionary<CollisionEvent, string> EventNames = new Dictionary<CollisionEvent, string>()
@@ -100,7 +101,9 @@ namespace ZEngine.Systems
             {CollisionEvent.Bullet, EventConstants.BulletCollision},
             {CollisionEvent.Enemy, EventConstants.EnemyCollision},
             {CollisionEvent.Neutral, "NeutralCollision"},
-            {CollisionEvent.Pickup, EventConstants.PickupCollision}
+            {CollisionEvent.Pickup, EventConstants.PickupCollision},
+            {CollisionEvent.AiWall, EventConstants.AiWallCollision}
+
         };
 
         public static string FromCollisionEventType(CollisionEvent collisionEvent)
@@ -193,6 +196,19 @@ namespace ZEngine.Systems
                         TargetEntityRequirements = new List<Type>()
                     },
                     CollisionEvent.Bullet
+                },
+                                {
+                    new CollisionRequirement()
+                    {
+                        MovingEntityRequirements = new List<Type>
+                        {
+                            typeof(AIComponent)
+                        },
+                        TargetEntityRequirements = new List<Type>
+                        {
+                        }
+                    },
+                    CollisionEvent.AiWall
                 },
             };
     }

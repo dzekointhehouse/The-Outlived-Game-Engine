@@ -8,6 +8,8 @@
 
         public float FollowDistance { get; set; }
 
+        public double TimeOfLastWallCollision { get; set; } = 0;
+        
         public AIComponent()
         {
             Reset();
