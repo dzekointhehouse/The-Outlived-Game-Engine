@@ -108,14 +108,14 @@ namespace ZEngine.Systems
             if (stillPositionComponent == null) return false;
 
 //            //Roughly check distance
-//            var outside = ((stillPositionComponent.Position.X + stillDimensionsComponent.Width <
+//            var outside = ((stillPositionComponent.Position.X + stillDimensionsComponent.WorldWidth <
 //                           movingPositionComponent.Position.X
 //                           || stillPositionComponent.Position.X > movingPositionComponent.Position.X +
-//                           movingDimensionsComponent.Width)
-//                           && (stillPositionComponent.Position.Y + stillDimensionsComponent.Height <
+//                           movingDimensionsComponent.WorldWidth)
+//                           && (stillPositionComponent.Position.Y + stillDimensionsComponent.WorldHeight <
 //                           movingPositionComponent.Position.Y
 //                           || stillPositionComponent.Position.Y > movingPositionComponent.Position.Y +
-//                           movingDimensionsComponent.Height));
+//                           movingDimensionsComponent.WorldHeight));
 
             var aproxDistance = Math.Abs(
                 Math.Pow(stillPositionComponent.Position.X - movingPositionComponent.Position.X, 2) +
