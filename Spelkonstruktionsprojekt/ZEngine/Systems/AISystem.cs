@@ -22,6 +22,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void Update(GameTime gameTime)
         {
+            var worldComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(WorldComponent)).First();
+            var world = worldComponent.Value as WorldComponent;
+
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
                 var aiMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
@@ -70,10 +73,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                     aiComponent.Wander = false;
                     var dir = closestPlayerPosition.Value - aiPosition;
+                    //dir.Normalize();
+
+                    //Vector2 v = GetWorldCoordinates(aiPosition, world);
+                    //Node node = Astar.Search(world.World, new Node((int)v.X, (int)v.Y), new Node((int)closestPlayerPosition.Value.X, (int)closestPlayerPosition.Value.Y));
+                    //Vector2 dir = GetScreenCoordinates(node, world);
+
                     dir.Normalize();
                     var newDirection = Math.Atan2(dir.Y, dir.X);
                     aiMoveComponent.Direction = (float) newDirection;
                     aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+
+                    //var newDirection = Math.Atan2(dir.Y, dir.X);
+                    //aiMoveComponent.Direction = (float) newDirection;
+                    //aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
+
+
                 }
                 else if (aiComponent.Wander == false)
                 {
@@ -82,6 +97,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     BeginWander(entity.Key, gameTime.TotalGameTime.TotalMilliseconds);
                 }
             }
+        }
+
+        public Vector2 GetWorldCoordinates(Vector2 position, WorldComponent world)
+        {
+            var X = Math.Floor((position.X / world.WorldWidth) * 10);
+            var Y = Math.Floor((position.Y / world.WorldHeight) * 10);
+
+            return new Vector2((float) X,(float) Y);
+        }
+
+        public Vector2 GetScreenCoordinates(Node position, WorldComponent world)
+        {
+            var X = position.X * 10;
+            var Y = position.Y * 10;
+
+            return new Vector2((float)X, (float)Y);
         }
 
         public void BeginWander(uint entityId, double startTime)
@@ -137,6 +168,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 }
             };
         }
+
+
 
         private AnimationComponent GetOrCreateDefault(uint entityId)
         {

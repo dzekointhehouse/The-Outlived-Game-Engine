@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+ using Penumbra;
+ using Spelkonstruktionsprojekt.ZEngine.Components;
  using Spelkonstruktionsprojekt.ZEngine.Managers;
  using ZEngine.Components;
 using ZEngine.Managers;
@@ -39,6 +41,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // to know which texture to use where.
         public void CreateMapTiles(int[,] map, int size)
         {
+            var height = map.GetLength(0) * size;
+            var width = map.GetLength(1) * size;
+
+            var worldEntity = EntityManager.GetEntityManager().NewEntity();
+            var worldComponent = new WorldComponent() {WorldHeight = height, WorldWidth = width, World = map};
+            ComponentManager.Instance.AddComponentToEntity(worldComponent, worldEntity);
+
             // Gets the number of values in the specified dimension.
             for (var x = 0; x < map.GetLength(1); x++)
             {
@@ -49,9 +58,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     int positionNumber = map[y, x];
 
                     // where to place it.
-                    PositionComponent position = ComponentFactory.NewComponent<PositionComponent>();
-                    position.Position = new Vector2(x * size, y * size);
-                    position.ZIndex = 1;
+                    PositionComponent posComponent = ComponentFactory.NewComponent<PositionComponent>();
+                    posComponent.Position = new Vector2(x * size, y * size);
+                    posComponent.ZIndex = 1;
 
                     DimensionsComponent dimensionsComponent = ComponentFactory.NewComponent<DimensionsComponent>();
                     dimensionsComponent.Width = size;
@@ -68,7 +77,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
                     var id = EntityManager.GetEntityManager().NewEntity();
 
-                    ComponentManager.Instance.AddComponentToEntity(position, id);
+                    ComponentManager.Instance.AddComponentToEntity(posComponent, id);
                     ComponentManager.Instance.AddComponentToEntity(dimensionsComponent, id);
                     ComponentManager.Instance.AddComponentToEntity(renderComponent, id);
                     ComponentManager.Instance.AddComponentToEntity(spriteComponent, id);
@@ -80,6 +89,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     {
                         var collision = ComponentFactory.NewComponent<CollisionComponent>();
                         ComponentManager.Instance.AddComponentToEntity(collision, id);
+                        var hullComponent = new HullComponent()
+                        {
+                            Hull = new Hull(new Vector2(posComponent.Position.X, y * size), new Vector2(x * size, y * size), new Vector2(x * size, y), new Vector2(x, y * size))
+                        };
+                        ComponentManager.Instance.AddComponentToEntity(hullComponent, id);
                     }
                 }
             }

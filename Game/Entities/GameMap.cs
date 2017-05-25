@@ -45,8 +45,8 @@ namespace Game.Entities
                     mapHelper = new MapHelper(tileTypes);
                     mapHelper.AddNumberToCollisionList(2);
                     mapHelper.CreateMapTiles(MapPack.TheWallMap, 100);
-                    spawnPositionOne = new Vector2(80, 80);
-                    spawnPositionTwo = new Vector2(85, 150);
+                    spawnPositionOne = new Vector2(120, 120);
+                    spawnPositionTwo = new Vector2(110, 150);
                     spawnPositionThree = new Vector2(1840, 1840);
                     spawnPositionFour = new Vector2(1760, 1840);
                     break;
