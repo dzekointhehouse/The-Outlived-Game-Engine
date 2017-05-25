@@ -75,7 +75,7 @@ namespace Game.Menu.States
             {
                 Initialize();
                 gameManager.Engine.LoadContent();
-                backgroundMusic.LoadSongs("bg_music1","bg_music2");
+                backgroundMusic.LoadSongs("bg_music1","bg_music3", "bg_music3", "bg_music4");
                 weaponSystem.Start();
                 weaponSystem.LoadBulletSpriteEntity();
                 isInitialized = true;

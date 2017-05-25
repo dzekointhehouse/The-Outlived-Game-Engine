@@ -32,6 +32,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public const string EnemyCollision = "EnemyCollision";
         public const string BulletCollision = "BulletCollision";
         public const string PickupCollision = "PickupCollision";
+        public const string AiWallCollision = "AiWallCollision";
+
 
         // Other
         public const string HealthPickup = "HealthPickup";

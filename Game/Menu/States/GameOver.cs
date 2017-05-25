@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZEngine.Wrappers;
 using Game.Services;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 namespace Game.Menu.States
@@ -19,6 +20,7 @@ namespace Game.Menu.States
         private GameManager gameManager;
         private GraphicsDevice gd = GameDependencies.Instance.GraphicsDeviceManager.GraphicsDevice;
         private readonly ControlsConfig controls;
+        public bool WasNotPlayed { get; set; } = true;
 
         public GameOver(GameManager gameManager)
         {
@@ -73,15 +75,25 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
+
+            if (WasNotPlayed)
+            {
+                OutlivedGame.Instance().Get<SoundEffect>("Sound/GameOver").Play();
+                WasNotPlayed = false;
+            }
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 MediaPlayer.Stop();
                 gameManager.PreviousGameState = gameManager.CurrentGameState;
                 gameManager.CurrentGameState = GameManager.GameState.MainMenu;
-
             }
 
+
         }
+
+
     }
 }

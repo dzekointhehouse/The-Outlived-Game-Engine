@@ -34,6 +34,8 @@ namespace Game
         {
             if (Playlist != null)
             {
+                //MediaPlayer.Stop();
+                //MediaPlayer.MoveNext();
                 currentSongIndex = random.Next(0, Playlist.Count - 1);
                 MediaPlayer.Play(Playlist[currentSongIndex]);
             }
@@ -43,6 +45,7 @@ namespace Game
         {
             if (MediaPlayer.State == MediaState.Stopped)
             {
+                currentSongIndex = random.Next(0, Playlist.Count - 1);
                 MediaPlayer.Play(Playlist[currentSongIndex]);
             }
         }
