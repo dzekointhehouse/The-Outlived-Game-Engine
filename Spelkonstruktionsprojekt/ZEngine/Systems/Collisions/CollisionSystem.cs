@@ -1,4 +1,4 @@
-﻿﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
 using ZEngine.Helpers;
 using ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 
 namespace ZEngine.Systems
 {
@@ -28,23 +29,47 @@ namespace ZEngine.Systems
         private Dictionary<Tuple<string, Point>, Color[]> cache = new Dictionary<Tuple<string, Point>, Color[]>();
 
         //TODO Move to perform on game load
-        public Color[] TextureCache(SpriteComponent spriteComponent)
+        public Color[] TextureCache(SpriteComponent spriteComponent, uint entityId)
         {
             Color[] data;
             var key = new Tuple<string, Point>(spriteComponent.SpriteName, spriteComponent.Position);
             var status = cache.TryGetValue(key, out data);
             if (!status)
             {
+                int x, y;
+
+                var animationComponent = ComponentManager.GetEntityComponentOrDefault<SpriteAnimationComponent>(entityId);
+                if (animationComponent == null)
+                {
+                    x = spriteComponent.Position.X;
+                    y = spriteComponent.Position.Y;
+                }
+                else
+                {
+                    SpriteAnimationBinding animationState;
+                    if (animationComponent.CurrentAnimatedState != null)
+                    {
+                        animationState = animationComponent.CurrentAnimatedState;
+                    }
+                    else
+                    {
+                        animationState = animationComponent.NextAnimatedState;
+                    }
+
+                    x = animationState.StartPosition.X;
+                    y = animationState.StartPosition.Y;
+                }
                 data =
-                    new Color[spriteComponent.TileWidth * spriteComponent.TileHeight];
+                       new Color[spriteComponent.TileWidth * spriteComponent.TileHeight];
                 spriteComponent.Sprite.GetData(0,
                     new Rectangle(
-                        spriteComponent.Position.X,
-                        spriteComponent.Position.Y,
+                        x,
+                        y,
                         spriteComponent.TileWidth,
                         spriteComponent.TileHeight),
                     data, 0, data.Length);
                 cache[key] = data;
+
             }
             return data;
         }
@@ -58,7 +83,7 @@ namespace ZEngine.Systems
             {
                 timer = Stopwatch.StartNew();
             }
-//
+            //
             var quadTree = QuadTree.CreateTree(
                 ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent)).Keys,
                 new Rectangle(0, 0, 8000, 8000));
@@ -107,15 +132,15 @@ namespace ZEngine.Systems
             var stillPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(stillEntity);
             if (stillPositionComponent == null) return false;
 
-//            //Roughly check distance
-//            var outside = ((stillPositionComponent.Position.X + stillDimensionsComponent.WorldWidth <
-//                           movingPositionComponent.Position.X
-//                           || stillPositionComponent.Position.X > movingPositionComponent.Position.X +
-//                           movingDimensionsComponent.WorldWidth)
-//                           && (stillPositionComponent.Position.Y + stillDimensionsComponent.WorldHeight <
-//                           movingPositionComponent.Position.Y
-//                           || stillPositionComponent.Position.Y > movingPositionComponent.Position.Y +
-//                           movingDimensionsComponent.WorldHeight));
+            //            //Roughly check distance
+            //            var outside = ((stillPositionComponent.Position.X + stillDimensionsComponent.Width <
+            //                           movingPositionComponent.Position.X
+            //                           || stillPositionComponent.Position.X > movingPositionComponent.Position.X +
+            //                           movingDimensionsComponent.Width)
+            //                           && (stillPositionComponent.Position.Y + stillDimensionsComponent.Height <
+            //                           movingPositionComponent.Position.Y
+            //                           || stillPositionComponent.Position.Y > movingPositionComponent.Position.Y +
+            //                           movingDimensionsComponent.Height));
 
             var aproxDistance = Math.Abs(
                 Math.Pow(stillPositionComponent.Position.X - movingPositionComponent.Position.X, 2) +
@@ -134,21 +159,21 @@ namespace ZEngine.Systems
             if (movingMoveComponent == null) return false;
             var movingEntityOffset = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(movingEntity);
             var movingOffset = Vector2.Zero;
-//            movingEntityOffset != null
-//                ? new Vector2(movingEntityOffset.Offset.X, movingEntityOffset.Offset.Y)
-//                : Vector2.Zero;
+            //            movingEntityOffset != null
+            //                ? new Vector2(movingEntityOffset.Offset.X, movingEntityOffset.Offset.Y)
+            //                : Vector2.Zero;
             var movingSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(movingEntity);
             if (movingSpriteComponent == null) return false;
 
             var stillMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(stillEntity);
-//            if (stillMoveComponent == null) return false;
+            //            if (stillMoveComponent == null) return false;
             var stillCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity);
             var stillEntityAngle = 0;
             var stillEntityOffset = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(stillEntity);
             var stillOffset = Vector2.Zero;
-//            stillEntityOffset != null
-//                ? new Vector2(stillEntityOffset.Offset.X, stillEntityOffset.Offset.Y)
-//                : Vector2.Zero;
+            //            stillEntityOffset != null
+            //                ? new Vector2(stillEntityOffset.Offset.X, stillEntityOffset.Offset.Y)
+            //                : Vector2.Zero;
             var stillSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(stillEntity);
             if (stillSpriteComponent == null) return false;
 
@@ -159,9 +184,9 @@ namespace ZEngine.Systems
                 timer = Stopwatch.StartNew();
             }
 
-            var colorA = TextureCache(movingSpriteComponent);
+            var colorA = TextureCache(movingSpriteComponent, movingEntity);
 
-            var colorB = TextureCache(stillSpriteComponent);
+            var colorB = TextureCache(stillSpriteComponent, stillEntity);
 
             if (PROFILING)
             {
@@ -172,22 +197,22 @@ namespace ZEngine.Systems
 
             var matrixA =
                 Matrix.CreateTranslation(new Vector3(
-                    (float) (-movingSpriteComponent.TileWidth * 0.5),
-                    (float) (-movingSpriteComponent.TileHeight * 0.5), 0)) *
+                    (float)(-movingSpriteComponent.TileWidth * 0.5),
+                    (float)(-movingSpriteComponent.TileHeight * 0.5), 0)) *
                 Matrix.CreateScale(
-                    (float) movingDimensionsComponent.Width / (float) movingSpriteComponent.TileWidth,
-                    (float) movingDimensionsComponent.Height / (float) movingSpriteComponent.TileHeight,
+                    (float)movingDimensionsComponent.Width / (float)movingSpriteComponent.TileWidth,
+                    (float)movingDimensionsComponent.Height / (float)movingSpriteComponent.TileHeight,
                     1) *
                 Matrix.CreateRotationZ(movingMoveComponent.Direction) *
                 Matrix.CreateTranslation(movingPositionComponent.Position.X, movingPositionComponent.Position.Y, 0f);
 
             var matrixB =
                 Matrix.CreateTranslation(new Vector3(
-                    (float) (-stillSpriteComponent.TileWidth * 0.5),
-                    (float) (-stillSpriteComponent.TileHeight * 0.5), 0)) *
+                    (float)(-stillSpriteComponent.TileWidth * 0.5),
+                    (float)(-stillSpriteComponent.TileHeight * 0.5), 0)) *
                 Matrix.CreateScale(
-                    (float) stillDimensionsComponent.Width / (float) stillSpriteComponent.TileWidth,
-                    (float) stillDimensionsComponent.Height / (float) stillSpriteComponent.TileHeight,
+                    (float)stillDimensionsComponent.Width / (float)stillSpriteComponent.TileWidth,
+                    (float)stillDimensionsComponent.Height / (float)stillSpriteComponent.TileHeight,
                     1) *
                 Matrix.CreateRotationZ(stillEntityAngle) *
                 Matrix.CreateTranslation(stillPositionComponent.Position.X, stillPositionComponent.Position.Y, 0f);
@@ -202,8 +227,8 @@ namespace ZEngine.Systems
             var movingEntityCollisionBounds =
                 CalculateCollisionBounds(
                     new Rectangle(
-                        (int) 0,
-                        (int) 0,
+                        (int)0,
+                        (int)0,
                         movingSpriteComponent.TileWidth,
                         movingSpriteComponent.TileHeight
                     ),
@@ -215,8 +240,8 @@ namespace ZEngine.Systems
             var stillEntityCollisionBounds =
                 CalculateCollisionBounds(
                     new Rectangle(
-                        (int) 0,
-                        (int) 0,
+                        (int)0,
+                        (int)0,
                         stillSpriteComponent.TileWidth,
                         stillSpriteComponent.TileHeight
                     ),
@@ -226,7 +251,7 @@ namespace ZEngine.Systems
                 );
 
 
-//            var shapeRenderer = CollisionRendering.renderer;
+            //            var shapeRenderer = CollisionRendering.renderer;
             if (movingEntityCollisionBounds.Intersects(stillEntityCollisionBounds))
             {
                 if (PROFILING)
@@ -240,8 +265,8 @@ namespace ZEngine.Systems
                     matrixB, stillSpriteComponent.TileWidth, stillSpriteComponent.TileHeight,
                     colorB))
                 {
-//                    shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Red, 0.02f);
-//                    shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkRed, 0.02f);
+                    //                    shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Red, 0.02f);
+                    //                    shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkRed, 0.02f);
 
                     if (PROFILING)
                     {
@@ -250,8 +275,8 @@ namespace ZEngine.Systems
                     }
                     return true;
                 }
-//                shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Blue, 0.02f);
-//                shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkBlue, 0.02f);
+                //                shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Blue, 0.02f);
+                //                shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkBlue, 0.02f);
 
                 if (PROFILING)
                 {
@@ -260,8 +285,8 @@ namespace ZEngine.Systems
                 }
                 return false;
             }
-//            shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Green, 0.02f);
-//            shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkGreen, 0.02f);
+            //            shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Green, 0.02f);
+            //            shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkGreen, 0.02f);
 
             if (PROFILING)
             {
@@ -288,17 +313,17 @@ namespace ZEngine.Systems
             Vector2 max = Vector2.Max(Vector2.Max(leftTop, rightTop),
                 Vector2.Max(leftBottom, rightBottom));
 
-            return new Rectangle((int) min.X,
-                (int) min.Y,
-                (int) (max.X - min.X),
-                (int) (max.Y - min.Y));
+            return new Rectangle((int)min.X,
+                (int)min.Y,
+                (int)(max.X - min.X),
+                (int)(max.Y - min.Y));
         }
 
         public static bool IntersectPixs(
             Matrix transformA, int aWidth, int aHeight, Color[] dataA,
             Matrix transformB, int bWidth, int bHeight, Color[] dataB)
         {
-// Calculate a matrix which transforms from A's local space into
+            // Calculate a matrix which transforms from A's local space into
             // world space and then into B's local space
             Matrix transformAToB = transformA * Matrix.Invert(transformB);
 
@@ -326,8 +351,8 @@ namespace ZEngine.Systems
                 for (int xA = 0; xA < aWidth; xA++)
                 {
                     // Round to the nearest pixel
-                    int xB = (int) Math.Round(posInB.X);
-                    int yB = (int) Math.Round(posInB.Y);
+                    int xB = (int)Math.Round(posInB.X);
+                    int yB = (int)Math.Round(posInB.Y);
 
                     // If the pixel lies within the bounds of B
                     if (0 <= xB && xB < bWidth &&
