@@ -49,6 +49,7 @@
     <Compile Include="..\ShapeRendering2D\Properties\AssemblyInfo.cs" />
     <Compile Include="..\ShapeRendering2D\Shape.cs" />
     <Compile Include="..\ShapeRendering2D\ShapeRenderer2D.cs" />
+    <Compile Include="Astar.cs" />
     <Compile Include="ZEngine\Components\BarrelFlashComponent.cs" />
     <Compile Include="ZEngine\Components\DefaultViewport.cs" />
     <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
@@ -56,10 +57,12 @@
     <Compile Include="ZEngine\Components\FlyweightPickupComponent.cs" />
     <Compile Include="ZEngine\Components\GlobalSpawnComponent.cs" />
     <Compile Include="ZEngine\Components\HighScoreComponent.cs" />
+    <Compile Include="ZEngine\Components\HullComponent.cs" />
     <Compile Include="ZEngine\Components\Input\GamePadComponent.cs" />
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
     <Compile Include="ZEngine\Components\SpawnComponent.cs" />
     <Compile Include="ZEngine\Components\SpawnFlyweightComponent.cs" />
+    <Compile Include="ZEngine\Components\WorldComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Helpers\ComponentFactory.cs" />

@@ -19,7 +19,7 @@ namespace Game.Entities
             var y = new Random(DateTime.Now.Millisecond).Next(1000, 3000);
 
             var monster = new EntityBuilder()
-                .SetPosition(new Vector2(x, y), layerDepth: 20)
+                .SetPosition(new Vector2(400, 120), layerDepth: 20)
                 .SetRendering(200, 200)
                 .SetSprite("zombie1", new Point(1244, 311), 311, 311)
                 .SetSound("zombiewalking")

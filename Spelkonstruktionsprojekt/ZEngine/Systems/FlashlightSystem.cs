@@ -32,9 +32,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.
-                AmbientColor = new Color(new Vector3(0.01f)) // should be an entity?
+                AmbientColor = new Color(new Vector3(1f)) // should be an entity?
             };
             var lights = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
+            var hullComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HullComponent));
 
             foreach (var barrelFlash in ComponentManager.Instance.GetEntitiesWithComponent(typeof(BarrelFlashComponent)))
             {
@@ -45,6 +46,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 var lightComponent = instance.Value as LightComponent;
                 penumbra.Lights.Add(lightComponent.Light);
+            }
+
+            foreach (var hullComponent in hullComponents)
+            {
+                var hull = hullComponent.Value as HullComponent;
+                var positionComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(hullComponent.Key);
+
+                hull.Hull.Position = positionComponent.Position;
+                hull.Hull.Enabled = true;
+                if (hull.Hull.Valid)
+                    Debug.Log("Hello");
+                penumbra.Hulls.Add(hull.Hull);
             }
             
             penumbra.Initialize();

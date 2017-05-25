@@ -111,16 +111,8 @@ namespace Game.Menu.States
             controls.PauseButton();
             timer.Update(gameTime);
             // Waiting for the countdown to finnish
-            if (!timer.IsCounting)
-            {
-               // var bgMusic = Outlived.Instance().Content.Load<Song>("Sound/bg_music1");
-
-                //if (MediaPlayer.State == MediaState.Stopped)
-                //{
-                //    MediaPlayer.Volume = 0.7f;
-                //    MediaPlayer.IsRepeating = true;
-                //    MediaPlayer.Play(bgMusic);
-                //}
+            //if (!timer.IsCounting)
+            //{
                 backgroundMusic.PlayMusic();
 
                 gameManager.Engine.Update(gameTime);
@@ -135,7 +127,7 @@ namespace Game.Menu.States
                 {
                     gameManager.CurrentGameState = GameManager.GameState.GameOver;
                 }
-            }
+           // }
         }
 
         // To initialize game content when navigating
@@ -150,7 +142,7 @@ namespace Game.Menu.States
             // Game stuff
             maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers(maps);
-//            enemies.CreateMonster("player_sprites");
+            enemies.CreateMonster("player_sprites");
           //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
           //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
           //  pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200)); 
