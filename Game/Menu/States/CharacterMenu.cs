@@ -103,7 +103,7 @@ namespace Game.Menu.States
 
         private void DrawSelectedOptionText(SpriteBatch spriteBatch, Viewport viewport)
         {
-            var message = ("Player " + CurrentSelectedCharacterIndex.ToString() + " Choose your character!");
+            var message = ("Player " + CurrentPlayerIndex.ToString() + " Choose your character!");
 
             spriteBatch.DrawString(GameManager.MenuContent.MenuFont, message,
                 new Vector2(viewport.Width * 0.1f, viewport.Height * 0.1f), Color.BlueViolet);

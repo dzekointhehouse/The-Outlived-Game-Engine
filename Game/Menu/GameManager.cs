@@ -97,7 +97,7 @@ namespace Game
             credits = new Credits(this, MenuNavigator, virtualInputCollection.PlayerOne());
             gameIntro = new GameIntro(this, MenuNavigator, virtualInputCollection.PlayerOne());
             survivalGame = new InGame(this, MenuNavigator, virtualInputCollection.PlayerOne());
-            pausedMenu = new PausedMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            pausedMenu = new PausedMenu(this, MenuNavigator, virtualInputCollection);
             multiplayerMenu = new MultiplayerMenu(this, MenuNavigator, virtualInputCollection);
             aboutMenu = new AboutMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
             gameOver = new GameOver(this, MenuNavigator, virtualInputCollection.PlayerOne());

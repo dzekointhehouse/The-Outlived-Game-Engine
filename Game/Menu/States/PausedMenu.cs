@@ -20,15 +20,15 @@ namespace Game.Menu.States
     class PausedMenu : IMenu
     {
         public MenuNavigator MenuNavigator { get; }
-        public VirtualGamePad VirtualGamePad { get; }
+        public PlayerVirtualInputCollection VirtualInputs { get; }
         private readonly GameManager gameManager;
         private Viewport viewport;
         private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
-        public PausedMenu(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
+        public PausedMenu(GameManager gameManager, MenuNavigator menuNavigator, PlayerVirtualInputCollection VirtualInputs)
         {
             MenuNavigator = menuNavigator;
-            VirtualGamePad = virtualGamePad;
+            this.VirtualInputs = VirtualInputs;
             this.gameManager = gameManager;
             viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
         }
@@ -45,13 +45,16 @@ namespace Game.Menu.States
         // then we go back to the previous state.
         public void Update(GameTime gameTime)
         {
-            if (VirtualGamePad.Is(Pause, Pressed))
+            foreach (var virtualInput in VirtualInputs.VirtualGamePads)
             {
-                MenuNavigator.GoBack();
-            }
-            else if(VirtualGamePad.Is(Cancel, Pressed))
-            {
-                MenuNavigator.GoTo(GameManager.GameState.MainMenu);
+                if (virtualInput.Is(Pause, Pressed))
+                {
+                    MenuNavigator.GoBack();
+                }
+                else if(virtualInput.Is(Cancel, Pressed))
+                {
+                    MenuNavigator.GoTo(GameManager.GameState.MainMenu);
+                }
             }
         }
 
