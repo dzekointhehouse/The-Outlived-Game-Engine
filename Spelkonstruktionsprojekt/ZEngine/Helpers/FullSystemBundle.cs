@@ -22,7 +22,6 @@ using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
-    // Optimus prime
     public class FullSystemBundle
     {
         private SystemManager manager = SystemManager.Instance;
@@ -81,7 +80,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<HealthSystem>().Update(gameTime);
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();
-            manager.Get<SpawnSystem>().HandleWaves();
             manager.Get<ScoreSystem>().Update(gameTime);
             manager.Get<EntityRemovalSystem>().Update(gameTime);
         }

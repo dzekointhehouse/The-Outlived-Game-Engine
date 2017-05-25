@@ -36,7 +36,7 @@ namespace Game.Menu.States
 
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
         private GameManager gameManager;
-        private ControlsConfig controls;
+        //private ControlsConfig controls;
         private bool isInitialized = false;
         private Boolean isIngame = true;
         private GamePlayers players;
@@ -277,5 +277,8 @@ namespace Game.Menu.States
             ComponentManager.Instance.AddComponentToEntity(spawncomponent, global.GetEntityKey());
         }
 
+        public void Reset()
+        {
+        }
     }
 }

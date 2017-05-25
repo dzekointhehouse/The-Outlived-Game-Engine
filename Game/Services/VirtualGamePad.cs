@@ -18,16 +18,14 @@ namespace Game.Services
 
         //When true allows keyboard to control input
         public bool IsKeyboardControlled { get; set; } = true;
+        public bool IsGamePadControlled { get; set; } = true;
 
-        //When true allow both keyboard and gamepad to control input
-        //When IsKeyboardControlled is false this parameter is insignificant.
-        public bool IsMultiplexController { get; set; } = true;
-
-        //Index of gamepad current in control
+        //Index of current gamepad in control
         public int GamePadPlayerIndex { get; set; } = 0;
 
-        public VirtualGamePad(int gamePadPlayerIndex)
+        public VirtualGamePad(int gamePadPlayerIndex, bool isKeyboardControlled = false)
         {
+            IsKeyboardControlled = isKeyboardControlled;
             GamePadPlayerIndex = gamePadPlayerIndex;
         }
 
@@ -56,7 +54,7 @@ namespace Game.Services
         {
             for (var i = 0; i < gamePadState.Length; i++)
             {
-                gamePadState[i] = GamePad.GetState(i);
+                gamePadState[i] = GamePad.GetState(i); 
             }
         }
 
@@ -75,7 +73,7 @@ namespace Game.Services
                 if (GetKeyboardKeyState(key) == state)
                     return true;
             }
-            if (!IsKeyboardControlled || IsMultiplexController)
+            if (IsGamePadControlled)
             {
                 if (GetGamePadButtonState(key) == state)
                     return true;

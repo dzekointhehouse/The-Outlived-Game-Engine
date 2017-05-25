@@ -14,6 +14,7 @@ using static Game.GameManager.GameState;
 using static Game.Menu.States.CharacterMenu.CharacterType;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
+using System.Diagnostics;
 
 namespace Game.Menu.States
 {
@@ -35,9 +36,7 @@ namespace Game.Menu.States
 
         private GameManager GameManager { get; }
 
-        private int NumberOfPlayers;
-        private Player CurrentPlayer;
-        private IEnumerator<Player> Players;
+        private int CurrentPlayerIndex;
 
         public VirtualGamePad VirtualGamePad { get; set; }
         public MenuNavigator MenuNavigator { get; set; }
@@ -57,31 +56,24 @@ namespace Game.Menu.States
         private int CurrentSelectedCharacterIndex = 0;
         private CharacterType[] Characters = new[]
         {
-            Bob, Bob, Edgar, Ward, Jimmy
+            Bob, Edgar, Ward, Jimmy
         };
 
-        public CharacterMenu(GameManager gameManager, VirtualGamePad virtualGamePad)
+        public CharacterMenu(GameManager gameManager, PlayerVirtualInputCollection virtualInputs)
         {
             GameManager = gameManager;
             VirtualGamePad = gameManager.Controller;
             MenuNavigator = gameManager.MenuNavigator;
             GameConfig = gameManager.gameConfig;
-            VirtualGamePad = virtualGamePad;
-//            game = this.gameManager.Engine.Dependencies.Game;
-            // Adding the options interval and gamemanager.
-//            controls = new ControlsConfig(0, 3, gameManager);
+            VirtualGamePad = virtualInputs.PlayerOne();
+            game = gameManager.Engine.Dependencies.Game;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             ScalingBackground.DrawBackgroundWithScaling(spriteBatch, GameManager.MenuContent, 0.0001f);
-
-            if (GameConfig.Players.Count == 0)
-            {
-                MenuNavigator.GoBack();
-            }
-
+            
             var viewport = game.GraphicsDevice.Viewport;
             DrawCharacterNames(spriteBatch, viewport);
             DrawSelectedOptionText(spriteBatch, viewport);
@@ -117,8 +109,8 @@ namespace Game.Menu.States
 
         private void NextPlayerOrStartGame()
         {
-            var noMorePlayers = !Players.MoveNext();
-            if (noMorePlayers)
+            CurrentPlayerIndex++;
+            if(CurrentPlayerIndex >= GameConfig.Players.Count)
             {
                 StartGame();
             }
@@ -127,7 +119,8 @@ namespace Game.Menu.States
 
         private void SelectNextCharacter()
         {
-            if (CurrentSelectedCharacterIndex + 1 >= Characters.Length)
+            CurrentSelectedCharacterIndex++;
+            if (CurrentSelectedCharacterIndex >= Characters.Length)
             {
                 CurrentSelectedCharacterIndex = 0;
             }
@@ -136,7 +129,8 @@ namespace Game.Menu.States
         
         private void SelectPreviousCharacter()
         {
-            if (CurrentSelectedCharacterIndex - 1 < 0)
+            CurrentSelectedCharacterIndex--;
+            if (CurrentSelectedCharacterIndex < 0)
             {
                 CurrentSelectedCharacterIndex = Characters.Length - 1;
             }
@@ -148,12 +142,14 @@ namespace Game.Menu.States
             CurrentSelectedCharacterIndex = 0;
             CurrentSelectedCharacter = Characters[CurrentSelectedCharacterIndex];
         }
+
+        private Player CurrentPlayer()
+        {
+            return GameConfig.Players[CurrentPlayerIndex];
+        }
         
         private void StartGame()
         {
-            ResetCharacterSelection();
-            Players.Reset();
-            
             if (MediaPlayer.State != MediaState.Stopped)
                 MediaPlayer.Stop();
             
@@ -165,21 +161,19 @@ namespace Game.Menu.States
         // are to be done.
         public void Update(GameTime gameTime)
         {
-            if (Players.Current == null)
+            if (GameConfig.Players.Count == 0)
             {
-                NextPlayerOrStartGame();    
+                MenuNavigator.GoBack();
             }
-            
-//            controls.GoBackButton();
-            if (VirtualGamePad.Is(Cancel, Pressed))
+            else if (VirtualGamePad.Is(Cancel, Pressed))
             {
                 MenuNavigator.GoBack();
             }
             else if (VirtualGamePad.Is(Accept, Pressed))
             {
                 GameManager.MenuContent.ClickSound.Play();
-                Players.Current.CharacterType = CurrentSelectedCharacter;
-                Players.Current.SpriteName = GetCharacterSpriteName(CurrentSelectedCharacter);
+                CurrentPlayer().CharacterType = CurrentSelectedCharacter;
+                CurrentPlayer().SpriteName = GetCharacterSpriteName(CurrentSelectedCharacter);
                 NextPlayerOrStartGame();
             }
             else if (VirtualGamePad.Is(Up, Pressed))
@@ -207,6 +201,12 @@ namespace Game.Menu.States
                 default:
                     return "Bob";
             }
+        }
+
+        public void Reset()
+        {
+            ResetCharacterSelection();
+            CurrentPlayerIndex = 0;
         }
     }
 }

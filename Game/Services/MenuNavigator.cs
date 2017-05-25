@@ -17,6 +17,10 @@ namespace Game.Services
         public void GoTo(GameManager.GameState newState)
         {
             GameManager.PreviousGameState = GameManager.CurrentGameState;
+            if (GameManager.GameStateMenuMap.ContainsKey(newState))
+            {
+                GameManager.GameStateMenuMap[newState].Reset();
+            }
             GameManager.CurrentGameState = newState;
         }
 
@@ -24,12 +28,12 @@ namespace Game.Services
         {
             if (GameManager.CurrentGameState == GameManager.GameState.Paused)
             {
-                GameManager.PreviousGameState = GameManager.CurrentGameState;
-                GameManager.CurrentGameState = GameManager.GameState.Paused;
+                GameManager.CurrentGameState = GameManager.PreviousGameState;
             }
             else
             {
-                GameManager.CurrentGameState = GameManager.PreviousGameState;
+                GameManager.PreviousGameState = GameManager.CurrentGameState;
+                GameManager.CurrentGameState = GameManager.GameState.Paused;
             }
         }
     }

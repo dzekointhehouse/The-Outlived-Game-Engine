@@ -49,5 +49,9 @@ namespace Game.Menu.States
                 MenuNavigator.GoBack();
             }
         }
+
+        public void Reset()
+        {
+        }
     }
 }

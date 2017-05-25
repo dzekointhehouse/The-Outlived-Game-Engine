@@ -49,6 +49,14 @@ namespace Game.Menu.States
             {
                 MenuNavigator.GoBack();
             }
+            else if(VirtualGamePad.Is(Cancel, Pressed))
+            {
+                MenuNavigator.GoTo(GameManager.GameState.MainMenu);
+            }
+        }
+
+        public void Reset()
+        {
         }
     }
 }

@@ -70,5 +70,9 @@ namespace Game.Menu.States
                 videoPlayer.Dispose();
             }
         }
+
+        public void Reset()
+        {
+        }
     }
 }

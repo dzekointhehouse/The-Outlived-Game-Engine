@@ -55,17 +55,23 @@ namespace Game.Menu.States
         public MultiplayerMenu(GameManager gameManager, MenuNavigator menuNavigator,
             PlayerVirtualInputCollection virtualInputCollection)
         {
-            PlayerOneChoice = new GenericButtonNavigator<TeamState>(StateOrder);
-            PlayerTwoChoice = new GenericButtonNavigator<TeamState>(StateOrder);
-            PlayerThreeChoice = new GenericButtonNavigator<TeamState>(StateOrder);
-            PlayerFourChoice = new GenericButtonNavigator<TeamState>(StateOrder);
+            PlayerOneChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
+            PlayerTwoChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
+            PlayerThreeChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
+            PlayerFourChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
             PlayerChoices = new[]
             {
                 PlayerOneChoice, PlayerTwoChoice, PlayerThreeChoice, PlayerFourChoice
             };
-            KeyboardPosition =
-                new GenericButtonNavigator<GenericButtonNavigator<TeamState>>(PlayerChoices,
-                    horizontalNavigation: true);
+
+            for (var i = 0; i < PlayerChoices.Length; i++)
+            {
+                PlayerChoices[i].ButtonNavigator.CurrentIndex = 1; // Set start position to second choice "NoTeam"
+            }
+
+            //KeyboardPosition =
+            //    new GenericButtonNavigator<GenericButtonNavigator<TeamState>>(PlayerChoices,
+            //        horizontalNavigation: true);
 
             MenuNavigator = menuNavigator;
             VirtualInputCollection = virtualInputCollection;
@@ -131,17 +137,17 @@ namespace Game.Menu.States
                 PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
             }
 
-            KeyboardPosition.UpdatePosition(VirtualInputCollection.PlayerOne());
-            if (VirtualInputCollection.PlayerOne().Is(Left, Pressed))
-            {
-                var position = KeyboardPosition.CurrentPosition.ButtonNavigator.PreviousIndex();
-                KeyboardPosition.CurrentPosition.CurrentPosition = KeyboardPosition.CurrentPosition.Positions[position];
-            }
-            else if (VirtualInputCollection.PlayerOne().Is(Right, Pressed))
-            {
-                var position = KeyboardPosition.CurrentPosition.ButtonNavigator.NextIndex();
-                KeyboardPosition.CurrentPosition.CurrentPosition = KeyboardPosition.CurrentPosition.Positions[position];
-            }
+            //KeyboardPosition.UpdatePosition(VirtualInputCollection.PlayerOne());
+            //if (VirtualInputCollection.PlayerOne().Is(Left, Pressed))
+            //{
+            //    var position = KeyboardPosition.CurrentPosition.ButtonNavigator.PreviousIndex();
+            //    KeyboardPosition.CurrentPosition.CurrentPosition = KeyboardPosition.CurrentPosition.Positions[position];
+            //}
+            //else if (VirtualInputCollection.PlayerOne().Is(Right, Pressed))
+            //{
+            //    var position = KeyboardPosition.CurrentPosition.ButtonNavigator.NextIndex();
+            //    KeyboardPosition.CurrentPosition.CurrentPosition = KeyboardPosition.CurrentPosition.Positions[position];
+            //}
 
             if (VirtualInputCollection.PlayerOne().Is(Accept, Pressed))
             {
@@ -150,7 +156,6 @@ namespace Game.Menu.States
                 {
                     gameManager.MenuContent.ClickSound.Play();
                     UpdateGameConfigurations();
-                    ResetPlayerChoicesState();
                     MenuNavigator.GoTo(GameManager.GameState.CharacterMenu);
                 }
             }
@@ -168,9 +173,9 @@ namespace Game.Menu.States
         {
             // Clear before each game..
             gameManager.gameConfig.Players.Clear();
-
             for (var i = 0; i < PlayerChoices.Length; i++)
             {
+                if (PlayerChoices[i].CurrentPosition == NoTeam) continue;
                 gameManager.gameConfig.Players.Add(new Player
                 {
                     Index = IntegerToPlayerIndex[i],
@@ -185,6 +190,11 @@ namespace Game.Menu.States
             {
                 playerChoice.CurrentPosition = playerChoice.Positions[0];
             }
+        }
+
+        public void Reset()
+        {
+            ResetPlayerChoicesState();
         }
     }
 }

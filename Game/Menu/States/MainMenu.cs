@@ -118,9 +118,6 @@ namespace Game.Menu.States
                 MediaPlayer.Play(gameManager.MenuContent.BackgroundSong);
             }
             
-//            Debug.WriteLine("Up: " + VirtualGamePad.GetGamePadButtonState(VirtualGamePad.MenuKeys.Up));
-//            Debug.WriteLine("Down: " + VirtualGamePad.GetGamePadButtonState(VirtualGamePad.MenuKeys.Down));
-            
             MenuPosition.UpdatePosition(VirtualGamePad);
             
             if (VirtualGamePad.Is(VirtualGamePad.MenuKeys.Accept, VirtualGamePad.MenuKeyStates.Pressed))
@@ -142,6 +139,10 @@ namespace Game.Menu.States
                         break;
                 }
             }
+        }
+
+        public void Reset()
+        {
         }
     }
 }

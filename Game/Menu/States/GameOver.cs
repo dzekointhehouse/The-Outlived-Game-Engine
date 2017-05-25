@@ -83,5 +83,9 @@ namespace Game.Menu.States
                 MenuNavigator.GoTo(GameManager.GameState.MainMenu);
             }
         }
+
+        public void Reset()
+        {
+        }
     }
 }

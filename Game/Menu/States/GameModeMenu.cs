@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +19,6 @@ namespace Game.Menu.States
         public VirtualGamePad VirtualGamePad { get; }
         private GenericButtonNavigator<GameModes> MenuPosition;
         private readonly GameManager gameManager;
-        private GameModes currentPosition = Survival;
 
         public enum GameModes
         {
@@ -31,8 +31,7 @@ namespace Game.Menu.States
         public GameModes[] MenuElements = {
             Extinction,
             Survival,
-            Blockworld,
-            Exit
+            Blockworld
         };
 
         public GameModeMenu(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
@@ -51,7 +50,7 @@ namespace Game.Menu.States
 
             var viewport = game.GraphicsDevice.Viewport;
 
-            switch (currentPosition)
+            switch (MenuPosition.CurrentPosition)
             {
                 case Survival:
                     sb.Draw(gameManager.MenuContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
@@ -87,7 +86,7 @@ namespace Game.Menu.States
             }
 
             MenuPosition.UpdatePosition(VirtualGamePad);
-            
+
             if (VirtualGamePad.Is(Accept, Pressed))
             {
                 HandleStartGameMode();
@@ -99,23 +98,28 @@ namespace Game.Menu.States
             switch (MenuPosition.CurrentPosition)
             {
                 case Survival:
-                        gameManager.MenuContent.ClickSound.Play();
-                        gameManager.gameConfig.GameMode = Survival;
+                    gameManager.MenuContent.ClickSound.Play();
+                    gameManager.gameConfig.GameMode = Survival;
                     break;
                 case Extinction:
-                        gameManager.MenuContent.ClickSound.Play();
-                        gameManager.gameConfig.GameMode = Extinction;
+                    gameManager.MenuContent.ClickSound.Play();
+                    gameManager.gameConfig.GameMode = Extinction;
                     break;
                 case Exit:
-                        gameManager.MenuContent.ClickSound.Play();
+                    gameManager.MenuContent.ClickSound.Play();
                     break;
                 case Blockworld:
-                        gameManager.MenuContent.ClickSound.Play();
-                        gameManager.gameConfig.GameMode = Blockworld;
+                    gameManager.MenuContent.ClickSound.Play();
+                    gameManager.gameConfig.GameMode = Blockworld;
                     break;
             }
-            
+
             MenuNavigator.GoTo(GameManager.GameState.MultiplayerMenu);
+        }
+
+        public void Reset()
+        {
+            gameManager.gameConfig.Reset();
         }
     }
 }
