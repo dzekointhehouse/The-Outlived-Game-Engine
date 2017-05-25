@@ -24,7 +24,7 @@ namespace Game.Menu.States
             viewport = gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
             controls = new ControlsConfig(gameManager);
             videoPlayer = new VideoPlayer();
-            videoPlayer.Play(gameManager.MenuContent.IntroVideo);
+            //videoPlayer.Play(gameManager.MenuContent.IntroVideo);
         }
 
 
