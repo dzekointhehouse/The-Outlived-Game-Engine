@@ -26,7 +26,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         ///////////////////////////
 
 
-        public double AnimationStarted { get; set; }        
+        public double AnimationStarted { get; set; }
         public SpriteAnimationBinding CurrentAnimatedState { get; set; }
         public SpriteAnimationBinding NextAnimatedState { get; set; }
 
