@@ -8,9 +8,15 @@ namespace Game.Services
 {
     public class GameConfig
     {
-        public GameModes GameMode { get; set; }
+        public GameModes GameMode { get; set; } = GameModes.Exit;
 
-        public List<Player> Players { get; set; } = new List<Player>(4);
+        public List<Player> Players { get; set; } = new List<Player>();
+
+        public void Reset()
+        {
+            Players = new List<Player>();
+            GameMode = GameModes.Exit;
+        }
     }
 
     public class Player

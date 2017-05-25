@@ -50,7 +50,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                     var eventName = binding.Value;
                     gamePadState.IsButtonDown(button);
                     var currentKeyEvent = GetKeyEvent(button, gamePadState, oldGamePadState[entity.Key]);
-                    if (!GamePadStandardLayout.GamePadToKeyboardMap.ContainsKey(button)) return;
                     EventBus.Publish(
                         binding.Value,
                         new InputEvent
@@ -58,7 +57,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                             EntityId = entity.Key,
                             EventTime = gameTime.TotalGameTime.TotalMilliseconds,
                             KeyEvent = currentKeyEvent,
-                            Key = GamePadStandardLayout.GamePadToKeyboardMap[button],
                             EventName = eventName
                         });
                 }
@@ -89,7 +87,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                             EntityId = entity.Key,
                             EventTime = gameTime.TotalGameTime.TotalMilliseconds,
                             KeyEvent = currentKeyEvent,
-                            Key = key,
                             EventName = eventName
                         });
                 }
@@ -153,7 +150,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
     public class InputEvent
     {
         public KeyEvent KeyEvent;
-        public Keys Key;
         public string EventName;
         public uint EntityId;
         public double EventTime;

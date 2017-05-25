@@ -139,7 +139,7 @@ namespace Game.Entities
                 position: maps.spawnPositionTwo, // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: false, gamePadIndex: 1);
+                useGamePad: true, gamePadIndex: 1);
         }
 
         private void InitPlayerThree(Player player)

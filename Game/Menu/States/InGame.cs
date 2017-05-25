@@ -24,15 +24,19 @@ using ZEngine.Managers;
 using ZEngine.Wrappers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Systems;
+using static Game.Services.VirtualGamePad.MenuKeys;
+using static Game.Services.VirtualGamePad.MenuKeyStates;
 
 namespace Game.Menu.States
 {
     class InGame : IMenu
     {
+        public MenuNavigator MenuNavigator { get; }
+        public VirtualGamePad VirtualGamePad { get; }
 
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
         private GameManager gameManager;
-        private ControlsConfig controls;
+        //private ControlsConfig controls;
         private bool isInitialized = false;
         private Boolean isIngame = true;
         private GamePlayers players;
@@ -54,15 +58,16 @@ namespace Game.Menu.States
 
         private float timeSincelastCount;
 
-        public InGame(GameManager gameManager)
+        public InGame(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
+            MenuNavigator = menuNavigator;
+            VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
 
             // Initializing systems
             soundSystem = new SoundSystem();
             spawnSystem = new SpawnSystem();
             // other stuff
-            controls = new ControlsConfig(gameManager);
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
             players = new GamePlayers(gameManager.gameConfig, gameViewports);
             timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"), gameViewports.defaultView);
@@ -108,7 +113,11 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {            
-            controls.PauseButton();
+        
+            if (VirtualGamePad.Is(Pause, Pressed))
+            {
+                MenuNavigator.Pause();
+            }
             timer.Update(gameTime);
             // Waiting for the countdown to finnish
             //if (!timer.IsCounting)
@@ -264,5 +273,8 @@ namespace Game.Menu.States
             ComponentManager.Instance.AddComponentToEntity(spawncomponent, global.GetEntityKey());
         }
 
+        public void Reset()
+        {
+        }
     }
 }

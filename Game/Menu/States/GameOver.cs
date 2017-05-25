@@ -12,19 +12,24 @@ using ZEngine.Wrappers;
 using Game.Services;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using static Game.Services.VirtualGamePad.MenuKeys;
+using static Game.Services.VirtualGamePad.MenuKeyStates;
 
 namespace Game.Menu.States
 {
     class GameOver : IMenu
     {
+        public MenuNavigator MenuNavigator { get; }
+        public VirtualGamePad VirtualGamePad { get; }
         private GameManager gameManager;
         private GraphicsDevice gd = GameDependencies.Instance.GraphicsDeviceManager.GraphicsDevice;
         private readonly ControlsConfig controls;
         public bool WasNotPlayed { get; set; } = true;
 
-        public GameOver(GameManager gameManager)
+        public GameOver(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
-            controls = new ControlsConfig(gameManager);
+            MenuNavigator = menuNavigator;
+            VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
         }
 
@@ -85,15 +90,15 @@ namespace Game.Menu.States
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if(VirtualGamePad.Is(Cancel, Pressed))
             {
                 MediaPlayer.Stop();
-                gameManager.PreviousGameState = gameManager.CurrentGameState;
-                gameManager.CurrentGameState = GameManager.GameState.MainMenu;
+                MenuNavigator.GoTo(GameManager.GameState.MainMenu);
             }
-
-
         }
 
-
+        public void Reset()
+        {
+        }
     }
 }

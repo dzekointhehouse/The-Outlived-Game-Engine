@@ -9,11 +9,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Game.Menu
 {
-    interface IMenu
+    public interface IMenu
     {
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);
 
         void Update(GameTime gameTime);
+
+        void Reset();
 
     }
 }
