@@ -74,7 +74,22 @@ namespace Game
 
         public Dictionary<GameState, IMenu> GameStateMenuMap;
         private PlayerVirtualInputCollection virtualInputCollection;
-
+        private Dictionary<GameState, ILifecycle> LifecycleStates;
+        
+        public void SetCurrentState(GameState state)
+        {
+            if (LifecycleStates.ContainsKey(CurrentGameState))
+            {
+                LifecycleStates[CurrentGameState].BeforeHide();
+            }
+            if (LifecycleStates.ContainsKey(state))
+            {
+                LifecycleStates[state].BeforeShow();
+            }
+            PreviousGameState = CurrentGameState;
+            CurrentGameState = state;
+        }
+        
         public GameManager(FullSystemBundle gameBundle)
         {
             Engine = gameBundle;
@@ -118,6 +133,10 @@ namespace Game
                 {GameState.MultiplayerMenu, multiplayerMenu},
                 {GameState.About, aboutMenu},
                 {GameState.GameOver, gameOver}
+            };
+            LifecycleStates = new Dictionary<GameState, ILifecycle>
+            {
+                {GameState.PlaySurvivalGame, (ILifecycle) survivalGame},
             };
         }
 

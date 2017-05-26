@@ -66,6 +66,9 @@ namespace Game.Entities
                 .Build();
 
             ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
+            
+            //TODO should be given GameTime total elapsed milliseconds instead of a 0
+            StateManager.TryAddState(monster, State.WalkingForward, 0);
         }
     }
 }

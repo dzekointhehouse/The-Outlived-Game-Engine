@@ -29,7 +29,7 @@ using static Game.Services.VirtualGamePad.MenuKeyStates;
 
 namespace Game.Menu.States
 {
-    class InGame : IMenu
+    class InGame : IMenu, ILifecycle
     {
         public MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
@@ -285,6 +285,20 @@ namespace Game.Menu.States
 
         public void Reset()
         {
+        }
+
+        public void BeforeShow()
+        {
+            
+        }
+
+        public void BeforeHide()
+        {
+            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
+            {
+                ComponentManager.Instance.DeleteEntity(entity);
+            }
+            gameManager.gameConfig.Reset();
         }
     }
 }

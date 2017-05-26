@@ -5,9 +5,9 @@
       <sourceFolder url="file://$MODULE_DIR$/../../Game" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../ShapeRendering2D" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../Spelkonstruktionsprojekt" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../Game/bin1/Windows/x86/Debug" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Game/bin" />
       <excludeFolder url="file://$MODULE_DIR$/../../Game/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../Spelkonstruktionsprojekt/bin1/Windows/x86/Debug" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Spelkonstruktionsprojekt/bin" />
       <excludeFolder url="file://$MODULE_DIR$/../../Spelkonstruktionsprojekt/obj" />
       <excludeFolder url="file://$MODULE_DIR$/../../packages" />
     </content>

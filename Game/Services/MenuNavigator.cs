@@ -16,12 +16,7 @@ namespace Game.Services
 
         public void GoTo(GameManager.GameState newState)
         {
-            GameManager.PreviousGameState = GameManager.CurrentGameState;
-            if (GameManager.GameStateMenuMap.ContainsKey(newState))
-            {
-                GameManager.GameStateMenuMap[newState].Reset();
-            }
-            GameManager.CurrentGameState = newState;
+            GameManager.SetCurrentState(newState);
         }
 
         public void Pause()

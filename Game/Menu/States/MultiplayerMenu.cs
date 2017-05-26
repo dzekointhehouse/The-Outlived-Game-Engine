@@ -21,20 +21,12 @@ namespace Game.Menu.States
     {
         public MenuNavigator MenuNavigator { get; }
         public PlayerVirtualInputCollection VirtualInputCollection { get; }
-        public VirtualGamePad VirtualGamePad { get; }
 
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
 
         private readonly GameManager gameManager;
         private SpriteBatch spriteBatch = GameDependencies.Instance.SpriteBatch;
-
-        private readonly GenericButtonNavigator<TeamState> PlayerOneChoice;
-        private readonly GenericButtonNavigator<TeamState> PlayerTwoChoice;
-        private readonly GenericButtonNavigator<TeamState> PlayerThreeChoice;
-        private readonly GenericButtonNavigator<TeamState> PlayerFourChoice;
-
-        private readonly GenericButtonNavigator<GenericButtonNavigator<TeamState>> KeyboardPosition;
 
         // enum so we can keep track on which option
         // we currently are at.
@@ -55,29 +47,29 @@ namespace Game.Menu.States
         public MultiplayerMenu(GameManager gameManager, MenuNavigator menuNavigator,
             PlayerVirtualInputCollection virtualInputCollection)
         {
-            PlayerOneChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
-            PlayerTwoChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
-            PlayerThreeChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
-            PlayerFourChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
+            MenuNavigator = menuNavigator;
+            this.gameManager = gameManager;
+            game = this.gameManager.Engine.Dependencies.Game;
+            VirtualInputCollection = virtualInputCollection;
+            var playerOneChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
+            var playerTwoChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
+            var playerThreeChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
+            var playerFourChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
             PlayerChoices = new[]
             {
-                PlayerOneChoice, PlayerTwoChoice, PlayerThreeChoice, PlayerFourChoice
+                playerOneChoice, playerTwoChoice, playerThreeChoice, playerFourChoice
             };
 
             for (var i = 0; i < PlayerChoices.Length; i++)
             {
                 PlayerChoices[i].ButtonNavigator.CurrentIndex = 1; // Set start position to second choice "NoTeam"
+                PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
             }
 
             //KeyboardPosition =
             //    new GenericButtonNavigator<GenericButtonNavigator<TeamState>>(PlayerChoices,
             //        horizontalNavigation: true);
 
-            MenuNavigator = menuNavigator;
-            VirtualInputCollection = virtualInputCollection;
-
-            this.gameManager = gameManager;
-            game = this.gameManager.Engine.Dependencies.Game;
             // Adding the options interval and gamemanager.
         }
 
@@ -195,6 +187,12 @@ namespace Game.Menu.States
         public void Reset()
         {
             ResetPlayerChoicesState();
+            
+            for (var i = 0; i < PlayerChoices.Length; i++)
+            {
+                PlayerChoices[i].ButtonNavigator.CurrentIndex = 1; // Set start position to second choice "NoTeam"
+                PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
+            }
         }
     }
 }
