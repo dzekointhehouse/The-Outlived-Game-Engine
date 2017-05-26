@@ -23,7 +23,6 @@ namespace Game.Menu.States
         public VirtualGamePad VirtualGamePad { get; }
         private GameManager gameManager;
         private GraphicsDevice gd = GameDependencies.Instance.GraphicsDeviceManager.GraphicsDevice;
-        private readonly ControlsConfig controls;
         public bool WasNotPlayed { get; set; } = true;
 
         public GameOver(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
@@ -87,9 +86,6 @@ namespace Game.Menu.States
                 WasNotPlayed = false;
             }
 
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
             if(VirtualGamePad.Is(Cancel, Pressed))
             {
                 MediaPlayer.Stop();

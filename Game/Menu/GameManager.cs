@@ -26,8 +26,10 @@ namespace Game
         public static bool MoveRight { get; set; } = true;
 
         public MenuContent MenuContent { get; }
+
         // Here we just say that the first state is the Intro
         protected internal GameState CurrentGameState = GameState.Intro;
+
         protected internal GameState PreviousGameState;
         //        protected internal KeyboardState OldKeyboardState;
         //        protected internal GamePadState OldGamepadState;
@@ -37,7 +39,9 @@ namespace Game
 
         protected internal FullSystemBundle Engine;
         protected internal Viewport Viewport;
+
         protected internal SpriteBatch spriteBatch = GameDependencies.Instance.SpriteBatch;
+
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
 
@@ -103,17 +107,17 @@ namespace Game
             gameOver = new GameOver(this, MenuNavigator, virtualInputCollection.PlayerOne());
             GameStateMenuMap = new Dictionary<GameState, IMenu>
             {
-                {GameState.Intro,  gameIntro},
-                {GameState.MainMenu, mainMenu },
-                {GameState.PlaySurvivalGame, survivalGame },
-                {GameState.Quit, mainMenu },
-                {GameState.GameModesMenu, gameModesMenu },
-                {GameState.CharacterMenu, characterMenu },
-                {GameState.Credits, credits },
-                {GameState.Paused, pausedMenu },
-                {GameState.MultiplayerMenu, multiplayerMenu },
-                {GameState.About, aboutMenu },
-                {GameState.GameOver, gameOver }
+                {GameState.Intro, gameIntro},
+                {GameState.MainMenu, mainMenu},
+                {GameState.PlaySurvivalGame, survivalGame},
+                {GameState.Quit, mainMenu},
+                {GameState.GameModesMenu, gameModesMenu},
+                {GameState.CharacterMenu, characterMenu},
+                {GameState.Credits, credits},
+                {GameState.Paused, pausedMenu},
+                {GameState.MultiplayerMenu, multiplayerMenu},
+                {GameState.About, aboutMenu},
+                {GameState.GameOver, gameOver}
             };
         }
 
@@ -122,49 +126,18 @@ namespace Game
         // state we are we use that state's draw method.
         public void Draw(GameTime gameTime)
         {
-            //sb.GraphicsDevice.Clear(Color.Black);
-            switch (CurrentGameState)
+            if (CurrentGameState == GameState.Paused)
             {
-
-                case GameState.Intro:
-                    gameIntro.Draw(gameTime, spriteBatch);
-                    break;
-
-                case GameState.MainMenu:
-                    mainMenu.Draw(gameTime, spriteBatch);
-                    break;
-
-                case GameState.PlaySurvivalGame:
-                    survivalGame.Draw(gameTime, spriteBatch);
-                    break;
-
-                case GameState.Quit:
-                    Engine.Dependencies.Game.Exit();
-                    break;
-
-                case GameState.GameModesMenu:
-                    gameModesMenu.Draw(gameTime, spriteBatch);
-                    break;
-
-                case GameState.CharacterMenu:
-                    characterMenu.Draw(gameTime, spriteBatch);
-                    break;
-
-                case GameState.Credits:
-                    credits.Draw(gameTime, spriteBatch);
-                    break;
-                case GameState.Paused:
-                    pausedMenu.Draw(gameTime, spriteBatch);
-                    break;
-                case GameState.MultiplayerMenu:
-                    multiplayerMenu.Draw(gameTime, spriteBatch);
-                    break;
-                case GameState.About:
-                    aboutMenu.Draw(gameTime, spriteBatch);
-                    break;
-                case GameState.GameOver:
-                    gameOver.Draw(gameTime, spriteBatch);
-                    break;
+                Engine.Dependencies.Game.GraphicsDevice.Viewport = Viewport;
+            }
+            
+            if (CurrentGameState == GameState.Quit)
+            {
+                Engine.Dependencies.Game.Exit();
+            }
+            else if(GameStateMenuMap.ContainsKey(CurrentGameState))
+            {
+                    GameStateMenuMap[CurrentGameState].Draw(gameTime, spriteBatch);
             }
         }
 
@@ -176,28 +149,25 @@ namespace Game
             {
                 virtualGamePad.UpdateKeyboardState();
             }
-
-            if(CurrentGameState == GameState.Quit)
-            {
-                Engine.Dependencies.Game.Exit();
-            }
-            else if(CurrentGameState == GameState.Paused)
+            
+            if (CurrentGameState == GameState.Paused)
             {
                 Engine.Dependencies.Game.GraphicsDevice.Viewport = Viewport;
             }
-            else
+            
+            if (CurrentGameState == GameState.Quit)
             {
-                if (GameStateMenuMap.ContainsKey(CurrentGameState))
-                {
-                    GameStateMenuMap[CurrentGameState].Update(gameTime);
-                }
+                Engine.Dependencies.Game.Exit();
             }
-
+            else if(GameStateMenuMap.ContainsKey(CurrentGameState))
+            {
+                GameStateMenuMap[CurrentGameState].Update(gameTime);
+            }
+            
             foreach (var virtualGamePad in virtualInputCollection.VirtualGamePads)
             {
                 virtualGamePad.MoveCurrentStatesToOld();
             }
         }
-
     }
 }

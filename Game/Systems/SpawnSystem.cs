@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
@@ -187,7 +188,7 @@ namespace Game.Systems
         }
 
         // Spawing the zombies outside of the players view.
-        private Vector2 GetSpawnPosition(WorldComponent world, Dictionary<uint, IComponent> cameraComponents, Random random)
+        private Vector2 GetSpawnPosition(Spelkonstruktionsprojekt.ZEngine.Components.WorldComponent world, Dictionary<uint, IComponent> cameraComponents, Random random)
         {
             if (cameraComponents == null) return default(Vector2);
             int x = 0, y = 0;

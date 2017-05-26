@@ -35,18 +35,26 @@ namespace Game.Menu.States
         public VirtualGamePad VirtualGamePad { get; }
 
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
+
         private GameManager gameManager;
+
         //private ControlsConfig controls;
         private bool isInitialized = false;
+
         private Boolean isIngame = true;
         private GamePlayers players;
         private GameMap maps = new GameMap();
+
         private GameEnemies enemies = new GameEnemies();
-      //  private GamePickups pickups = new GamePickups();
+
+        //  private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
+
         private Pickups pickups = new Pickups();
+
         // Systems
         private SoundSystem soundSystem;
+
         private SpawnSystem spawnSystem;
         private WeaponSystem weaponSystem = new WeaponSystem();
         private Timer timer;
@@ -70,7 +78,8 @@ namespace Game.Menu.States
             // other stuff
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
             players = new GamePlayers(gameManager.gameConfig, gameViewports);
-            timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"), gameViewports.defaultView);
+            timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
+                gameViewports.defaultView);
             backgroundMusic = new BackgroundMusic();
         }
 
@@ -80,7 +89,7 @@ namespace Game.Menu.States
             {
                 Initialize();
                 gameManager.Engine.LoadContent();
-                backgroundMusic.LoadSongs("bg_music1","bg_music3", "bg_music3", "bg_music4");
+                backgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
                 weaponSystem.Start();
                 weaponSystem.LoadBulletSpriteEntity();
                 isInitialized = true;
@@ -101,19 +110,19 @@ namespace Game.Menu.States
                 case 1:
                     break;
                 case 2:
-                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"), gameViewports.defaultView.TitleSafeArea, Color.White);
+                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("border"),
+                        gameViewports.defaultView.TitleSafeArea, Color.White);
                     break;
                 default:
-                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("Images/4border"), gameViewports.defaultView.TitleSafeArea, Color.White);
+                    spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("Images/4border"),
+                        gameViewports.defaultView.TitleSafeArea, Color.White);
                     break;
-
             }
             spriteBatch.End();
         }
 
         public void Update(GameTime gameTime)
-        {            
-        
+        {
             if (VirtualGamePad.Is(Pause, Pressed))
             {
                 MenuNavigator.Pause();
@@ -122,21 +131,21 @@ namespace Game.Menu.States
             // Waiting for the countdown to finnish
             //if (!timer.IsCounting)
             //{
-                backgroundMusic.PlayMusic();
+            backgroundMusic.PlayMusic();
 
-                gameManager.Engine.Update(gameTime);
+            gameManager.Engine.Update(gameTime);
 
-                if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
-                {
-                    spawnSystem.HandleWaves();
-                }
+            if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
+            {
+                spawnSystem.HandleWaves();
+            }
 
 
-                if (life.CheckIfNotAlive())
-                {
-                    gameManager.CurrentGameState = GameManager.GameState.GameOver;
-                }
-           // }
+            if (life.CheckIfNotAlive())
+            {
+                gameManager.CurrentGameState = GameManager.GameState.GameOver;
+            }
+            // }
         }
 
         // To initialize game content when navigating
@@ -152,10 +161,10 @@ namespace Game.Menu.States
             maps.SetupMap(gameManager.gameConfig);
             players.CreatePlayers(maps);
             enemies.CreateMonster("player_sprites");
-          //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
-          //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
-          //  pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200)); 
-           pickups.CreatePickups();           
+            //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
+            //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
+            //  pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200)); 
+            pickups.CreatePickups();
             CreateGameEntities();
             CreateDefaultViewport();
         }
@@ -189,8 +198,9 @@ namespace Game.Menu.States
         private void SetupGameScoreEntity()
         {
             var gameScoreComponent = ComponentManager.Instance.ComponentFactory.NewComponent<GameScoreComponent>();
-            ComponentManager.Instance.AddComponentToEntity(gameScoreComponent, EntityManager.GetEntityManager().NewEntity());
-        }        
+            ComponentManager.Instance.AddComponentToEntity(gameScoreComponent,
+                EntityManager.GetEntityManager().NewEntity());
+        }
 
         private void SetupHUD()
         {
@@ -207,10 +217,10 @@ namespace Game.Menu.States
                 .Build();
 
             new EntityBuilder()
-               .SetHUD(true)
-               .SetPosition(new Vector2(550, 1000))
-               .SetSprite("ammo")
-               .Build();
+                .SetHUD(true)
+                .SetPosition(new Vector2(550, 1000))
+                .SetSprite("ammo")
+                .Build();
 
             //new EntityBuilder()
             //   .SetHUD(true)
@@ -227,7 +237,7 @@ namespace Game.Menu.States
             var bulletSpriteComponent = ComponentFactory.NewComponent<BulletFlyweightComponent>();
             var soundComponent = ComponentFactory.NewComponent<SoundComponent>();
             //soundComponent.SoundEffectName = "winchester_fire";
-           // ComponentManager.Instance.AddComponentToEntity(soundComponent, entityId);
+            // ComponentManager.Instance.AddComponentToEntity(soundComponent, entityId);
             ComponentManager.Instance.AddComponentToEntity(bulletSprite, entityId);
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, entityId);
         }
@@ -243,11 +253,11 @@ namespace Game.Menu.States
                 .GetEntityKey();
 
             var offsetComponent = ComponentFactory.NewComponent<RenderOffsetComponent>();
-            offsetComponent.Offset = new Vector2((float) (viewportDimensions.X * 0.25), (float) (viewportDimensions.Y * 0.25));
+            offsetComponent.Offset = new Vector2((float) (viewportDimensions.X * 0.25),
+                (float) (viewportDimensions.Y * 0.25));
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
         }
-
 
 
         private void CreateGlobalSpawnSpriteEntity()
