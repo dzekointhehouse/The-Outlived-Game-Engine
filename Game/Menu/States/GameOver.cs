@@ -82,7 +82,7 @@ namespace Game.Menu.States
             string record = "Record: " + score[0];
 
             spriteBatch.Begin();
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, record, new Vector2(380, 80), Color.Red);
+            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, record, new Vector2(50, 200), Color.Red);
             spriteBatch.End();
 
 
