@@ -141,6 +141,7 @@
     <Compile Include="ZEngine\Systems\Motion\GamePadMovementSystem.cs" />
     <Compile Include="ZEngine\Systems\Motion\InertiaDampenerSystem.cs" />
     <Compile Include="ZEngine\Systems\Motion\MoveSystem.cs" />
+    <Compile Include="ZEngine\Systems\PickupSpawnSystem.cs" />
     <Compile Include="ZEngine\Systems\ReloadSystem.cs" />
     <Compile Include="ZEngine\Systems\ScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\Rendering\SpriteAnimationSystem.cs" />

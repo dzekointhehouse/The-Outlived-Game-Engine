@@ -54,7 +54,9 @@ namespace ZEngine.Managers
             { typeof(ReloadSystem), new ReloadSystem() },
             { typeof(ScoreSystem), new ScoreSystem() },
             { typeof(HighScoreSystem), new HighScoreSystem() },
-            { typeof(AiWallCollisionSystem), new AiWallCollisionSystem() }
+            { typeof(AiWallCollisionSystem), new AiWallCollisionSystem() },
+            { typeof(PickupSpawnSystem), new PickupSpawnSystem() }
+
         };
 
         // _____________________________________________________________________________________________________________________ //

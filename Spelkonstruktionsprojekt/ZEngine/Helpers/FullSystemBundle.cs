@@ -51,6 +51,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<PickupCollisionSystem>().Start();
             manager.Get<ReloadSystem>().Start();
             manager.Get<EntityRemovalSystem>().Start();
+            manager.Get<PickupSpawnSystem>().Start();
         }
 
         public void LoadContent()
