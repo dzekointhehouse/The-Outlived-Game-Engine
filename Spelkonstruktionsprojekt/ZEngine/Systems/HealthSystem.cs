@@ -62,7 +62,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                     positionComponent.ZIndex = 2;
                 }
-                EventBus.Instance.Publish(EventConstants.DeathSound, entityId);
+                EventBus.Instance.Publish(EventConstants.Death, entityId);
                 StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
 
             }
