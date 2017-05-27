@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using Light = Penumbra.Light;
+using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
@@ -22,6 +25,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // later when we call build all the components will be 
         // added to the new entity, whiltst creating it's id.
         private readonly List<IComponent> components = new List<IComponent>();
+
         private readonly uint _key = EntityManager.GetEntityManager().NewEntity();
 
         private ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
@@ -40,15 +44,35 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetHUD(bool isOnlyHUD, string spritefont = "ZEone", string text = null, bool showStats = false)
+        public EntityBuilder SetHUD(bool isOnlyHUD, string spritefont = "ZEone", string text = null,
+            bool showStats = false)
         {
-
             var component = ComponentFactory.NewComponent<RenderHUDComponent>();
             component.HUDtext = text;
             component.ShowStats = showStats;
             component.IsOnlyHUD = isOnlyHUD;
             components.Add(component);
             component.SpriteFont = spritefont;
+            return this;
+        }
+
+        public EntityBuilder SetHull()
+        {
+            var component = ComponentFactory.NewComponent<HullComponent>();
+            component.Hull = new Hull(
+                new Vector2(1.0f), 
+                new Vector2(-1.0f, 1.0f), 
+                new Vector2(-1.0f),
+                new Vector2(1.0f, -1.0f)
+            );
+            component.Hull.Scale = new Vector2(25f);
+            component.Hull.Position = new Vector2(600, 600);
+            var isValid = component.Hull.Valid;
+            if (isValid)
+            {
+                Debug.WriteLine("isValid");
+            }
+            components.Add(component);
             return this;
         }
 
@@ -67,7 +91,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder FromLoadedSprite(Texture2D sprite, string spriteName, Point startPosition = default(Point), int tileWidth = 0,
+        public EntityBuilder FromLoadedSprite(Texture2D sprite, string spriteName, Point startPosition = default(Point),
+            int tileWidth = 0,
             int tileHeight = 0, float scale = 1f, float alpha = 1f)
         {
             var component = ComponentFactory.NewComponentFromLoadedSprite(sprite, spriteName);
@@ -84,6 +109,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         {
             var component = ComponentFactory.NewComponent<LightComponent>();
             component.Light = light;
+            light.ShadowType = ShadowType.Solid;
             components.Add(component);
             return this;
         }
@@ -104,6 +130,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             components.Add(component);
             return this;
         }
+
         public EntityBuilder SetSpawn(int Wavesize)
         {
             var component = ComponentFactory.NewComponent<SpawnComponent>();
@@ -142,7 +169,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public EntityBuilder SetScore()
         {
-            var component = ComponentFactory.NewComponent <EntityScoreComponent>();
+            var component = ComponentFactory.NewComponent<EntityScoreComponent>();
             component.score = 0;
             components.Add(component);
             return this;
@@ -175,7 +202,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetSound(string soundName = null, Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = null, float volume = 1)
+        public EntityBuilder SetSound(string soundName = null,
+            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = null, float volume = 1)
         {
             var component = ComponentFactory.NewComponent<SoundComponent>();
             component.SoundList = soundList;

@@ -195,7 +195,6 @@ namespace Game.Systems
             }
         }
 
-
         // This method is supposed to be used to subscribe to events
         // where the entity is walking. We check if a key is pressed,
         // then we check if the entity has the right components.

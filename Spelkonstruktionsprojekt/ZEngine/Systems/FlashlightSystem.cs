@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
-using UnityEngine;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
@@ -56,8 +56,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 hull.Hull.Position = positionComponent.Position;
                 hull.Hull.Enabled = true;
-                if (hull.Hull.Valid)
-                    Debug.Log("Hello");
                 penumbra.Hulls.Add(hull.Hull);
             }
             

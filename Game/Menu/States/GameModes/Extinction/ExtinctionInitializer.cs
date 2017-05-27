@@ -3,6 +3,7 @@ using Game.Services;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
+using Spelkonstruktionsprojekt.ZEngine.GameObjects;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
@@ -22,7 +23,8 @@ namespace Game.Menu.States.GameModes.Extinction
         private GameEnemies GameEnemies { get; set; }
 
         private PickupFactory PickupFactory { get; set; } = new PickupFactory();
-
+        private LampFactory LampFactory { get; set; } = new LampFactory();
+        
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
@@ -44,9 +46,12 @@ namespace Game.Menu.States.GameModes.Extinction
             //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
             //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
             //  pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200)); 
-            PickupFactory.CreatePickups();
+//            PickupFactory.CreatePickups();
             CreateGameEntities();
             CreateDefaultViewport();
+
+//            LampFactory.FlickeringLamp();
+            LampFactory.HullTester();
         }
 
         private void CreateDefaultViewport()
@@ -65,15 +70,9 @@ namespace Game.Menu.States.GameModes.Extinction
             var cameraCageId = SetupCameraCage();
             SetupHUD();
 
-            if (GameConfig.GameMode == GameModeMenu.GameModes.Survival)
-            {
-                CreateGlobalSpawnSpriteEntity();
-                CreateGlobalSpawnEntity();
-            }
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
             SetupHighScoreEntity();
-
             // SetupTempPlayerDeadSpriteFlyweight();
         }
 
