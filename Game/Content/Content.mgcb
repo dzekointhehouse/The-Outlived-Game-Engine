@@ -1328,3 +1328,27 @@
 /processorParam:Quality=Best
 /build:Sound/Clearwater.mp3
 
+#begin Sound/321Play/One.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/321Play/One.wav
+
+#begin Sound/321Play/Play.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/321Play/Play.wav
+
+#begin Sound/321Play/Three.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/321Play/Three.wav
+
+#begin Sound/321Play/Two.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/321Play/Two.wav
+

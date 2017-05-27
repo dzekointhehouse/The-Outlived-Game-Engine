@@ -104,8 +104,7 @@ namespace Game.Entities
                 position: maps.spawnPositionOne, // spawn point
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: false,
-                gamePadIndex: 0);
+                useGamePad: GamePad.GetState(0).IsConnected, gamePadIndex: 0);
         }
 
         private void InitPlayerTwo(Player player)
@@ -139,7 +138,7 @@ namespace Game.Entities
                 position: maps.spawnPositionTwo, // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: true, gamePadIndex: 1);
+                useGamePad: GamePad.GetState(1).IsConnected, gamePadIndex: 1);
         }
 
         private void InitPlayerThree(Player player)
@@ -172,7 +171,7 @@ namespace Game.Entities
                 position: maps.spawnPositionThree, // spawn point,
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: false, gamePadIndex: 2);
+                useGamePad: GamePad.GetState(2).IsConnected, gamePadIndex: 2);
         }
 
         private void InitPlayerFour(Player player)

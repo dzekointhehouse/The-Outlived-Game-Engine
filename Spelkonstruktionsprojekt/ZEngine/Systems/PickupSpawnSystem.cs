@@ -4,6 +4,8 @@ using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using System;
+using System.Linq;
+using Spelkonstruktionsprojekt.ZEngine.Components;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -42,24 +44,38 @@ namespace ZEngine.Systems
         }
         private void AddPickup(string spritename, Vector2 position)
         {
+            var flyweightEntityList = ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+            if (flyweightEntityList.Count == 0){return;}
+            var flyweightEntity = flyweightEntityList.FirstOrDefault();
+            var spriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(flyweightEntity.Key);
+            var soundComponent = ComponentManager.GetEntityComponentOrDefault<SoundComponent>(flyweightEntity.Key);
+
+
+
             var entity = new EntityBuilder()
                 .SetRendering(40, 40)
                 .SetRectangleCollision()
                 .SetPosition(position, 500)
-                .SetSprite(spritename)
-                .SetSound("pickup")
+                
                 .Build()
                 .GetEntityKey();
+
+
+
+            ComponentManager.AddComponentToEntity(soundComponent, entity);
+
 
             if (spritename == "healthpickup")
             {
                 var pick = ComponentManager.Instance.ComponentFactory.NewComponent<HealthPickupComponent>();
                 ComponentManager.Instance.AddComponentToEntity(pick, entity);
+                ComponentManager.AddComponentToEntity(spriteComponent, entity);
             }
             else if (spritename == "ammopickup")
             {
                 var pick = ComponentManager.Instance.ComponentFactory.NewComponent<AmmoPickupComponent>();
                 ComponentManager.Instance.AddComponentToEntity(pick, entity);
+                ComponentManager.AddComponentToEntity(spriteComponent, entity);
             }
         }
     }
