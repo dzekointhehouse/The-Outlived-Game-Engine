@@ -109,13 +109,13 @@ namespace Game.Menu.States.GameModes.Extinction
             ExtinctionInitializer = new ExtinctionInitializer(GameViewports, GameConfig);
             Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
+            ExtinctionInitializer.InitializeEntities();
             
             // Loading this projects content to be used by the game engine.
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
-            ExtinctionInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
-            CreateEnemy();
+//            CreateEnemy();
             WeaponSystem.LoadBulletSpriteEntity();
 
             SoundSystem.Start();

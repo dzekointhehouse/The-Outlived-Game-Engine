@@ -89,9 +89,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     {
                         var collision = ComponentFactory.NewComponent<CollisionComponent>();
                         ComponentManager.Instance.AddComponentToEntity(collision, id);
+                        var hull = new Hull(
+                            new Vector2(1.0f), 
+                            new Vector2(-1.0f, 1.0f), 
+                            new Vector2(-1.0f),
+                            new Vector2(1.0f, -1.0f)
+                        );
+                        hull.Scale = new Vector2(size * 0.5f);
+                        hull.Position = new Vector2(x, y);
                         var hullComponent = new HullComponent()
                         {
-                            Hull = new Hull(new Vector2(posComponent.Position.X, y * size), new Vector2(x * size, y * size), new Vector2(x * size, y), new Vector2(x, y * size))
+                            Hull = hull
                         };
                         ComponentManager.Instance.AddComponentToEntity(hullComponent, id);
                     }

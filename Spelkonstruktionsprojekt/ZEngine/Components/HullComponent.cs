@@ -13,7 +13,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public Hull Hull { get; set; }
         public IComponent Reset()
         {
-            return default(HullComponent);
+            Hull = null;
+            return this;
         }
     }
 }
