@@ -9,7 +9,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     class HighScoreComponent : IComponent
     {
-        public string[] name = new string[10];
+        //public string[] name = new string[10];
         public string[] score = new string[10];
         public string path;
         public IComponent Reset()
