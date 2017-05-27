@@ -154,5 +154,10 @@ namespace ZEngine.Systems
                 );
             }
         }
+
+        public void ClearCache()
+        {
+            _cache.Clear();
+        }
     }
 }

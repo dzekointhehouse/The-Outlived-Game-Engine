@@ -39,7 +39,6 @@ namespace Game.Entities
             this.viewports = gameViewports.GetViewports();
         }
 
-
         public void CreatePlayers(GameMap maps)
         {
             this.maps = maps;
@@ -280,7 +279,6 @@ namespace Game.Entities
 
             ComponentManager.Instance.AddComponentToEntity(actionBindings, playerEntity.GetEntityKey());
             ComponentManager.Instance.AddComponentToEntity(animationBindings, playerEntity.GetEntityKey());
-
 
             var cageComponent = ComponentManager.Instance.ComponentFactory.NewComponent<CageComponent>();
             cageComponent.CageId = cageId;

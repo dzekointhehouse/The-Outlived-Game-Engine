@@ -91,5 +91,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
             manager.Get<RenderHUDSystem>().Draw(Dependencies); // not noticable
         }
+
+        public void ClearCaches()
+        {
+            manager.Get<RenderSystem>().ClearCache();
+            manager.Get<CollisionSystem>().ClearCache();
+        }
     }
 }

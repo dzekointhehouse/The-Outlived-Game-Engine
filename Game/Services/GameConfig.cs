@@ -14,6 +14,7 @@ namespace Game.Services
 
         public void Reset()
         {
+            Players.Clear();
             Players = new List<Player>();
             GameMode = GameModes.Exit;
         }

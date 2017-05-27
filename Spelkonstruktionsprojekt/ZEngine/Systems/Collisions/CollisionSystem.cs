@@ -378,5 +378,10 @@ namespace ZEngine.Systems
             // No intersection found
             return false;
         }
+
+        public void ClearCache()
+        {
+            cache.Clear();
+        }
     }
 }

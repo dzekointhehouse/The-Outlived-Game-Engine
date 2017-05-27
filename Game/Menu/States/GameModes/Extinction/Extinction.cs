@@ -1,5 +1,3 @@
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using Game.Entities;
 using Game.Services;
 using Game.Systems;
 using Microsoft.Xna.Framework;
@@ -10,13 +8,12 @@ using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Managers;
 using ZEngine.Systems;
-using ZEngine.Wrappers;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
 
-namespace Game.Menu.States.GameModes
+namespace Game.Menu.States.GameModes.Extinction
 {
-    public class Survival : IMenu, ILifecycle
+    public class Extinction : IMenu, ILifecycle
     {
         private GameConfig GameConfig { get; }
         private Viewport Viewport { get; }
@@ -25,7 +22,6 @@ namespace Game.Menu.States.GameModes
         private VirtualGamePad MenuController { get; }
 
         private SoundSystem SoundSystem { get; set; } = new SoundSystem();
-        private SpawnSystem SpawnSystem { get; set; } = new SpawnSystem();
         private WeaponSystem WeaponSystem { get; set; } = new WeaponSystem();
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
 
@@ -33,9 +29,9 @@ namespace Game.Menu.States.GameModes
         private Timer Timer { get; set; }
         private GameViewports GameViewports { get; set; }
 
-        private SurvivalInitializer SurvivalInitializer { get; set; }
+        private ExtinctionInitializer ExtinctionInitializer { get; set; }
         
-        public Survival(GameModeDependencies dependencies)
+        public Extinction(GameModeDependencies dependencies)
         {
             GameConfig = dependencies.GameConfig;
             Viewport = dependencies.Viewport;
@@ -86,7 +82,6 @@ namespace Game.Menu.States.GameModes
             
             Timer.Update(gameTime);
             BackgroundMusic.PlayMusic();
-            SpawnSystem.HandleWaves();
             SystemsBundle.Update(gameTime);
             
             if (HealthSystem.CheckIfAllPlayersAreDead())
@@ -103,14 +98,14 @@ namespace Game.Menu.States.GameModes
         {
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
-            SurvivalInitializer = new SurvivalInitializer(GameViewports, GameConfig);
+            ExtinctionInitializer = new ExtinctionInitializer(GameViewports, GameConfig);
             Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
             
             // Loading this projects content to be used by the game engine.
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
-            SurvivalInitializer.InitializeEntities();
+            ExtinctionInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
 

@@ -49,10 +49,11 @@ namespace Game.Menu.States
             {
                 if (virtualInput.Is(Pause, Pressed))
                 {
-                    MenuNavigator.GoBack();
+                    MenuNavigator.Pause();
                 }
                 else if(virtualInput.Is(Cancel, Pressed))
                 {
+                    MenuNavigator.Pause();
                     MenuNavigator.GoTo(GameManager.GameState.MainMenu);
                 }
             }

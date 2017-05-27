@@ -1,5 +1,3 @@
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using Game.Entities;
 using Game.Services;
 using Game.Systems;
 using Microsoft.Xna.Framework;
@@ -10,32 +8,31 @@ using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Managers;
 using ZEngine.Systems;
-using ZEngine.Wrappers;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
 
-namespace Game.Menu.States.GameModes
+namespace Game.Menu.States.GameModes.DeathMatch
 {
-    public class Survival : IMenu, ILifecycle
+    public class DeathMatch : IMenu, ILifecycle
     {
-        private GameConfig GameConfig { get; }
-        private Viewport Viewport { get; }
-        private FullSystemBundle SystemsBundle { get; }
-        private MenuNavigator MenuNavigator { get; }
-        private VirtualGamePad MenuController { get; }
-
+        public VirtualGamePad MenuController { get; set; }
+        public FullSystemBundle SystemsBundle { get; set; }
+        public MenuNavigator MenuNavigator { get; set; }
+        public GameConfig GameConfig { get; set; }
+        public Viewport Viewport { get; set; }
+        
         private SoundSystem SoundSystem { get; set; } = new SoundSystem();
-        private SpawnSystem SpawnSystem { get; set; } = new SpawnSystem();
+
         private WeaponSystem WeaponSystem { get; set; } = new WeaponSystem();
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
 
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
         private Timer Timer { get; set; }
         private GameViewports GameViewports { get; set; }
-
-        private SurvivalInitializer SurvivalInitializer { get; set; }
         
-        public Survival(GameModeDependencies dependencies)
+        private DeathMatchInitializer DeathMatchInitializer { get; set; }
+        
+        public DeathMatch(GameModeDependencies dependencies)
         {
             GameConfig = dependencies.GameConfig;
             Viewport = dependencies.Viewport;
@@ -55,7 +52,7 @@ namespace Game.Menu.States.GameModes
         {
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
-            
+
             // Should move to HUD which should render defaultview
             spriteBatch.Begin();
             var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
@@ -83,12 +80,11 @@ namespace Game.Menu.States.GameModes
             {
                 MenuNavigator.Pause();
             }
-            
+
             Timer.Update(gameTime);
             BackgroundMusic.PlayMusic();
-            SpawnSystem.HandleWaves();
             SystemsBundle.Update(gameTime);
-            
+
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
                 MenuNavigator.GoTo(GameManager.GameState.GameOver);
@@ -103,14 +99,14 @@ namespace Game.Menu.States.GameModes
         {
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
-            SurvivalInitializer = new SurvivalInitializer(GameViewports, GameConfig);
+            DeathMatchInitializer = new DeathMatchInitializer(GameViewports, GameConfig);
             Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
-            
+
             // Loading this projects content to be used by the game engine.
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
-            SurvivalInitializer.InitializeEntities();
+            DeathMatchInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
 
@@ -121,10 +117,10 @@ namespace Game.Menu.States.GameModes
         }
 
         public void BeforeHide()
-        {
+        {            
             SoundSystem.Stop();
             WeaponSystem.Stop();
-            
+//            
 //            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
 //            {
 //                ComponentManager.Instance.DeleteEntity(entity);

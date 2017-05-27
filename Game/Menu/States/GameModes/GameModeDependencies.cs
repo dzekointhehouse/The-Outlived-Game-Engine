@@ -10,6 +10,6 @@ namespace Game.Menu.States.GameModes
         public Viewport Viewport { get; set; }
         public FullSystemBundle SystemsBundle { get; set; }
         public MenuNavigator MenuNavigator { get; set; }
-        public VirtualGamePad VirtualGamePad { get; set; }
+        public PlayerVirtualInputCollection VirtualInputs { get; set; }
     }
 }
