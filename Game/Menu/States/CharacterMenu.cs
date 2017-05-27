@@ -23,7 +23,7 @@ namespace Game.Menu.States
     /// choose from different characters that are to be used in the 
     /// game by the player or players.
     /// </summary>
-    public class CharacterMenu : IMenu
+    public class CharacterMenu : IMenu, ILifecycle
     {
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
@@ -225,8 +225,16 @@ namespace Game.Menu.States
 
         public void Reset()
         {
+        }
+
+        public void BeforeShow()
+        {
             ResetCharacterSelection();
             CurrentPlayerIndex = 0;
+        }
+
+        public void BeforeHide()
+        {
         }
     }
 }

@@ -17,7 +17,7 @@ using static Game.Services.VirtualGamePad.MenuKeyStates;
 
 namespace Game.Menu.States
 {
-    public class MultiplayerMenu : IMenu
+    public class MultiplayerMenu : IMenu, ILifecycle
     {
         public MenuNavigator MenuNavigator { get; }
         public PlayerVirtualInputCollection VirtualInputCollection { get; }
@@ -186,6 +186,10 @@ namespace Game.Menu.States
 
         public void Reset()
         {
+        }
+
+        public void BeforeShow()
+        {
             ResetPlayerChoicesState();
             
             for (var i = 0; i < PlayerChoices.Length; i++)
@@ -193,6 +197,10 @@ namespace Game.Menu.States
                 PlayerChoices[i].ButtonNavigator.CurrentIndex = 1; // Set start position to second choice "NoTeam"
                 PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
             }
+        }
+
+        public void BeforeHide()
+        {
         }
     }
 }

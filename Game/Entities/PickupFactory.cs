@@ -11,13 +11,8 @@ using ZEngine.Managers;
 
 namespace Game.Entities
 {
-    class Pickups
+    class PickupFactory
     {
-        public Pickups()
-        {
-            
-        }
-
         public void CreatePickups()
         {
             CreateFlyweightAmmopickupEntity();

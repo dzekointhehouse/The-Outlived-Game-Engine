@@ -137,6 +137,8 @@ namespace Game
             LifecycleStates = new Dictionary<GameState, ILifecycle>
             {
                 {GameState.PlaySurvivalGame, (ILifecycle) survivalGame},
+                {GameState.MultiplayerMenu, (ILifecycle) multiplayerMenu},
+                {GameState.CharacterMenu, (ILifecycle) characterMenu}
             };
         }
 

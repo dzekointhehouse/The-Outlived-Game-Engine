@@ -50,7 +50,7 @@ namespace Game.Menu.States
         //  private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
 
-        private Pickups pickups = new Pickups();
+        private PickupFactory pickups = new PickupFactory();
 
         // Systems
         private SoundSystem soundSystem;
@@ -68,19 +68,19 @@ namespace Game.Menu.States
 
         public InGame(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
-            MenuNavigator = menuNavigator;
-            VirtualGamePad = virtualGamePad;
-            this.gameManager = gameManager;
+            MenuNavigator = menuNavigator; //
+            VirtualGamePad = virtualGamePad; //
+            this.gameManager = gameManager; 
 
             // Initializing systems
-            soundSystem = new SoundSystem();
-            spawnSystem = new SpawnSystem();
+            soundSystem = new SoundSystem(); //
+            spawnSystem = new SpawnSystem(); //
             // other stuff
-            gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport);
-            players = new GamePlayers(gameManager.gameConfig, gameViewports);
-            timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
-                gameViewports.defaultView);
-            backgroundMusic = new BackgroundMusic();
+            gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport); //
+            players = new GamePlayers(gameManager.gameConfig, gameViewports); //
+            timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"), 
+                gameViewports.defaultView); //
+            backgroundMusic = new BackgroundMusic();///
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -141,7 +141,7 @@ namespace Game.Menu.States
             }
 
 
-            if (life.CheckIfNotAlive())
+            if (life.CheckIfAllPlayersAreDead())
             {
                 gameManager.CurrentGameState = GameManager.GameState.GameOver;
             }
