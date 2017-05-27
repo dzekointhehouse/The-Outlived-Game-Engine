@@ -17,6 +17,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         private void readFile(HighScoreComponent highScore)
         {
             highScore.path = Directory.GetCurrentDirectory() + "\\saveScore";
+            if (!(File.Exists(highScore.path)))
+            {
+                string[] score = { "-99999", "-99999", "-99999", "-99999", "-99999", "-99999", "-99999", "-99999", "-99999", "-99999" };
+                File.WriteAllLines(highScore.path, score);
+            }
             highScore.score = File.ReadAllLines(highScore.path); 
         }
 

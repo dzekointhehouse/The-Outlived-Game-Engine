@@ -1,11 +1,17 @@
+using System;
+using System.Collections.Generic;
 using Game.Services;
 using Game.Systems;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
+using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using static Game.Services.VirtualGamePad.MenuKeys;
@@ -86,7 +92,9 @@ namespace Game.Menu.States.GameModes.Extinction
             
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
-                MenuNavigator.GoTo(GameManager.GameState.GameOver);
+
+                BackgroundMusic.ClearList();
+                MenuNavigator.GoTo(GameManager.GameState.GameOverCredits);
             }
         }
 
@@ -107,6 +115,7 @@ namespace Game.Menu.States.GameModes.Extinction
             SystemsBundle.LoadContent();
             ExtinctionInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
+            CreateEnemy();
             WeaponSystem.LoadBulletSpriteEntity();
 
             SoundSystem.Start();
@@ -127,6 +136,72 @@ namespace Game.Menu.States.GameModes.Extinction
             ComponentManager.Instance.Clear();
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
+
+            MediaPlayer.Stop();
+
+                Song song = OutlivedGame.Instance().Get<Song>("Sound/Clearwater");
+                MediaPlayer.Play(song);
+
+        }
+
+        public void CreateEnemy()
+        {
+            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = new Dictionary<SoundComponent.SoundBank, SoundEffectInstance>(1);
+
+            soundList.Add(SoundComponent.SoundBank.Death, OutlivedGame.Instance()
+                .Content.Load<SoundEffect>("Sound/Splash")
+                .CreateInstance());
+
+            var monster = new EntityBuilder()            
+                .SetPosition(new Vector2(300, 200), layerDepth: 20)
+                .SetRendering(200, 200)
+                .SetSprite("zombie1", new Point(1244, 311), 311, 311)
+                .SetSound(soundList: soundList)
+                .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
+                .SetArtificialIntelligence()
+                .SetSpawn()
+                .SetRectangleCollision()
+                .SetHealth()
+                .BuildAndReturnId();
+
+            var animationBindings = new SpriteAnimationBindingsBuilder()
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(1244, 311), new Point(622, 1244))
+                        .StateConditions(State.WalkingForward)
+                        .Length(60)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(933, 311))
+                        .StateConditions(State.Dead, State.WalkingForward)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(933, 311))
+                        .StateConditions(State.Dead, State.WalkingBackwards)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(933, 311))
+                        .StateConditions(State.Dead)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Build();
+
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
+
+            //TODO SEND STATE MANAGER A GAME TIME VALUE AND NOT 0
+            StateManager.TryAddState(monster, State.WalkingForward, 0);
         }
     }
 }
