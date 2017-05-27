@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
+using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
 using Vector2 = UnityEngine.Vector2;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
@@ -23,9 +24,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public void Recycle(Type componentType, IComponent component)
         {
-            if (component.GetType() == componentType)
+            try
             {
-                _scrapyard[componentType].Push(component);
+
+                if (component.GetType() == componentType)
+                {
+                    if (_scrapyard.ContainsKey(componentType))
+                    {
+                        _scrapyard[componentType].Push(component);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("REC");
             }
         }
 

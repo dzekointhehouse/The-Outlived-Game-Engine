@@ -128,6 +128,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
             }
         }
 
+        public void Clear()
+        {
+            foreach (var type in _components)
+            {
+                type.Value.Clear();
+            }
+            _components.Clear();
+        }
+
         // Deletes the entity from a given component's dictionary.
         public void RemoveComponentFromEntity<T>(uint entityId)
         {

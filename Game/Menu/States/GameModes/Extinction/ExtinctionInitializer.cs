@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.Remoting.Messaging;
 using Game.Entities;
 using Game.Services;
 using Microsoft.Xna.Framework;
@@ -9,32 +7,31 @@ using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
-using ZEngine.Systems;
 
-namespace Game.Menu.States.GameModes
+namespace Game.Menu.States.GameModes.Extinction
 {
-    public class SurvivalInitializer : IInitialize
+    public class ExtinctionInitializer : IInitialize
     {
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
-        
+
         public GameConfig GameConfig { get; }
         public GamePlayers GamePlayers { get; set; }
         public GameViewports GameViewports { get; }
 
         private GameMap GameMaps = new GameMap();
         private GameEnemies GameEnemies { get; set; }
-        
+
         private PickupFactory PickupFactory { get; set; } = new PickupFactory();
-        
+
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
-        public SurvivalInitializer(GameViewports gameViewports, GameConfig gameConfig)
+        public ExtinctionInitializer(GameViewports gameViewports, GameConfig gameConfig)
         {
             GameConfig = gameConfig;
             GameViewports = gameViewports;
         }
-        
+
         public void InitializeEntities()
         {
             // Loading this projects content to be used by the game engine.
@@ -51,7 +48,7 @@ namespace Game.Menu.States.GameModes
             CreateGameEntities();
             CreateDefaultViewport();
         }
-        
+
         private void CreateDefaultViewport()
         {
             var entity = EntityManager.GetEntityManager().NewEntity();
@@ -165,6 +162,5 @@ namespace Game.Menu.States.GameModes
             var spawncomponent = ComponentFactory.NewComponent<GlobalSpawnComponent>();
             ComponentManager.Instance.AddComponentToEntity(spawncomponent, global.GetEntityKey());
         }
-
     }
 }

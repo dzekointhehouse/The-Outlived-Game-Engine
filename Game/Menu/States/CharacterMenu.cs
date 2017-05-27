@@ -173,7 +173,14 @@ namespace Game.Menu.States
             if (MediaPlayer.State != MediaState.Stopped)
                 MediaPlayer.Stop();
             
-            MenuNavigator.GoTo(PlaySurvivalGame);
+            //In the future game mode enum should ignored over using just GameManager states instaed
+            var states = new Dictionary<GameModeMenu.GameModes, GameManager.GameState>()
+            {
+                {GameModeMenu.GameModes.Blockworld, PlayDeathMatch},
+                {GameModeMenu.GameModes.Survival, PlaySurvivalGame},
+                {GameModeMenu.GameModes.Extinction, PlayExtinction},
+            };
+            MenuNavigator.GoTo(states[GameConfig.GameMode]);
         }
         
         // The update method for this class

@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>bin1\Windows\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>bin1\Windows\x86\Release\</OutputPath>
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -53,6 +53,10 @@
     <Compile Include="MenuContent.cs" />
     <Compile Include="Menu\Lifecycle.cs" />
     <Compile Include="Menu\States\About.cs" />
+    <Compile Include="Menu\States\GameModes\DeathMatch\DeathMatch.cs" />
+    <Compile Include="Menu\States\GameModes\DeathMatch\DeathMatchInitializer.cs" />
+    <Compile Include="Menu\States\GameModes\Extinction\Extinction.cs" />
+    <Compile Include="Menu\States\GameModes\Extinction\ExtinctionInitializer.cs" />
     <Compile Include="Menu\States\GameModes\GameModeDependencies.cs" />
     <Compile Include="Menu\States\GameModes\IInitialize.cs" />
     <Compile Include="Menu\States\GameModes\Survival\Survival.cs" />

@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.Remoting.Messaging;
 using Game.Entities;
 using Game.Services;
 using Microsoft.Xna.Framework;
@@ -9,11 +7,10 @@ using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
-using ZEngine.Systems;
 
-namespace Game.Menu.States.GameModes
+namespace Game.Menu.States.GameModes.DeathMatch
 {
-    public class SurvivalInitializer : IInitialize
+    public class DeathMatchInitializer : IInitialize
     {
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
         
@@ -29,10 +26,11 @@ namespace Game.Menu.States.GameModes
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
-        public SurvivalInitializer(GameViewports gameViewports, GameConfig gameConfig)
+        public DeathMatchInitializer(GameViewports gameViewports, GameConfig gameConfig)
         {
+          
             GameConfig = gameConfig;
-            GameViewports = gameViewports;
+            GameViewports = gameViewports;  
         }
         
         public void InitializeEntities()

@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Game.Menu;
 using Game.Menu.States;
+using Game.Menu.States.GameModes;
+using Game.Menu.States.GameModes.DeathMatch;
+using Game.Menu.States.GameModes.Extinction;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -65,6 +68,8 @@ namespace Game
             CharacterMenu,
             MultiplayerMenu,
             PlaySurvivalGame,
+            PlayDeathMatch,
+            PlayExtinction,
             Quit,
             Credits,
             Paused,
@@ -75,7 +80,7 @@ namespace Game
         public Dictionary<GameState, IMenu> GameStateMenuMap;
         private PlayerVirtualInputCollection virtualInputCollection;
         private Dictionary<GameState, ILifecycle> LifecycleStates;
-        
+
         public void SetCurrentState(GameState state)
         {
             if (LifecycleStates.ContainsKey(CurrentGameState))
@@ -89,7 +94,7 @@ namespace Game
             PreviousGameState = CurrentGameState;
             CurrentGameState = state;
         }
-        
+
         public GameManager(FullSystemBundle gameBundle)
         {
             Engine = gameBundle;
@@ -107,6 +112,14 @@ namespace Game
 
             MenuNavigator = new MenuNavigator(this);
 
+            var gameModeDependencies = new GameModeDependencies()
+            {
+                GameConfig = gameConfig,
+                MenuNavigator = MenuNavigator,
+                SystemsBundle = Engine,
+                Viewport = Viewport,
+                VirtualInputs = virtualInputCollection
+            };
             // initializing the states, remember:
             // all the states need to exist in the 
             // manager.
@@ -115,16 +128,23 @@ namespace Game
             characterMenu = new CharacterMenu(this, virtualInputCollection);
             credits = new Credits(this, MenuNavigator, virtualInputCollection.PlayerOne());
             gameIntro = new GameIntro(this, MenuNavigator, virtualInputCollection.PlayerOne());
-            survivalGame = new InGame(this, MenuNavigator, virtualInputCollection.PlayerOne());
             pausedMenu = new PausedMenu(this, MenuNavigator, virtualInputCollection);
             multiplayerMenu = new MultiplayerMenu(this, MenuNavigator, virtualInputCollection);
             aboutMenu = new AboutMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
             gameOver = new GameOver(this, MenuNavigator, virtualInputCollection.PlayerOne());
+
+            var gameModeSurvival = new Survival(gameModeDependencies);
+            var deathMatch = new DeathMatch(gameModeDependencies);
+            var extinction = new Extinction(gameModeDependencies);
+
             GameStateMenuMap = new Dictionary<GameState, IMenu>
             {
                 {GameState.Intro, gameIntro},
                 {GameState.MainMenu, mainMenu},
-                {GameState.PlaySurvivalGame, survivalGame},
+//                {GameState.PlaySurvivalGame, survivalGame},
+                {GameState.PlaySurvivalGame, gameModeSurvival},
+                {GameState.PlayDeathMatch, deathMatch},
+                {GameState.PlayExtinction, extinction},
                 {GameState.Quit, mainMenu},
                 {GameState.GameModesMenu, gameModesMenu},
                 {GameState.CharacterMenu, characterMenu},
@@ -136,7 +156,10 @@ namespace Game
             };
             LifecycleStates = new Dictionary<GameState, ILifecycle>
             {
-                {GameState.PlaySurvivalGame, (ILifecycle) survivalGame},
+//                {GameState.PlaySurvivalGame, (ILifecycle) survivalGame},
+                {GameState.PlaySurvivalGame, gameModeSurvival},
+                {GameState.PlayDeathMatch, deathMatch},
+                {GameState.PlayExtinction, extinction},
                 {GameState.MultiplayerMenu, (ILifecycle) multiplayerMenu},
                 {GameState.CharacterMenu, (ILifecycle) characterMenu}
             };
@@ -151,14 +174,14 @@ namespace Game
             {
                 Engine.Dependencies.Game.GraphicsDevice.Viewport = Viewport;
             }
-            
+
             if (CurrentGameState == GameState.Quit)
             {
                 Engine.Dependencies.Game.Exit();
             }
-            else if(GameStateMenuMap.ContainsKey(CurrentGameState))
+            else if (GameStateMenuMap.ContainsKey(CurrentGameState))
             {
-                    GameStateMenuMap[CurrentGameState].Draw(gameTime, spriteBatch);
+                GameStateMenuMap[CurrentGameState].Draw(gameTime, spriteBatch);
             }
         }
 
@@ -170,21 +193,21 @@ namespace Game
             {
                 virtualGamePad.UpdateKeyboardState();
             }
-            
+
             if (CurrentGameState == GameState.Paused)
             {
                 Engine.Dependencies.Game.GraphicsDevice.Viewport = Viewport;
             }
-            
+
             if (CurrentGameState == GameState.Quit)
             {
                 Engine.Dependencies.Game.Exit();
             }
-            else if(GameStateMenuMap.ContainsKey(CurrentGameState))
+            else if (GameStateMenuMap.ContainsKey(CurrentGameState))
             {
                 GameStateMenuMap[CurrentGameState].Update(gameTime);
             }
-            
+
             foreach (var virtualGamePad in virtualInputCollection.VirtualGamePads)
             {
                 virtualGamePad.MoveCurrentStatesToOld();
