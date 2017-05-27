@@ -1322,3 +1322,9 @@
 /processorParam:Quality=Best
 /build:Sound/Splash.wav
 
+#begin Sound/Clearwater.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/Clearwater.mp3
+

@@ -62,6 +62,7 @@
     <Compile Include="Menu\States\GameModes\Survival\Survival.cs" />
     <Compile Include="Menu\States\GameModes\Survival\SurvivalInitializer.cs" />
     <Compile Include="Menu\States\GameOver.cs" />
+    <Compile Include="Menu\States\GameOverCredits.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Services\ButtonNavigator.cs" />
     <Compile Include="Services\ControlsConfig.cs" />
