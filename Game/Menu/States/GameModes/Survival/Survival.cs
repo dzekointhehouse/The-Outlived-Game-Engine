@@ -107,8 +107,8 @@ namespace Game.Menu.States.GameModes
             Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
             
-            SystemsBundle.LoadContent();
             SurvivalInitializer.InitializeEntities();
+            SystemsBundle.LoadContent();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
 
