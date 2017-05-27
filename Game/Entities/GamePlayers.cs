@@ -97,7 +97,7 @@ namespace Game.Entities
                 .SetAction(Keys.F, EventConstants.LightStatus)
                 .SetAction(Keys.R, EventConstants.ReloadWeapon)
                 .Build();
-            
+
             CreatePlayer(
                 sprite: player.SpriteName,
                 actionBindings: actionBindings1,
@@ -205,8 +205,8 @@ namespace Game.Entities
             {
                 Position = position,
                 Scale = new Vector2(650f),
-                Radius = (float) 0.0008f,
-                Intensity = (float) 0.5,
+                Radius = (float)0.0008f,
+                Intensity = (float)0.5,
                 ShadowType = ShadowType.Solid // Will not lit hulls themselves
             };
             EntityBuilder playerEntity = new EntityBuilder()
@@ -345,6 +345,9 @@ namespace Game.Entities
 
             soundList.Add(SoundComponent.SoundBank.EmptyMag, OutlivedGame.Instance()
                 .Content.Load<SoundEffect>("Sound/Weapon/EmptyMag")
+                .CreateInstance());
+            soundList.Add(SoundComponent.SoundBank.Death, OutlivedGame.Instance()
+                .Content.Load<SoundEffect>("Sound/Splash")
                 .CreateInstance());
 
             var soundEffectInstance = OutlivedGame.Instance()

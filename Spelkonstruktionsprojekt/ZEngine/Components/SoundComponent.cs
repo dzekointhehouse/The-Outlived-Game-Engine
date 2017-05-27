@@ -18,6 +18,7 @@ namespace ZEngine.Components
         {
             Reload,
             EmptyMag,
+            Death
         }
         public string SoundEffectName { get; set; }
         public SoundEffect SoundEffect { get; set; }

@@ -107,8 +107,6 @@ namespace Game.Menu.States.GameModes
             Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
             
-            // Loading this projects content to be used by the game engine.
-            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
             SurvivalInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
