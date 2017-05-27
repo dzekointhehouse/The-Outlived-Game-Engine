@@ -64,6 +64,7 @@
     <Compile Include="ZEngine\Components\SpawnFlyweightComponent.cs" />
     <Compile Include="ZEngine\Components\WorldComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
+    <Compile Include="ZEngine\GameObjects\LampFactory.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Helpers\ComponentFactory.cs" />
     <Compile Include="ZEngine\Helpers\IEntityBuilder.cs" />

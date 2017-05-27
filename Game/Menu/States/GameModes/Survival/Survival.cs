@@ -74,7 +74,7 @@ namespace Game.Menu.States.GameModes
                 default:
                     spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("Images/4border"),
                         GameViewports.defaultView.TitleSafeArea, Color.White);
-                    break;
+                    break;    
             }
             spriteBatch.End();
         }
