@@ -1255,12 +1255,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/4border.png
 
-#begin Sound/Poltergeist.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/Poltergeist.mp3
-
 #begin Fonts/ZlargeFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -1303,4 +1297,10 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/GameOver.mp3
+
+#begin Sound/NextWave.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/NextWave.wav
 

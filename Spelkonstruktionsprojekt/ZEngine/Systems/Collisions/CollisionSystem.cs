@@ -39,7 +39,7 @@ namespace ZEngine.Systems
                 int x, y;
 
                 var animationComponent = ComponentManager.GetEntityComponentOrDefault<SpriteAnimationComponent>(entityId);
-                if (animationComponent == null)
+                if (animationComponent == null || (animationComponent.CurrentAnimatedState == null && animationComponent.NextAnimatedState == null))
                 {
                     x = spriteComponent.Position.X;
                     y = spriteComponent.Position.Y;

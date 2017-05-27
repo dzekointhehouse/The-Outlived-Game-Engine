@@ -146,7 +146,7 @@ namespace Game.Systems
                 // We increase the wave level, this is used to display progress.
                 GlobalSpawnComponent.WaveLevel++;
 
-                var waveSound = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/Poltergeist").CreateInstance();
+                var waveSound = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/NextWave").CreateInstance();
                 waveSound.Volume = 0.7f;
                 if (waveSound.State == SoundState.Stopped)
                 {
