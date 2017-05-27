@@ -77,16 +77,16 @@ namespace Game.Menu.States
             switch (MenuPosition.CurrentPosition)
             {
                 case Continue:
-                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.40f), Color.White);
+                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.42f), Color.White);
                     break;
                 case About:
-                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.50f), Color.White);
+                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.52f), Color.White);
                     break;
                 case OptionsState.Credits:
-                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.60f), Color.White);
+                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.62f), Color.White);
                     break;
                 case Exit:
-                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.70f), Color.White);
+                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.72f), Color.White);
                     break;
 
             }

@@ -89,7 +89,11 @@ namespace Game.Menu.States.GameModes
             }
             
             Timer.Update(gameTime);
-            //BackgroundMusic.PlayMusic();
+            if (Timer.IsCounting)
+            {
+                return;
+            }
+            BackgroundMusic.PlayMusic();
             SpawnSystem.HandleWaves();
             SystemsBundle.Update(gameTime);
             ProbabilitySystem.Generate();

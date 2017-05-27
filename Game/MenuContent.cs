@@ -101,15 +101,8 @@ namespace Game
             //Game Over stuff
             ScoreFont = game.Content.Load<SpriteFont>("Fonts/Score");
             GameOver = game.Content.Load<Texture2D>("Images/GameOver/GameOver");
-
-            if (GamePad.GetState(PlayerIndex.One).IsConnected)
-            {
-                ButtonContinue = game.Content.Load<Texture2D>("Images/GamePad/X");
-            }
-            else
-            {
-                ButtonContinue = game.Content.Load<Texture2D>("Images/Keyboard/enter");
-            }
+            ButtonContinue = game.Content.Load<Texture2D>("Images/Keyboard/enter");
+           
 
         }
 
