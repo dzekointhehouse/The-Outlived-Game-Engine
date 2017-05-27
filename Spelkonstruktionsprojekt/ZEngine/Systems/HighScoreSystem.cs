@@ -47,6 +47,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 writeFile(highScore.path, highScore.score);
             }
         }
+        public string[] getscorearray()
+        {
+            var HighScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HighScoreComponent));
+            if (HighScoreList.Count <= 0) return null;
+            var highScore = (HighScoreComponent)HighScoreList.First().Value;
+
+            readFile(highScore);
+            return highScore.score;
+        }
+
         /*
         public void submitScore(int newScore)
         {

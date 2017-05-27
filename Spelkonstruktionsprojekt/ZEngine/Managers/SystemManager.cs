@@ -53,6 +53,7 @@ namespace ZEngine.Managers
             { typeof(GamePadMovementSystem), new GamePadMovementSystem() },
             { typeof(ReloadSystem), new ReloadSystem() },
             { typeof(ScoreSystem), new ScoreSystem() },
+            { typeof(HighScoreSystem), new HighScoreSystem() },
             { typeof(AiWallCollisionSystem), new AiWallCollisionSystem() }
         };
 
