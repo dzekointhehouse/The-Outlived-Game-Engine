@@ -34,6 +34,8 @@ namespace Game.Menu.States.GameModes
         private GameViewports GameViewports { get; set; }
 
         private SurvivalInitializer SurvivalInitializer { get; set; }
+
+        private bool GameOver = false;
         
         public Survival(GameModeDependencies dependencies)
         {
@@ -91,6 +93,7 @@ namespace Game.Menu.States.GameModes
             
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
+                GameOver = true;
                 MenuNavigator.GoTo(GameManager.GameState.GameOver);
             }
         }
@@ -123,13 +126,12 @@ namespace Game.Menu.States.GameModes
             SoundSystem.Stop();
             WeaponSystem.Stop();
             
-//            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
-//            {
-//                ComponentManager.Instance.DeleteEntity(entity);
-//            }
-//            ComponentManager.Instance.Clear();
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
+            if (!GameOver)
+            {
+                ComponentManager.Instance.Clear();
+            }
         }
     }
 }
