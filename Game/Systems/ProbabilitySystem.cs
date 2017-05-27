@@ -73,7 +73,7 @@ namespace Game.Systems
 
                 var n = random.NextDouble();
 
-                if (n < 0.0010)
+                if (n < 0.010)
                 {
                     var playerComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent)).First();
                     var player = playerComponent.Value as PlayerComponent;
@@ -88,14 +88,14 @@ namespace Game.Systems
                         if (distance < 500)
                         {
                             //play at full volume
-                            soundToPlay.Volume = 1f;
+                            soundToPlay.Volume = 0.8f;
                         }
                         else
                         {
                             var step = 1 / 1500;
                             var newVolume = 1 - step * (distance - 500);
                             //play sound at newVolume
-                            soundToPlay.Volume = newVolume;
+                            soundToPlay.Volume = newVolume - 0.2f;
                         }
 
                         if (distance < 2000 && soundToPlay.State != SoundState.Playing)

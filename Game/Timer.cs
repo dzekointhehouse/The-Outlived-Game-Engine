@@ -55,6 +55,7 @@ namespace Game
                 {
                     if (currentSound.State != SoundState.Playing)
                     {
+                        currentSound.Volume = 1f;
                         currentSound.Play();
                     }
                 }
@@ -67,7 +68,7 @@ namespace Game
 
                 }
             }
-            if (counter == whenToStop - 1)
+            if (counter == whenToStop - 1) 
             {
                 IsCounting = false;
             }

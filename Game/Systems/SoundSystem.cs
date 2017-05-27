@@ -126,21 +126,21 @@ namespace Game.Systems
                         .Content.Load<SoundEffect>("Sound/Weapon/gun_fire")
                         .CreateInstance();
                     soundEffectInstance.IsLooped = false;
-                    soundEffectInstance.Volume = 0.7f;
+                    soundEffectInstance.Volume = 0.4f;
                     break;
                 case WeaponComponent.WeaponTypes.Rifle:
                     soundEffectInstance.IsLooped = false;
                     soundEffectInstance = OutlivedGame.Instance()
                         .Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire")
                         .CreateInstance();
-                    soundEffectInstance.Volume = 0.7f;
+                    soundEffectInstance.Volume = 0.4f;
                     break;
                 case WeaponComponent.WeaponTypes.Shotgun:
                     soundEffectInstance = OutlivedGame.Instance()
                         .Content.Load<SoundEffect>("Sound/Weapon/shotgun_fire")
                         .CreateInstance();
                     soundEffectInstance.IsLooped = false;
-                    soundEffectInstance.Volume = 0.7f;
+                    soundEffectInstance.Volume = 0.4f;
                     break;
             }
 

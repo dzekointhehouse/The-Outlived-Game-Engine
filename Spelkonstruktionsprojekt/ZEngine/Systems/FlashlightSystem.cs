@@ -22,7 +22,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     public class FlashlightSystem : ISystem
     {
         public static string SystemName = "FlashlightSystem";
-        private float GameScale = 0.05f;
 
         // This method is used to initialize the penumbra instance, and add
         // all the entities that have an associated instance of light component.
@@ -32,23 +31,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.
-                AmbientColor = new Color(new Vector3(0.05f)) // should be an entity?
+                AmbientColor = new Color(new Vector3(0.01f)) // should be an entity?
             };
-            var lights = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
-            var hullComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HullComponent));
 
             foreach (var barrelFlash in ComponentManager.Instance.GetEntitiesWithComponent(typeof(BarrelFlashComponent)))
             {
                 var barrelFlashComponent = barrelFlash.Value as BarrelFlashComponent;
                 penumbra.Lights.Add(barrelFlashComponent.Light);
             }
-            foreach (var instance in lights)
+            
+            foreach (var instance in ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent)))
             {
                 var lightComponent = instance.Value as LightComponent;
                 penumbra.Lights.Add(lightComponent.Light);
             }
 
-            foreach (var hullComponent in hullComponents)
+            foreach (var hullComponent in ComponentManager.Instance.GetEntitiesWithComponent(typeof(HullComponent)))
             {
                 var hull = hullComponent.Value as HullComponent;
                 var positionComponent =

@@ -1328,30 +1328,6 @@
 /processorParam:Quality=Best
 /build:Sound/Clearwater.mp3
 
-#begin Sound/321Play/One.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/321Play/One.wav
-
-#begin Sound/321Play/Play.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/321Play/Play.wav
-
-#begin Sound/321Play/Three.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/321Play/Three.wav
-
-#begin Sound/321Play/Two.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/321Play/Two.wav
-
 #begin Sound/zombieSounds/grunt_high_1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1453,4 +1429,28 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/zombieSounds/zombie_rap.wav
+
+#begin Sound/321Play/Play.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/321Play/Play.mp3
+
+#begin Sound/321Play/Three.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/321Play/Three.mp3
+
+#begin Sound/321Play/Two.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/321Play/Two.mp3
+
+#begin Sound/321Play/One.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/321Play/One.mp3
 
