@@ -25,6 +25,8 @@ namespace Game.Menu.States.GameModes
         private VirtualGamePad MenuController { get; }
 
         private SoundSystem SoundSystem { get; set; } = new SoundSystem();
+
+        private ProbabilitySystem ProbabilitySystem { get; set; } = new ProbabilitySystem();
         private SpawnSystem SpawnSystem { get; set; } = new SpawnSystem();
         private WeaponSystem WeaponSystem { get; set; } = new WeaponSystem();
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
@@ -87,9 +89,10 @@ namespace Game.Menu.States.GameModes
             }
             
             Timer.Update(gameTime);
-            BackgroundMusic.PlayMusic();
+            //BackgroundMusic.PlayMusic();
             SpawnSystem.HandleWaves();
             SystemsBundle.Update(gameTime);
+            ProbabilitySystem.Generate();
             
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
