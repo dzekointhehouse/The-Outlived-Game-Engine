@@ -294,7 +294,6 @@ namespace Game.Entities
                     playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 14);
                     break;
                 case CharacterType.Edgar:
-                    Debug.WriteLine("1111");
                     weaponComponent.Damage = 15;
                     weaponComponent.ClipSize = 128;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Rifle;

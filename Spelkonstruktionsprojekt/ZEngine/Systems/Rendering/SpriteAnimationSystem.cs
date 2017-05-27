@@ -68,11 +68,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             }
             else
             {
-                if (stateChangeEvent.NewState.Count > 1)
+                if (stateChangeEvent.NewState.Contains(State.Dead))
                 {
-//                    Debug.WriteLine("SETTING NEXT ANIMATION TO " + stateChangeEvent.NewState[1]);
+                    spriteAnimation.CurrentAnimatedState = binding;
                 }
-                spriteAnimation.NextAnimatedState = binding;
+                else
+                {
+                    if (stateChangeEvent.NewState.Count > 1)
+                    {
+//                    Debug.WriteLine("SETTING NEXT ANIMATION TO " + stateChangeEvent.NewState[1]);
+                    }
+                    spriteAnimation.NextAnimatedState = binding;
+                }
             }
         }
 

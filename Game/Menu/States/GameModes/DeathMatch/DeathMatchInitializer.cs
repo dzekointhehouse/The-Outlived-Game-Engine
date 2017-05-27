@@ -73,6 +73,8 @@ namespace Game.Menu.States.GameModes.DeathMatch
             }
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
+            SetupHighScoreEntity();
+
             // SetupTempPlayerDeadSpriteFlyweight();
         }
 
@@ -82,6 +84,13 @@ namespace Game.Menu.States.GameModes.DeathMatch
             ComponentManager.Instance.AddComponentToEntity(gameScoreComponent,
                 EntityManager.GetEntityManager().NewEntity());
         }
+        private void SetupHighScoreEntity()
+        {
+            var highScoreComponent = ComponentManager.Instance.ComponentFactory.NewComponent<HighScoreComponent>();
+            ComponentManager.Instance.AddComponentToEntity(highScoreComponent,
+                EntityManager.GetEntityManager().NewEntity());
+        }
+
 
         private void SetupHUD()
         {

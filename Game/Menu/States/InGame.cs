@@ -284,8 +284,7 @@ namespace Game.Menu.States
         }
 
         public void BeforeShow()
-        {
-            
+        { 
         }
 
         public void BeforeHide()

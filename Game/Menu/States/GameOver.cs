@@ -1,23 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Components;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZEngine.Wrappers;
 using Game.Services;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
+using ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 
 namespace Game.Menu.States
 {
-    class GameOver : IMenu
+    class GameOver : IMenu, ILifecycle
     {
         public MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
@@ -75,6 +72,20 @@ namespace Game.Menu.States
             spriteBatch.Begin();
             spriteBatch.DrawString(gameManager.MenuContent.MenuFont, totalScore, new Vector2(380, 40), Color.Red);
             spriteBatch.End();
+
+
+            var HighScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HighScoreComponent));
+            if (HighScoreList.Count <= 0) return;
+            var HighScore = (HighScoreComponent)HighScoreList.First().Value;
+            SystemManager.Instance.Get<HighScoreSystem>().SubmitScore(GameScore.TotalGameScore);
+            string[] score = HighScore.score;
+            string record = "Record: " + score[0];
+
+            spriteBatch.Begin();
+            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, record, new Vector2(50, 200), Color.Red);
+            spriteBatch.End();
+
+
         }
 
         public void Update(GameTime gameTime)
@@ -95,6 +106,16 @@ namespace Game.Menu.States
 
         public void Reset()
         {
+        }
+
+        public void BeforeShow()
+        {
+            
+        }
+
+        public void BeforeHide()
+        {
+            ComponentManager.Instance.Clear();
         }
     }
 }

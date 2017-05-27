@@ -11,12 +11,17 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class HighScoreSystem : ISystem
+    public class HighScoreSystem : ISystem
     {
 
         private void readFile(HighScoreComponent highScore)
         {
             highScore.path = Directory.GetCurrentDirectory() + "\\saveScore";
+            if (!(File.Exists(highScore.path)))
+            {
+                string[] score = { "-99999", "-99999", "-99999", "-99999", "-99999", "-99999", "-99999", "-99999", "-99999", "-99999" };
+                File.WriteAllLines(highScore.path, score);
+            }
             highScore.score = File.ReadAllLines(highScore.path); 
         }
 
@@ -47,16 +52,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 writeFile(highScore.path, highScore.score);
             }
         }
-        public string[] getscorearray()
-        {
-            var HighScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HighScoreComponent));
-            if (HighScoreList.Count <= 0) return null;
-            var highScore = (HighScoreComponent)HighScoreList.First().Value;
-
-            readFile(highScore);
-            return highScore.score;
-        }
-
         /*
         public void submitScore(int newScore)
         {
