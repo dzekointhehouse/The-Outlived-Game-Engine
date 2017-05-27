@@ -42,7 +42,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public const string HealthPickup = "HealthPickup";
         public const string AmmoPickup = "AmmoPickup";
         public const string LightStatus = "LightStatus";
-
         public const string Death = "Death";
+        public const string MediumProbability = "MediumProbability";
     }
 }

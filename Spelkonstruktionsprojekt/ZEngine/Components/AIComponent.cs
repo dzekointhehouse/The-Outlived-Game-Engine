@@ -1,6 +1,6 @@
 ﻿namespace ZEngine.Components
 {
-    class AIComponent : IComponent
+    public class AIComponent : IComponent
     {
        // public Vector2 Target;
 

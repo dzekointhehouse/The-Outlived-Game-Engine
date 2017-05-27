@@ -115,7 +115,7 @@ namespace Game.Menu.States
             {
                 MediaPlayer.Volume = 0.8f;
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Play(gameManager.MenuContent.BackgroundSong);
+               // MediaPlayer.Play(gameManager.MenuContent.BackgroundSong);
             }
             
             MenuPosition.UpdatePosition(VirtualGamePad);

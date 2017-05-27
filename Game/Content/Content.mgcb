@@ -1352,3 +1352,105 @@
 /processorParam:Quality=Best
 /build:Sound/321Play/Two.wav
 
+#begin Sound/zombieSounds/grunt_high_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_high_1.wav
+
+#begin Sound/zombieSounds/grunt_high_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_high_2.wav
+
+#begin Sound/zombieSounds/grunt_high_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_high_3.wav
+
+#begin Sound/zombieSounds/grunt_high_4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_high_4.wav
+
+#begin Sound/zombieSounds/grunt_low_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_low_1.wav
+
+#begin Sound/zombieSounds/grunt_low_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_low_2.wav
+
+#begin Sound/zombieSounds/grunt_low_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_low_3.wav
+
+#begin Sound/zombieSounds/grunt_low_4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_low_4.wav
+
+#begin Sound/zombieSounds/grunt_med_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_med_1.wav
+
+#begin Sound/zombieSounds/grunt_med_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_med_2.wav
+
+#begin Sound/zombieSounds/grunt_med_3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/grunt_med_3.wav
+
+#begin Sound/zombieSounds/shout_high_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/shout_high_1.wav
+
+#begin Sound/zombieSounds/shout_med_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/shout_med_1.wav
+
+#begin Sound/zombieSounds/shout_med_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/shout_med_2.wav
+
+#begin Sound/zombieSounds/zombie_damaged_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/zombie_damaged_1.wav
+
+#begin Sound/zombieSounds/zombie_disturbed.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/zombie_disturbed.wav
+
+#begin Sound/zombieSounds/zombie_rap.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/zombieSounds/zombie_rap.wav
+
