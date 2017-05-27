@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Penumbra;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 
@@ -16,7 +17,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
     class ReloadSystem : ISystem
     {
         private EventBus eventBus = EventBus.Instance;
-
+        private int timeToReload = 200;
         public void Start()
         {
             eventBus.Subscribe<InputEvent>(EventConstants.ReloadWeapon, Handle);
@@ -30,7 +31,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var weaponComponent = ComponentManager.Instance.GetEntityComponentOrDefault<WeaponComponent>(inputEvent.EntityId);
             if (ammoComponent == null || weaponComponent == null) { return; } 
             if (weaponComponent.ClipSize == ammoComponent.Amount) { return; } // Return if clip is full
+            if (ammoComponent.SpareAmmoAmount == 0)
+            {
+                eventBus.Publish("voice_noAmmoForReload", inputEvent.EntityId);
+                return;
+            }
 
+            eventBus.Publish(EventConstants.ReloadWeaponSound, inputEvent.EntityId);
+            Reload(ammoComponent, weaponComponent);
+        }
+
+        public async void Reload(AmmoComponent ammoComponent, WeaponComponent weaponComponent)
+        {
+            await Task.Delay(timeToReload);
 
             int ammoToBeAdded = weaponComponent.ClipSize - ammoComponent.Amount;
 

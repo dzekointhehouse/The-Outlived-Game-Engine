@@ -61,6 +61,7 @@ namespace Game.Systems.Abilities
                 }
                 else
                 {
+                    EventBus.Publish(EventConstants.EmptyMagSound, inputEvent.EntityId);
                     //Debug.WriteLine(inputEvent.EntityId + " is out of ammo");
                     return; //Should play a clicking noise
                 }

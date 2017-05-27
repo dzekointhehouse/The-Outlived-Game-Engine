@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Game.Menu.States;
 using Game.Services;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Penumbra;
@@ -104,7 +105,7 @@ namespace Game.Entities
                 position: maps.spawnPositionOne, // spawn point
                 viewport: viewports[player.Index],
                 characterType: player.CharacterType, cageId: player.CameraId,
-                useGamePad: true,
+                useGamePad: false,
                 gamePadIndex: 0);
         }
 
@@ -216,7 +217,7 @@ namespace Game.Entities
                 .SetBackwardsPenalty()
                 .SetSprite(sprite, new Point(1252, 206), 313, 206)
                 .SetLight(light)
-                .SetSound("walking")
+                .SetSound(soundList: CreateSound(characterType))
                 .SetMovement(200, 380, 2f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10) // Random direction
                 .SetRectangleCollision()
                 .SetCameraFollow(cageId)
@@ -337,6 +338,25 @@ namespace Game.Entities
                 gamePadComponent.GamePadPlayerIndex = gamePadIndex;
                 ComponentManager.Instance.AddComponentToEntity(gamePadComponent, playerEntity.GetEntityKey());
             }
+        }
+
+
+        private Dictionary<SoundComponent.SoundBank, SoundEffectInstance> CreateSound(CharacterType type)
+        {
+            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = new Dictionary<SoundComponent.SoundBank, SoundEffectInstance>(5);
+
+            soundList.Add(SoundComponent.SoundBank.EmptyMag, OutlivedGame.Instance()
+                .Content.Load<SoundEffect>("Sound/Weapon/EmptyMag")
+                .CreateInstance());
+
+            var soundEffectInstance = OutlivedGame.Instance()
+                .Content.Load<SoundEffect>("Sound/Weapon/Reload")
+                .CreateInstance();
+            soundEffectInstance.Volume = 0.7f;
+            soundList.Add(SoundComponent.SoundBank.Reload, soundEffectInstance);
+
+
+            return soundList;
         }
     }
 }

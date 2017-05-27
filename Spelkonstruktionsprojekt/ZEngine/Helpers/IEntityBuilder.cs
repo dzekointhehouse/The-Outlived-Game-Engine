@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Penumbra;
 using ZEngine.Components;
@@ -117,16 +118,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// An entity with this sound component is able to make different
         /// in-game sounds, eg. movement, death or other sounds.
         /// </summary>
-        /// <param name="soundname"> the name of the sound file</param>
+        /// <param name="soundList"></param>
         /// <param name="volume"> playing volume </param>
         /// <returns></returns>
-        EntityBuilder SetSound(string soundname, float volume = 1f);
+        EntityBuilder SetSound(string soundName = null, Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = null, float volume = 1);
 
         /// <summary>
         /// Makes the entity visible on screen.
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
+        /// <param name="isFixed"></param>
         /// <returns></returns>
         EntityBuilder SetRendering(int width, int height, bool isFixed);
 

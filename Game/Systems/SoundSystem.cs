@@ -12,6 +12,7 @@ using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Systems;
+using static ZEngine.Components.SoundComponent;
 
 namespace Game.Systems
 {
@@ -24,17 +25,15 @@ namespace Game.Systems
 
         public ISystem Start()
         {
-            // Here we subscribe what will happen when the entity walks forwards
-            // We'll use WalkingSounds to handle it.
-            // EventBus.Subscribe<InputEvent>(EventConstants.WalkForward, WalkingSounds);
-            // EventBus.Subscribe<InputEvent>(EventConstants.WalkBackward, WalkingSounds);
-
             // We subscribe to the input inputEvent for when the entity fires a
             // weapon, then we use the WeaponSounds method to "say" what should
             // be done. 
             EventBus.Subscribe<WeaponComponent.WeaponTypes>(EventConstants.FireWeaponSound, WeaponSounds);
+            EventBus.Subscribe<uint>(EventConstants.EmptyMagSound, PlayEmptyMagSound);
+            EventBus.Subscribe<uint>(EventConstants.ReloadWeaponSound, ReloadSound);
             EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.PickupCollision, PickupSounds);
-//            EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
+            // EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
+
             return this;
         }
 
@@ -42,6 +41,47 @@ namespace Game.Systems
         {
             return this;
         }
+        private void ReloadSound(uint entityId)
+        {
+            var soundComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(entityId);
+            if (soundComponent == null) return;
+
+            SoundEffectInstance soundEffectInstance;
+
+            if (soundComponent.SoundList.TryGetValue(SoundComponent.SoundBank.Reload, out soundEffectInstance))
+            {
+                // If it is not already playing then play it
+
+                if (soundEffectInstance.State != SoundState.Playing)
+
+                {
+                    soundEffectInstance.IsLooped = false;
+                    soundEffectInstance.Play();
+                }
+            }
+        }
+
+        private void PlayEmptyMagSound(uint entityId)
+        {
+            var soundComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(entityId);
+            if (soundComponent == null) return;
+
+            SoundEffectInstance soundEffectInstance;
+
+            if (soundComponent.SoundList.TryGetValue(SoundComponent.SoundBank.EmptyMag, out soundEffectInstance))
+            {
+                // If it is not already playing then play it
+                if (soundEffectInstance.State != SoundState.Playing)
+
+                {
+                    soundEffectInstance.IsLooped = false;
+                    soundEffectInstance.Play();
+                }
+            }
+        }
+
 
         // We want to subscribe this method to events where a entity fires
         // a weapon. We check if the bullet fire key has been pressed, then we
@@ -57,6 +97,7 @@ namespace Game.Systems
             SoundEffectInstance soundEffectInstance = OutlivedGame.Instance()
                 .Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire")
                 .CreateInstance();
+
 
             switch (weaponType)
             {
@@ -81,16 +122,16 @@ namespace Game.Systems
                     break;
             }
 
-//            var positionComponent =
-//                ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
-//
-//            // it's logical that the sound comes from the weapon which is the source of the
-//            // sound and the location where the sound will be the strongest.
-//            emitter.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
-//            listener.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
-//
-//            // Applying the 3d sound effect to the sound instance
-//            soundEffectInstance.Apply3D(listener, emitter);
+            //            var positionComponent =
+            //                ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(inputEvent.EntityId);
+            //
+            //            // it's logical that the sound comes from the weapon which is the source of the
+            //            // sound and the location where the sound will be the strongest.
+            //            emitter.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
+            //            listener.Position = new Vector3(positionComponent.Position, positionComponent.ZIndex);
+            //
+            //            // Applying the 3d sound effect to the sound instance
+            //            soundEffectInstance.Apply3D(listener, emitter);
 
             // If it is not already playing then play it
             if (soundEffectInstance.State != SoundState.Playing)
@@ -180,7 +221,7 @@ namespace Game.Systems
         public Action<double> NewWalkingSoundAnimation(GeneralAnimation animation, SoundEffectInstance sound,
             MoveComponent moveComponent)
         {
-            return delegate(double currentTime)
+            return delegate (double currentTime)
             {
                 var elapsedTime = currentTime - animation.StartOfAnimation;
                 if (elapsedTime > animation.Length && moveComponent.Speed > -5 && moveComponent.Speed < 5)

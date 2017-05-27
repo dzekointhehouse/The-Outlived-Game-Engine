@@ -1298,6 +1298,18 @@
 /processorParam:Quality=Best
 /build:Sound/GameOver.mp3
 
+#begin Sound/Weapon/EmptyMag.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Weapon/EmptyMag.wav
+
+#begin Sound/Weapon/Reload.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Weapon/Reload.wav
+
 #begin Sound/NextWave.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
@@ -14,6 +15,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
     // Amazingly this builder was not created by August,
     // ... the creator is....EL Optimus Prime Dzeko
+    [System.Runtime.InteropServices.Guid("443EA012-93C3-4E0B-871A-12AF81FD70D6")]
     public class EntityBuilder : IEntityBuilder
     {
         // We store a list of all the components that we add,
@@ -173,10 +175,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetSound(string soundname, float volume = 1)
+        public EntityBuilder SetSound(string soundName = null, Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = null, float volume = 1)
         {
             var component = ComponentFactory.NewComponent<SoundComponent>();
-            component.SoundEffectName = soundname;
+            component.SoundList = soundList;
+            component.SoundEffectName = soundName;
             component.Volume = volume;
             components.Add(component);
             return this;
