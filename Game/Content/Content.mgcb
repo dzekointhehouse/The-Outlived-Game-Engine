@@ -1316,3 +1316,9 @@
 /processorParam:Quality=Best
 /build:Sound/NextWave.wav
 
+#begin Sound/Splash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Splash.wav
+

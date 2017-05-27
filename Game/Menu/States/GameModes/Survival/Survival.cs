@@ -48,10 +48,10 @@ namespace Game.Menu.States.GameModes
         {
             SystemsBundle.Draw(gameTime);
             Timer.Draw(spriteBatch);
-            DrawCameras(spriteBatch);
+            DrawHUDs(spriteBatch);
         }
 
-        private void DrawCameras(SpriteBatch spriteBatch)
+        private void DrawHUDs(SpriteBatch spriteBatch)
         {
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
@@ -107,8 +107,6 @@ namespace Game.Menu.States.GameModes
             Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
             
-            // Loading this projects content to be used by the game engine.
-            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
             SurvivalInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
@@ -129,7 +127,7 @@ namespace Game.Menu.States.GameModes
 //            {
 //                ComponentManager.Instance.DeleteEntity(entity);
 //            }
-            ComponentManager.Instance.Clear();
+//            ComponentManager.Instance.Clear();
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
         }

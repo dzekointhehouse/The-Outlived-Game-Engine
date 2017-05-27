@@ -7,9 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using ZEngine.Components;
+using ZEngine.EventBus;
 using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
@@ -60,7 +62,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 {
                     positionComponent.ZIndex = 2;
                 }
+                EventBus.Instance.Publish(EventConstants.DeathSound, entityId);
                 StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
+
             }
         }
 

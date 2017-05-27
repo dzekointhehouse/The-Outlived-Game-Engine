@@ -31,15 +31,35 @@ namespace Game.Systems
             EventBus.Subscribe<WeaponComponent.WeaponTypes>(EventConstants.FireWeaponSound, WeaponSounds);
             EventBus.Subscribe<uint>(EventConstants.EmptyMagSound, PlayEmptyMagSound);
             EventBus.Subscribe<uint>(EventConstants.ReloadWeaponSound, ReloadSound);
+            EventBus.Subscribe<uint>(EventConstants.DeathSound, playDeathSound);
             EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.PickupCollision, PickupSounds);
-            // EventBus.Subscribe<StateChangeEvent>("StateChanged", WalkingSounds);
-
             return this;
         }
 
         public ISystem Stop()
         {
             return this;
+        }
+
+        private void playDeathSound(uint entityId)
+        {
+            var soundComponent =
+            ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(entityId);
+            if (soundComponent == null) return;
+
+            SoundEffectInstance soundEffectInstance;
+
+            if (soundComponent.SoundList.TryGetValue(SoundComponent.SoundBank.Death, out soundEffectInstance))
+            {
+                // If it is not already playing then play it
+
+                if (soundEffectInstance.State != SoundState.Playing)
+
+                {
+                    soundEffectInstance.IsLooped = false;
+                    soundEffectInstance.Play();
+                }
+            }
         }
         private void ReloadSound(uint entityId)
         {
@@ -106,19 +126,21 @@ namespace Game.Systems
                         .Content.Load<SoundEffect>("Sound/Weapon/gun_fire")
                         .CreateInstance();
                     soundEffectInstance.IsLooped = false;
+                    soundEffectInstance.Volume = 0.7f;
                     break;
                 case WeaponComponent.WeaponTypes.Rifle:
                     soundEffectInstance.IsLooped = false;
                     soundEffectInstance = OutlivedGame.Instance()
                         .Content.Load<SoundEffect>("Sound/Weapon/m4a1_fire")
                         .CreateInstance();
+                    soundEffectInstance.Volume = 0.7f;
                     break;
                 case WeaponComponent.WeaponTypes.Shotgun:
                     soundEffectInstance = OutlivedGame.Instance()
                         .Content.Load<SoundEffect>("Sound/Weapon/shotgun_fire")
                         .CreateInstance();
                     soundEffectInstance.IsLooped = false;
-
+                    soundEffectInstance.Volume = 0.7f;
                     break;
             }
 

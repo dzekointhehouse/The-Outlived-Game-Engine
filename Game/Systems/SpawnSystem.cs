@@ -26,11 +26,17 @@ namespace Game.Systems
         // Creates the enemy to be spawned.
         public void CreateEnemy(Vector2 position, SpriteComponent sprite)
         {
+            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = new Dictionary<SoundComponent.SoundBank, SoundEffectInstance>(1);
+
+            soundList.Add(SoundComponent.SoundBank.Death, OutlivedGame.Instance()
+                .Content.Load<SoundEffect>("Sound/Splash")
+                .CreateInstance());
+
             var monster = new EntityBuilder()
                 .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1244, 311), 311, 311)
                 .SetPosition(position, layerDepth: 20)
                 .SetRendering(200, 200)
-                .SetSound("zombiewalking")
+                .SetSound(soundList:soundList)
                 .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetSpawn()

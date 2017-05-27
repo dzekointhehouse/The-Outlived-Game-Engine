@@ -24,23 +24,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public void Recycle(Type componentType, IComponent component)
         {
-            try
-            {
-
-                if (component.GetType() == componentType)
-                {
-                    if (_scrapyard.ContainsKey(componentType))
-                    {
-                        _scrapyard[componentType].Push(component);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("REC");
-            }
+//            if (component.GetType() == componentType)
+//            {
+//                if (_scrapyard.ContainsKey(componentType))
+//                {
+//                    _scrapyard[componentType].Push(component);
+//                }
+//            }
         }
-
 
         public T NewComponent<T>() where T : IComponent, new()
         {

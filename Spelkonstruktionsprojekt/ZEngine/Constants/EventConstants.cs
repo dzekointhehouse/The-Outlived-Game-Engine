@@ -43,5 +43,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public const string AmmoPickup = "AmmoPickup";
         public const string LightStatus = "LightStatus";
 
+        public const string DeathSound = "DeathSound";
     }
 }

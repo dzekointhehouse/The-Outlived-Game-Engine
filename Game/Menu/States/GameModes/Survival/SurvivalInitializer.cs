@@ -43,10 +43,6 @@ namespace Game.Menu.States.GameModes
             // Game stuff
             GameMaps.SetupMap(GameConfig);
             GamePlayers.CreatePlayers(GameMaps);
-//            GameEnemies.CreateMonster("player_sprites");
-            //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
-            //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
-            //  pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200)); 
             PickupFactory.CreatePickups();
             CreateGameEntities();
             CreateDefaultViewport();
@@ -112,11 +108,6 @@ namespace Game.Menu.States.GameModes
                 .SetSprite("ammo")
                 .Build();
 
-            //new EntityBuilder()
-            //   .SetHUD(true)
-            //   .SetPosition(new Vector2(0, 0))
-            //   .SetSprite("bg_hud")
-            //   .Build();
         }
 
         private static void CreateGlobalBulletSpriteEntity()
