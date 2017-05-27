@@ -58,6 +58,7 @@ namespace Game
         private IMenu aboutMenu;
         private IMenu multiplayerMenu;
         private IMenu gameOver;
+        private IMenu gameOverCredits;
 
         // Game states
         public enum GameState
@@ -74,7 +75,8 @@ namespace Game
             Credits,
             Paused,
             About,
-            GameOver
+            GameOver,
+            GameOverCredits,
         };
 
         public Dictionary<GameState, IMenu> GameStateMenuMap;
@@ -132,6 +134,7 @@ namespace Game
             multiplayerMenu = new MultiplayerMenu(this, MenuNavigator, virtualInputCollection);
             aboutMenu = new AboutMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
             gameOver = new GameOver(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            gameOverCredits = new GameOverCredits(this, MenuNavigator, virtualInputCollection.PlayerOne());
 
             var gameModeSurvival = new Survival(gameModeDependencies);
             var deathMatch = new DeathMatch(gameModeDependencies);
@@ -152,7 +155,8 @@ namespace Game
                 {GameState.Paused, pausedMenu},
                 {GameState.MultiplayerMenu, multiplayerMenu},
                 {GameState.About, aboutMenu},
-                {GameState.GameOver, gameOver}
+                {GameState.GameOver, gameOver},
+                {GameState.GameOverCredits,  gameOverCredits}
             };
             LifecycleStates = new Dictionary<GameState, ILifecycle>
             {

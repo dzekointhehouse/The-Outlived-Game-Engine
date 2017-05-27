@@ -41,6 +41,12 @@ namespace Game
             }
         }
 
+        public void ClearList()
+        {
+            Playlist.Clear();
+            Playlist = null;
+        }
+
         public void PlayMusic()
         {
             if (MediaPlayer.State == MediaState.Stopped)
