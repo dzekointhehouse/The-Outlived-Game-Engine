@@ -48,10 +48,10 @@ namespace Game.Menu.States.GameModes
         {
             SystemsBundle.Draw(gameTime);
             Timer.Draw(spriteBatch);
-            DrawCameras(spriteBatch);
+            DrawHUDs(spriteBatch);
         }
 
-        private void DrawCameras(SpriteBatch spriteBatch)
+        private void DrawHUDs(SpriteBatch spriteBatch)
         {
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
@@ -127,7 +127,7 @@ namespace Game.Menu.States.GameModes
 //            {
 //                ComponentManager.Instance.DeleteEntity(entity);
 //            }
-            ComponentManager.Instance.Clear();
+//            ComponentManager.Instance.Clear();
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
         }

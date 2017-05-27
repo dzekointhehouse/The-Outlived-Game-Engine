@@ -17,7 +17,7 @@ using static Game.Services.VirtualGamePad.MenuKeyStates;
 
 namespace Game.Menu.States
 {
-    class GameOver : IMenu
+    class GameOver : IMenu, ILifecycle
     {
         public MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
@@ -95,6 +95,16 @@ namespace Game.Menu.States
 
         public void Reset()
         {
+        }
+
+        public void BeforeShow()
+        {
+            
+        }
+
+        public void BeforeHide()
+        {
+            ComponentManager.Instance.Clear();
         }
     }
 }
