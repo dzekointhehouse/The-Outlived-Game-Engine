@@ -55,6 +55,7 @@ namespace ZEngine.Managers
             { typeof(ScoreSystem), new ScoreSystem() },
             { typeof(HighScoreSystem), new HighScoreSystem() },
             { typeof(AiWallCollisionSystem), new AiWallCollisionSystem() },
+            { typeof(FlickeringLightSystem), new FlickeringLightSystem() },
             { typeof(PickupSpawnSystem), new PickupSpawnSystem() }
 
         };

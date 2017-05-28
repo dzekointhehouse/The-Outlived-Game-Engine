@@ -78,6 +78,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<AnimationSystem>().UpdateAnimations(gameTime);
             manager.Get<SpriteAnimationSystem>().Update(gameTime);
             manager.Get<FlashlightSystem>().Update(gameTime, viewportDimensions);
+            manager.Get<FlickeringLightSystem>().Update(gameTime);
             manager.Get<HealthSystem>().Update(gameTime);
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();

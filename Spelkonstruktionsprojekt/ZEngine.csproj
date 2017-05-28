@@ -53,6 +53,7 @@
     <Compile Include="ZEngine\Components\BarrelFlashComponent.cs" />
     <Compile Include="ZEngine\Components\DefaultViewport.cs" />
     <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
+    <Compile Include="ZEngine\Components\FlickeringLight.cs" />
     <Compile Include="ZEngine\Components\GameScoreComponent.cs" />
     <Compile Include="ZEngine\Components\FlyweightPickupComponent.cs" />
     <Compile Include="ZEngine\Components\GlobalSpawnComponent.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="ZEngine\Systems\Collisions\PickupCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\EntityRemovalSystem.cs" />
+    <Compile Include="ZEngine\Systems\FlickeringLightSystem.cs" />
     <Compile Include="ZEngine\Systems\HealthSystem.cs" />
     <Compile Include="ZEngine\Systems\HighScoreSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\GeneralAnimation.cs" />

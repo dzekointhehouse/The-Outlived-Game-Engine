@@ -114,6 +114,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
+        public EntityBuilder SetLightFlickering(double flickerSpeed, double flickerChance)
+        {
+            var component = ComponentFactory.NewComponent<FlickeringLight>();
+            component.FlickerChance = flickerChance;
+            component.FlickerSpeed = flickerSpeed;
+            components.Add(component);
+            return this;
+        }
+
         public EntityBuilder SetDimensions(int width, int height)
         {
             var component = ComponentFactory.NewComponent<DimensionsComponent>();

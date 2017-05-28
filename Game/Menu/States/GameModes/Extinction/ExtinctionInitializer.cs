@@ -50,7 +50,7 @@ namespace Game.Menu.States.GameModes.Extinction
             CreateGameEntities();
             CreateDefaultViewport();
 
-            LampFactory.FlickeringLamp(1800, 0.4f, 150f);
+            LampFactory.TurnedOnFlickering(1800, 0.4f, 150f);
         }
 
         private void CreateDefaultViewport()
