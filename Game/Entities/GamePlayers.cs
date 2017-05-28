@@ -96,6 +96,7 @@ namespace Game.Entities
                 .SetAction(Keys.E, EventConstants.FirePistolWeapon)
                 .SetAction(Keys.F, EventConstants.LightStatus)
                 .SetAction(Keys.R, EventConstants.ReloadWeapon)
+                .SetAction(Keys.D1, EventConstants.KillAllLights)
                 .Build();
 
             CreatePlayer(

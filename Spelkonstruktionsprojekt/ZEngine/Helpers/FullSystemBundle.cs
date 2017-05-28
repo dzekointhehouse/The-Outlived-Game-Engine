@@ -52,6 +52,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<ReloadSystem>().Start();
             manager.Get<EntityRemovalSystem>().Start();
             manager.Get<PickupSpawnSystem>().Start();
+            manager.Get<KillSwitchSystem>().Start();
+            manager.Get<KillSwitchEventFactory>().Start();
         }
 
         public void LoadContent()

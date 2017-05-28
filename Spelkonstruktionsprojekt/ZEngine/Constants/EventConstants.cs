@@ -29,7 +29,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public const string ReloadWeapon = "entityReloadWeapon";
         public const string EmptyMagSound = "EmptyMagSound";
 
-
         // Collisions
         public const string WallCollision = "WallCollision";
         public const string EnemyCollision = "EnemyCollision";
@@ -44,5 +43,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public const string LightStatus = "LightStatus";
         public const string Death = "Death";
         public const string MediumProbability = "MediumProbability";
+
+        public const string KillLights = "KillLights";
+        public const string KillAllLights = "KillAllLights";
     }
 }

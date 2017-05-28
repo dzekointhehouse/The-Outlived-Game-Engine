@@ -41,6 +41,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var lightComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(inputEvent.EntityId);
                 if (lightComponent == null) return;
+                if (lightComponent.KillSwitchOn) return;
 
                 lightComponent.Light.Enabled = lightComponent.Light.Enabled == false;
             }

@@ -70,7 +70,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             // penumbra didn't work so well with several cameras.
             if (cameras.Count() > 1 || !cameras.Any()) return;
 
-            var lightEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent));
             foreach (var barrelFlash in ComponentManager.Instance
                 .GetEntitiesWithComponent(typeof(BarrelFlashComponent)))
             {
@@ -106,11 +105,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
 
             }
-            foreach (var lightEntity in lightEntities)
+            foreach (var lightEntity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent)))
             {
-
                 var lightComponent = lightEntity.Value as LightComponent;
-
                 // If it has no render component than we should skip this entity.
                 if (!ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
                     continue;

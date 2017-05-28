@@ -10,6 +10,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 {
     public class LightComponent : IComponent
     {
+        public bool KillSwitchOn { get; set; } = true;
         public Light Light { get; set; }
 
         public LightComponent()
@@ -19,6 +20,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public IComponent Reset()
         {
+            KillSwitchOn = false;
             Light = null;
             return this;
         }

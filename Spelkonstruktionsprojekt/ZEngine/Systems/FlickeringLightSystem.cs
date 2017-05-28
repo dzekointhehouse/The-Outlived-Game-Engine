@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using ZEngine.EventBus;
 using ZEngine.Helpers;
 using ZEngine.Managers;
 
@@ -18,6 +19,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 var flickerComponent = entity.Value as FlickeringLight;
                 var lightComponent = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(entity.Key);
                 if (lightComponent == null) continue;
+                if (lightComponent.KillSwitchOn) continue;
 
                 var rand = new Random().NextDouble();
                 var chance = flickerComponent.FlickerChance * gameTime.ElapsedGameTime.TotalSeconds;

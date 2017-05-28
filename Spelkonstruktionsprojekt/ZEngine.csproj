@@ -112,6 +112,7 @@
     <Compile Include="ZEngine\GameTest\TestGame2.cs" />
     <Compile Include="ZEngine\Helpers\EntityBuilder.cs" />
     <Compile Include="ZEngine\Helpers\FullSystemBundle.cs" />
+    <Compile Include="ZEngine\Helpers\KillSwitchEventFactory.cs" />
     <Compile Include="ZEngine\Helpers\MapHelper.cs" />
     <Compile Include="ZEngine\Helpers\QuadTree.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="ZEngine\Systems\InputHandler\SprintAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\ISystem.cs" />
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
+    <Compile Include="ZEngine\Systems\KillSwitchSystem.cs" />
     <Compile Include="ZEngine\Systems\LightAbilitySystem.cs" />
     <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />

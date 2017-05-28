@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
@@ -56,8 +57,9 @@ namespace ZEngine.Managers
             { typeof(HighScoreSystem), new HighScoreSystem() },
             { typeof(AiWallCollisionSystem), new AiWallCollisionSystem() },
             { typeof(FlickeringLightSystem), new FlickeringLightSystem() },
+            { typeof(KillSwitchEventFactory), new KillSwitchEventFactory() },
+            { typeof(KillSwitchSystem), new KillSwitchSystem() },
             { typeof(PickupSpawnSystem), new PickupSpawnSystem() }
-
         };
 
         // _____________________________________________________________________________________________________________________ //
