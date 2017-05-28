@@ -46,5 +46,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
 
         public const string KillLights = "KillLights";
         public const string KillAllLights = "KillAllLights";
+
+        public const string InitiateSpawnPoint = "SpawnPoint";
+        public const string SpawnPointTest = "SpawnPointTest";
     }
 }

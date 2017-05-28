@@ -30,6 +30,7 @@ namespace Game.Menu.States.GameModes.Extinction
         private SoundSystem SoundSystem { get; set; } = new SoundSystem();
         private WeaponSystem WeaponSystem { get; set; } = new WeaponSystem();
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
+        private SpawnPointSystem SpawnPointSystem { get; set; } = new SpawnPointSystem();
 
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
         private Timer Timer { get; set; }
@@ -120,6 +121,7 @@ namespace Game.Menu.States.GameModes.Extinction
 
             SoundSystem.Start();
             WeaponSystem.Start();
+            SpawnPointSystem.Start();
             // Game stuff
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
@@ -128,7 +130,7 @@ namespace Game.Menu.States.GameModes.Extinction
         {
             SoundSystem.Stop();
             WeaponSystem.Stop();
-            
+            SpawnPointSystem.Stop();
 //            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
 //            {
 //                ComponentManager.Instance.DeleteEntity(entity);

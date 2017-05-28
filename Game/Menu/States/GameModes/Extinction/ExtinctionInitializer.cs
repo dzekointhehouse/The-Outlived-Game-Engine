@@ -68,7 +68,7 @@ namespace Game.Menu.States.GameModes.Extinction
         {
             var cameraCageId = SetupCameraCage();
             SetupHUD();
-
+            CreateGlobalSpawnSpriteEntity();
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
             SetupHighScoreEntity();

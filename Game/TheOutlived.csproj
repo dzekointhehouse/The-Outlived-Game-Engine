@@ -93,6 +93,7 @@
     <Compile Include="Systems\Abilities\WeaponSystem.cs" />
     <Compile Include="Systems\ProbabilitySystem.cs" />
     <Compile Include="Systems\SoundSystem.cs" />
+    <Compile Include="Systems\SpawnPointSystem.cs" />
     <Compile Include="Systems\SpawnSystem.cs" />
     <Compile Include="Testing\FPS.cs" />
     <Compile Include="Timer.cs" />

@@ -97,6 +97,7 @@ namespace Game.Entities
                 .SetAction(Keys.F, EventConstants.LightStatus)
                 .SetAction(Keys.R, EventConstants.ReloadWeapon)
                 .SetAction(Keys.D1, EventConstants.KillAllLights)
+                .SetAction(Keys.D2, EventConstants.SpawnPointTest)
                 .Build();
 
             CreatePlayer(
