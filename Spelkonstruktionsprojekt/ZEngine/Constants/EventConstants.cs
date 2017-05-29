@@ -49,5 +49,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
 
         public const string InitiateSpawnPoint = "SpawnPoint";
         public const string SpawnPointTest = "SpawnPointTest";
+        
+        public const string EventZoneCollision = "EventZone";
     }
 }

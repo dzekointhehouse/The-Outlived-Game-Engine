@@ -54,6 +54,7 @@
     <Compile Include="ZEngine\Components\DefaultViewport.cs" />
     <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
     <Compile Include="ZEngine\Components\FlickeringLight.cs" />
+    <Compile Include="ZEngine\Components\EventZoneComponent.cs" />
     <Compile Include="ZEngine\Components\GameScoreComponent.cs" />
     <Compile Include="ZEngine\Components\FlyweightPickupComponent.cs" />
     <Compile Include="ZEngine\Components\GlobalSpawnComponent.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="ZEngine\Components\RenderComponent\RenderHUDComponent.cs" />
     <Compile Include="ZEngine\Components\SpawnComponent.cs" />
     <Compile Include="ZEngine\Components\SpawnFlyweightComponent.cs" />
+    <Compile Include="ZEngine\Components\TextComponent.cs" />
     <Compile Include="ZEngine\Components\WorldComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
     <Compile Include="ZEngine\GameObjects\LampFactory.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="ZEngine\Helpers\KillSwitchEventFactory.cs" />
     <Compile Include="ZEngine\Helpers\MapHelper.cs" />
     <Compile Include="ZEngine\Helpers\QuadTree.cs" />
+    <Compile Include="ZEngine\Helpers\ZIndexConstants.cs" />
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="ZEngine\Systems\Collisions\CollisionResolveSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\CollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\EnemyCollisionSystem.cs" />
+    <Compile Include="ZEngine\Systems\Collisions\EventZoneCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\PickupCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\Collisions\WallCollisionSystem.cs" />
     <Compile Include="ZEngine\Systems\EntityRemovalSystem.cs" />
@@ -152,6 +156,7 @@
     <Compile Include="ZEngine\Systems\Rendering\SpriteAnimationSystem.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderHUDSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
+    <Compile Include="ZEngine\Systems\TextSystem.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />

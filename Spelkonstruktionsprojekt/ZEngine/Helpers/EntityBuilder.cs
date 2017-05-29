@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -75,7 +76,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             components.Add(component);
             return this;
         }
+        
+        public EntityBuilder SetZone(string[] events)
+        {
+            var component = ComponentFactory.NewComponent<EventZoneComponent>();
+            component.Events = new List<string>(events);
+            component.Inhabitants = new HashSet<uint>();
+            components.Add(component);
+            return this;
+        }
 
+        public EntityBuilder SetText(string text, int size, string fontName)
+        {
+            var component = ComponentFactory.NewComponent<TextComponent>();
+            component.Text = text;
+            component.Size = size;
+            component.SpriteFontName = fontName;
+            components.Add(component);
+            return this;
+        }
+        
         public EntityBuilder SetSprite(string spriteName, Point startPosition = default(Point), int tileWidth = 0,
             int tileHeight = 0, float scale = 1f, float alpha = 1f, Texture2D sprite = null)
         {

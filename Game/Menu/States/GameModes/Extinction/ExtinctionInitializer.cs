@@ -1,4 +1,6 @@
 using Game.Entities;
+using Game.Entities.Zones;
+using Game.Factory;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
@@ -72,7 +74,13 @@ namespace Game.Menu.States.GameModes.Extinction
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
             SetupHighScoreEntity();
+            SetupEventZones();
             // SetupTempPlayerDeadSpriteFlyweight();
+        }
+
+        private void SetupEventZones()
+        {
+            EventZoneFactory.EventZone(new Rectangle(0, 0, 1000, 1000), DowntownZone.Event);
         }
 
         private void SetupGameScoreEntity()

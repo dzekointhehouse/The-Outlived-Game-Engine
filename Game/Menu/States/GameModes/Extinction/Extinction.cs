@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.Entities.Zones;
 using Game.Services;
 using Game.Systems;
 using Microsoft.Xna.Framework;
@@ -32,6 +33,8 @@ namespace Game.Menu.States.GameModes.Extinction
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
         private SpawnPointSystem SpawnPointSystem { get; set; } = new SpawnPointSystem();
 
+        private DowntownZone DowntownZone { get; set; } = new DowntownZone();
+        
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
         private Timer Timer { get; set; }
         private GameViewports GameViewports { get; set; }
@@ -122,6 +125,7 @@ namespace Game.Menu.States.GameModes.Extinction
             SoundSystem.Start();
             WeaponSystem.Start();
             SpawnPointSystem.Start();
+            DowntownZone.Start();
             // Game stuff
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
@@ -131,6 +135,7 @@ namespace Game.Menu.States.GameModes.Extinction
             SoundSystem.Stop();
             WeaponSystem.Stop();
             SpawnPointSystem.Stop();
+            DowntownZone.Stop();
 //            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
 //            {
 //                ComponentManager.Instance.DeleteEntity(entity);

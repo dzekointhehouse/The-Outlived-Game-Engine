@@ -47,8 +47,10 @@
     <Compile Include="Entities\GameHUD.cs" />
     <Compile Include="Entities\GameMap.cs" />
     <Compile Include="Entities\PickupFactory.cs" />
+    <Compile Include="Entities\Zones\DowntownZone.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
     <Compile Include="BackgroundMusic.cs" />
+    <Compile Include="Factory\EventZoneFactory.cs" />
     <Compile Include="GameContent.cs" />
     <Compile Include="MenuContent.cs" />
     <Compile Include="Menu\Lifecycle.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Systems\Abilities\RifleAbilitySystem.cs" />
     <Compile Include="Systems\Abilities\ShotgunAbilitySystem.cs" />
     <Compile Include="Systems\Abilities\WeaponSystem.cs" />
+    <Compile Include="Systems\OutlivedEventConstants.cs" />
     <Compile Include="Systems\ProbabilitySystem.cs" />
     <Compile Include="Systems\SoundSystem.cs" />
     <Compile Include="Systems\SpawnPointSystem.cs" />
@@ -126,6 +129,10 @@
       <Project>{1ff3be01-61f2-4404-a9ca-6f9350d8a09a}</Project>
       <Name>ZEngine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Builders" />
+    <Folder Include="Components" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

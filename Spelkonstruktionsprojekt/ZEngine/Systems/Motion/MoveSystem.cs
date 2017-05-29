@@ -126,7 +126,7 @@ namespace ZEngine.Systems
         {
             var collisionComponent = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(entityId);
             if (collisionComponent == null) return false;
-            return collisionComponent.collisions.Count > 0;
+            return collisionComponent.Collisions.Count > 0;
         }
     }
 }

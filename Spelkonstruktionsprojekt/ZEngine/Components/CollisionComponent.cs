@@ -7,7 +7,9 @@ namespace ZEngine.Components
         public bool IsCage;
 
         //each int is an entityId
-        public List<uint> collisions = new List<uint>();
+        public HashSet<uint> Collisions { get; set; } = new HashSet<uint>();
+        //each int is a zone
+        public HashSet<uint> Zones { get; set; }= new HashSet<uint>();
 
         public CollisionComponent()
         {
@@ -17,7 +19,8 @@ namespace ZEngine.Components
         public IComponent Reset()
         {
             IsCage = false;
-            collisions.Clear();
+            Collisions.Clear();
+            Zones.Clear();
             return this;
         }
     }
