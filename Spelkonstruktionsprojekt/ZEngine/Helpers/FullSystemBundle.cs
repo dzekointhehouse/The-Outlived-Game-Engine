@@ -54,6 +54,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 //            manager.Get<PickupSpawnSystem>().Start();
             manager.Get<KillSwitchSystem>().Start();
             manager.Get<KillSwitchEventFactory>().Start();
+            manager.Get<AiWallCollisionSystem>().Start();
         }
 
         public void LoadContent()
@@ -72,7 +73,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             _oldKeyboardState = Keyboard.GetState();
             manager.Get<GamePadMovementSystem>().WalkForwards(gameTime);
             manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
-
+            manager.Get<EventZoneSystem>().Handle(gameTime);
             manager.Get<CameraSceneSystem>().Update(gameTime);
             manager.Get<MoveSystem>().Move(gameTime);
             manager.Get<AISystem>().Update(gameTime);
@@ -93,6 +94,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
             manager.Get<RenderSystem>().Render(Dependencies, gameTime); // lowers FPS by half (2000)
             manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
+            manager.Get<TextSystem>().Draw(Dependencies.SpriteBatch);
             manager.Get<RenderHUDSystem>().Draw(Dependencies); // not noticable
         }
 

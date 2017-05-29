@@ -45,7 +45,7 @@ namespace Game.Systems
                     EventTime = inputEvent.EventTime,
                     Position = new Vector2(positionComponent.Position.X, positionComponent.Position.Y),
                     SpawnDelay = 5000,
-                    ZombieCount = 5
+                    ZombieCount = 1
                 });
             }
         }

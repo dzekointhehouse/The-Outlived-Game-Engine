@@ -5,8 +5,10 @@ using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Bullets;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.EventBus;
+using Game = Microsoft.Xna.Framework.Game;
 
 namespace Game.Entities.Zones
 {
@@ -14,23 +16,34 @@ namespace Game.Entities.Zones
     {
         public const string Event = "DowntownZone_DisplayLabel";
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        
+
+        private bool IsDisplaying = false;
+
         public void Start()
         {
-            EventBus.Instance.Subscribe<uint>(Event, DisplayLabel);
+            EventBus.Instance.Subscribe<EventZoneSystem.ZoneEvent>(Event, DisplayLabel);
         }
 
         public void Stop()
         {
-            EventBus.Instance.Unsubscribe<uint>(Event, DisplayLabel);
+            EventBus.Instance.Unsubscribe<EventZoneSystem.ZoneEvent>(Event, DisplayLabel);
         }
-        
-        public void DisplayLabel(uint zoneId)
+
+        public void DisplayLabel(EventZoneSystem.ZoneEvent zoneEvent)
         {
+            if (IsDisplaying) return;
+            IsDisplaying = true;
+
             var entityId = new EntityBuilder()
                 .SetPosition(new Vector2(200, 50), ZIndexConstants.InGameText)
-                .SetText("Downtown", 40, "ZEone")
                 .BuildAndReturnId();
+
+            var textComponent = new TextComponent();
+            textComponent.SpriteFontName = "ZEone";
+            textComponent.SpriteFont = OutlivedGame.Instance().Fonts["ZEone"];
+            textComponent.LoadedFont = true;
+            textComponent.Text = "Downtown";
+            ComponentManager.AddComponentToEntity(textComponent, entityId);
 
             var animationComponent = ComponentManager.ComponentFactory.NewComponent<AnimationComponent>();
             ComponentManager.AddComponentToEntity(animationComponent, entityId);
@@ -38,7 +51,7 @@ namespace Game.Entities.Zones
             var animation = new GeneralAnimation()
             {
                 AnimationType = "InGameText",
-                StartOfAnimation = 0,
+                StartOfAnimation = zoneEvent.EventTime,
                 Length = 8000,
                 Unique = true
             };
@@ -57,7 +70,7 @@ namespace Game.Entities.Zones
                     generalAnimation.StartOfAnimation = currentTimeInMilliseconds;
                     startSet = true;
                 }
-                
+
                 if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
                 {
                     var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(entityId);
@@ -68,6 +81,7 @@ namespace Game.Entities.Zones
                     }
                     tagComponent.Tags.Add(Tag.Delete);
                     generalAnimation.IsDone = true;
+                    IsDisplaying = false;
                 }
             };
         }

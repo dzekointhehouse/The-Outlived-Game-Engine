@@ -59,7 +59,9 @@ namespace ZEngine.Managers
             { typeof(FlickeringLightSystem), new FlickeringLightSystem() },
             { typeof(KillSwitchEventFactory), new KillSwitchEventFactory() },
             { typeof(KillSwitchSystem), new KillSwitchSystem() },
-            { typeof(PickupSpawnSystem), new PickupSpawnSystem() }
+            { typeof(PickupSpawnSystem), new PickupSpawnSystem() },
+            { typeof(TextSystem), new TextSystem() },
+            { typeof(EventZoneSystem), new EventZoneSystem() }
         };
 
         // _____________________________________________________________________________________________________________________ //

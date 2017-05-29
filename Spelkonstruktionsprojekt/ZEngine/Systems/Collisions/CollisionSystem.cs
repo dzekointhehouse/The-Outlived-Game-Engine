@@ -28,6 +28,7 @@ namespace ZEngine.Systems
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
         private Dictionary<Tuple<string, Point>, Color[]> cache = new Dictionary<Tuple<string, Point>, Color[]>();
+        private const double CloseEncounterFactor = 0.8;
 
         //TODO Move to perform on game load
         public Color[] TextureCache(SpriteComponent spriteComponent, uint entityId)
@@ -111,7 +112,11 @@ namespace ZEngine.Systems
                         {
                             if (EntityIsContained(movingEntity.Item1, stillEntity))
                             {
-                                areaComponent.Inhabitants.Add(movingEntity.Item1);
+                                if (!areaComponent.Inhabitants.Contains(movingEntity.Item1))
+                                {
+                                    areaComponent.NewInhabitants.Add(movingEntity.Item1);
+                                    areaComponent.Inhabitants.Add(movingEntity.Item1);
+                                }
                             }
                             else
                             {
@@ -119,7 +124,7 @@ namespace ZEngine.Systems
                             }
                         }
                     }
-                    else if (EntitiesCollide(movingEntity.Item1, stillEntity))
+                    else if (EntitiesCollide(movingEntity.Item1, movingCollision, stillEntity))
                     {
                         movingCollision.Collisions.Add(stillEntity);
                         //TODO might be that we need to add collision id to stillEntity as well
@@ -149,11 +154,13 @@ namespace ZEngine.Systems
             var stillPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(zone);
             if (stillPositionComponent == null) return false;
 
-            return new Rectangle((int) stillPositionComponent.Position.X, (int) stillPositionComponent.Position.Y, stillDimensionsComponent.Width, stillDimensionsComponent.Height).Contains(
-                new Rectangle((int) movingPositionComponent.Position.X, (int) movingPositionComponent.Position.Y, movingDimensionsComponent.Width, movingDimensionsComponent.Height));
+            return new Rectangle((int) stillPositionComponent.Position.X, (int) stillPositionComponent.Position.Y,
+                stillDimensionsComponent.Width, stillDimensionsComponent.Height).Contains(
+                new Rectangle((int) movingPositionComponent.Position.X, (int) movingPositionComponent.Position.Y,
+                    movingDimensionsComponent.Width, movingDimensionsComponent.Height));
         }
 
-        private bool EntitiesCollide(uint movingEntity, uint stillEntity)
+        private bool EntitiesCollide(uint movingEntity, CollisionComponent movingCollisionComponent, uint stillEntity)
         {
             Stopwatch timer;
             if (PROFILING) timer = Stopwatch.StartNew();
@@ -178,13 +185,23 @@ namespace ZEngine.Systems
             //                           movingPositionComponent.Position.Y
             //                           || stillPositionComponent.Position.Y > movingPositionComponent.Position.Y +
             //                           movingDimensionsComponent.Height));
-
+//
 //            var aproxDistance = Math.Abs(
 //                Math.Pow(stillPositionComponent.Position.X - movingPositionComponent.Position.X, 2) +
 //                Math.Pow(stillPositionComponent.Position.Y - movingPositionComponent.Position.Y, 2));
-//            var approxResult = (aproxDistance >
-//                                Math.Pow(movingDimensionsComponent.Width * 0.5 + stillDimensionsComponent.Width * 0.5,
+//
+//            var approxResult = (aproxDistance <
+//                                Math.Pow(
+//                                    movingDimensionsComponent.Width * 0.5 * CloseEncounterFactor +
+//                                    stillDimensionsComponent.Width * 0.5 * CloseEncounterFactor,
 //                                    2));
+//            if (approxResult)
+//            {
+//                if (ComponentManager.EntityHasComponent<AIComponent>(movingEntity))
+//                {
+//                    movingCollisionComponent.CloseEncounters.Add(new Tuple<uint, double>(stillEntity, aproxDistance));
+//                }
+//            }
             if (PROFILING)
             {
                 timer.Stop();
@@ -289,8 +306,21 @@ namespace ZEngine.Systems
 
 
             //            var shapeRenderer = CollisionRendering.renderer;
+            IntersectionAxis intersectionAxis;
             if (movingEntityCollisionBounds.Intersects(stillEntityCollisionBounds))
             {
+                if (value.Left < this.Right && this.Left < value.Right && value.Top < this.Bottom)
+                    return this.Top < value.Bottom;
+                if (stillEntityCollisionBounds.Left < movingEntityCollisionBounds.Right ||
+                    movingEntityCollisionBounds.Left < stillEntityCollisionBounds.Right)
+                {
+                    intersectionAxis = 
+                }
+                else
+                {
+                    
+                }
+                if (ComponentManager.EntityHasComponent<AIComponent>(movingEntity)) return true;
                 if (PROFILING)
                 {
                     timer.Stop();
@@ -419,6 +449,11 @@ namespace ZEngine.Systems
         public void ClearCache()
         {
             cache.Clear();
+        }
+
+        public enum IntersectionAxis
+        {
+            X, Y
         }
     }
 }

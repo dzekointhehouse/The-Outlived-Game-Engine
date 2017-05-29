@@ -35,6 +35,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Constants
         public const string BulletCollision = "BulletCollision";
         public const string PickupCollision = "PickupCollision";
         public const string AiWallCollision = "AiWallCollision";
+        
+        //Close encounters
+        public const string AiCloseEncounter = "AiCloseEncounter";
 
 
         // Other

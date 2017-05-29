@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Game.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,6 +37,8 @@ namespace Game
         private readonly FullSystemBundle gameBundle;
         private GameManager _gameManager;
         private static OutlivedGame _outlived;
+        
+        public Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
 
         public OutlivedGame()
         {
@@ -58,6 +61,9 @@ namespace Game
             //Init systems that require initialization
             gameBundle.InitializeSystems(this);
             _gameManager = new GameManager(gameBundle);
+            
+            //TODO move and make use of method LoadContent in this class
+            Fonts["ZEone"] = Content.Load<SpriteFont>("ZEOne");
             
             base.Initialize();
         }

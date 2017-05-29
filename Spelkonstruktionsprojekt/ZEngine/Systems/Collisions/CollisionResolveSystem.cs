@@ -33,7 +33,7 @@ namespace ZEngine.Systems
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent)))
             {
                 var collisionComponent = entity.Value as CollisionComponent;
-                    
+
 //                foreach (var zone in collisionComponent.Zones)
 //                {
 //                    var collisionEventWrapper = new SpecificCollisionEvent()
@@ -52,7 +52,7 @@ namespace ZEngine.Systems
 //                        zoneComponent.Inhabitants.Add(entity.Key);
 //                    }
 //                }
-                
+
                 //Check every occured collision
                 foreach (var collisionTarget in collisionComponent.Collisions)
                 {
@@ -81,7 +81,6 @@ namespace ZEngine.Systems
                             EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
                         }
                     }
-
                 }
 //                for (var i = 0; i < collisionComponent.Collisions.Count; i++)
 //                {
@@ -114,6 +113,21 @@ namespace ZEngine.Systems
 //                }
                 collisionComponent.Collisions.Clear();
                 StateManager.TryRemoveState(entity.Key, State.Collided, 0);
+//
+//                foreach (var closeEncounter in collisionComponent.CloseEncounters)
+//                {
+//                    if (ComponentManager.EntityHasComponent<AIComponent>(entity.Key))
+//                    {
+//                        
+//                        EventBus.Publish(EventConstants.AiCloseEncounter, new CloseEncounterEvent()
+//                        {
+//                            CloseEncounter = closeEncounter,
+//                            Entity = entity.Key,
+//                            EventTime = gameTime.TotalGameTime.TotalMilliseconds
+//                        });
+//                    }
+//                }
+//                collisionComponent.CloseEncounters.Clear();
             }
 
             if (PROFILING_COLLISIONS)
@@ -153,7 +167,6 @@ namespace ZEngine.Systems
             {CollisionEvent.Pickup, EventConstants.PickupCollision},
             {CollisionEvent.AiWall, EventConstants.AiWallCollision},
             {CollisionEvent.Zone, EventConstants.AiWallCollision}
-
         };
 
         public static string FromCollisionEventType(CollisionEvent collisionEvent)
@@ -171,14 +184,13 @@ namespace ZEngine.Systems
         public double EventTime = 0;
     }
 
-
-    //Not currently used, but should possible be used by the CollisionComponent
-    public class UnkownCollisionEvent
+    public struct CloseEncounterEvent
     {
-        public int Entity;
-        public int Target;
+        public uint Entity;
+        public Tuple<uint, double> CloseEncounter;
+        public double EventTime;
     }
-
+    
     //Used for mapping componenet requirements to CollisionEvents
     //This is a preset. The user may setup its own component requirements.
     public class ZEngineCollisionEventPresets
@@ -247,7 +259,7 @@ namespace ZEngine.Systems
                     },
                     CollisionEvent.Bullet
                 },
-                                {
+                {
                     new CollisionRequirement()
                     {
                         MovingEntityRequirements = new List<Type>

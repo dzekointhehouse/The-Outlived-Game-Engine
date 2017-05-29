@@ -79,7 +79,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     //Node node = Astar.Search(world.World, new Node((int)v.X, (int)v.Y), new Node((int)closestPlayerPosition.Value.X, (int)closestPlayerPosition.Value.Y));
                     //Vector2 dir = GetScreenCoordinates(node, world);
 
-                    if (gameTime.TotalGameTime.TotalMilliseconds - aiComponent.TimeOfLastWallCollision > 50)
+                    if (gameTime.TotalGameTime.TotalMilliseconds - aiComponent.TimeOfLastWallCollision > 2000)
                     {
                         dir.Normalize();
                         var newDirection = Math.Atan2(dir.Y, dir.X);
@@ -93,7 +93,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         }
                         else
                         {
-
                             if (aiMoveComponent.Direction <= Math.PI)
                             {
                                 Debug.WriteLine("B");
@@ -107,9 +106,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         }
 
                         //aiMoveComponent.Direction = (float)newDirection;
-                        aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move
                     }
 
+                    aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move
                     //var newDirection = Math.Atan2(dir.Y, dir.X);
                     //aiMoveComponent.Direction = (float) newDirection;
                     //aiMoveComponent.CurrentAcceleration = aiMoveComponent.AccelerationSpeed; //Make AI move.
