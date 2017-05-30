@@ -20,7 +20,7 @@ namespace Game.Systems
 
         public CarSystem Start()
         {
-            EventBus.Subscribe<InputEvent>("MountCar", Test);
+            EventBus.Subscribe<InputEvent>("MountCar", Mount);
             EventBus.Subscribe<InputEvent>("UnmountCar", Unmount);
             return this;
         }
@@ -30,7 +30,7 @@ namespace Game.Systems
             return this;
         }
 
-        public void Test(InputEvent inputEvent)
+        public void Mount(InputEvent inputEvent)
         {
             if (inputEvent.KeyEvent == ActionBindings.KeyEvent.KeyPressed)
             {
@@ -41,8 +41,20 @@ namespace Game.Systems
                 if (carComponent.Driver != null) return;
                 carComponent.Driver = inputEvent.EntityId;
                 
+                var driverRenderComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(inputEvent.EntityId);
+                if (driverRenderComponent != null)
+                {
+                    driverRenderComponent.IsVisible = false;
+                }
+
                 ComponentManager.AddComponentToEntity(new DriverComponent {Car = car.Key}, inputEvent.EntityId);
             }
+        }
+
+        private void TurnOnCarLights()
+        {
+            
         }
 
         private void Unmount(InputEvent inputEvent)
@@ -52,6 +64,12 @@ namespace Game.Systems
                 var driverComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<DriverComponent>(inputEvent.EntityId);
                 if (driverComponent == null) return;
+                var driverRenderComponent =
+                    ComponentManager.Instance.GetEntityComponentOrDefault<RenderComponent>(inputEvent.EntityId);
+                if (driverRenderComponent != null)
+                {
+                    driverRenderComponent.IsVisible = true;
+                }
                 var carComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<CarComponent>(driverComponent.Car);
                 carComponent.Driver = null;
@@ -64,7 +82,7 @@ namespace Game.Systems
             foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(CarComponent)))
             {
                 var carComponent = entity.Value as CarComponent;
-                if (carComponent.Driver == null) continue;
+                if (carComponent.Driver == null){ continue;}
 
                 var driverPosition =
                     ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(carComponent.Driver.Value);
@@ -72,15 +90,15 @@ namespace Game.Systems
                 var driverMoveComponent =
                     ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(carComponent.Driver.Value);
                 if (driverMoveComponent == null) continue;
-
+                
                 var carPosition =
                     ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(entity.Key);
                 if (carPosition == null) continue;
-                var carMoveCOmponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
-                if (carMoveCOmponent == null) return;
-
+                var carMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
+                if (carMoveComponent == null) return;
+                
                 carPosition.Position = new Vector2(driverPosition.Position.X, driverPosition.Position.Y);
-                carMoveCOmponent.Direction = driverMoveComponent.Direction;
+                carMoveComponent.Direction = driverMoveComponent.Direction;
             }
         }
 

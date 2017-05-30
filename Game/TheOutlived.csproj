@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Components\CarComponent.cs" />
+    <Compile Include="Components\CarLightsComponent.cs" />
     <Compile Include="Components\DriverComponent.cs" />
     <Compile Include="Entities\CarFactory.cs" />
     <Compile Include="Entities\GamePickups.cs" />
