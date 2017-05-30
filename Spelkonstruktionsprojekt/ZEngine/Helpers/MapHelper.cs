@@ -102,6 +102,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                             Hull = hull
                         };
                         ComponentManager.Instance.AddComponentToEntity(hullComponent, id);
+                        ComponentManager.Instance.AddComponentToEntity(new WallComponent(), id);
                     }
                 }
             }

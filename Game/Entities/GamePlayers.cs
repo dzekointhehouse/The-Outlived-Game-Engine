@@ -98,6 +98,8 @@ namespace Game.Entities
                 .SetAction(Keys.R, EventConstants.ReloadWeapon)
                 .SetAction(Keys.D1, EventConstants.KillAllLights)
                 .SetAction(Keys.D2, EventConstants.SpawnPointTest)
+                .SetAction(Keys.D3, "MountCar")
+                .SetAction(Keys.D4, "UnmountCar")
                 .Build();
 
             CreatePlayer(

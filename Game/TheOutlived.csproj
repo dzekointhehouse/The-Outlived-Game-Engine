@@ -41,11 +41,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\CarComponent.cs" />
+    <Compile Include="Components\DriverComponent.cs" />
+    <Compile Include="Entities\CarFactory.cs" />
     <Compile Include="Entities\GamePickups.cs" />
     <Compile Include="Entities\GamePlayers.cs" />
     <Compile Include="Entities\GameEnemies.cs" />
     <Compile Include="Entities\GameHUD.cs" />
     <Compile Include="Entities\GameMap.cs" />
+    <Compile Include="Entities\OutlivedEntityBuilder.cs" />
     <Compile Include="Entities\PickupFactory.cs" />
     <Compile Include="Entities\Zones\DowntownZone.cs" />
     <Compile Include="Factory\EntityFactory.cs" />
@@ -93,6 +97,7 @@
     <Compile Include="Systems\Abilities\RifleAbilitySystem.cs" />
     <Compile Include="Systems\Abilities\ShotgunAbilitySystem.cs" />
     <Compile Include="Systems\Abilities\WeaponSystem.cs" />
+    <Compile Include="Systems\CarSystem.cs" />
     <Compile Include="Systems\OutlivedEventConstants.cs" />
     <Compile Include="Systems\ProbabilitySystem.cs" />
     <Compile Include="Systems\SoundSystem.cs" />
@@ -132,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders" />
-    <Folder Include="Components" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

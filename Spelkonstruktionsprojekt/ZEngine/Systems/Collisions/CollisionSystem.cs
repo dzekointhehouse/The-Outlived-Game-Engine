@@ -309,17 +309,15 @@ namespace ZEngine.Systems
             IntersectionAxis intersectionAxis;
             if (movingEntityCollisionBounds.Intersects(stillEntityCollisionBounds))
             {
-                if (value.Left < this.Right && this.Left < value.Right && value.Top < this.Bottom)
-                    return this.Top < value.Bottom;
-                if (stillEntityCollisionBounds.Left < movingEntityCollisionBounds.Right ||
-                    movingEntityCollisionBounds.Left < stillEntityCollisionBounds.Right)
-                {
-                    intersectionAxis = 
-                }
-                else
-                {
-                    
-                }
+                //TODO WIP on AI collisions
+//                if (value.Left < this.Right && this.Left < value.Right && value.Top < this.Bottom)
+//                    return this.Top < value.Bottom;
+//                if (stillEntityCollisionBounds.Left < movingEntityCollisionBounds.Right ||
+//                    movingEntityCollisionBounds.Left < stillEntityCollisionBounds.Right)
+//                {
+//                    intersectionAxis = 
+//                }
+
                 if (ComponentManager.EntityHasComponent<AIComponent>(movingEntity)) return true;
                 if (PROFILING)
                 {

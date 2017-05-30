@@ -144,7 +144,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
             var entityComponents = _components[typeof(T)];
             if (entityComponents == null) return;
             if (!entityComponents.ContainsKey(entityId)) return;
-            ComponentFactory.Recycle<T>(entityComponents[entityId]);
+            ComponentFactory.Recycle(entityComponents[entityId]);
             entityComponents.Remove(entityId);
         }
 

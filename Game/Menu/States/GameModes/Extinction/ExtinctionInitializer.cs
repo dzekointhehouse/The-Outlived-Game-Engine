@@ -75,7 +75,13 @@ namespace Game.Menu.States.GameModes.Extinction
             SetupGameScoreEntity();
             SetupHighScoreEntity();
             SetupEventZones();
+            SetupCar();
             // SetupTempPlayerDeadSpriteFlyweight();
+        }
+
+        private void SetupCar()
+        {
+            CarFactory.CreatePickup();
         }
 
         private void SetupEventZones()

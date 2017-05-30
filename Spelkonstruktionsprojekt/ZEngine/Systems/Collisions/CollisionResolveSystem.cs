@@ -10,6 +10,7 @@ using static ZEngine.Systems.CollisionEvents;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Debug = System.Diagnostics.Debug;
 
 namespace ZEngine.Systems
@@ -202,7 +203,10 @@ namespace ZEngine.Systems
                     new CollisionRequirement
                     {
                         MovingEntityRequirements = new List<Type>(),
-                        TargetEntityRequirements = new List<Type>()
+                        TargetEntityRequirements = new List<Type>
+                        {
+                            typeof(WallCollisionSystem)
+                        }
                     },
                     CollisionEvent.Wall
                 },

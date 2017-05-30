@@ -14,12 +14,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
     {
         private readonly Dictionary<Type, Stack<IComponent>> _scrapyard = new Dictionary<Type, Stack<IComponent>>();
 
-        public void Recycle<T>(IComponent component)
+        public void Recycle(IComponent component)
         {
-            if (component.GetType() == typeof(T))
-            {
-                _scrapyard[typeof(T)].Push(component);
-            }
+            if (!_scrapyard.ContainsKey(component.GetType())) return;
+            _scrapyard[component.GetType()].Push(component);
         }
 
         public void Recycle(Type componentType, IComponent component)

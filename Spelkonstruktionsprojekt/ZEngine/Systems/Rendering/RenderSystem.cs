@@ -123,7 +123,8 @@ namespace ZEngine.Systems
             {
                 var components = GetOrRetrieveComponents(entity.Key);
                 if (components == null) continue;
-
+                if(!(entity.Value as RenderComponent).IsVisible) continue;
+                
                 var zIndex = components.Item1.ZIndex;
 
                 //var offset = offsetComponent?.Offset ?? default(Vector2);
@@ -133,7 +134,7 @@ namespace ZEngine.Systems
                         (int) (components.Item1.Position.X),
                         (int) (components.Item1.Position.Y),
                         (int) (components.Item2.Width * components.Item3.Scale),
-                        (int) (components.Item2.Width * components.Item3.Scale)
+                        (int) (components.Item2.Height * components.Item3.Scale)
                     );
 
                 var spriteCrop = new Rectangle(

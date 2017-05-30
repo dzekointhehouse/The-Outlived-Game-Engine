@@ -25,11 +25,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // We store a list of all the components that we add,
         // later when we call build all the components will be 
         // added to the new entity, whiltst creating it's id.
-        private readonly List<IComponent> components = new List<IComponent>();
+        protected readonly List<IComponent> components = new List<IComponent>();
 
         private readonly uint _key = EntityManager.GetEntityManager().NewEntity();
 
-        private ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
+        protected ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
 
         public uint GetEntityKey()
         {

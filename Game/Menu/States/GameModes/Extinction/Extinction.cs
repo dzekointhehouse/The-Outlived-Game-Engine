@@ -32,6 +32,7 @@ namespace Game.Menu.States.GameModes.Extinction
         private WeaponSystem WeaponSystem { get; set; } = new WeaponSystem();
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
         private SpawnPointSystem SpawnPointSystem { get; set; } = new SpawnPointSystem();
+        private CarSystem CarSystem { get; set; } = new CarSystem();
 
         private DowntownZone DowntownZone { get; set; } = new DowntownZone();
         
@@ -93,7 +94,7 @@ namespace Game.Menu.States.GameModes.Extinction
             Timer.Update(gameTime);
             BackgroundMusic.PlayMusic();
             SystemsBundle.Update(gameTime);
-            
+            CarSystem.Update();
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
 
@@ -126,6 +127,7 @@ namespace Game.Menu.States.GameModes.Extinction
             WeaponSystem.Start();
             SpawnPointSystem.Start();
             DowntownZone.Start();
+            CarSystem.Start();
             // Game stuff
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
@@ -136,6 +138,7 @@ namespace Game.Menu.States.GameModes.Extinction
             WeaponSystem.Stop();
             SpawnPointSystem.Stop();
             DowntownZone.Stop();
+            CarSystem.Stop();
 //            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
 //            {
 //                ComponentManager.Instance.DeleteEntity(entity);
