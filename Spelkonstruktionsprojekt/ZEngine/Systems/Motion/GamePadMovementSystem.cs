@@ -28,8 +28,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Motion
                 var gamePadIndex = (entity.Value as GamePadComponent).GamePadPlayerIndex;
                 var gamePadState = GamePad.GetState(gamePadIndex);
                 var leftStickPosition = gamePadState.ThumbSticks.Left;
-                if (leftStickPosition.X > 0.05 || leftStickPosition.X < -0.05 || leftStickPosition.Y > 0.05 ||
-                    leftStickPosition.Y < -0.05)
+                if (leftStickPosition.X > 0.15 || leftStickPosition.X < -0.15 || leftStickPosition.Y > 0.15 ||
+                    leftStickPosition.Y < -0.15)
                 {
                     var direction = Math.Atan2(-leftStickPosition.Y, leftStickPosition.X);
                     Debug.WriteLine("X:" + leftStickPosition.X + " Y:" + leftStickPosition.Y + " D:" + direction);

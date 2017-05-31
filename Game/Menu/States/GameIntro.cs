@@ -30,7 +30,7 @@ namespace Game.Menu.States
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
             videoPlayer = new VideoPlayer();
-//            videoPlayer.Play(gameManager.MenuContent.IntroVideo);
+//            videoPlayer.Count(gameManager.MenuContent.IntroVideo);
         }
 
 

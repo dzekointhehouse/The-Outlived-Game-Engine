@@ -2,6 +2,7 @@ using Game.Services;
 using Game.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -27,10 +28,12 @@ namespace Game.Menu.States.GameModes.DeathMatch
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
 
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
-        private Timer Timer { get; set; }
+        private StartTimer StartTimer { get; set; }
         private GameViewports GameViewports { get; set; }
         
         private DeathMatchInitializer DeathMatchInitializer { get; set; }
+
+        private CountdownTimer countdownTimer;
         
         public DeathMatch(GameModeDependencies dependencies)
         {
@@ -39,12 +42,13 @@ namespace Game.Menu.States.GameModes.DeathMatch
             SystemsBundle = dependencies.SystemsBundle;
             MenuNavigator = dependencies.MenuNavigator;
             MenuController = dependencies.VirtualInputs.PlayerOne();
+            countdownTimer = new CountdownTimer(1);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             SystemsBundle.Draw(gameTime);
-            Timer.Draw(spriteBatch);
+            StartTimer.Draw(spriteBatch);
             DrawCameras(spriteBatch);
         }
 
@@ -56,6 +60,12 @@ namespace Game.Menu.States.GameModes.DeathMatch
             // Should move to HUD which should render defaultview
             spriteBatch.Begin();
             var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
+            
+            spriteBatch.DrawString(OutlivedGame.Instance().Fonts["ZMenufont"], 
+                countdownTimer.GetFormatedTime(), 
+                new Vector2(((GameViewports.defaultView.Width - OutlivedGame.Instance().Fonts["ZMenufont"].MeasureString(countdownTimer.GetFormatedTime()).X) * 0.5f), GameViewports.defaultView.Y * 0.5f), 
+                Color.White);
+
             switch (nCameras)
             {
                 case 0:
@@ -81,11 +91,19 @@ namespace Game.Menu.States.GameModes.DeathMatch
                 MenuNavigator.Pause();
             }
 
-            Timer.Update(gameTime);
+            StartTimer.Update(gameTime);
+            if (StartTimer.IsCounting)
+            {
+                return;
+            }
+
+            countdownTimer.Count();
+            countdownTimer.Update(gameTime);
             BackgroundMusic.PlayMusic();
             SystemsBundle.Update(gameTime);
 
-            if (HealthSystem.CheckIfAllPlayersAreDead())
+
+            if (countdownTimer.IsDone)
             {
                 MenuNavigator.GoTo(GameManager.GameState.GameOver);
             }
@@ -100,14 +118,14 @@ namespace Game.Menu.States.GameModes.DeathMatch
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
             DeathMatchInitializer = new DeathMatchInitializer(GameViewports, GameConfig);
-            Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
+            StartTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
 
             // Loading this projects content to be used by the game engine.
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
             DeathMatchInitializer.InitializeEntities();
-            BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
+            BackgroundMusic.LoadSongs("bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1");
             WeaponSystem.LoadBulletSpriteEntity();
 
             // Specific systems activated
@@ -125,6 +143,9 @@ namespace Game.Menu.States.GameModes.DeathMatch
             ComponentManager.Instance.Clear();
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
+
+            BackgroundMusic.ClearList();
+            MediaPlayer.Stop();
         }
     }
 }

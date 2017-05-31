@@ -57,7 +57,7 @@ namespace Game.Menu.States
 
         private SpawnSystem spawnSystem;
         private WeaponSystem weaponSystem = new WeaponSystem();
-        private Timer timer;
+        private StartTimer _startTimer;
         private BackgroundMusic backgroundMusic;
         private GameViewports gameViewports;
 
@@ -78,7 +78,7 @@ namespace Game.Menu.States
             // other stuff
             gameViewports = new GameViewports(gameManager.gameConfig, gameManager.Viewport); //
             players = new GamePlayers(gameManager.gameConfig, gameViewports); //
-            timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"), 
+            _startTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"), 
                 gameViewports.defaultView); //
             backgroundMusic = new BackgroundMusic();///
         }
@@ -95,7 +95,7 @@ namespace Game.Menu.States
                 isInitialized = true;
             }
             gameManager.Engine.Draw(gameTime);
-            timer.Draw(spriteBatch);
+            _startTimer.Draw(spriteBatch);
 
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = gameViewports.defaultView;
@@ -127,9 +127,9 @@ namespace Game.Menu.States
             {
                 MenuNavigator.Pause();
             }
-            timer.Update(gameTime);
+            _startTimer.Update(gameTime);
             // Waiting for the countdown to finnish
-            //if (!timer.IsCounting)
+            //if (!_startTimer.IsCounting)
             //{
             backgroundMusic.PlayMusic();
 

@@ -70,7 +70,7 @@ namespace Game
             TeamOptions = game.Content.Load<Texture2D>("Images/Menu/teamoptions");
 
             // Main menu
-            BackgroundSong = game.Content.Load<Song>("Sound/bg_music2");
+            BackgroundSong = game.Content.Load<Song>("Sound/bg_menumusic");
             MainOptionsBackground = game.Content.Load<Texture2D>("Images/Menu/mainoptions");
             Background = game.Content.Load<Texture2D>("Images/Menu/background3");
             BackgroundFog = game.Content.Load<Texture2D>("Images/Menu/movingfog");

@@ -4,6 +4,7 @@ using Game.Services;
 using Game.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -32,7 +33,7 @@ namespace Game.Menu.States.GameModes
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
 
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
-        private Timer Timer { get; set; }
+        private StartTimer StartTimer { get; set; }
         private GameViewports GameViewports { get; set; }
 
         private SurvivalInitializer SurvivalInitializer { get; set; }
@@ -51,7 +52,7 @@ namespace Game.Menu.States.GameModes
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             SystemsBundle.Draw(gameTime);
-            Timer.Draw(spriteBatch);
+            StartTimer.Draw(spriteBatch);
             DrawHUDs(spriteBatch);
         }
 
@@ -88,11 +89,8 @@ namespace Game.Menu.States.GameModes
                 MenuNavigator.Pause();
             }
             
-            Timer.Update(gameTime);
-            if (Timer.IsCounting)
-            {
-                return;
-            }
+            StartTimer.Update(gameTime);
+
             BackgroundMusic.PlayMusic();
             SpawnSystem.HandleWaves();
             SystemsBundle.Update(gameTime);
@@ -114,7 +112,7 @@ namespace Game.Menu.States.GameModes
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
             SurvivalInitializer = new SurvivalInitializer(GameViewports, GameConfig);
-            Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
+            StartTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
             
             SurvivalInitializer.InitializeEntities();
@@ -130,6 +128,7 @@ namespace Game.Menu.States.GameModes
 
         public void BeforeHide()
         {
+
             SoundSystem.Stop();
             WeaponSystem.Stop();
             
@@ -138,6 +137,11 @@ namespace Game.Menu.States.GameModes
             if (!GameOver)
             {
                 ComponentManager.Instance.Clear();
+            }
+            if (HealthSystem.CheckIfAllPlayersAreDead())
+            {
+                BackgroundMusic.ClearList();
+               MediaPlayer.Stop();
             }
         }
     }

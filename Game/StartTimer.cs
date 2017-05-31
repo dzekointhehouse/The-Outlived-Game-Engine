@@ -11,7 +11,7 @@ using ZEngine.Components;
 
 namespace Game
 {
-    class Timer
+    public class StartTimer
     {
         public bool IsCounting { get; set; } = true;
 
@@ -24,7 +24,7 @@ namespace Game
         private Viewport viewport;
         private float alpha = 1f;
         private Dictionary<int, SoundEffectInstance> counterSounds;
-        public Timer(int whenToStop, SpriteFont font, Viewport viewport)
+        public StartTimer(int whenToStop, SpriteFont font, Viewport viewport)
         {
             this.whenToStop = whenToStop;
             this.font = font;

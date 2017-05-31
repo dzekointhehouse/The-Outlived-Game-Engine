@@ -1262,12 +1262,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/ZlargeFont.spritefont
 
-#begin Sound/bg_music2.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Sound/bg_music2.mp3
-
 #begin crawler_spritesheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1693,4 +1687,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/InGame/Tiles/tile2.png
+
+#begin Sound/bg_menumusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/bg_menumusic.mp3
+
+#begin Sound/bg_actionmusic1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/bg_actionmusic1.mp3
 

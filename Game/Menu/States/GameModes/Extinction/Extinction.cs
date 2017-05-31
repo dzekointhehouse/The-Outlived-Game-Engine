@@ -37,7 +37,7 @@ namespace Game.Menu.States.GameModes.Extinction
         private DowntownZone DowntownZone { get; set; } = new DowntownZone();
         
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
-        private Timer Timer { get; set; }
+        private StartTimer StartTimer { get; set; }
         private GameViewports GameViewports { get; set; }
 
         private ExtinctionInitializer ExtinctionInitializer { get; set; }
@@ -54,7 +54,7 @@ namespace Game.Menu.States.GameModes.Extinction
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             SystemsBundle.Draw(gameTime);
-            Timer.Draw(spriteBatch);
+            StartTimer.Draw(spriteBatch);
             DrawCameras(spriteBatch);
         }
 
@@ -91,7 +91,7 @@ namespace Game.Menu.States.GameModes.Extinction
                 MenuNavigator.Pause();
             }
             
-            Timer.Update(gameTime);
+            StartTimer.Update(gameTime);
             BackgroundMusic.PlayMusic();
             SystemsBundle.Update(gameTime);
             CarSystem.Update();
@@ -112,7 +112,7 @@ namespace Game.Menu.States.GameModes.Extinction
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
             ExtinctionInitializer = new ExtinctionInitializer(GameViewports, GameConfig);
-            Timer = new Timer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
+            StartTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
             ExtinctionInitializer.InitializeEntities();
             
@@ -120,7 +120,6 @@ namespace Game.Menu.States.GameModes.Extinction
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
-//            CreateEnemy();
             WeaponSystem.LoadBulletSpriteEntity();
 
             SoundSystem.Start();

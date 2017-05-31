@@ -64,7 +64,8 @@ namespace Game
             
             //TODO move and make use of method LoadContent in this class
             Fonts["ZEone"] = Content.Load<SpriteFont>("ZEOne");
-            
+            Fonts["ZMenufont"] = Content.Load<SpriteFont>("Fonts/ZMenufont");
+
             base.Initialize();
         }
 
