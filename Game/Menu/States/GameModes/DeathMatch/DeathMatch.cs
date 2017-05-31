@@ -110,9 +110,11 @@ namespace Game.Menu.States.GameModes.DeathMatch
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
 
+            // Specific systems activated
             SoundSystem.Start();
             WeaponSystem.Start();
-            // Game stuff
+
+            // Load content from this game
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
 
@@ -120,11 +122,6 @@ namespace Game.Menu.States.GameModes.DeathMatch
         {            
             SoundSystem.Stop();
             WeaponSystem.Stop();
-//            
-//            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
-//            {
-//                ComponentManager.Instance.DeleteEntity(entity);
-//            }
             ComponentManager.Instance.Clear();
             GameConfig.Reset();
             SystemsBundle.ClearCaches();

@@ -34,6 +34,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             Collisions.Add(number);
         }
 
+        public void AddNumbersToCollisionList(params int[] numbers)
+        {
+            foreach (var number in numbers)
+            {
+            Collisions.Add(number);
+
+            }
+        }
+
 
         // This method takes a matrix that represents a MapPack and
         // the size the tiles should be, then it creates all the entities

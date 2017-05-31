@@ -17,18 +17,16 @@ namespace Game.Menu.States.GameModes.DeathMatch
         public GameConfig GameConfig { get; }
         public GamePlayers GamePlayers { get; set; }
         public GameViewports GameViewports { get; }
+        private GameEnemies GameEnemies { get; set; }
+        private PickupFactory PickupFactory { get; set; } = new PickupFactory();
 
         private GameMap GameMaps = new GameMap();
-        private GameEnemies GameEnemies { get; set; }
-        
-        private PickupFactory PickupFactory { get; set; } = new PickupFactory();
         
         // SOME BUG NEED THIS.
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
         public DeathMatchInitializer(GameViewports gameViewports, GameConfig gameConfig)
-        {
-          
+        {          
             GameConfig = gameConfig;
             GameViewports = gameViewports;  
         }
@@ -37,15 +35,10 @@ namespace Game.Menu.States.GameModes.DeathMatch
         {
             // Loading this projects content to be used by the game engine.
             GamePlayers = new GamePlayers(GameConfig, GameViewports);
-            GameEnemies = new GameEnemies();
             // Game stuff
             GameMaps.SetupMap(GameConfig);
             GamePlayers.CreatePlayers(GameMaps);
-//            GameEnemies.CreateMonster("player_sprites");
-            //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(1400, 1200));
-            //  pickups.AddPickup("healthpickup", GamePickups.PickupType.Health, new Vector2(70, 300));
-            //  pickups.AddPickup("ammopickup", GamePickups.PickupType.Ammo, new Vector2(100, 200)); 
-            PickupFactory.CreatePickups();
+           // PickupFactory.CreatePickups();
             CreateGameEntities();
             CreateDefaultViewport();
         }
@@ -74,8 +67,6 @@ namespace Game.Menu.States.GameModes.DeathMatch
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
             SetupHighScoreEntity();
-
-            // SetupTempPlayerDeadSpriteFlyweight();
         }
 
         private void SetupGameScoreEntity()
@@ -112,11 +103,6 @@ namespace Game.Menu.States.GameModes.DeathMatch
                 .SetSprite("ammo")
                 .Build();
 
-            //new EntityBuilder()
-            //   .SetHUD(true)
-            //   .SetPosition(new Vector2(0, 0))
-            //   .SetSprite("bg_hud")
-            //   .Build();
         }
 
         private static void CreateGlobalBulletSpriteEntity()

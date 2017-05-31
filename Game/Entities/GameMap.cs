@@ -39,16 +39,50 @@ namespace Game.Entities
                     spawnPositionFour = new Vector2(2300, 2450);
                     break;
                 case GameModes.Extinction:
+                    //tileTypes.Clear();
+                    //tileTypes.Add(2, "yellowwall64");
+                    //tileTypes.Add(28, "grass");
+                    //mapHelper = new MapHelper(tileTypes);
+                    //mapHelper.AddNumberToCollisionList(2);
+                    //mapHelper.CreateMapTiles(MapPack.TheWallMap, 100);
+                    //spawnPositionOne = new Vector2(120, 120);
+                    //spawnPositionTwo = new Vector2(110, 150);
+                    //spawnPositionThree = new Vector2(1840, 1840);
+                    //spawnPositionFour = new Vector2(1760, 1840);
+
                     tileTypes.Clear();
-                    tileTypes.Add(2, "yellowwall64");
-                    tileTypes.Add(28, "grass");
+
+                    tileTypes.Add(35, "Images/InGame/Road/blankroad");
+                    tileTypes.Add(36, "Images/InGame/Road/leftsideroad");
+                    tileTypes.Add(37, "Images/InGame/Road/pavementleft");
+                    tileTypes.Add(38, "Images/InGame/Road/pavementright");
+                    tileTypes.Add(39, "Images/InGame/Road/rightsideroad");
+                    tileTypes.Add(40, "Images/InGame/Objects/barrel");
+                    tileTypes.Add(42, "Images/InGame/Objects/market");
+                    tileTypes.Add(43, "Images/InGame/Objects/market2");
+                    tileTypes.Add(16, "Images/InGame/Tiles/tile2");
+
+
+                    tileTypes.Add(1, "Images/InGame/Tiles/House1/cornerlefttop");
+                    tileTypes.Add(2, "Images/InGame/Tiles/House1/housecorner");
+                    tileTypes.Add(3, "Images/InGame/Tiles/House1/housecornerrighttop");
+                    tileTypes.Add(4, "Images/InGame/Tiles/House1/housesidebottom");
+                    tileTypes.Add(5, "Images/InGame/Tiles/House1/housesideleft");
+                    tileTypes.Add(6, "Images/InGame/Tiles/House1/housesideright");
+                    tileTypes.Add(7, "Images/InGame/Tiles/House1/sidetop");
+                    tileTypes.Add(8, "Images/InGame/Tiles/House1/center");
+                    tileTypes.Add(9, "Images/InGame/Tiles/House1/leftbottomcorner");
+
                     mapHelper = new MapHelper(tileTypes);
-                    mapHelper.AddNumberToCollisionList(2);
-                    mapHelper.CreateMapTiles(MapPack.TheWallMap, 100);
+                   // mapHelper.AddNumbersToCollisionList(40,42,43,1,2,3,4,5,6,7,8,9);
+                    mapHelper.CreateMapTiles(MapPack.TheCity, 64);
                     spawnPositionOne = new Vector2(120, 120);
                     spawnPositionTwo = new Vector2(110, 150);
                     spawnPositionThree = new Vector2(1840, 1840);
                     spawnPositionFour = new Vector2(1760, 1840);
+
+
+
                     break;
                 case GameModes.Blockworld:
                     tileTypes.Clear();
