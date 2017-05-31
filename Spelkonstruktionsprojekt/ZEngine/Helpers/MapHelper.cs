@@ -17,6 +17,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
     {
         public Dictionary<int, string> TileTypes { get; set; }
         public List<int> Collisions { get; set; } = new List<int>(10);
+        public  List<int> HullList { get; set; } = new List<int>(10);
 
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
 
@@ -43,6 +44,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             }
         }
 
+        public void AddNumbersToHullList(params int[] numbers)
+        {
+            foreach (var number in numbers)
+            {
+                HullList.Add(number);
+
+            }
+        }
 
         // This method takes a matrix that represents a MapPack and
         // the size the tiles should be, then it creates all the entities
@@ -98,9 +107,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                     {
                         var collision = ComponentFactory.NewComponent<CollisionComponent>();
                         ComponentManager.Instance.AddComponentToEntity(collision, id);
+
+                        ComponentManager.Instance.AddComponentToEntity(new WallComponent(), id);
+                    }
+
+                    if (HullList.Contains(positionNumber))
+                    {
                         var hull = new Hull(
-                            new Vector2(1.0f), 
-                            new Vector2(-1.0f, 1.0f), 
+                            new Vector2(1.0f),
+                            new Vector2(-1.0f, 1.0f),
                             new Vector2(-1.0f),
                             new Vector2(1.0f, -1.0f)
                         );
@@ -111,7 +126,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                             Hull = hull
                         };
                         ComponentManager.Instance.AddComponentToEntity(hullComponent, id);
-                        ComponentManager.Instance.AddComponentToEntity(new WallComponent(), id);
                     }
                 }
             }
