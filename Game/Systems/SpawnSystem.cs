@@ -194,7 +194,7 @@ namespace Game.Systems
         }
 
         // Spawing the zombies outside of the players view.
-        private Vector2 GetSpawnPosition(Spelkonstruktionsprojekt.ZEngine.Components.WorldComponent world, Dictionary<uint, IComponent> cameraComponents, Random random)
+        private Vector2 GetSpawnPosition(WorldComponent world, Dictionary<uint, IComponent> cameraComponents, Random random)
         {
             if (cameraComponents == null) return default(Vector2);
             int x = 0, y = 0;
@@ -205,12 +205,24 @@ namespace Game.Systems
                 y = random.Next(0, world.WorldHeight);
                 foreach (var cameraComponent in cameraComponents)
                 {
+                    
                     var camera = cameraComponent.Value as CameraViewComponent;
-                    if (!camera.View.TitleSafeArea.Contains(x, y))
+                    if (world.WorldData == null)
                     {
-                        isInside = false;
+                        if (!camera.View.TitleSafeArea.Contains(x, y))
+                        {
+                            isInside = false;
+                        }
                     }
+                    else
+                    {
 
+                        Color color = world.WorldData[y, x];
+                        if (color.Equals(Color.Yellow))
+                        {
+                            isInside = false;
+                        }
+                    }
                 }
             }
             //Debug.WriteLine("outside");

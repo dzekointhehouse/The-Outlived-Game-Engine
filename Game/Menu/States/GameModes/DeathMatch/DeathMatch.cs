@@ -27,6 +27,8 @@ namespace Game.Menu.States.GameModes.DeathMatch
         private WeaponSystem WeaponSystem { get; set; } = new WeaponSystem();
         private HealthSystem HealthSystem { get; set; } = new HealthSystem();
 
+        private SpawnSystem SpawnSystem { get; set; } = new SpawnSystem();
+
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
         private StartTimer StartTimer { get; set; }
         private GameViewports GameViewports { get; set; }
@@ -56,11 +58,15 @@ namespace Game.Menu.States.GameModes.DeathMatch
         {
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
-
+            if (StartTimer.IsCounting)
+            {
+                return;
+            }
             // Should move to HUD which should render defaultview
             spriteBatch.Begin();
             var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
-            
+
+
             spriteBatch.DrawString(OutlivedGame.Instance().Fonts["ZMenufont"], 
                 countdownTimer.GetFormatedTime(), 
                 new Vector2(((GameViewports.defaultView.Width - OutlivedGame.Instance().Fonts["ZMenufont"].MeasureString(countdownTimer.GetFormatedTime()).X) * 0.5f), GameViewports.defaultView.Y * 0.5f), 
@@ -100,6 +106,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             countdownTimer.Count();
             countdownTimer.Update(gameTime);
             BackgroundMusic.PlayMusic();
+            SpawnSystem.HandleWaves();
             SystemsBundle.Update(gameTime);
 
 

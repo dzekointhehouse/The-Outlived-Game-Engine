@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Game.Services;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps;
 using static Game.Menu.States.GameModeMenu;
@@ -32,7 +33,7 @@ namespace Game.Entities
                     int[,] map = new int[40, 40];
                     tileTypes.Add(0, "grass");
                     mapHelper = new MapHelper(tileTypes);
-                    mapHelper.CreateMapTiles(map, 128);
+                    mapHelper.CreateMap(map, 128);
                     spawnPositionOne = new Vector2(2500, 2400);
                     spawnPositionTwo = new Vector2(2450, 2520);
                     spawnPositionThree = new Vector2(2300, 2300);
@@ -44,7 +45,7 @@ namespace Game.Entities
                     //tileTypes.Add(28, "grass");
                     //mapHelper = new MapHelper(tileTypes);
                     //mapHelper.AddNumberToCollisionList(2);
-                    //mapHelper.CreateMapTiles(MapPack.TheWallMap, 100);
+                    //mapHelper.CreateMap(MapPack.TheWallMap, 100);
                     //spawnPositionOne = new Vector2(120, 120);
                     //spawnPositionTwo = new Vector2(110, 150);
                     //spawnPositionThree = new Vector2(1840, 1840);
@@ -73,10 +74,11 @@ namespace Game.Entities
                     tileTypes.Add(8, "Images/InGame/Tiles/House1/center");
                     tileTypes.Add(9, "Images/InGame/Tiles/House1/leftbottomcorner");
 
+                    var mapImage = OutlivedGame.Instance().Get<Texture2D>("Images/Blockworld");
                     mapHelper = new MapHelper(tileTypes);
                     mapHelper.AddNumbersToHullList(1,2,3,4,5,6,7,8,9);
                     mapHelper.AddNumbersToCollisionList(40, 42, 43, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-                    mapHelper.CreateMapTiles(MapPack.TheCity, 64);
+                    mapHelper.CreateMap(MapPack.TheCity, 64, mapImage);
                     spawnPositionOne = new Vector2(120, 120);
                     spawnPositionTwo = new Vector2(110, 150);
                     spawnPositionThree = new Vector2(1840, 1840);
@@ -91,9 +93,10 @@ namespace Game.Entities
                     tileTypes.Add(2, "blue64");
                     tileTypes.Add(0, "red64");
                     tileTypes.Add(1, "green64");
+                    var mapImage2 = OutlivedGame.Instance().Get<Texture2D>("Images/Blockworld");
                     mapHelper = new MapHelper(tileTypes);
                     mapHelper.AddNumberToCollisionList(4);
-                    mapHelper.CreateMapTiles(MapPack.Blockworld2, 64);
+                    mapHelper.CreateMap(MapPack.Blockworld2, 64, mapImage2);
                     spawnPositionOne = new Vector2(150, 150);
                     spawnPositionTwo = new Vector2(5800, 3600);
                     spawnPositionThree = new Vector2(350, 150);

@@ -33,12 +33,13 @@ namespace Game.Menu.States.GameModes.DeathMatch
         
         public void InitializeEntities()
         {
-            // Loading this projects content to be used by the game engine.
             GamePlayers = new GamePlayers(GameConfig, GameViewports);
-            // Game stuff
             GameMaps.SetupMap(GameConfig);
             GamePlayers.CreatePlayers(GameMaps);
-           // PickupFactory.CreatePickups();
+            CreateGlobalBulletSpriteEntity();
+            CreateGlobalSpawnSpriteEntity();
+            CreateGlobalSpawnEntity();
+            // PickupFactory.CreatePickups();
             CreateGameEntities();
             CreateDefaultViewport();
         }
@@ -118,23 +119,21 @@ namespace Game.Menu.States.GameModes.DeathMatch
             ComponentManager.Instance.AddComponentToEntity(bulletSpriteComponent, entityId);
         }
 
-        //The camera cage keeps players from reaching the edge of the screen
         public uint SetupCameraCage()
         {
             var cameraCage = new EntityBuilder()
-                .SetRendering((int) (viewportDimensions.X * 0.8), (int) (viewportDimensions.Y * 0.8), isFixed: true)
+                .SetRendering((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8), isFixed: true)
                 .SetRectangleCollision(isCage: true)
                 .SetPosition(Vector2.Zero, 2)
                 .Build()
                 .GetEntityKey();
 
             var offsetComponent = ComponentFactory.NewComponent<RenderOffsetComponent>();
-            offsetComponent.Offset = new Vector2((float) (viewportDimensions.X * 0.25),
-                (float) (viewportDimensions.Y * 0.25));
+            offsetComponent.Offset = new Vector2((float)(viewportDimensions.X * 0.25),
+                (float)(viewportDimensions.Y * 0.25));
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
         }
-
 
         private void CreateGlobalSpawnSpriteEntity()
         {

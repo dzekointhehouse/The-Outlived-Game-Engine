@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
  using Penumbra;
  using Spelkonstruktionsprojekt.ZEngine.Components;
  using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -57,13 +58,20 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         // the size the tiles should be, then it creates all the entities
         // for the MapPack, by using the strings in the dictionary specified earlier
         // to know which texture to use where.
-        public void CreateMapTiles(int[,] map, int size)
+        public void CreateMap(int[,] map, int size, Texture2D mapImage = null)
         {
             var height = map.GetLength(0) * size;
             var width = map.GetLength(1) * size;
 
+            Color[,] mapdata = null;
+
+            if (mapImage != null)
+            {
+                mapdata = MapData(mapImage);
+            }
+
             var worldEntity = EntityManager.GetEntityManager().NewEntity();
-            var worldComponent = new WorldComponent() {WorldHeight = height, WorldWidth = width, World = map};
+            var worldComponent = new WorldComponent() {WorldHeight = height, WorldWidth = width, World = map, WorldData = mapdata};
             ComponentManager.Instance.AddComponentToEntity(worldComponent, worldEntity);
 
             // Gets the number of values in the specified dimension.
@@ -130,6 +138,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                 }
             }
 
+        }
+
+        private Color[,] MapData(Texture2D map)
+        {
+            Color[] rawData = new Color[map.Width * map.Height];
+            map.GetData<Color>(rawData);
+            
+
+            // Note that this stores the pixel's row in the first index, and the pixel's column in the second,
+            // with this setup.
+            Color[,] rawDataAsGrid = new Color[map.Height, map.Width];
+            for (int row = 0; row < map.Height; row++)
+            {
+                for (int column = 0; column < map.Width; column++)
+                {
+                    // Assumes row major ordering of the array.
+                    rawDataAsGrid[row, column] = rawData[row * map.Width + column];
+                }
+            }
+            // How to extract:
+            // Color color = rawDataAsGrid[7, 10]; // 10th pixel on the 7th row
+            return rawDataAsGrid;
         }
     }
 }

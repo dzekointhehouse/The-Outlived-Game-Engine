@@ -281,7 +281,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
             MapHelper mapcreator = new MapHelper(tileTypes);
 
-            mapcreator.CreateMapTiles(MapPack.TheWallMap, 100);
+            mapcreator.CreateMap(MapPack.TheWallMap, 100);
         }
 
         public void SetupCamera()
