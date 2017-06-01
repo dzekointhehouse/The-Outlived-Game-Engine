@@ -12,7 +12,7 @@ using static Game.Menu.States.MainMenu.OptionsState;
 namespace Game.Menu.States
 {
     /// <summary>
-    /// The main game menu state. This state is used as the first
+    /// The main game menu state. This state is used as the
     /// state that the users come to when starting the game
     /// (exl. intro state). It presents options that the players
     /// can choose from.
