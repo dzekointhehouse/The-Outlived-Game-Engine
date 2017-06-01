@@ -91,6 +91,12 @@ namespace ZEngine.Managers
             if(destructionComponents.Count < 1) throw new Exception("AddEntityToDestructionList needs at least one EntityDestructionComponent");
             var destructionComponent = destructionComponents.First().Value as EntityDestructionComponent;
             destructionComponent.EntitiesToDestroy.Add(entityId);
+
+            var tagComponent = ComponentManager.Instance.GetEntityComponentOrDefault<TagComponent>(entityId);
+            if (tagComponent != null)
+            {
+                tagComponent.Tags.Add(Tag.Delete);
+            }
         }
 
         private void CreateEntityDestructionComponent()
