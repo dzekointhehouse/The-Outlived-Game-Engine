@@ -79,14 +79,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         */
         private void DeletePickup(uint pickup)
         {
-            var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(pickup);
-
-            if (tagComponent == null)
-            {
-                tagComponent = ComponentManager.ComponentFactory.NewComponent<TagComponent>();
-                ComponentManager.AddComponentToEntity(tagComponent, pickup);
-            }
-            tagComponent.Tags.Add(Tag.Delete);
+            EntityManager.AddEntityToDestructionList(pickup);
         }
 
     }
