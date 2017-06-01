@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,28 +66,99 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         }
 
+        private const bool PROFILING = true;
         public void Update(GameTime gameTime)
         {
+            Stopwatch timer;
+            if (PROFILING)
+            {
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<EnemyCollisionSystem>().GameTime = gameTime; //TODO system dependency
             manager.Get<InputHandler>().HandleInput(_oldKeyboardState, gameTime);
             manager.Get<InputHandler>().HandleGamePadInput(gameTime);
             _oldKeyboardState = Keyboard.GetState();
             manager.Get<GamePadMovementSystem>().WalkForwards(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("INPUT SYSTEMS" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("Collision RESOLVE SYSTEM" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<EventZoneSystem>().Handle(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("EventZone" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<CameraSceneSystem>().Update(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("INPUT SYSTEMS" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<MoveSystem>().Move(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("INPUT SYSTEMS" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<AISystem>().Update(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("AI SYSTEM" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<CollisionSystem>().DetectCollisions();
+            if (PROFILING)
+            {
+                Debug.WriteLine("Collision Systems" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<AnimationSystem>().UpdateAnimations(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("Animation System" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<SpriteAnimationSystem>().Update(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("SpriteAnimation" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<FlashlightSystem>().Update(gameTime, viewportDimensions);
+            if (PROFILING)
+            {
+                Debug.WriteLine("Flashlight System" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<FlickeringLightSystem>().Update(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("Flickering Light" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<HealthSystem>().Update(gameTime);
             manager.Get<InertiaDampenerSystem>().Apply(gameTime);
             manager.Get<BackwardsPenaltySystem>().Apply();
             manager.Get<ScoreSystem>().Update(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("MISC." + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
             manager.Get<EntityRemovalSystem>().Update(gameTime);
+            if (PROFILING)
+            {
+                Debug.WriteLine("ENTITY REMOVAL" + timer.ElapsedTicks);
+                timer = Stopwatch.StartNew();
+            }
         }
 
         public void Draw(GameTime gameTime)

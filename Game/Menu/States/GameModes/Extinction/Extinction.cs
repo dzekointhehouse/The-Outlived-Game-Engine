@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Game.Entities.Zones;
 using Game.Services;
 using Game.Systems;
@@ -84,6 +85,7 @@ namespace Game.Menu.States.GameModes.Extinction
             spriteBatch.End();
         }
 
+        private const bool PROFILING = true;
         public void Update(GameTime gameTime)
         {
             if (MenuController.Is(Pause, Pressed))
@@ -91,6 +93,11 @@ namespace Game.Menu.States.GameModes.Extinction
                 MenuNavigator.Pause();
             }
             
+            Stopwatch timer;
+            if (PROFILING)
+            {
+                timer = Stopwatch.StartNew();
+            }
             StartTimer.Update(gameTime);
             BackgroundMusic.PlayMusic();
             SystemsBundle.Update(gameTime);

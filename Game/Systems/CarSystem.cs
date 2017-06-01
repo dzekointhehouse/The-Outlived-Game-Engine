@@ -97,8 +97,13 @@ namespace Game.Systems
                 var carMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(entity.Key);
                 if (carMoveComponent == null) return;
                 
-                carPosition.Position = new Vector2(driverPosition.Position.X, driverPosition.Position.Y);
-                carMoveComponent.Direction = driverMoveComponent.Direction;
+                driverPosition.Position = new Vector2(carPosition.Position.X, carPosition.Position.Y);
+
+                var driverActiomBindings =
+                    ComponentManager.GetEntityComponentOrDefault<ActionBindings>(carComponent.Driver.Value);
+                
+//                carPosition.Position = new Vector2(driverPosition.Position.X, driverPosition.Position.Y);
+//                carMoveComponent.Direction = driverMoveComponent.Direction;
             }
         }
 
