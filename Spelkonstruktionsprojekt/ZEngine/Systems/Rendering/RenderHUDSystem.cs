@@ -9,6 +9,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
+using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 
@@ -24,12 +25,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
     {
         public static string SystemName = "RenderHUDSystem";
         private GameDependencies _gameDependencies;
+        private EventBus EventBus = EventBus.Instance;
 
         private StringBuilder gameHUD = new StringBuilder(0, 50);
         private StringBuilder scoreGameHUD = new StringBuilder(0, 50);
         private StringBuilder ammoGameHUD = new StringBuilder(0, 50);
         private StringBuilder playerGameHUD = new StringBuilder(0, 50);
 
+
+        public void Start()
+        {
+            EventBus.Subscribe<uint>(EventConstants.PlayerDeath, UpdateTeamKills);
+        }
         // This draw method is used to start the system process.
         // it uses DrawTitlesafeStrings to draw the components.
         public void Draw(GameDependencies gameDependencies)
@@ -57,6 +64,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
             Dictionary<uint, IComponent> HUDComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderHUDComponent));
 
+            SpriteFont spriteFont = default(SpriteFont);
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
 
@@ -76,7 +84,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                 var HUD = instance.Value as RenderHUDComponent;
 
-                SpriteFont spriteFont = contentManager.Load<SpriteFont>(HUD.SpriteFont);
+                spriteFont = contentManager.Load<SpriteFont>(HUD.SpriteFont);
                 Vector2 position = Vector2.Zero;
 
                 gameHUD.AppendLine();
@@ -196,7 +204,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                         }
                     }
-                }
+
+              }
                 // Drawing other strings
 
                 if (HUD.IsOnlyHUD)
@@ -209,10 +218,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         new Vector2(titlesafearea.X + pos.Position.X, titlesafearea.Y + pos.Position.Y), 
                         HUD.Color);
                 }
-
-
             }
+            var gameScoreComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).FirstOrDefault();
+            var gamescore = gameScoreComponent.Value as GameScoreComponent;
 
+            _gameDependencies.SpriteBatch.DrawString(
+                spriteFont,
+                "Team 1: " + gamescore.KillsTeamOne,
+                new Vector2(titlesafearea.X + 50, titlesafearea.Y + 50),
+                Color.White);
+
+            _gameDependencies.SpriteBatch.DrawString(
+                spriteFont,
+                "Team 2: " + gamescore.KillsTeamTwo,
+                new Vector2(titlesafearea.X + 500, titlesafearea.Y + 50),
+                Color.White);
         }
 
         private void DrawTitlesafeTextures()
@@ -251,10 +271,23 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         );
                 }
             }
-
-
-
         }
+        private void UpdateTeamKills(uint entity)
+        {
+            var team = ComponentManager.Instance.GetEntityComponentOrDefault<TeamComponent>(entity);
 
+            if (team.TeamId == 1)
+            {
+                var gameScoreComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).FirstOrDefault();
+                var gamescore = gameScoreComponent.Value as GameScoreComponent;
+                gamescore.KillsTeamTwo++;
+            }
+            else if (team.TeamId == 2)
+            {
+                var gameScoreComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).FirstOrDefault();
+                var gamescore = gameScoreComponent.Value as GameScoreComponent;
+                gamescore.KillsTeamOne++;
+            }
+        }
     }
 }

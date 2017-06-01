@@ -55,6 +55,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<KillSwitchSystem>().Start();
             manager.Get<KillSwitchEventFactory>().Start();
             manager.Get<AiWallCollisionSystem>().Start();
+            manager.Get<RenderHUDSystem>().Start();
         }
 
         public void LoadContent()

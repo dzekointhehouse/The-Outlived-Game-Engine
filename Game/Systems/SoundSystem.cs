@@ -184,6 +184,8 @@ namespace Game.Systems
             var sound =
                 ComponentManager.Instance.GetEntityComponentOrDefault<SoundComponent>(inputEvent.Target);
             if (sound == null) return;
+
+            if (sound.SoundEffect == null) return;
             // We create a SoundEffectInstance which gives us more control
             var soundInstance = sound.SoundEffect.CreateInstance();
 

@@ -14,6 +14,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         //public int PointsPerSecondsLimit { get; set; }
 
         public int TotalGameScore { get; set; }
+        public int KillsTeamOne { get; set; } = 0;
+        public int KillsTeamTwo { get; set; } = 0;
+
 
         public double multiplier;
         public double survivalScoreFactor;

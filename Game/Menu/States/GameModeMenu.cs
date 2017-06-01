@@ -54,15 +54,12 @@ namespace Game.Menu.States
             {
                 case Survival:
                     sb.Draw(gameManager.MenuContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
-                   // sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.45f), Color.White);
                     break;
                 case Extinction:
                     sb.Draw(gameManager.MenuContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
-                   // sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.30f), Color.White);
                     break;
                 case Blockworld:
                     sb.Draw(gameManager.MenuContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
-                   // sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.55f), Color.White);
                     break;
             }
 
