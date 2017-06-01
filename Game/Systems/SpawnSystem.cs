@@ -127,12 +127,14 @@ namespace Game.Systems
             if (GlobalSpawnComponent.EnemiesDead)
             {
                 var waveHud = ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities.First().Key);
-                if (waveHud != null)
+                var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
+
+                if (waveHud != null && nCameras == 1)
                 {
 
                     waveHud.HUDtext = "Wave " + GlobalSpawnComponent.WaveLevel.ToString();
                     waveHud.IsOnlyHUD = true;
-                    waveHud.Color = Color.Green;
+                    waveHud.Color = Color.DarkGray;
                 }
 
                 //SpawnSprite, the sprite for all monsters.

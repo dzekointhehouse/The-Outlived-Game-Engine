@@ -132,7 +132,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             healthSpacing += 0.06f;
 
                             position = new Vector2(xPosition, yPosition);
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.Color);                            
+                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.Color);
 
                         }
 
@@ -176,7 +176,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         {
                             gameHUD.Clear();
                             AmmoComponent ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(instance.Key);
-                            
+
                             if (health.Alive)
                             {
                                 // for formating and adding the amount to the HUD.
@@ -205,7 +205,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                         }
                     }
 
-              }
+                }
                 // Drawing other strings
 
                 if (HUD.IsOnlyHUD)
@@ -213,26 +213,40 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                     var pos =
                         ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(instance.Key);
                     _gameDependencies.SpriteBatch.DrawString(
-                        spriteFont, 
-                        gameHUD, 
-                        new Vector2(titlesafearea.X + pos.Position.X, titlesafearea.Y + pos.Position.Y), 
+                        spriteFont,
+                        gameHUD,
+                        new Vector2(titlesafearea.X + pos.Position.X, titlesafearea.Y + pos.Position.Y),
                         HUD.Color);
                 }
             }
-            var gameScoreComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent)).FirstOrDefault();
-            var gamescore = gameScoreComponent.Value as GameScoreComponent;
 
-            _gameDependencies.SpriteBatch.DrawString(
-                spriteFont,
-                "Team 1: " + gamescore.KillsTeamOne,
-                new Vector2(titlesafearea.X + 50, titlesafearea.Y + 50),
-                Color.White);
 
-            _gameDependencies.SpriteBatch.DrawString(
-                spriteFont,
-                "Team 2: " + gamescore.KillsTeamTwo,
-                new Vector2(titlesafearea.X + 500, titlesafearea.Y + 50),
-                Color.White);
+            var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
+
+            if (nCameras > 1)
+            {
+
+                var gameScoreComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent))
+                    .FirstOrDefault();
+                var gamescore = gameScoreComponent.Value as GameScoreComponent;
+
+                string scoreTextTeamOne = "Team 1: " + gamescore.KillsTeamOne;
+
+                _gameDependencies.SpriteBatch.DrawString(
+                    spriteFont,
+                    scoreTextTeamOne,
+                    new Vector2(titlesafearea.Width * 0.5f - (spriteFont.MeasureString(scoreTextTeamOne).X + 50),
+                        titlesafearea.Y + 50),
+                    Color.Blue);
+
+                string scoreTextTeamTwo = "Team 2: " + gamescore.KillsTeamTwo;
+
+                _gameDependencies.SpriteBatch.DrawString(
+                    spriteFont,
+                    scoreTextTeamTwo,
+                    new Vector2(titlesafearea.Width * 0.5f + 50, titlesafearea.Y + 50),
+                    Color.Red);
+            }
         }
 
         private void DrawTitlesafeTextures()
@@ -246,14 +260,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             {
                 var HUD = instance.Value as RenderHUDComponent;
 
-                if (HUD.IsOnlyHUD) { 
-                var position = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(instance.Key);
-                if (position == null) continue;
+                if (HUD.IsOnlyHUD)
+                {
+                    var position = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(instance.Key);
+                    if (position == null) continue;
 
-                var sprite = ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(instance.Key);
-                if (sprite == null) continue;
+                    var sprite = ComponentManager.Instance.GetEntityComponentOrDefault<SpriteComponent>(instance.Key);
+                    if (sprite == null) continue;
 
-               // Vector2 titlesafePosition = new Vector2(titlesafearea.X + position.Position.X, titlesafearea.Y + position.Position.Y);
+                    // Vector2 titlesafePosition = new Vector2(titlesafearea.X + position.Position.X, titlesafearea.Y + position.Position.Y);
 
                     Rectangle destinationRectangle =
                         new Rectangle(
