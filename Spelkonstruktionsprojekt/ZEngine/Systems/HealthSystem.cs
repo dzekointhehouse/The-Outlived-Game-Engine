@@ -58,13 +58,28 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 healthComponent.CurrentHealth = 0;
                 healthComponent.Alive = false;
                 var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(entityId);
-                if (positionComponent != null)
-                {
-                    positionComponent.ZIndex = 2;
-                }
-                EventBus.Instance.Publish(EventConstants.Death, entityId);
-                StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
 
+                var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
+
+                // if the entity is a player and there are multiple cameras, we want to create a special event.
+                if (nCameras > 1 && ComponentManager.Instance.EntityHasComponent(typeof(PlayerComponent), entityId))
+                {
+                    EventBus.Instance.Publish(EventConstants.PlayerDeath, entityId);
+                }
+                else
+                {
+
+
+
+                    if (positionComponent != null)
+                    {
+                        positionComponent.ZIndex = 2;
+                    }
+
+
+                    StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
+                    EventBus.Instance.Publish(EventConstants.Death, entityId);
+                }
             }
         }
 

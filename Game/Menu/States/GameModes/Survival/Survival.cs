@@ -3,6 +3,7 @@ using Game.Entities;
 using Game.Services;
 using Game.Systems;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Spelkonstruktionsprojekt.ZEngine.Components;
@@ -130,18 +131,21 @@ namespace Game.Menu.States.GameModes
         {
 
             SoundSystem.Stop();
-            WeaponSystem.Stop();
-            
+            WeaponSystem.Stop();           
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
+
             if (!GameOver)
             {
                 ComponentManager.Instance.Clear();
             }
+
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
-                BackgroundMusic.ClearList();
+               BackgroundMusic.ClearList();
                MediaPlayer.Stop();
+               OutlivedGame.Instance().Get<SoundEffect>("Sound/cinematic").Play();
+                OutlivedGame.Instance().Get<SoundEffect>("Sound/GameOver").Play();
             }
         }
     }

@@ -44,7 +44,9 @@ namespace Game.Menu.States.GameModes.DeathMatch
             SystemsBundle = dependencies.SystemsBundle;
             MenuNavigator = dependencies.MenuNavigator;
             MenuController = dependencies.VirtualInputs.PlayerOne();
-            countdownTimer = new CountdownTimer(1);
+            countdownTimer = new CountdownTimer(3);
+
+            SpawnSystem.Start();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

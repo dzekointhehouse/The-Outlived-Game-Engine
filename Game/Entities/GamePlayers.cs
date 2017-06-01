@@ -230,6 +230,11 @@ namespace Game.Entities
                 .SetScore()
                 .SetHUD(false, showStats: true);
 
+            float scale = 1;
+            if (createdCamera == true)
+            {
+                scale = 0.5f;
+            }
             // Add camera view only if there are two teams or if it is the first camera,
             // and the same .
             if (gameViewports.IsTeamOne && gameViewports.IsTeamTwo ||
@@ -242,6 +247,7 @@ namespace Game.Entities
                     CameraId = cageId,
                     View = viewport,
                     MinScale = 0.5f,
+                    Scale = scale,
                     MaxScale = 1.5f
                 };
                 ComponentManager.Instance.AddComponentToEntity(cameraView, playerEntity.GetEntityKey());

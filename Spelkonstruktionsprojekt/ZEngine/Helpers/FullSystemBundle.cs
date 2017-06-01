@@ -56,11 +56,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<KillSwitchSystem>().Start();
             manager.Get<KillSwitchEventFactory>().Start();
             manager.Get<AiWallCollisionSystem>().Start();
+            manager.Get<RenderHUDSystem>().Start();
         }
 
         public void LoadContent()
         {
-            manager.Get<LoadContentSystem>().LoadContent(this.Dependencies.Game.Content);
+            //manager.Get<LoadContentSystem>().LoadContent(this.Dependencies.Game.Content);
             // Want to initialize penumbra after loading all the game content.
             penumbraComponent = manager.Get<FlashlightSystem>().LoadPenumbra(Dependencies);
 

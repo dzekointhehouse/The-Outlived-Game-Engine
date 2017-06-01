@@ -11,9 +11,11 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
+using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
+using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Wrappers;
 
@@ -22,6 +24,13 @@ namespace Game.Systems
     public class SpawnSystem : ISystem
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
+        private EventBus Eventbus = EventBus.Instance;
+        private Random random = new Random();
+
+        public void Start()
+        {
+            Eventbus.Subscribe<uint>(EventConstants.PlayerDeath, SpawnPlayers);
+        }
 
         // Creates the enemy to be spawned.
         public void CreateEnemy(Vector2 position, SpriteComponent sprite)
@@ -36,7 +45,7 @@ namespace Game.Systems
                 .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1244, 311), 311, 311)
                 .SetPosition(position, layerDepth: 20)
                 .SetRendering(200, 200)
-                .SetSound(soundList:soundList)
+                .SetSound(soundList: soundList)
                 .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetSpawn()
@@ -136,7 +145,7 @@ namespace Game.Systems
                 var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
 
-                Random random = new Random();
+
 
                 // Looping through the next zombie wave and then
                 // adding them if their position is outside of the
@@ -146,7 +155,7 @@ namespace Game.Systems
                     CreateEnemy(GetSpawnPosition(world, cameraComponents, random), SpawnSpriteComponent);
                 }
                 // When done, increase the wave size...
-                if(GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
+                if (GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
                     GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
 
                 // We increase the wave level, this is used to display progress.
@@ -205,7 +214,7 @@ namespace Game.Systems
                 y = random.Next(0, world.WorldHeight);
                 foreach (var cameraComponent in cameraComponents)
                 {
-                    
+
                     var camera = cameraComponent.Value as CameraViewComponent;
                     if (world.WorldData == null)
                     {
@@ -223,6 +232,27 @@ namespace Game.Systems
                             isInside = false;
                         }
                     }
+                }
+            }
+            //Debug.WriteLine("outside");
+
+            return new Vector2(x, y);
+        }
+
+
+        private Vector2 GetSpawnPositionBasedOnColorData(WorldComponent world, Random random, Color spawnColor)
+        {
+            int x = 0, y = 0;
+            bool isInside = true;
+            while (isInside)
+            {
+                x = random.Next(0, world.WorldWidth);
+                y = random.Next(0, world.WorldHeight);
+
+                Color color = world.WorldData[y, x];
+                if (color.Equals(spawnColor))
+                {
+                    isInside = false;
                 }
             }
             //Debug.WriteLine("outside");
@@ -256,6 +286,22 @@ namespace Game.Systems
             ComponentManager.Instance.AddComponentToEntity(pickupComponent, entity);
             return entity;
 
+        }
+
+
+        private void SpawnPlayers(uint playerEntity)
+        {
+            var playerComponents = ComponentManager.Instance.GetEntityComponentOrDefault<PlayerComponent>(playerEntity);
+            //World
+            var worldComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(WorldComponent)).First();
+            var world = worldComponent.Value as WorldComponent;
+
+            var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(playerEntity);
+            positionComponent.Position = GetSpawnPositionBasedOnColorData(world, random, Color.Red);
+
+            var healthComponent = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(playerEntity);
+            healthComponent.Alive = true;
+            healthComponent.CurrentHealth = healthComponent.MaxHealth;
         }
     }
 }
