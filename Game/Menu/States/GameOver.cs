@@ -91,12 +91,6 @@ namespace Game.Menu.States
         public void Update(GameTime gameTime)
         {
 
-            if (WasNotPlayed)
-            {
-                OutlivedGame.Instance().Get<SoundEffect>("Sound/GameOver").Play();
-                WasNotPlayed = false;
-            }
-
             if(VirtualGamePad.Is(Cancel, Pressed))
             {
                 MediaPlayer.Stop();

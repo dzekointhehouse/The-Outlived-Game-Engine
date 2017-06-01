@@ -95,7 +95,7 @@ namespace Game.Entities
                     tileTypes.Add(1, "green64");
                     var mapImage2 = OutlivedGame.Instance().Get<Texture2D>("Images/Blockworld");
                     mapHelper = new MapHelper(tileTypes);
-                    mapHelper.AddNumberToCollisionList(4);
+                   // mapHelper.AddNumberToCollisionList(4);
                     mapHelper.CreateMap(MapPack.Blockworld2, 64, mapImage2);
                     spawnPositionOne = new Vector2(150, 150);
                     spawnPositionTwo = new Vector2(5800, 3600);

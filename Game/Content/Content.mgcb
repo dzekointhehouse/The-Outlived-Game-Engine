@@ -1724,3 +1724,21 @@
 /processorParam:TextureFormat=Color
 /build:Images/Extinction.png
 
+#begin Images/bullet2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/bullet2.png
+
+#begin Sound/cinematic.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/cinematic.wav
+

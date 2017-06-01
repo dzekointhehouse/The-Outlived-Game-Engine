@@ -21,9 +21,6 @@ namespace Game.Menu.States.GameModes.DeathMatch
         private PickupFactory PickupFactory { get; set; } = new PickupFactory();
 
         private GameMap GameMaps = new GameMap();
-        
-        // SOME BUG NEED THIS.
-        private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
         public DeathMatchInitializer(GameViewports gameViewports, GameConfig gameConfig)
         {          
@@ -110,7 +107,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
         {
             var entityId = EntityManager.GetEntityManager().NewEntity();
             var bulletSprite = ComponentFactory.NewComponent<SpriteComponent>();
-            bulletSprite.SpriteName = "dot";
+            bulletSprite.SpriteName = "Images/bullet2";
             var bulletSpriteComponent = ComponentFactory.NewComponent<BulletFlyweightComponent>();
             var soundComponent = ComponentFactory.NewComponent<SoundComponent>();
             //soundComponent.SoundEffectName = "winchester_fire";
@@ -122,15 +119,15 @@ namespace Game.Menu.States.GameModes.DeathMatch
         public uint SetupCameraCage()
         {
             var cameraCage = new EntityBuilder()
-                .SetRendering((int)(viewportDimensions.X * 0.8), (int)(viewportDimensions.Y * 0.8), isFixed: true)
+                .SetRendering((int)(GameViewports.defaultView.X * 0.8), (int)(GameViewports.defaultView.Y * 0.8), isFixed: true)
                 .SetRectangleCollision(isCage: true)
                 .SetPosition(Vector2.Zero, 2)
                 .Build()
                 .GetEntityKey();
 
             var offsetComponent = ComponentFactory.NewComponent<RenderOffsetComponent>();
-            offsetComponent.Offset = new Vector2((float)(viewportDimensions.X * 0.25),
-                (float)(viewportDimensions.Y * 0.25));
+            offsetComponent.Offset = new Vector2((float)(GameViewports.defaultView.X * 0.25),
+                (float)(GameViewports.defaultView.Y * 0.25));
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
         }
