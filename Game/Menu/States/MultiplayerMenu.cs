@@ -121,7 +121,7 @@ namespace Game.Menu.States
         {
             if (VirtualInputCollection.PlayerOne().Is(Cancel, Pressed))
             {
-                MenuNavigator.GoBack();
+                     MenuNavigator.GoBack();
             }
 
             for (var i = 0; i < PlayerChoices.Length; i++)

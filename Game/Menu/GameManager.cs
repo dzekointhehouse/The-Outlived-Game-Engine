@@ -81,19 +81,9 @@ namespace Game
 
         public Dictionary<GameState, IMenu> GameStateMenuMap;
         private PlayerVirtualInputCollection virtualInputCollection;
-        private Dictionary<GameState, ILifecycle> LifecycleStates;
 
         public void SetCurrentState(GameState state)
         {
-            if (LifecycleStates.ContainsKey(CurrentGameState))
-            {
-                LifecycleStates[CurrentGameState].BeforeHide();
-            }
-            if (LifecycleStates.ContainsKey(state))
-            {
-                LifecycleStates[state].BeforeShow();
-            }
-            PreviousGameState = CurrentGameState;
             CurrentGameState = state;
         }
 
@@ -111,7 +101,7 @@ namespace Game
                 new VirtualGamePad(2),
                 new VirtualGamePad(3)
             });
-
+            
             MenuNavigator = new MenuNavigator(this);
 
             var gameModeDependencies = new GameModeDependencies()
@@ -122,6 +112,7 @@ namespace Game
                 Viewport = Viewport,
                 VirtualInputs = virtualInputCollection
             };
+            
             // initializing the states, remember:
             // all the states need to exist in the 
             // manager.
@@ -158,7 +149,7 @@ namespace Game
                 {GameState.GameOver, gameOver},
                 {GameState.GameOverCredits,  gameOverCredits}
             };
-            LifecycleStates = new Dictionary<GameState, ILifecycle>
+            var lifecycleStates = new Dictionary<GameState, ILifecycle>
             {
 //                {GameState.PlaySurvivalGame, (ILifecycle) survivalGame},
                 {GameState.PlaySurvivalGame, gameModeSurvival},
@@ -167,6 +158,9 @@ namespace Game
                 {GameState.MultiplayerMenu, (ILifecycle) multiplayerMenu},
                 {GameState.CharacterMenu, (ILifecycle) characterMenu}
             };
+
+            MenuNavigator.GameStateMenuMap = GameStateMenuMap;
+            MenuNavigator.LifecycleStates = lifecycleStates;
         }
 
         // Draw method consists of a switch case with all

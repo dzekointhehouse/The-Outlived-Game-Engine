@@ -104,7 +104,6 @@ namespace Game.Menu.States.GameModes.Extinction
             CarSystem.Update();
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
-
                 BackgroundMusic.ClearList();
                 MenuNavigator.GoTo(GameManager.GameState.GameOverCredits);
             }

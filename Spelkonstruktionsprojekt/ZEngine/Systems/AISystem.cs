@@ -22,8 +22,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         public void Update(GameTime gameTime)
         {
-            var worldComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(WorldComponent)).First();
-            var world = worldComponent.Value as WorldComponent;
+//            var worldComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(WorldComponent));
+//            if (worldComponents.Count < 1) return;
+//            var world = worldComponents.First().Value as WorldComponent;
 
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(AIComponent)))
             {
