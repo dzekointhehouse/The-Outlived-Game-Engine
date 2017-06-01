@@ -40,7 +40,7 @@ namespace Game.Menu.States.GameModes
         private SurvivalInitializer SurvivalInitializer { get; set; }
 
         private bool GameOver = false;
-        
+
         public Survival(GameModeDependencies dependencies)
         {
             GameConfig = dependencies.GameConfig;
@@ -61,7 +61,7 @@ namespace Game.Menu.States.GameModes
         {
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
-            
+
             // Should move to HUD which should render defaultview
             spriteBatch.Begin();
             var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
@@ -78,7 +78,7 @@ namespace Game.Menu.States.GameModes
                 default:
                     spriteBatch.Draw(OutlivedGame.Instance().Content.Load<Texture2D>("Images/4border"),
                         GameViewports.defaultView.TitleSafeArea, Color.White);
-                    break;    
+                    break;
             }
             spriteBatch.End();
         }
@@ -89,14 +89,14 @@ namespace Game.Menu.States.GameModes
             {
                 MenuNavigator.Pause();
             }
-            
+
             StartTimer.Update(gameTime);
 
             BackgroundMusic.PlayMusic();
             SpawnSystem.HandleWaves();
             SystemsBundle.Update(gameTime);
             ProbabilitySystem.Generate();
-            
+
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
                 GameOver = true;
@@ -115,7 +115,7 @@ namespace Game.Menu.States.GameModes
             SurvivalInitializer = new SurvivalInitializer(GameViewports, GameConfig);
             StartTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
-            
+
             SurvivalInitializer.InitializeEntities();
             SystemsBundle.LoadContent();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
@@ -131,7 +131,7 @@ namespace Game.Menu.States.GameModes
         {
 
             SoundSystem.Stop();
-            WeaponSystem.Stop();           
+            WeaponSystem.Stop();
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
 
@@ -142,10 +142,8 @@ namespace Game.Menu.States.GameModes
 
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
-               BackgroundMusic.ClearList();
-               MediaPlayer.Stop();
-               OutlivedGame.Instance().Get<SoundEffect>("Sound/cinematic").Play();
-                OutlivedGame.Instance().Get<SoundEffect>("Sound/GameOver").Play();
+                BackgroundMusic.ClearList();
+                MediaPlayer.Stop();
             }
         }
     }

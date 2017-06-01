@@ -240,7 +240,7 @@ namespace Game.Systems
         }
 
 
-        private Vector2 GetSpawnPositionBasedOnColorData(WorldComponent world, Random random, Color spawnColor)
+        public Vector2 GetSpawnPositionBasedOnColorData(WorldComponent world, Random random, Color spawnColor)
         {
             int x = 0, y = 0;
             bool isInside = true;

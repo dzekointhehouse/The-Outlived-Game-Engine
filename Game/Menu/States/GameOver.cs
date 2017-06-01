@@ -19,7 +19,7 @@ namespace Game.Menu.States
         public MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
         private GameManager gameManager;
-        private GraphicsDevice gd = GameDependencies.Instance.GraphicsDeviceManager.GraphicsDevice;
+        private GraphicsDevice graphicsDevice = GameDependencies.Instance.GraphicsDeviceManager.GraphicsDevice;
         public bool WasNotPlayed { get; set; } = true;
 
         public GameOver(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
@@ -31,7 +31,7 @@ namespace Game.Menu.States
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            gd.Clear(Color.Black);
+            graphicsDevice.Clear(Color.Black);
 
             //spriteBatch.Begin();
             //spriteBatch.Draw(gameManager.MenuContent.GameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
@@ -90,8 +90,14 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
+            if (WasNotPlayed)
+            {
+                OutlivedGame.Instance().Get<SoundEffect>("Sound/cinematic").Play();
+                OutlivedGame.Instance().Get<SoundEffect>("Sound/GameOver").Play();
+                WasNotPlayed = false;
+            }
 
-            if(VirtualGamePad.Is(Cancel, Pressed))
+            if (VirtualGamePad.Is(Cancel, Pressed))
             {
                 MediaPlayer.Stop();
                 MenuNavigator.GoTo(GameManager.GameState.MainMenu);
@@ -104,7 +110,7 @@ namespace Game.Menu.States
 
         public void BeforeShow()
         {
-            
+
         }
 
         public void BeforeHide()
