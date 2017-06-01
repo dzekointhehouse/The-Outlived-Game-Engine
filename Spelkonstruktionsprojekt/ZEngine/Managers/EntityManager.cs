@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 
@@ -40,11 +42,9 @@ namespace ZEngine.Managers
             {
                 return _entityManager;
             }
-            else
-            {
-                _entityManager = new EntityManager();
-                return _entityManager;
-            }
+            _entityManager = new EntityManager();
+            _entityManager.CreateEntityDestructionComponent();
+            return _entityManager;
         }
 
         // This method generates a unique entity that can be used
@@ -82,6 +82,22 @@ namespace ZEngine.Managers
         public List<uint> GetListWithEntities()
         {
             return _existingEntities;
+        }
+        
+        public static void AddEntityToDestructionList(uint entityId)
+        {
+            var destructionComponents =
+                ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityDestructionComponent));
+            if(destructionComponents.Count < 1) throw new Exception("AddEntityToDestructionList needs at least one EntityDestructionComponent");
+            var destructionComponent = destructionComponents.First().Value as EntityDestructionComponent;
+            destructionComponent.EntitiesToDestroy.Add(entityId);
+        }
+
+        private void CreateEntityDestructionComponent()
+        {
+            var entity = NewEntity();
+            var destructionComponent = new EntityDestructionComponent();
+            ComponentManager.Instance.AddComponentToEntity(destructionComponent, entity);
         }
     }
 }

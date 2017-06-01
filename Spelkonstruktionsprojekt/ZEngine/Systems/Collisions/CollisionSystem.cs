@@ -29,6 +29,8 @@ namespace ZEngine.Systems
 
         private Dictionary<Tuple<string, Point>, Color[]> cache = new Dictionary<Tuple<string, Point>, Color[]>();
 
+        private int cacheMisses = 0;
+
         //TODO Should do this on game load
         public Color[] TextureCache(SpriteComponent spriteComponent, uint entityId)
         {
@@ -72,11 +74,17 @@ namespace ZEngine.Systems
                         spriteComponent.TileHeight),
                     data, 0, data.Length);
                 cache[key] = data;
+                if (PROFILING_CACHE)
+                {
+                    cacheMisses++;
+                }
             }
             return data;
         }
 
         private const bool PROFILING_COLLISIONS = false;
+        private const bool PROFILING_COLLISIONS_DEEP = false;
+        private const bool PROFILING_CACHE = false;
 
         public void DetectCollisions()
         {
@@ -106,6 +114,10 @@ namespace ZEngine.Systems
                         ComponentManager.GetEntityComponentOrDefault<EventZoneComponent>(stillEntity);
                     if (areaComponent != null)
                     {
+                        if (PROFILING_COLLISIONS_DEEP)
+                        {
+                            timer = Stopwatch.StartNew();
+                        }
                         var isPlayer = ComponentManager.EntityHasComponent<PlayerComponent>(movingEntity.Item1);
                         if (isPlayer)
                         {
@@ -122,15 +134,51 @@ namespace ZEngine.Systems
                                 areaComponent.Inhabitants.Remove(movingEntity.Item1);
                             }
                         }
+                        if (PROFILING_COLLISIONS_DEEP)
+                        {
+                            var time = timer.ElapsedTicks;
+                            if (time > 5000)
+                            {
+                                Debug.WriteLine("INSIDE MOVING " + movingEntity.Item1 + "/STILL " + stillEntity +
+                                                " Time: " + time);
+                                ComponentManager.Debug_ListComponentsForEntity(movingEntity.Item1);
+                                ComponentManager.Debug_ListComponentsForEntity(stillEntity);
+                            }
+                        }
                     }
-                    else if (EntitiesCollide(movingEntity.Item1, stillEntity))
+                    else
                     {
-                        movingCollision.Collisions.Add(stillEntity);
-                        //TODO might be that we need to add collision id to stillEntity as well
+                        if (PROFILING_COLLISIONS_DEEP)
+                        {
+                            timer = Stopwatch.StartNew();
+                        }
+                        if (EntitiesCollide(movingEntity.Item1, stillEntity))
+                        {
+                            movingCollision.Collisions.Add(stillEntity);
+                            //TODO might be that we need to add collision id to stillEntity as well
+                        }
+                        if (PROFILING_COLLISIONS_DEEP)
+                        {
+                            var time = timer.ElapsedTicks;
+                            if (time > 0)
+                            {
+                                Debug.WriteLine("COLLIDED MOVING " + movingEntity.Item1 + "/STILL " + stillEntity +
+                                                " Time: " + time);
+                                Debug.WriteLine("QUAD NODE SIZE " + movingEntity.Item2.Bounds + " PERM.ELEMENTS: " +
+                                                movingEntity.Item2.PermanentStillEntities.Count + " TEMP.ELEMENTS: " +
+                                                movingEntity.Item2.TempStillEntitiesCount);
+                                ComponentManager.Debug_ListComponentsForEntity(movingEntity.Item1);
+                                ComponentManager.Debug_ListComponentsForEntity(stillEntity);
+                            }
+                        }
                     }
                 }
             }
-
+            if (PROFILING_CACHE)
+            {
+                Debug.WriteLine("END OF COL.DET. MISSES: " + cacheMisses);
+                cacheMisses = 0;
+            }
             if (PROFILING_COLLISIONS)
             {
                 Debug.WriteLine("QUAD COL. TOTAL " + timer.ElapsedTicks);
@@ -161,7 +209,7 @@ namespace ZEngine.Systems
 
         private bool EntitiesCollide(uint movingEntity, uint stillEntity)
         {
-            Stopwatch timer;
+            Stopwatch timer = null;
             if (PROFILING) timer = Stopwatch.StartNew();
             var movingDimensionsComponent =
                 ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(movingEntity);
@@ -281,7 +329,6 @@ namespace ZEngine.Systems
                     matrixB, stillSpriteComponent.TileWidth, stillSpriteComponent.TileHeight,
                     colorB))
                 {
-
                     if (PROFILING)
                     {
                         timer.Stop();
@@ -391,11 +438,6 @@ namespace ZEngine.Systems
         public void ClearCache()
         {
             cache.Clear();
-        }
-
-        public enum IntersectionAxis
-        {
-            X, Y
         }
     }
 }

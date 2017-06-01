@@ -67,7 +67,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         }
 
-        private const bool PROFILING = true;
+        private const bool PROFILING = false;
         public void Update(GameTime gameTime)
         {
             Stopwatch timer;

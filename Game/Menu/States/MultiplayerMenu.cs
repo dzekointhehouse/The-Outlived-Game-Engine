@@ -129,18 +129,6 @@ namespace Game.Menu.States
                 PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
             }
 
-            //KeyboardPosition.UpdatePosition(VirtualInputCollection.PlayerOne());
-            //if (VirtualInputCollection.PlayerOne().Is(Left, Pressed))
-            //{
-            //    var position = KeyboardPosition.CurrentPosition.ButtonNavigator.PreviousIndex();
-            //    KeyboardPosition.CurrentPosition.CurrentPosition = KeyboardPosition.CurrentPosition.Positions[position];
-            //}
-            //else if (VirtualInputCollection.PlayerOne().Is(Right, Pressed))
-            //{
-            //    var position = KeyboardPosition.CurrentPosition.ButtonNavigator.NextIndex();
-            //    KeyboardPosition.CurrentPosition.CurrentPosition = KeyboardPosition.CurrentPosition.Positions[position];
-            //}
-
             if (VirtualInputCollection.PlayerOne().Is(Accept, Pressed))
             {
                 var somePlayerHasTeam = PlayerChoices.Any(player => player.CurrentPosition != NoTeam);

@@ -83,13 +83,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
             {
                 if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
                 {
-                    var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(entityId);
-                    if (tagComponent == null)
-                    {
-                        throw new Exception(
-                            "Entity does not have a tag component which is needed to remove the entity.");
-                    }
-                    tagComponent.Tags.Add(Tag.Delete);
+                    EntityManager.AddEntityToDestructionList(entityId);
                     generalAnimation.IsDone = true;
                 }
             };

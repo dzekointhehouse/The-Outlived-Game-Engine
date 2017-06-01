@@ -106,13 +106,7 @@ namespace Game.Systems.Abilities
                 {
                     for (var i = 0; i < bulletIds.Length; i++)
                     {
-                        var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(bulletIds[i]);
-                        if (tagComponent == null)
-                        {
-                            throw new Exception(
-                                "Entity does not have a tag component which is needed to remove the entity.");
-                        }
-                        tagComponent.Tags.Add(Tag.Delete);
+                        EntityManager.AddEntityToDestructionList(bulletIds[i]);
                     }
                     generalAnimation.IsDone = true;
                 }

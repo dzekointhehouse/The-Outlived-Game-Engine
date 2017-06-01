@@ -30,30 +30,26 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public void Update(GameTime gameTime)
         {
             ImmediateRemoval();
-        }
+        } 
 
         private void ImmediateRemoval()
         {
-            ComponentManager.Instance.GetEntitiesWithComponent(typeof(TagComponent))
-                .Where(e =>
+            foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(
+                typeof(EntityDestructionComponent)))
+            {
+                var destructionComponent = entity.Value as EntityDestructionComponent;
+                foreach (var id in destructionComponent.EntitiesToDestroy)
                 {
-                    var tagComponent = e.Value as TagComponent;
-                    if (tagComponent == null) return false;
-                    var isTaggedForDeletion = tagComponent.Tags.Contains(Tag.Delete);
-                    return isTaggedForDeletion;
-                })
-                .Select(e => e.Key) //Get only entityIds that are to be removed
-                .ToList()
-                .ForEach(entityId =>
-                {
-                    var lightComponent = ComponentManager.Instance
-                        .GetEntityComponentOrDefault<LightComponent>(entityId);
+                    var lightComponent = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(id);
                     if (lightComponent != null)
                     {
                         lightComponent.Light.Enabled = false;
-                    }
-                    ComponentManager.Instance.DeleteEntity(entityId);
-                });
+                    };
+
+                    EntityManager.GetEntityManager().DeleteEntity(id);
+                }
+                destructionComponent.EntitiesToDestroy.Clear();
+            }
         }
 
         private void _DeadEntities(StateChangeEvent stateChangeEvent)
