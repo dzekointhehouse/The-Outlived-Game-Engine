@@ -8,6 +8,7 @@ using Spelkonstruktionsprojekt.ZEngine.Systems.Bullets;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.EventBus;
+using ZEngine.Managers;
 using Game = Microsoft.Xna.Framework.Game;
 
 namespace Game.Entities.Zones
@@ -73,13 +74,7 @@ namespace Game.Entities.Zones
 
                 if (currentTimeInMilliseconds - generalAnimation.StartOfAnimation > generalAnimation.Length)
                 {
-                    var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(entityId);
-                    if (tagComponent == null)
-                    {
-                        throw new Exception(
-                            "Entity does not have a tag component which is needed to remove the entity.");
-                    }
-                    tagComponent.Tags.Add(Tag.Delete);
+                    EntityManager.AddEntityToDestructionList(entityId);
                     generalAnimation.IsDone = true;
                     IsDisplaying = false;
                 }

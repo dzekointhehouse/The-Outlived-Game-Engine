@@ -132,9 +132,9 @@ namespace ZEngine.Helpers
             var subWidth = (int) (node.Bounds.Width * 0.5);
             var subHeight = (int) (node.Bounds.Height * 0.5);
             var topLeft = new Rectangle(node.Bounds.Left, node.Bounds.Top, subWidth, subHeight);
-            var topRight = new Rectangle(node.Bounds.Right, node.Bounds.Top, subWidth, subHeight);
-            var bottomLeft = new Rectangle(node.Bounds.Left, node.Bounds.Bottom, subWidth, subHeight);
-            var bottomRight = new Rectangle(node.Bounds.Left, node.Bounds.Bottom, subWidth, subHeight);
+            var topRight = new Rectangle(node.Bounds.Right - subWidth, node.Bounds.Top, subWidth, subHeight);
+            var bottomLeft = new Rectangle(node.Bounds.Left, node.Bounds.Bottom - subHeight, subWidth, subHeight);
+            var bottomRight = new Rectangle(node.Bounds.Right - subWidth, node.Bounds.Bottom - subHeight, subWidth, subHeight);
 
             //Create four child nodes
             node.ChildNodes = new[]
@@ -222,7 +222,7 @@ namespace ZEngine.Helpers
 
             //If entity too large too fit in any child node
             if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(entity.Item1))
-            {
+            {    
                 parent.PermanentMovingEntities.Add(entity);
             }
             else

@@ -52,6 +52,7 @@
     <Compile Include="Astar.cs" />
     <Compile Include="ZEngine\Components\BarrelFlashComponent.cs" />
     <Compile Include="ZEngine\Components\DefaultViewport.cs" />
+    <Compile Include="ZEngine\Components\EntityDestructionComponent.cs" />
     <Compile Include="ZEngine\Components\EntityScoreComponent.cs" />
     <Compile Include="ZEngine\Components\FlickeringLight.cs" />
     <Compile Include="ZEngine\Components\EventZoneComponent.cs" />

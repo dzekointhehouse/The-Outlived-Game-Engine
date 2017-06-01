@@ -93,13 +93,7 @@ namespace Game.Systems
                     zombiesSpawned++;
                     if (zombiesSpawned >= spawnPointEvent.ZombieCount)
                     {
-                        var tagComponent = ComponentManager.GetEntityComponentOrDefault<TagComponent>(spawnPoint);
-                        if (tagComponent == null)
-                        {
-                            throw new Exception(
-                                "Entity does not have a tag component which is needed to remove the entity.");
-                        }
-                        tagComponent.Tags.Add(Tag.Delete);
+                        EntityManager.AddEntityToDestructionList(spawnPoint);
                         generalAnimation.IsDone = true;
                     }
                     else

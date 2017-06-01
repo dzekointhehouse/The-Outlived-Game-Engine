@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework.Graphics;
@@ -157,6 +158,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
             {
                 _components[componentType] = new Dictionary<uint, IComponent>();
             }
+        }
+        
+        public void Debug_ListComponentsForEntity(uint entityId)
+        {
+            Debug.WriteLine("Components for entity " + entityId);
+            foreach (var component in _components)
+            {
+                if (component.Value.ContainsKey(entityId))
+                {
+                    Debug.WriteLine("\t" + component.Key.Name);
+                }
+            }
+            Debug.WriteLine("");
         }
     }
 }
