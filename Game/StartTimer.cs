@@ -49,6 +49,7 @@ namespace Game
         {
             if (IsCounting)
             {
+                alpha = alpha - 0.01f;
                 timeSincelastCount += gameTime.ElapsedGameTime.TotalSeconds;
                 counterSounds.TryGetValue(counter, out currentSound);
                 if (timeSincelastCount > 0.8f)
@@ -80,7 +81,6 @@ namespace Game
         {
             if (IsCounting)
             {
-                alpha = alpha - 0.01f;
                 if (counter > whenToStop)
                     message = counter.ToString();
                 else
@@ -89,7 +89,7 @@ namespace Game
 
                 }
                 sb.Begin();
-                sb.DrawString(font, message, new Vector2(((viewport.Width - font.MeasureString(message).X) * 0.5f), viewport.Y * 0.5f), new Color(255, 255, 255, alpha));
+                sb.DrawString(font, message, new Vector2((viewport.Width - font.MeasureString(message).X) * 0.5f, (viewport.Height - font.MeasureString(message).Y) * 0.5f), new Color(255, 255, 255, alpha));
                 sb.End();
             }
 

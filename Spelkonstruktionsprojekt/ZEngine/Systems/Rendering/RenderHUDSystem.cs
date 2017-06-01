@@ -143,8 +143,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             playerGameHUD.AppendLine();
                             playerGameHUD.Append(player.Name);
-
-                            float playerXPosition = (titlesafearea.Width * 1f) * playerSpacing;
+                        
+                            float playerXPosition = titlesafearea.Width * playerSpacing;
                             float playerYPosition = titlesafearea.Height * 0.78f;
                             playerSpacing += 0.06f;
 
@@ -162,7 +162,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             scoreGameHUD.AppendLine();
                             scoreGameHUD.Append(currentScore);
 
-                            float scoreXPosition = (titlesafearea.Width * 1f) * scoreSpacing;
+                            float scoreXPosition = titlesafearea.Width * scoreSpacing;
                             float scoreYPosition = titlesafearea.Height * 0.86f;
                             scoreSpacing += 0.06f;
 
@@ -194,7 +194,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             // this call gives us the height of the text,
                             // so now we are able to stack them on top of each other.
-                            float ammoXPosition = (titlesafearea.Width * 1f) * ammoSpacing;
+                            float ammoXPosition = titlesafearea.Width * ammoSpacing;
                             float ammoYPosition = titlesafearea.Height * 0.91f;
                             ammoSpacing += 0.06f;
 
