@@ -91,7 +91,6 @@ namespace Game
             base.Draw(gameTime);
         }
 
-
         public static OutlivedGame Instance()
         {
             return _outlived;

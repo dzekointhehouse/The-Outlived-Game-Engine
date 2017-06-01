@@ -62,14 +62,6 @@ namespace Game.Services
         {
             if (IsKeyboardControlled)
             {
-                if (currentKeyboardState.IsKeyDown(Keys.Down))
-                {
-//                    Debug.WriteLine("");
-                }
-                else
-                {
-//                    Debug.Write("");
-                }
                 if (GetKeyboardKeyState(key) == state)
                     return true;
             }
@@ -127,11 +119,6 @@ namespace Game.Services
             var keyboardKey = KeysFromMenuKeys[key];
             var isKeyDown = newState.IsKeyDown(keyboardKey);
             var isKeyUp = oldState.IsKeyUp(keyboardKey);
-            if (key == MenuKeys.Down)
-            {
-                Debug.WriteLine("PRESS? NEW DOWN: " + isKeyDown + " OLD UP " + isKeyUp);
-
-            }
             return isKeyDown && isKeyUp;
         }
 

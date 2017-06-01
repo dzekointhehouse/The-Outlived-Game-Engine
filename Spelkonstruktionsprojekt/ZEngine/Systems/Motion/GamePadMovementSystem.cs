@@ -32,7 +32,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Motion
                     leftStickPosition.Y < -0.15)
                 {
                     var direction = Math.Atan2(-leftStickPosition.Y, leftStickPosition.X);
-                    Debug.WriteLine("X:" + leftStickPosition.X + " Y:" + leftStickPosition.Y + " D:" + direction);
                     moveComponent.Direction = (float) direction;
 
                     var xThreshold = 0.99f;
@@ -46,8 +45,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Motion
                 }
                 else
                 {
-                    Debug.WriteLine("X:" + leftStickPosition.X + " Y:" + leftStickPosition.Y + " D:" +
-                                    moveComponent.Direction);
                     moveComponent.CurrentAcceleration = 0;
                     StateManager.TryRemoveState(entity.Key, State.WalkingForward,
                         gameTime.TotalGameTime.TotalMilliseconds);

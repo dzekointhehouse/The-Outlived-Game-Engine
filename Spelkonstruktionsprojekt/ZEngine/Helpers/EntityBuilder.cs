@@ -68,11 +68,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             );
             component.Hull.Scale = new Vector2(25f);
             component.Hull.Position = new Vector2(600, 600);
-            var isValid = component.Hull.Valid;
-            if (isValid)
-            {
-                Debug.WriteLine("isValid");
-            }
             components.Add(component);
             return this;
         }

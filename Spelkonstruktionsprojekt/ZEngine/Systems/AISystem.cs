@@ -87,7 +87,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         if (aiMoveComponent.Direction < newDirection - Math.PI * 0.01
                             || aiMoveComponent.Direction > newDirection + Math.PI * 0.01)
                         {
-                            Debug.WriteLine("A");
                             aiMoveComponent.Direction = (float) newDirection;
                             aiMoveComponent.RotationMomentum = 0;
                         }
@@ -95,12 +94,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         {
                             if (aiMoveComponent.Direction <= Math.PI)
                             {
-                                Debug.WriteLine("B");
                                 aiMoveComponent.RotationMomentum = -0.01;
                             }
                             else
                             {
-                                Debug.WriteLine("C");
                                 aiMoveComponent.RotationMomentum = 0.01;
                             }
                         }

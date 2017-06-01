@@ -35,25 +35,6 @@ namespace ZEngine.Systems
             {
                 var collisionComponent = entity.Value as CollisionComponent;
 
-//                foreach (var zone in collisionComponent.Zones)
-//                {
-//                    var collisionEventWrapper = new SpecificCollisionEvent()
-//                    {
-//                        Entity = (uint) entity.Key,
-//                        Target = zone,
-//                        Event = CollisionEvent.Zone,
-//                        EventTime = gameTime.TotalGameTime.TotalMilliseconds
-//                    };
-//                    EventBus.Publish(EventConstants.EventZoneCollision, collisionEventWrapper);
-//
-//                    var eventZones = ComponentManager.GetEntitiesWithComponent(typeof(EventZoneComponent));
-//                    foreach (var zoneEntity in eventZones)
-//                    {
-//                        var zoneComponent = zoneEntity.Value as EventZoneComponent;
-//                        zoneComponent.Inhabitants.Add(entity.Key);
-//                    }
-//                }
-
                 //Check every occured collision
                 foreach (var collisionTarget in collisionComponent.Collisions)
                 {
@@ -83,52 +64,8 @@ namespace ZEngine.Systems
                         }
                     }
                 }
-//                for (var i = 0; i < collisionComponent.Collisions.Count; i++)
-//                {
-//                    var collisionTarget = collisionComponent.Collisions[i];
-//                    //If the collision matches any valid collision event
-//                    foreach (var collisionEvent in collisionEvents)
-//                    {
-//                        //Collision events are made up from requirement of each party
-//                        //If both entities (parties) fulfil the component requirements
-//                        //Then there is a match for a collision event
-//                        uint movingEntityId = entity.Key;
-//                        var collisionRequirements = collisionEvent.Key;
-//                        var collisionEventType = collisionEvent.Value;
-//
-//                        if (MatchesCollisionEvent(collisionRequirements, movingEntityId, (uint) collisionTarget))
-//                        {
-//                            //When there is a match for a collision-event, an event is published
-//                            // for any system to pickup and resolve
-//                            var collisionEventTypeName = FromCollisionEventType(collisionEventType);
-//                            var collisionEventWrapper = new SpecificCollisionEvent()
-//                            {
-//                                Entity = (uint) movingEntityId,
-//                                Target = collisionTarget,
-//                                Event = collisionEventType,
-//                                EventTime = gameTime.TotalGameTime.TotalMilliseconds
-//                            };
-//                            EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
-//                        }
-//                    }
-//                }
                 collisionComponent.Collisions.Clear();
                 StateManager.TryRemoveState(entity.Key, State.Collided, 0);
-//
-//                foreach (var closeEncounter in collisionComponent.CloseEncounters)
-//                {
-//                    if (ComponentManager.EntityHasComponent<AIComponent>(entity.Key))
-//                    {
-//                        
-//                        EventBus.Publish(EventConstants.AiCloseEncounter, new CloseEncounterEvent()
-//                        {
-//                            CloseEncounter = closeEncounter,
-//                            Entity = entity.Key,
-//                            EventTime = gameTime.TotalGameTime.TotalMilliseconds
-//                        });
-//                    }
-//                }
-//                collisionComponent.CloseEncounters.Clear();
             }
 
             if (PROFILING_COLLISIONS)
@@ -205,7 +142,7 @@ namespace ZEngine.Systems
                         MovingEntityRequirements = new List<Type>(),
                         TargetEntityRequirements = new List<Type>
                         {
-                            typeof(WallCollisionSystem)
+//                            typeof(WallCollisionSystem)
                         }
                     },
                     CollisionEvent.Wall

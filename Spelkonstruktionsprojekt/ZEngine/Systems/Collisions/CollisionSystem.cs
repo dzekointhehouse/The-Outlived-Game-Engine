@@ -28,9 +28,8 @@ namespace ZEngine.Systems
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
         private Dictionary<Tuple<string, Point>, Color[]> cache = new Dictionary<Tuple<string, Point>, Color[]>();
-        private const double CloseEncounterFactor = 0.8;
 
-        //TODO Move to perform on game load
+        //TODO Should do this on game load
         public Color[] TextureCache(SpriteComponent spriteComponent, uint entityId)
         {
             Color[] data;
@@ -124,7 +123,7 @@ namespace ZEngine.Systems
                             }
                         }
                     }
-                    else if (EntitiesCollide(movingEntity.Item1, movingCollision, stillEntity))
+                    else if (EntitiesCollide(movingEntity.Item1, stillEntity))
                     {
                         movingCollision.Collisions.Add(stillEntity);
                         //TODO might be that we need to add collision id to stillEntity as well
@@ -160,7 +159,7 @@ namespace ZEngine.Systems
                     movingDimensionsComponent.Width, movingDimensionsComponent.Height));
         }
 
-        private bool EntitiesCollide(uint movingEntity, CollisionComponent movingCollisionComponent, uint stillEntity)
+        private bool EntitiesCollide(uint movingEntity, uint stillEntity)
         {
             Stopwatch timer;
             if (PROFILING) timer = Stopwatch.StartNew();
@@ -176,42 +175,8 @@ namespace ZEngine.Systems
             var stillPositionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(stillEntity);
             if (stillPositionComponent == null) return false;
 
-            //            //Roughly check distance
-            //            var outside = ((stillPositionComponent.Position.X + stillDimensionsComponent.Width <
-            //                           movingPositionComponent.Position.X
-            //                           || stillPositionComponent.Position.X > movingPositionComponent.Position.X +
-            //                           movingDimensionsComponent.Width)
-            //                           && (stillPositionComponent.Position.Y + stillDimensionsComponent.Height <
-            //                           movingPositionComponent.Position.Y
-            //                           || stillPositionComponent.Position.Y > movingPositionComponent.Position.Y +
-            //                           movingDimensionsComponent.Height));
-//
-//            var aproxDistance = Math.Abs(
-//                Math.Pow(stillPositionComponent.Position.X - movingPositionComponent.Position.X, 2) +
-//                Math.Pow(stillPositionComponent.Position.Y - movingPositionComponent.Position.Y, 2));
-//
-//            var approxResult = (aproxDistance <
-//                                Math.Pow(
-//                                    movingDimensionsComponent.Width * 0.5 * CloseEncounterFactor +
-//                                    stillDimensionsComponent.Width * 0.5 * CloseEncounterFactor,
-//                                    2));
-//            if (approxResult)
-//            {
-//                if (ComponentManager.EntityHasComponent<AIComponent>(movingEntity))
-//                {
-//                    movingCollisionComponent.CloseEncounters.Add(new Tuple<uint, double>(stillEntity, aproxDistance));
-//                }
-//            }
-            if (PROFILING)
-            {
-                timer.Stop();
-                Debug.WriteLine("APPROX: " + timer.ElapsedTicks);
-            }
-//            if (approxResult) return false;
-            if (PROFILING) timer = Stopwatch.StartNew();
             var movingMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(movingEntity);
             if (movingMoveComponent == null) return false;
-            var movingEntityOffset = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(movingEntity);
             var movingOffset = Vector2.Zero;
             //            movingEntityOffset != null
             //                ? new Vector2(movingEntityOffset.Offset.X, movingEntityOffset.Offset.Y)
@@ -221,9 +186,7 @@ namespace ZEngine.Systems
 
             var stillMoveComponent = ComponentManager.GetEntityComponentOrDefault<MoveComponent>(stillEntity);
             //            if (stillMoveComponent == null) return false;
-            var stillCollisionBox = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(stillEntity);
-            var stillEntityAngle = 0;
-            var stillEntityOffset = ComponentManager.GetEntityComponentOrDefault<RenderOffsetComponent>(stillEntity);
+            var stillEntityAngle = stillMoveComponent?.Direction ?? 0;
             var stillOffset = Vector2.Zero;
             //            stillEntityOffset != null
             //                ? new Vector2(stillEntityOffset.Offset.X, stillEntityOffset.Offset.Y)
@@ -305,20 +268,8 @@ namespace ZEngine.Systems
                 );
 
 
-            //            var shapeRenderer = CollisionRendering.renderer;
-            IntersectionAxis intersectionAxis;
             if (movingEntityCollisionBounds.Intersects(stillEntityCollisionBounds))
             {
-                //TODO WIP on AI collisions
-//                if (value.Left < this.Right && this.Left < value.Right && value.Top < this.Bottom)
-//                    return this.Top < value.Bottom;
-//                if (stillEntityCollisionBounds.Left < movingEntityCollisionBounds.Right ||
-//                    movingEntityCollisionBounds.Left < stillEntityCollisionBounds.Right)
-//                {
-//                    intersectionAxis = 
-//                }
-
-                if (ComponentManager.EntityHasComponent<AIComponent>(movingEntity)) return true;
                 if (PROFILING)
                 {
                     timer.Stop();
@@ -330,8 +281,6 @@ namespace ZEngine.Systems
                     matrixB, stillSpriteComponent.TileWidth, stillSpriteComponent.TileHeight,
                     colorB))
                 {
-                    //                    shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Red, 0.02f);
-                    //                    shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkRed, 0.02f);
 
                     if (PROFILING)
                     {
@@ -340,8 +289,6 @@ namespace ZEngine.Systems
                     }
                     return true;
                 }
-                //                shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Blue, 0.02f);
-                //                shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkBlue, 0.02f);
 
                 if (PROFILING)
                 {
@@ -350,9 +297,6 @@ namespace ZEngine.Systems
                 }
                 return false;
             }
-            //            shapeRenderer.AddBoundingRectangle(movingEntityCollisionBounds, Color.Green, 0.02f);
-            //            shapeRenderer.AddBoundingRectangle(stillEntityCollisionBounds, Color.DarkGreen, 0.02f);
-
             if (PROFILING)
             {
                 timer.Stop();
