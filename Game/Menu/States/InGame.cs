@@ -44,9 +44,6 @@ namespace Game.Menu.States
         private Boolean isIngame = true;
         private GamePlayers players;
         private GameMap maps = new GameMap();
-
-        private GameEnemies enemies = new GameEnemies();
-
         //  private GamePickups pickups = new GamePickups();
         private HealthSystem life = new HealthSystem();
 
@@ -60,9 +57,6 @@ namespace Game.Menu.States
         private StartTimer _startTimer;
         private BackgroundMusic backgroundMusic;
         private GameViewports gameViewports;
-
-        // SOME BUG NEED THIS.
-        private Vector2 viewportDimensions = new Vector2(1800, 1300);
 
         private float timeSincelastCount;
 
@@ -242,15 +236,15 @@ namespace Game.Menu.States
         public uint SetupCameraCage()
         {
             var cameraCage = new EntityBuilder()
-                .SetRendering((int) (viewportDimensions.X * 0.8), (int) (viewportDimensions.Y * 0.8), isFixed: true)
+                .SetRendering((int) (gameViewports.defaultView.X * 0.8), (int) (gameViewports.defaultView.Y * 0.8), isFixed: true)
                 .SetRectangleCollision(isCage: true)
                 .SetPosition(Vector2.Zero, 2)
                 .Build()
                 .GetEntityKey();
 
             var offsetComponent = ComponentFactory.NewComponent<RenderOffsetComponent>();
-            offsetComponent.Offset = new Vector2((float) (viewportDimensions.X * 0.25),
-                (float) (viewportDimensions.Y * 0.25));
+            offsetComponent.Offset = new Vector2((float) (gameViewports.defaultView.X * 0.25),
+                (float) (gameViewports.defaultView.Y * 0.25));
             ComponentManager.Instance.AddComponentToEntity(offsetComponent, cameraCage);
             return cameraCage;
         }
