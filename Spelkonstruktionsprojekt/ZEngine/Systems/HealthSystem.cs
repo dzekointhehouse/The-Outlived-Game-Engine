@@ -65,17 +65,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (nCameras > 1 && ComponentManager.Instance.EntityHasComponent(typeof(PlayerComponent), entityId))
                 {
                     EventBus.Instance.Publish(EventConstants.PlayerDeath, entityId);
+                    healthComponent.Alive = true;
+                    healthComponent.CurrentHealth = healthComponent.MaxHealth;
                 }
                 else
                 {
-
-
-
                     if (positionComponent != null)
                     {
                         positionComponent.ZIndex = 2;
                     }
-
 
                     StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
                     EventBus.Instance.Publish(EventConstants.Death, entityId);

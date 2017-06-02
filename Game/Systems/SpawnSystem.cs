@@ -301,9 +301,6 @@ namespace Game.Systems
             var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(playerEntity);
             positionComponent.Position = GetSpawnPositionBasedOnColorData(world, random, Color.Red);
 
-            var healthComponent = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(playerEntity);
-            healthComponent.Alive = true;
-            healthComponent.CurrentHealth = healthComponent.MaxHealth;
         }
     }
 }
