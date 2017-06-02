@@ -135,16 +135,16 @@ namespace Game.Menu.States.GameModes
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
 
-            if (!GameOver)
-            {
+            //if (!GameOver)
+            //{
                 ComponentManager.Instance.Clear();
-            }
+            //}
 
-            if (HealthSystem.CheckIfAllPlayersAreDead())
-            {
+            //if (HealthSystem.CheckIfAllPlayersAreDead())
+            //{
                 BackgroundMusic.ClearList();
                 MediaPlayer.Stop();
-            }
+           // }
         }
     }
 }

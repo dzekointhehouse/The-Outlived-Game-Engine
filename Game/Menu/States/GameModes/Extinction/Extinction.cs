@@ -36,13 +36,13 @@ namespace Game.Menu.States.GameModes.Extinction
         private CarSystem CarSystem { get; set; } = new CarSystem();
 
         private DowntownZone DowntownZone { get; set; } = new DowntownZone();
-        
+
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
         private StartTimer StartTimer { get; set; }
         private GameViewports GameViewports { get; set; }
 
         private ExtinctionInitializer ExtinctionInitializer { get; set; }
-        
+
         public Extinction(GameModeDependencies dependencies)
         {
             GameConfig = dependencies.GameConfig;
@@ -63,7 +63,7 @@ namespace Game.Menu.States.GameModes.Extinction
         {
             // Reset to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
-            
+
             // Should move to HUD which should render defaultview
             spriteBatch.Begin();
             var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
@@ -92,7 +92,7 @@ namespace Game.Menu.States.GameModes.Extinction
             {
                 MenuNavigator.Pause();
             }
-            
+
             Stopwatch timer;
             if (PROFILING)
             {
@@ -121,7 +121,7 @@ namespace Game.Menu.States.GameModes.Extinction
             StartTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
             ExtinctionInitializer.InitializeEntities();
-            
+
             // Loading this projects content to be used by the game engine.
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
@@ -144,18 +144,18 @@ namespace Game.Menu.States.GameModes.Extinction
             SpawnPointSystem.Stop();
             DowntownZone.Stop();
             CarSystem.Stop();
-//            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
-//            {
-//                ComponentManager.Instance.DeleteEntity(entity);
-//            }
+            //            foreach (var entity in EntityManager.GetEntityManager().GetListWithEntities())
+            //            {
+            //                ComponentManager.Instance.DeleteEntity(entity);
+            //            }
             ComponentManager.Instance.Clear();
             GameConfig.Reset();
             SystemsBundle.ClearCaches();
 
             MediaPlayer.Stop();
 
-                Song song = OutlivedGame.Instance().Get<Song>("Sound/Clearwater");
-                MediaPlayer.Play(song);
+            Song song = OutlivedGame.Instance().Get<Song>("Sound/Clearwater");
+            MediaPlayer.Play(song);
 
         }
 
@@ -167,7 +167,7 @@ namespace Game.Menu.States.GameModes.Extinction
                 .Content.Load<SoundEffect>("Sound/Splash")
                 .CreateInstance());
 
-            var monster = new EntityBuilder()            
+            var monster = new EntityBuilder()
                 .SetPosition(new Vector2(300, 200), layerDepth: 20)
                 .SetRendering(200, 200)
                 .SetSprite("zombie1", new Point(1244, 311), 311, 311)
