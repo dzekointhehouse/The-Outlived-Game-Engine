@@ -93,7 +93,7 @@ namespace Game.Menu.States.GameModes
             StartTimer.Update(gameTime);
 
             BackgroundMusic.PlayMusic();
-            SpawnSystem.HandleWaves();
+            SpawnSystem.HandleWaves(gameTime);
             SystemsBundle.Update(gameTime);
             ProbabilitySystem.Generate();
 

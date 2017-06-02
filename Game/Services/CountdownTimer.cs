@@ -28,7 +28,16 @@ namespace Game.Services
             resetSeconds = 0;
         }
 
-        public void Update(GameTime gameTime)
+        public CountdownTimer(int minutes, int seconds)
+        {
+            this.Minutes = minutes;
+            this.Seconds = seconds;
+
+            resetMinutes = minutes;
+            resetSeconds = seconds;
+        }
+
+        public void UpdateTimer(GameTime gameTime)
         {
             if (Minutes <= 0 && Seconds <= 0)
             {

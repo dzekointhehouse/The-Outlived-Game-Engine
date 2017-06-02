@@ -135,8 +135,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // are rendered betweend this BeginDraw and EndDraw will be affected.
         public void BeginDraw(PenumbraComponent penumbraComponent)
         {
+            //GlobalSpawn
+            var GlobalSpawnEntities =
+                ComponentManager.Instance.GetEntitiesWithComponent(typeof(GlobalSpawnComponent));
+            if (GlobalSpawnEntities.Count <= 0) return;
+
+            var GlobalSpawnComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<GlobalSpawnComponent>(GlobalSpawnEntities.First().Key);
+
+            
+
+
             var camera = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
-            if (camera.Count() > 1 || !camera.Any())
+            if (camera.Count() > 1 || !camera.Any() || GlobalSpawnComponent.EnemiesDead)
             {
                 // disable penumbra if more than one camera.
                 penumbraComponent.Enabled = false;
@@ -156,9 +167,19 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // all the items drawn after this call won't be affected.
         public void EndDraw(PenumbraComponent penumbraComponent, GameTime gameTime)
         {
+            //GlobalSpawn
+            var GlobalSpawnEntities =
+                ComponentManager.Instance.GetEntitiesWithComponent(typeof(GlobalSpawnComponent));
+            if (GlobalSpawnEntities.Count <= 0) return;
+
+            var GlobalSpawnComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<GlobalSpawnComponent>(GlobalSpawnEntities.First().Key);
+
+
+
             // E dont do the draw call if there is not just one camera.
             var cameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
-            if (cameras.Count() > 1 || !cameras.Any())
+            if (cameras.Count() > 1 || !cameras.Any() || GlobalSpawnComponent.EnemiesDead)
             {
                 return;
             }

@@ -131,7 +131,7 @@ namespace Game.Menu.States
 
             if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
             {
-                spawnSystem.HandleWaves();
+                spawnSystem.HandleWaves(gameTime);
             }
 
 
