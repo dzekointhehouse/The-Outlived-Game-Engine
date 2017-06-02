@@ -12,8 +12,9 @@ namespace Game.Entities
                 .SetCarLights()
                 .SetPosition(new Vector2(500, 900), ZIndexConstants.Car)
                 .SetRectangleCollision()
-                .SetMovement(500, 100, (float) 0.5, 0)
+                .SetMovement(500, 100, (float) 1, 0)
                 .SetRendering(250, 140)
+                .SetInertiaDampening(100)
                 .SetSprite("car_black")
                 .BuildAndReturnId();
         }

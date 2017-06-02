@@ -164,6 +164,9 @@
     <Compile Include="ZEngine\Managers\SystemManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ConcurrentCollections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\ConcurrentHashSet.1.0.1\lib\netstandard1.0\ConcurrentCollections.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>

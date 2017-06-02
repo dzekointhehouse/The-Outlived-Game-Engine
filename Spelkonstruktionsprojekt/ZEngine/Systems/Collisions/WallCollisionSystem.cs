@@ -33,7 +33,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
                 ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Entity);
             var targetCollisionComponent =
                 ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Target);
-            if (collisionComponent.Disabled || targetCollisionComponent.Disabled) return;
+            if (targetCollisionComponent != null)
+            {
+                if (collisionComponent.Disabled || targetCollisionComponent.Disabled) return;
+            }
             
             var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
             var entityPositionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(collisionEvent.Entity);

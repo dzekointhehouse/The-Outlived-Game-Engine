@@ -91,7 +91,11 @@ namespace Game.Menu.States.GameModes
             }
 
             StartTimer.Update(gameTime);
-
+            if (StartTimer.IsCounting)
+            {
+                return;
+            }
+            
             BackgroundMusic.PlayMusic();
             SpawnSystem.HandleWaves(gameTime);
             SystemsBundle.Update(gameTime);

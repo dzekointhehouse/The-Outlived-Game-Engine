@@ -300,19 +300,19 @@ namespace Game.Entities
                     weaponComponent.Damage = 50;
                     weaponComponent.ClipSize = 16;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Pistol;
-                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 14);
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 8);
                     break;
                 case CharacterType.Edgar:
                     weaponComponent.Damage = 15;
-                    weaponComponent.ClipSize = 128;
+                    weaponComponent.ClipSize = 64;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Rifle;
                     playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 8);
                     break;
                 case CharacterType.Ward:
                     weaponComponent.Damage = 75;
-                    weaponComponent.ClipSize = 16;
+                    weaponComponent.ClipSize = 8;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Shotgun;
-                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 6);
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 8);
                     break;
                 case CharacterType.Jimmy:
                     weaponComponent.Damage = 100;
