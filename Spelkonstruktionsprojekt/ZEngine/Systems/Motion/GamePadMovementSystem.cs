@@ -43,12 +43,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Motion
                             gameTime.TotalGameTime.TotalMilliseconds);
                     }
                 }
+                else if (gamePadState.IsButtonDown(Buttons.DPadDown))
+                {
+                    moveComponent.CurrentAcceleration = -moveComponent.AccelerationSpeed;
+                    StateManager.TryAddState(entity.Key, State.WalkingBackwards, gameTime.TotalGameTime.TotalMilliseconds);
+                }
                 else
                 {
                     moveComponent.CurrentAcceleration = 0;
                     StateManager.TryRemoveState(entity.Key, State.WalkingForward,
                         gameTime.TotalGameTime.TotalMilliseconds);
                 }
+
             }
         }
     }

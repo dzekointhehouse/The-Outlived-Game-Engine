@@ -67,7 +67,7 @@ namespace ZEngine.Helpers
                 }
                 for (var i = 0; i < current.TempMovingEntitiesCount; i++)
                 {
-                    if(movingEntityId == current.TempMovingEntities[i].Item1) continue;
+                    if (movingEntityId == current.TempMovingEntities[i].Item1) continue;
                     yield return current.TempMovingEntities[i].Item1;
                 }
 
@@ -134,7 +134,8 @@ namespace ZEngine.Helpers
             var topLeft = new Rectangle(node.Bounds.Left, node.Bounds.Top, subWidth, subHeight);
             var topRight = new Rectangle(node.Bounds.Right - subWidth, node.Bounds.Top, subWidth, subHeight);
             var bottomLeft = new Rectangle(node.Bounds.Left, node.Bounds.Bottom - subHeight, subWidth, subHeight);
-            var bottomRight = new Rectangle(node.Bounds.Right - subWidth, node.Bounds.Bottom - subHeight, subWidth, subHeight);
+            var bottomRight = new Rectangle(node.Bounds.Right - subWidth, node.Bounds.Bottom - subHeight, subWidth,
+                subHeight);
 
             //Create four child nodes
             node.ChildNodes = new[]
@@ -149,7 +150,7 @@ namespace ZEngine.Helpers
             //Or keep them if they only fit in the current node
             for (var i = 0; i < node.TempMovingEntitiesCount; i++)
             {
-                InsertHelper2(ref node, node.TempMovingEntities[i]);
+                PassDownEntity(ref node, node.TempMovingEntities[i]);
                 node.TempMovingEntities[i] = null;
             }
             node.TempMovingEntitiesCount = 0;
@@ -158,7 +159,7 @@ namespace ZEngine.Helpers
             //Or keep them if they only fit in the current node
             for (var i = 0; i < node.TempStillEntitiesCount; i++)
             {
-                InsertHelper2(ref node, node.TempStillEntities[i]);
+                PassDownEntity(ref node, node.TempStillEntities[i]);
                 node.TempStillEntities[i] = null;
             }
             node.TempStillEntitiesCount = 0;
@@ -169,21 +170,21 @@ namespace ZEngine.Helpers
             var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(entityId);
             var dimensionsComponent =
                 ComponentManager.Instance.GetEntityComponentOrDefault<DimensionsComponent>(entityId);
-            InsertHelper(ref parent,
-                new Tuple<uint, Rectangle>(
+            var hasMoveComponent = ComponentManager.Instance.EntityHasComponent<MoveComponent>(entityId);
+            InsertIntoTree(ref parent,
+                new Tuple<uint, Rectangle, bool>(
                     entityId,
-                    new Rectangle(
-                        (int) positionComponent.Position.X,
-                        (int) positionComponent.Position.Y,
-                        dimensionsComponent.Width,
-                        dimensionsComponent.Height)));
+                    new Rectangle((int) positionComponent.Position.X, (int) positionComponent.Position.Y,
+                        dimensionsComponent.Width, dimensionsComponent.Height),
+                    hasMoveComponent)
+            );
         }
 
-        public static void InsertHelper(ref QuadNode node, Tuple<uint, Rectangle> entity)
+        public static void InsertIntoTree(ref QuadNode node, Tuple<uint, Rectangle, bool> entity)
         {
             //Return if the node does not fit in this quad node
             if (!node.Bounds.Contains(entity.Item2)) return;
-
+            
             //Fits no more entites, try to split entities into smaller quad nodes
             if (node.TempMovingEntitiesCount >= MAX_ELEMENTS || node.TempStillEntitiesCount >= MAX_ELEMENTS)
             {
@@ -193,7 +194,7 @@ namespace ZEngine.Helpers
             //Has no child nodes and fits more entities
             if (node.ChildNodes == null)
             {
-                if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(entity.Item1))
+                if (entity.Item3) //Has move component
                 {
                     node.TempMovingEntities[node.TempMovingEntitiesCount++] = entity;
                 }
@@ -204,25 +205,25 @@ namespace ZEngine.Helpers
             }
             else
             {
-                InsertHelper2(ref node, entity);
+                PassDownEntity(ref node, entity);
             }
         }
 
-        public static void InsertHelper2(ref QuadNode parent, Tuple<uint, Rectangle> entity)
+        public static void PassDownEntity(ref QuadNode parent, Tuple<uint, Rectangle, bool> entity)
         {
             //If node has children and if the entity fits in any child, put it in that child node
             for (var childNodeIndex = 0; childNodeIndex < parent.ChildNodes.Length; childNodeIndex++)
             {
                 if (parent.ChildNodes[childNodeIndex].Bounds.Contains(entity.Item2))
                 {
-                    InsertHelper(ref parent.ChildNodes[childNodeIndex], entity);
+                    InsertIntoTree(ref parent.ChildNodes[childNodeIndex], entity);
                     return;
                 }
             }
 
             //If entity too large too fit in any child node
-            if (ComponentManager.Instance.EntityHasComponent<MoveComponent>(entity.Item1))
-            {    
+            if (entity.Item3) //Has MoveComponent
+            {
                 parent.PermanentMovingEntities.Add(entity);
             }
             else
@@ -235,11 +236,11 @@ namespace ZEngine.Helpers
     public class QuadNode
     {
         public QuadNode Parent;
-        public List<Tuple<uint, Rectangle>> PermanentMovingEntities = new List<Tuple<uint, Rectangle>>();
-        public List<Tuple<uint, Rectangle>> PermanentStillEntities = new List<Tuple<uint, Rectangle>>();
-        public Tuple<uint, Rectangle>[] TempStillEntities = new Tuple<uint, Rectangle>[4];
+        public List<Tuple<uint, Rectangle, bool>> PermanentMovingEntities = new List<Tuple<uint, Rectangle, bool>>();
+        public List<Tuple<uint, Rectangle, bool>> PermanentStillEntities = new List<Tuple<uint, Rectangle, bool>>();
+        public Tuple<uint, Rectangle, bool>[] TempStillEntities = new Tuple<uint, Rectangle, bool>[4];
         public int TempStillEntitiesCount = 0;
-        public Tuple<uint, Rectangle>[] TempMovingEntities = new Tuple<uint, Rectangle>[4];
+        public Tuple<uint, Rectangle, bool>[] TempMovingEntities = new Tuple<uint, Rectangle, bool>[4];
         public int TempMovingEntitiesCount = 0;
         public Rectangle Bounds;
         public QuadNode[] ChildNodes;

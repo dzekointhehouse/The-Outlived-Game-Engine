@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConcurrentCollections;
 
 namespace ZEngine.Components
 {
@@ -9,12 +10,10 @@ namespace ZEngine.Components
         public bool IsCage;
 
         //each int is an entityId
-        public HashSet<uint> Collisions { get; set; } = new HashSet<uint>();
+//        public HashSet<uint> Collisions { get; set; } = new HashSet<uint>();
+        public ConcurrentHashSet<uint> Collisions { get; set; } = new ConcurrentHashSet<uint>();
         //each int is a zone
         public HashSet<uint> Zones { get; set; }= new HashSet<uint>();
-        //each tuple is an entity and the distance to that entity
-        public HashSet<Tuple<uint, double>> CloseEncounters { get; set; } = new HashSet<Tuple<uint, double>>();
-        
         public CollisionComponent()
         {
             Reset();
@@ -26,7 +25,6 @@ namespace ZEngine.Components
             IsCage = false;
             Collisions.Clear();
             Zones.Clear();
-            CloseEncounters.Clear();
             return this;
         }
     }

@@ -82,11 +82,11 @@ namespace ZEngine.Systems
             return data;
         }
 
-        private const bool PROFILING_COLLISIONS = false;
+        private const bool PROFILING_COLLISIONS = true;
         private const bool PROFILING_COLLISIONS_DEEP = false;
         private const bool PROFILING_CACHE = false;
 
-        public void DetectCollisions()
+        public async Task DetectCollisions()
         {
             Stopwatch timer;
             if (PROFILING_COLLISIONS)
@@ -103,88 +103,103 @@ namespace ZEngine.Systems
                 Debug.WriteLine("QUAD TREE CONSTR." + timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
+            
+            var tasks = new List<Task>();
             foreach (var movingEntity in QuadTree.MovingEntities(quadTree))
             {
                 foreach (var stillEntity in QuadTree.StillEntities(movingEntity.Item1, movingEntity.Item2))
                 {
-                    if (ComponentManager.GetEntityComponentOrDefault<BulletComponent>(stillEntity) != null) continue;
-                    var movingCollision =
-                        ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity.Item1);
-                    var areaComponent =
-                        ComponentManager.GetEntityComponentOrDefault<EventZoneComponent>(stillEntity);
-                    if (areaComponent != null)
-                    {
-                        if (PROFILING_COLLISIONS_DEEP)
-                        {
-                            timer = Stopwatch.StartNew();
-                        }
-                        var isPlayer = ComponentManager.EntityHasComponent<PlayerComponent>(movingEntity.Item1);
-                        if (isPlayer)
-                        {
-                            if (EntityIsContained(movingEntity.Item1, stillEntity))
-                            {
-                                if (!areaComponent.Inhabitants.Contains(movingEntity.Item1))
-                                {
-                                    areaComponent.NewInhabitants.Add(movingEntity.Item1);
-                                    areaComponent.Inhabitants.Add(movingEntity.Item1);
-                                }
-                            }
-                            else
-                            {
-                                areaComponent.Inhabitants.Remove(movingEntity.Item1);
-                            }
-                        }
-                        if (PROFILING_COLLISIONS_DEEP)
-                        {
-                            var time = timer.ElapsedTicks;
-                            if (time > 5000)
-                            {
-                                Debug.WriteLine("INSIDE MOVING " + movingEntity.Item1 + "/STILL " + stillEntity +
-                                                " Time: " + time);
-                                ComponentManager.Debug_ListComponentsForEntity(movingEntity.Item1);
-                                ComponentManager.Debug_ListComponentsForEntity(stillEntity);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (PROFILING_COLLISIONS_DEEP)
-                        {
-                            timer = Stopwatch.StartNew();
-                        }
-                        if (EntitiesCollide(movingEntity.Item1, stillEntity))
-                        {
-                            movingCollision.Collisions.Add(stillEntity);
-                            //TODO might be that we need to add collision id to stillEntity as well
-                        }
-                        if (PROFILING_COLLISIONS_DEEP)
-                        {
-                            var time = timer.ElapsedTicks;
-                            if (time > 0)
-                            {
-                                Debug.WriteLine("COLLIDED MOVING " + movingEntity.Item1 + "/STILL " + stillEntity +
-                                                " Time: " + time);
-                                Debug.WriteLine("QUAD NODE SIZE " + movingEntity.Item2.Bounds + " PERM.ELEMENTS: " +
-                                                movingEntity.Item2.PermanentStillEntities.Count + " TEMP.ELEMENTS: " +
-                                                movingEntity.Item2.TempStillEntitiesCount);
-                                ComponentManager.Debug_ListComponentsForEntity(movingEntity.Item1);
-                                ComponentManager.Debug_ListComponentsForEntity(stillEntity);
-                            }
-                        }
-                    }
+//                    await CollisionDetection(movingEntity, stillEntity);
+                    tasks.Add(CollisionDetection(movingEntity, stillEntity));
                 }
+            }
+//            if (PROFILING_COLLISIONS)
+//            {
+//                Debug.WriteLine("QUAD TRAVERSE TOTAL " + timer.ElapsedTicks);
+//                timer = Stopwatch.StartNew();
+//            }
+            await Task.WhenAll(tasks);
+            if (PROFILING_COLLISIONS)
+            {
+                Debug.WriteLine("COL. TOTAL " + timer.ElapsedTicks);
             }
             if (PROFILING_CACHE)
             {
                 Debug.WriteLine("END OF COL.DET. MISSES: " + cacheMisses);
                 cacheMisses = 0;
             }
-            if (PROFILING_COLLISIONS)
-            {
-                Debug.WriteLine("QUAD COL. TOTAL " + timer.ElapsedTicks);
-            }
+            
         }
 
+        private async Task CollisionDetection(Tuple<uint, QuadNode> movingEntity, uint stillEntity)
+        {
+            Stopwatch timer;
+            if (ComponentManager.GetEntityComponentOrDefault<BulletComponent>(stillEntity) != null) return;
+            var movingCollision =
+                ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity.Item1);
+            var areaComponent =
+                ComponentManager.GetEntityComponentOrDefault<EventZoneComponent>(stillEntity);
+            if (areaComponent != null)
+            {
+                if (PROFILING_COLLISIONS_DEEP)
+                {
+                    timer = Stopwatch.StartNew();
+                }
+                var isPlayer = ComponentManager.EntityHasComponent<PlayerComponent>(movingEntity.Item1);
+                if (isPlayer)
+                {
+                    if (EntityIsContained(movingEntity.Item1, stillEntity))
+                    {
+                        if (!areaComponent.Inhabitants.Contains(movingEntity.Item1))
+                        {
+                            areaComponent.NewInhabitants.Add(movingEntity.Item1);
+                            areaComponent.Inhabitants.Add(movingEntity.Item1);
+                        }
+                    }
+                    else
+                    {
+                        areaComponent.Inhabitants.Remove(movingEntity.Item1);
+                    }
+                }
+                if (PROFILING_COLLISIONS_DEEP)
+                {
+                    var time = timer.ElapsedTicks;
+                    if (time > 5000)
+                    {
+                        Debug.WriteLine("INSIDE MOVING " + movingEntity.Item1 + "/STILL " + stillEntity +
+                                        " Time: " + time);
+                        ComponentManager.Debug_ListComponentsForEntity(movingEntity.Item1);
+                        ComponentManager.Debug_ListComponentsForEntity(stillEntity);
+                    }
+                }
+            }
+            else
+            {
+                if (PROFILING_COLLISIONS_DEEP)
+                {
+                    timer = Stopwatch.StartNew();
+                }
+                if (EntitiesCollide(movingEntity.Item1, stillEntity))
+                {
+                    movingCollision.Collisions.Add(stillEntity);
+                    //TODO might be that we need to add collision id to stillEntity as well
+                }
+                if (PROFILING_COLLISIONS_DEEP)
+                {
+                    var time = timer.ElapsedTicks;
+                    if (time > 0)
+                    {
+                        Debug.WriteLine("COLLIDED MOVING " + movingEntity.Item1 + "/STILL " + stillEntity +
+                                        " Time: " + time);
+                        Debug.WriteLine("QUAD NODE SIZE " + movingEntity.Item2.Bounds + " PERM.ELEMENTS: " +
+                                        movingEntity.Item2.PermanentStillEntities.Count + " TEMP.ELEMENTS: " +
+                                        movingEntity.Item2.TempStillEntitiesCount);
+                        ComponentManager.Debug_ListComponentsForEntity(movingEntity.Item1);
+                        ComponentManager.Debug_ListComponentsForEntity(stillEntity);
+                    }
+                }
+            }
+        }
         private const bool PROFILING = false;
 
         private bool EntityIsContained(uint entity, uint zone)
