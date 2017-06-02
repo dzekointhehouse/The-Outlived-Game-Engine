@@ -257,9 +257,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetInertiaDampening()
+        public EntityBuilder SetInertiaDampening(int stabilisingSpeed = 1000)
         {
             var component = ComponentFactory.NewComponent<InertiaDampeningComponent>();
+            component.StabilisingSpeed = stabilisingSpeed;
             components.Add(component);
             return this;
         }

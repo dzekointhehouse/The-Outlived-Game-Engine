@@ -5,6 +5,7 @@ namespace ZEngine.Components
 {
     public class CollisionComponent : IComponent
     {
+        public bool Disabled { get; set; } = false;
         public bool IsCage;
 
         //each int is an entityId
@@ -21,6 +22,7 @@ namespace ZEngine.Components
 
         public IComponent Reset()
         {
+            Disabled = false;
             IsCage = false;
             Collisions.Clear();
             Zones.Clear();

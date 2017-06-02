@@ -98,7 +98,7 @@ namespace ZEngine.Systems
                     averagePosition += pos.Position;
 
                     // Getting the maximum distance for scaling, to be used
-                    // for the much wanted zooming effect later on.
+                    // for the zooming effect later on.
                     float distance = Vector2.Distance(camera.Center, pos.Position);
 
                     maxDistance = Math.Max(distance, maxDistance);

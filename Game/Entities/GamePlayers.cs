@@ -248,7 +248,7 @@ namespace Game.Entities
                     View = viewport,
                     MinScale = 0.5f,
                     Scale = scale,
-                    MaxScale = 1.5f
+                    MaxScale = 3.5f
                 };
                 ComponentManager.Instance.AddComponentToEntity(cameraView, playerEntity.GetEntityKey());
             }

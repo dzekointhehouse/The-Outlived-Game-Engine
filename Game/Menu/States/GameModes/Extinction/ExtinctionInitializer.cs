@@ -81,7 +81,7 @@ namespace Game.Menu.States.GameModes.Extinction
 
         private void SetupCar()
         {
-            CarFactory.CreatePickup();
+            CarFactory.CreatePickupsWithPenumbraLights();
         }
 
         private void SetupEventZones()

@@ -29,7 +29,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         {
             //Debug.WriteLine("WALL E:" + collisionEvent.Entity + ", T:" + collisionEvent.Target + ", -:" + collisionEvent.Event);
             if (IsBulletCollisionAndNotRelevant(collisionEvent)) return;
-
+            var collisionComponent =
+                ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Entity);
+            var targetCollisionComponent =
+                ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(collisionEvent.Target);
+            if (collisionComponent.Disabled || targetCollisionComponent.Disabled) return;
+            
             var entityMoveComponent = ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(collisionEvent.Entity);
             var entityPositionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(collisionEvent.Entity);
             StopMovement(entityPositionComponent, entityMoveComponent);

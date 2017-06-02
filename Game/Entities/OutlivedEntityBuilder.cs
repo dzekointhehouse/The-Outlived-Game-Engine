@@ -19,21 +19,23 @@ namespace Game.Entities
         {
             var component = ComponentFactory.NewComponent<CarLightsComponent>();
             component.LeftLight = new EntityBuilder()
-                .SetLight(new PointLight()
+                .SetPosition(new Vector2(500, 500), 899)
+                .SetLight(new Spotlight()
                 {
                     Enabled = false,
-                    Scale = new Vector2(650f),
-                    Radius = (float) 0.0008f,
-                    Intensity = (float) 0.5,
+                    Scale = new Vector2(1250f),
+                    Radius = (float) 1f,
+                    Intensity = (float) 0.95,
                     ShadowType = ShadowType.Solid // Will not lit hulls themselves
                 }).BuildAndReturnId();
             component.RightLight = new EntityBuilder()
-                .SetLight(new PointLight()
+                .SetPosition(new Vector2(500, 500), 899)
+                .SetLight(new Spotlight()
                 {
                     Enabled = false,
-                    Scale = new Vector2(650f),
-                    Radius = (float) 0.0008f,
-                    Intensity = (float) 0.5,
+                    Scale = new Vector2(1250f),
+                    Radius = (float) 1f,
+                    Intensity = (float) 0.95,
                     ShadowType = ShadowType.Solid // Will not lit hulls themselves
                 }).BuildAndReturnId();
             components.Add(component);

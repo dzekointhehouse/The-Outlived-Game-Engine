@@ -76,7 +76,7 @@ namespace Game.Entities
 
                     var mapImage = OutlivedGame.Instance().Get<Texture2D>("Images/Blockworld");
                     mapHelper = new MapHelper(tileTypes);
-                    mapHelper.AddNumbersToHullList(1,2,3,4,5,6,7,8,9);
+                    mapHelper.AddNumbersToHullList(1,2,3,4,5,6,7,8,9, 43, 42, 40);
                     mapHelper.AddNumbersToCollisionList(40, 42, 43, 1, 2, 3, 4, 5, 6, 7, 8, 9);
                     mapHelper.CreateMap(MapPack.TheCity, 64, mapImage);
                     spawnPositionOne = new Vector2(120, 120);

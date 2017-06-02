@@ -31,7 +31,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.
-                AmbientColor = new Color(new Vector3(0.05f)) // should be an entity?
+                AmbientColor = new Color(new Vector3(0.02f)) // should be an entity?
             };
 
             foreach (var barrelFlash in ComponentManager.Instance.GetEntitiesWithComponent(typeof(BarrelFlashComponent)))
@@ -86,7 +86,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     ComponentManager.Instance.GetEntityComponentOrDefault<MoveComponent>(barrelFlash.Key);
                 if (moveComponent == null) continue;
 
-
                 //TODO MOVE BULLET OFFSETS TO A GLOBALLY ACCESSABLE AREA
                 var barrelOffsetX = 65;
                 var barrelOffsetY = 52;
@@ -108,9 +107,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             foreach (var lightEntity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(LightComponent)))
             {
                 var lightComponent = lightEntity.Value as LightComponent;
-                // If it has no render component than we should skip this entity.
-                if (!ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
-                    continue;
+//                // If it has no render component than we should skip this entity.
+//                if (!ComponentManager.Instance.EntityHasComponent<RenderComponent>(lightEntity.Key))
+//                    continue;
 
                 var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(lightEntity.Key);
 

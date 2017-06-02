@@ -147,7 +147,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// 
         /// </summary>
         /// <returns></returns>
-        EntityBuilder SetInertiaDampening();
+        EntityBuilder SetInertiaDampening(int stabilisingSpeed);
 
         /// <summary>
         /// Gives the entity a speed penalty
