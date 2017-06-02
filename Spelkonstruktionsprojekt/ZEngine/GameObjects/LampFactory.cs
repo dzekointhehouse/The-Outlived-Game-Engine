@@ -19,7 +19,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameObjects
                 .SetLight(light)
                 .SetLightFlickering(30, 2)
                 .SetRendering(50, 50)
-                .SetSprite("RedDot")
+                .SetSprite("Images/lamp")
                 .SetPosition(new Vector2(600, 600), 800)
                 .BuildAndReturnId();
             return 0;
@@ -38,7 +38,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameObjects
                 .SetLight(light)
                 .SetLightFlickering(3000, 3)
                 .SetRendering(50, 50)
-                .SetSprite("RedDot")
+                .SetSprite("Images/lamp")
                 .SetPosition(new Vector2(600, 600), 800)
                 .BuildAndReturnId();
             return 0;
