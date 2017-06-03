@@ -123,6 +123,7 @@
     <Compile Include="ZEngine\Managers\EntityManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ZEngine\Managers\ComponentManager.cs" />
+    <Compile Include="ZEngine\Managers\IComponentManager.cs" />
     <Compile Include="ZEngine\Systems\AISystem.cs" />
     <Compile Include="ZEngine\Systems\AnimationSystem.cs" />
     <Compile Include="ZEngine\Systems\CameraSceneSystem.cs" />

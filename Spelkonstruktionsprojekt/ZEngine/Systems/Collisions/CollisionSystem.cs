@@ -32,8 +32,12 @@ namespace ZEngine.Systems
         private Dictionary<uint, bool> IsAI = new Dictionary<uint, bool>();
         private Dictionary<uint, bool> IsBullet = new Dictionary<uint, bool>();
 
+        private Dictionary<uint, int> CallCount = new Dictionary<uint, int>();
+        
         private int cacheMisses = 0;
-
+        
+        private QuadTree QuadTree { get; set; } = new QuadTree(ComponentManager.Instance);
+        
         //TODO Should do this on game load
         public Color[] TextureCache(SpriteComponent spriteComponent, uint entityId)
         {
@@ -89,7 +93,7 @@ namespace ZEngine.Systems
         private const bool PROFILING_COLLISIONS_DEEP = false;
         private const bool PROFILING_CACHE = false;
         private const bool PROFILING_CALL_COUNT = false;
-
+        
         private int movingEntity = 0;
         private int stillEntity = 0;
         private int detectCollision = 0;
@@ -103,9 +107,10 @@ namespace ZEngine.Systems
                 timer = Stopwatch.StartNew();
             }
             //
-            var quadTree = QuadTree.CreateTree(
+            QuadTree.CreateTree(
                 ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent)).Keys,
-                new Rectangle(0, 0, 8000, 8000));
+                new Rectangle(0, 0, 50000, 50000)
+            );
 
             if (PROFILING_COLLISIONS)
             {
@@ -114,12 +119,30 @@ namespace ZEngine.Systems
             }
 
             var tasks = new List<Task>();
-            foreach (var movingEntity in QuadTree.MovingEntities(quadTree))
+            foreach (var movingEntity in QuadTree.Entities())
             {
                 this.movingEntity++;
-                foreach (var stillEntity in QuadTree.StillEntities(movingEntity.Key, movingEntity.Value))
+                if (CallCount.ContainsKey(movingEntity.Key))
+                {
+                    CallCount[movingEntity.Key]++;
+                }
+                else
+                {
+                    CallCount[movingEntity.Key] = 1;
+                }
+                
+                foreach (var stillEntity in movingEntity.Value)
                 {
                     this.stillEntity++;
+                    if (CallCount.ContainsKey(stillEntity))
+                    {
+                        CallCount[stillEntity]++;
+                    }
+                    else
+                    {
+                        CallCount[stillEntity] = 1;
+                    }
+                
                     if (IsBothAI(movingEntity.Key, stillEntity)) continue;
                     if (IsStillBullet(stillEntity)) continue;
 //                    await CollisionDetection(movingEntity, stillEntity);
@@ -144,6 +167,14 @@ namespace ZEngine.Systems
             if (PROFILING_CALL_COUNT)
             {
                 Debug.WriteLine("MOVING: " + this.movingEntity + ", STILL: " + this.stillEntity + ", DETECT: " + this.detectCollision + ", COL: " + this.entitiesCollide);
+                int count = 0;
+                foreach (var e in CallCount)
+                {
+                    Debug.WriteLine("ID: " + e.Key + " COUNT: " + e.Value);
+                    count += e.Value;
+                }
+                Debug.WriteLine("REPETITION AVERAGE: " + count / CallCount.Count);
+                Debug.WriteLine("");
             }
             this.movingEntity = 0;
             this.stillEntity = 0;
@@ -174,14 +205,14 @@ namespace ZEngine.Systems
         private bool IsStillBullet(uint still)
         {
             bool stillIsBullet;
-            if (IsAI.TryGetValue(still, out stillIsBullet))
+            if (IsBullet.TryGetValue(still, out stillIsBullet))
             {
                 if (stillIsBullet) return true;
             }
             else
             {
                 var stillBulletComponent = ComponentManager.GetEntityComponentOrDefault<BulletComponent>(still);
-                IsAI[still] = stillBulletComponent != null;
+                IsBullet[still] = stillBulletComponent != null;
                 if (stillBulletComponent != null) return true;
             }
             return false;
@@ -190,7 +221,6 @@ namespace ZEngine.Systems
         private async Task CollisionDetection(uint movingEntity, uint stillEntity)
         {
             this.detectCollision++;
-            return;
             Stopwatch timer;
             var movingCollision =
                 ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(movingEntity);

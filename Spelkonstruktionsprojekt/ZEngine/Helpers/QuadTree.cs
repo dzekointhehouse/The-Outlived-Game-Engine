@@ -12,32 +12,52 @@ namespace ZEngine.Helpers
 {
     public class QuadTree
     {
-        private const int MAX_ELEMENTS = 4;
+        public ComponentManager ComponentManager { get; }
 
-        public static QuadNode CreateTree(IEnumerable<uint> entities, Rectangle bounds)
+        private QuadNode _root;
+
+        public QuadTree(ComponentManager componentManager)
         {
-            var tree = CreateNode(null, bounds);
-            foreach (var entity in entities)
-            {
-                Insert(ref tree, entity);
-            }
-            return tree;
+            ComponentManager = componentManager;
         }
 
-        public static IEnumerable<KeyValuePair<uint, QuadNode>> MovingEntities(QuadNode tree)
+        private const int MAX_ELEMENTS = 4;
+
+        public QuadTree CreateTree(IEnumerable<uint> entities, Rectangle bounds)
+        {
+            if (_root != null) Clear();
+
+            _root = CreateNode(null, bounds);
+            foreach (var entity in entities)
+            {
+                Insert(ref _root, entity);
+            }
+            return this;
+        }
+
+        public QuadNode GetRoot()
+        {
+            return _root;
+        }
+
+        public IEnumerable<KeyValuePair<uint, IEnumerable<uint>>> Entities()
         {
             var stack = new Stack<QuadNode>();
-            stack.Push(tree);
+            stack.Push(_root);
             while (stack.Count > 0)
             {
                 var current = stack.Pop();
                 for (var i = 0; i < current.PermanentMovingEntities.Count; i++)
                 {
-                    yield return new KeyValuePair<uint, QuadNode>(current.PermanentMovingEntities[i].Item1, current);
+                    var permMovingEntityId = current.PermanentMovingEntities[i].Item1;
+                    yield return new KeyValuePair<uint, IEnumerable<uint>>(permMovingEntityId,
+                        StillEntities(permMovingEntityId, current));
                 }
                 for (var i = 0; i < current.TempMovingEntitiesCount; i++)
                 {
-                    yield return new KeyValuePair<uint, QuadNode>(current.TempMovingEntities[i].Item1, current);
+                    var tempMovingEntityId = current.TempMovingEntities[i].Item1;
+                    yield return new KeyValuePair<uint, IEnumerable<uint>>(tempMovingEntityId,
+                        StillEntities(tempMovingEntityId, current));
                 }
                 if (current.ChildNodes != null)
                 {
@@ -49,7 +69,7 @@ namespace ZEngine.Helpers
             }
         }
 
-        public static IEnumerable<uint> StillEntities(uint movingEntityId, QuadNode root)
+        private IEnumerable<uint> StillEntities(uint movingEntityId, QuadNode root)
         {
             var stack = new Stack<QuadNode>();
             stack.Push(root);
@@ -98,10 +118,10 @@ namespace ZEngine.Helpers
             }
         }
 
-        public static void Clear(QuadNode tree)
+        public void Clear()
         {
             var stack = new Stack<QuadNode>();
-            stack.Push(tree);
+            stack.Push(_root);
             while (stack.Count > 0)
             {
                 var current = stack.Pop();
@@ -109,15 +129,18 @@ namespace ZEngine.Helpers
                 current.PermanentStillEntities.Clear();
                 current.TempMovingEntitiesCount = 0;
                 current.TempStillEntitiesCount = 0;
-                if (current.ChildNodes == null) ;
-                for (var i = 0; i < current.ChildNodes.Length; i++)
+                if (current.ChildNodes != null)
                 {
-                    stack.Push(current.ChildNodes[i]);
+                    for (var i = 0; i < current.ChildNodes.Length; i++)
+                    {
+                        stack.Push(current.ChildNodes[i]);
+                    }
                 }
+                ;
             }
         }
 
-        public static QuadNode CreateNode(QuadNode parent, Rectangle bounds)
+        private QuadNode CreateNode(QuadNode parent, Rectangle bounds)
         {
             var node = new QuadNode
             {
@@ -127,7 +150,7 @@ namespace ZEngine.Helpers
             return node;
         }
 
-        public static void Split(QuadNode node)
+        private void Split(QuadNode node)
         {
             var subWidth = (int) (node.Bounds.Width * 0.5);
             var subHeight = (int) (node.Bounds.Height * 0.5);
@@ -165,12 +188,15 @@ namespace ZEngine.Helpers
             node.TempStillEntitiesCount = 0;
         }
 
-        public static void Insert(ref QuadNode parent, uint entityId)
+        private void Insert(ref QuadNode parent, uint entityId)
         {
-            var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(entityId);
+            var positionComponent = ComponentManager.GetEntityComponentOrDefault<PositionComponent>(entityId);
             var dimensionsComponent =
-                ComponentManager.Instance.GetEntityComponentOrDefault<DimensionsComponent>(entityId);
-            var hasMoveComponent = ComponentManager.Instance.EntityHasComponent<MoveComponent>(entityId);
+                ComponentManager.GetEntityComponentOrDefault<DimensionsComponent>(entityId);
+            var hasMoveComponent = ComponentManager.EntityHasComponent<MoveComponent>(entityId);
+            if (hasMoveComponent)
+            {
+            }
             InsertIntoTree(ref parent,
                 new Tuple<uint, Rectangle, bool>(
                     entityId,
@@ -180,15 +206,17 @@ namespace ZEngine.Helpers
             );
         }
 
-        public static void InsertIntoTree(ref QuadNode node, Tuple<uint, Rectangle, bool> entity)
+        private void InsertIntoTree(ref QuadNode node, Tuple<uint, Rectangle, bool> entity)
         {
-            //Return if the node does not fit in this quad node
-            if (!node.Bounds.Contains(entity.Item2)) return;
-            
             //Fits no more entites, try to split entities into smaller quad nodes
-            if (node.TempMovingEntitiesCount >= MAX_ELEMENTS || node.TempStillEntitiesCount >= MAX_ELEMENTS)
+            var reachedMaxEntitiesCount = node.TempMovingEntitiesCount >= MAX_ELEMENTS ||
+                                          node.TempStillEntitiesCount >= MAX_ELEMENTS;
+            if (reachedMaxEntitiesCount && node.ChildNodes == null)
             {
-                Split(node);
+                if (node.Bounds.Width > 5)
+                {
+                    Split(node);
+                }
             }
 
             //Has no child nodes and fits more entities
@@ -209,16 +237,20 @@ namespace ZEngine.Helpers
             }
         }
 
-        public static void PassDownEntity(ref QuadNode parent, Tuple<uint, Rectangle, bool> entity)
+        private void PassDownEntity(ref QuadNode parent, Tuple<uint, Rectangle, bool> entity)
         {
             //If node has children and if the entity fits in any child, put it in that child node
             for (var childNodeIndex = 0; childNodeIndex < parent.ChildNodes.Length; childNodeIndex++)
             {
-                if (parent.ChildNodes[childNodeIndex].Bounds.Contains(entity.Item2))
+                var intersectionCount = 0;
+//                if (parent.ChildNodes[childNodeIndex].Bounds.Contains(entity.Item2))
+                if (entity.Item2.Intersects(parent.ChildNodes[childNodeIndex].Bounds))
                 {
                     InsertIntoTree(ref parent.ChildNodes[childNodeIndex], entity);
-                    return;
+                    intersectionCount++;
+//                    return;
                 }
+                if (intersectionCount > 0) return;
             }
 
             //If entity too large too fit in any child node

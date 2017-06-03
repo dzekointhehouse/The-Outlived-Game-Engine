@@ -10,7 +10,7 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Managers
 {
-    public class ComponentManager
+    public class ComponentManager : IComponentManager
     {
         // _____________________________________________________________________________________________________________________ //
         

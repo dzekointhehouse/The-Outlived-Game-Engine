@@ -47,7 +47,7 @@ namespace ZEngine.Systems
                         uint movingEntityId = entity.Key;
                         var collisionRequirements = collisionEvent.Key;
                         var collisionEventType = collisionEvent.Value;
-
+                        
                         if (MatchesCollisionEvent(collisionRequirements, movingEntityId, (uint) collisionTarget))
                         {
                             //When there is a match for a collision-event, an event is published
@@ -200,19 +200,19 @@ namespace ZEngine.Systems
                     },
                     CollisionEvent.Bullet
                 },
-                {
-                    new CollisionRequirement()
-                    {
-                        MovingEntityRequirements = new List<Type>
-                        {
-                            typeof(AIComponent)
-                        },
-                        TargetEntityRequirements = new List<Type>
-                        {
-                        }
-                    },
-                    CollisionEvent.AiWall
-                },
+//                {
+//                    new CollisionRequirement()
+//                    {
+//                        MovingEntityRequirements = new List<Type>
+//                        {
+//                            typeof(AIComponent)
+//                        },
+//                        TargetEntityRequirements = new List<Type>
+//                        {
+//                        }
+//                    },
+//                    CollisionEvent.AiWall
+//                },
             };
     }
 

@@ -165,8 +165,8 @@ namespace Game.Systems
             bool isInside = true;
             while (isInside)
             {
-                x = random.Next(0, world.WorldWidth);
-                y = random.Next(0, world.WorldHeight);
+                x = random.Next(0, 50000);
+                y = random.Next(0, 50000);
                 foreach (var cameraComponent in cameraComponents)
                 {
 
