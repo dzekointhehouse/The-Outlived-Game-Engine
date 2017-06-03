@@ -105,7 +105,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
                 return;
             }
 
-            countdownTimer.Count();
+            countdownTimer.StartCounter();
             countdownTimer.UpdateTimer(gameTime);
             BackgroundMusic.PlayMusic();
 //            SpawnSystem.HandleWaves();

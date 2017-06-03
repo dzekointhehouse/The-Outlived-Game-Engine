@@ -38,6 +38,7 @@ namespace Game.Systems
         public void HandleWaves(GameTime gameTime)
         {
             _timer.UpdateTimer(gameTime);
+            Debug.WriteLine(_timer.Seconds);
 
             //World
             var worldComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(WorldComponent)).First();
@@ -65,13 +66,14 @@ namespace Game.Systems
                     GlobalSpawnComponent.EnemiesDead = false;
                     break;
                 }
+                _timer.StartCounter();
             }
 
             // If they are all dead
             if (GlobalSpawnComponent.EnemiesDead && _timer.IsDone)
             {
-                _timer.Reset();
-
+                    // if all the enemies are dead, reset timer and count to next wave.
+                    _timer.Reset();
 
                 var waveHud =
                         ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities

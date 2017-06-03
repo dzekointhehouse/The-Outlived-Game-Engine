@@ -10,14 +10,13 @@ namespace Game.Services
     {
         public int Minutes { get; private set; }
         public int Seconds { get; private set; }
-        public bool IsDone { get; private set; } = false;
+        public bool IsDone { get; private set; } = true;
 
         // Private variables for reset and ticks
         // and stopping timer
         private int resetMinutes;
         private int resetSeconds;
         private double TimeSinceLastTick;
-        private bool isStopped = false;
 
 
         public CountdownTimer(int minutes)
@@ -41,11 +40,10 @@ namespace Game.Services
         {
             if (Minutes <= 0 && Seconds <= 0)
             {
-                isStopped = true;
                 IsDone = true;
             }
 
-            if (isStopped) return;
+            if (IsDone) return;
 
             TimeSinceLastTick += gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -65,15 +63,18 @@ namespace Game.Services
             }
         }
 
+        public void StartCounter()
+        {
+            if(Minutes == resetMinutes && Seconds == resetSeconds)
+                IsDone = false;
+        }
+
         public string GetFormatedTime()
         {
             if(Seconds >= 10) return String.Format("{0}:{1}", Minutes, Seconds);
             else return String.Format("{0}:0{1}", Minutes, Seconds);
         }
-        public void Count()
-        {
-            isStopped = false;
-        }
+
         public void Reset()
         {
             IsDone = false;

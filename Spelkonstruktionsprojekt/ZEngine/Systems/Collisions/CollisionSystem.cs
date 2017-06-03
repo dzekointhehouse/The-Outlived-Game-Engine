@@ -109,7 +109,7 @@ namespace ZEngine.Systems
             {
                 foreach (var stillEntity in QuadTree.StillEntities(movingEntity.Item1, movingEntity.Item2))
                 {
-//                    await CollisionDetection(movingEntity, stillEntity);
+ //                   await CollisionDetection(movingEntity, stillEntity);
                     tasks.Add(CollisionDetection(movingEntity, stillEntity));
                 }
             }
