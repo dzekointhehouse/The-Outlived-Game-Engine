@@ -24,7 +24,7 @@ namespace ZEngine.Helpers
             return tree;
         }
 
-        public static IEnumerable<Tuple<uint, QuadNode>> MovingEntities(QuadNode tree)
+        public static IEnumerable<KeyValuePair<uint, QuadNode>> MovingEntities(QuadNode tree)
         {
             var stack = new Stack<QuadNode>();
             stack.Push(tree);
@@ -33,11 +33,11 @@ namespace ZEngine.Helpers
                 var current = stack.Pop();
                 for (var i = 0; i < current.PermanentMovingEntities.Count; i++)
                 {
-                    yield return new Tuple<uint, QuadNode>(current.PermanentMovingEntities[i].Item1, current);
+                    yield return new KeyValuePair<uint, QuadNode>(current.PermanentMovingEntities[i].Item1, current);
                 }
                 for (var i = 0; i < current.TempMovingEntitiesCount; i++)
                 {
-                    yield return new Tuple<uint, QuadNode>(current.TempMovingEntities[i].Item1, current);
+                    yield return new KeyValuePair<uint, QuadNode>(current.TempMovingEntities[i].Item1, current);
                 }
                 if (current.ChildNodes != null)
                 {

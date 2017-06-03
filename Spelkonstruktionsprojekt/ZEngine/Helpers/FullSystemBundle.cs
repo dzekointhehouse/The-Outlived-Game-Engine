@@ -67,7 +67,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         }
 
-        private const bool PROFILING = false;
+        private const bool PROFILING = true;
         public async void Update(GameTime gameTime)
         {
             Stopwatch timer;
@@ -85,7 +85,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                 Debug.WriteLine("INPUT SYSTEMS" + timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
-            manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
+//            manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
             if (PROFILING)
             {
                 Debug.WriteLine("Collision RESOLVE SYSTEM" + timer.ElapsedTicks);
