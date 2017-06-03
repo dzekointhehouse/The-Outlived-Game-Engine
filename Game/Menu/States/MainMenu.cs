@@ -109,7 +109,7 @@ namespace Game.Menu.States
         public void Update(GameTime gameTime)
         {
             fogBackground.Update(gameTime, new Vector2(1,0),viewport);
-            //mainBackground.Update(gameTime, new Vector2(1, 0), viewport);
+            //mainBackground.UpdateTimer(gameTime, new Vector2(1, 0), viewport);
             // playing beatiful mainBackground music.
             if (MediaPlayer.State == MediaState.Stopped)
             {

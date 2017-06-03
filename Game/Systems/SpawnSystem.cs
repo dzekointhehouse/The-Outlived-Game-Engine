@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
@@ -23,85 +24,28 @@ namespace Game.Systems
 {
     public class SpawnSystem : ISystem
     {
+
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
         private EventBus Eventbus = EventBus.Instance;
-        private Random random = new Random();
+        private readonly Random _random = new Random();
+        private CountdownTimer _timer = new CountdownTimer(minutes: 0, seconds: 5);
 
         public void Start()
         {
             Eventbus.Subscribe<uint>(EventConstants.PlayerDeath, SpawnPlayers);
         }
 
-        // Creates the enemy to be spawned.
-        public void CreateEnemy(Vector2 position, SpriteComponent sprite)
+        public void HandleWaves(GameTime gameTime)
         {
-            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = new Dictionary<SoundComponent.SoundBank, SoundEffectInstance>(1);
+            _timer.UpdateTimer(gameTime);
 
-            soundList.Add(SoundComponent.SoundBank.Death, OutlivedGame.Instance()
-                .Content.Load<SoundEffect>("Sound/Splash")
-                .CreateInstance());
-
-            var monster = new EntityBuilder()
-                .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1244, 311), 311, 311)
-                .SetPosition(position, layerDepth: 20)
-                .SetRendering(200, 200)
-                .SetSound(soundList: soundList)
-                .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetArtificialIntelligence()
-                .SetSpawn()
-                .SetRectangleCollision()
-                .SetHealth()
-                .BuildAndReturnId();
-
-            var animationBindings = new SpriteAnimationBindingsBuilder()
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(1244, 311), new Point(622, 1244))
-                        .StateConditions(State.WalkingForward)
-                        .Length(60)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(933, 311))
-                        .StateConditions(State.Dead, State.WalkingForward)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(933, 311))
-                        .StateConditions(State.Dead, State.WalkingBackwards)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Binding(
-                    new SpriteAnimationBindingBuilder()
-                        .Positions(new Point(0, 0), new Point(933, 311))
-                        .StateConditions(State.Dead)
-                        .IsTransition(true)
-                        .Length(30)
-                        .Build()
-                )
-                .Build();
-
-            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
-
-            //TODO SEND STATE MANAGER A GAME TIME VALUE AND NOT 0
-            StateManager.TryAddState(monster, State.WalkingForward, 0);
-        }
-
-        public void HandleWaves()
-        {
             //World
             var worldComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(WorldComponent)).First();
             var world = worldComponent.Value as WorldComponent;
 
             //GlobalSpawn
             var GlobalSpawnEntities =
-             ComponentManager.GetEntitiesWithComponent(typeof(GlobalSpawnComponent));
+                ComponentManager.GetEntitiesWithComponent(typeof(GlobalSpawnComponent));
             if (GlobalSpawnEntities.Count <= 0) return;
 
             var GlobalSpawnComponent =
@@ -124,10 +68,16 @@ namespace Game.Systems
             }
 
             // If they are all dead
-            if (GlobalSpawnComponent.EnemiesDead)
+            if (GlobalSpawnComponent.EnemiesDead && _timer.IsDone)
             {
-                var waveHud = ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities.First().Key);
-                var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
+                _timer.Reset();
+
+
+                var waveHud =
+                        ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities
+                            .First().Key);
+                var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent))
+                    .Count;
 
                 if (waveHud != null && nCameras == 1)
                 {
@@ -139,10 +89,11 @@ namespace Game.Systems
 
                 //SpawnSprite, the sprite for all monsters.
                 var SpawnSpriteEntities =
-                ComponentManager.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
+                    ComponentManager.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
 
                 if (SpawnSpriteEntities.Count <= 0) return;
-                var SpawnSpriteComponent = ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+                var SpawnSpriteComponent =
+                    ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
                 var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
@@ -154,7 +105,7 @@ namespace Game.Systems
                 // the players view bounds.
                 for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
                 {
-                    CreateEnemy(GetSpawnPosition(world, cameraComponents, random), SpawnSpriteComponent);
+                    CreateEnemy(GetSpawnPosition(world, cameraComponents, _random), SpawnSpriteComponent);
                 }
                 // When done, increase the wave size...
                 if (GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
@@ -163,7 +114,8 @@ namespace Game.Systems
                 // We increase the wave level, this is used to display progress.
                 GlobalSpawnComponent.WaveLevel++;
 
-                var waveSound = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/NextWave").CreateInstance();
+                var waveSound = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/NextWave")
+                    .CreateInstance();
                 waveSound.Volume = 0.7f;
                 if (waveSound.State == SoundState.Stopped)
                 {
@@ -171,13 +123,13 @@ namespace Game.Systems
                 }
 
 
-                if (random.Next(0, 1) == 1)
+                if (_random.Next(0, 1) == 1)
                 {
-                    if (random.Next(1, 3) == 1)
+                    if (_random.Next(1, 3) == 1)
                     {
                         // Health
                         var HealthpickupEntities =
-                        ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+                            ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
                         if (HealthpickupEntities.Count == 0)
                         {
                             var HealthpickupComponent =
@@ -190,7 +142,7 @@ namespace Game.Systems
                     {
                         //Ammo
                         var ammoPickUpEntities =
-                       ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
+                            ComponentManager.GetEntitiesWithComponent(typeof(FlyweightPickupComponent));
                         if (ammoPickUpEntities.Count == 0)
                         {
                             var ammopickupComponent =
@@ -202,6 +154,7 @@ namespace Game.Systems
                 }
 
             }
+
         }
 
         // Spawing the zombies outside of the players view.
@@ -290,6 +243,66 @@ namespace Game.Systems
 
         }
 
+        // Creates the enemy to be spawned.
+        public void CreateEnemy(Vector2 position, SpriteComponent sprite)
+        {
+            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = new Dictionary<SoundComponent.SoundBank, SoundEffectInstance>(1);
+
+            soundList.Add(SoundComponent.SoundBank.Death, OutlivedGame.Instance()
+                .Content.Load<SoundEffect>("Sound/Splash")
+                .CreateInstance());
+
+            var monster = new EntityBuilder()
+                .FromLoadedSprite(sprite.Sprite, sprite.SpriteName, new Point(1244, 311), 311, 311)
+                .SetPosition(position, layerDepth: 20)
+                .SetRendering(200, 200)
+                .SetSound(soundList: soundList)
+                .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
+                .SetArtificialIntelligence()
+                .SetSpawn()
+                .SetRectangleCollision()
+                .SetHealth()
+                .BuildAndReturnId();
+
+            var animationBindings = new SpriteAnimationBindingsBuilder()
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(1244, 311), new Point(622, 1244))
+                        .StateConditions(State.WalkingForward)
+                        .Length(60)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(933, 311))
+                        .StateConditions(State.Dead, State.WalkingForward)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(933, 311))
+                        .StateConditions(State.Dead, State.WalkingBackwards)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Binding(
+                    new SpriteAnimationBindingBuilder()
+                        .Positions(new Point(0, 0), new Point(933, 311))
+                        .StateConditions(State.Dead)
+                        .IsTransition(true)
+                        .Length(30)
+                        .Build()
+                )
+                .Build();
+
+            ComponentManager.Instance.AddComponentToEntity(animationBindings, monster);
+
+            //TODO SEND STATE MANAGER A GAME TIME VALUE AND NOT 0
+            StateManager.TryAddState(monster, State.WalkingForward, 0);
+        }
 
         private void SpawnPlayers(uint playerEntity)
         {
@@ -299,7 +312,7 @@ namespace Game.Systems
             var world = worldComponent.Value as WorldComponent;
 
             var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(playerEntity);
-            positionComponent.Position = GetSpawnPositionBasedOnColorData(world, random, Color.Red);
+            positionComponent.Position = GetSpawnPositionBasedOnColorData(world, _random, Color.Red);
 
         }
     }
