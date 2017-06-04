@@ -24,7 +24,6 @@ namespace Game.Systems
 {
     public class SpawnSystem : ISystem
     {
-
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
         private EventBus Eventbus = EventBus.Instance;
         private readonly Random _random = new Random();
@@ -72,18 +71,17 @@ namespace Game.Systems
             // If they are all dead
             if (GlobalSpawnComponent.EnemiesDead && _timer.IsDone)
             {
-                    // if all the enemies are dead, reset timer and count to next wave.
-                    _timer.Reset();
+                // if all the enemies are dead, reset timer and count to next wave.
+                _timer.Reset();
 
                 var waveHud =
-                        ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities
-                            .First().Key);
+                    ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities
+                        .First().Key);
                 var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent))
                     .Count;
 
                 if (waveHud != null && nCameras == 1)
                 {
-
                     waveHud.HUDtext = "Wave " + GlobalSpawnComponent.WaveLevel.ToString();
                     waveHud.IsOnlyHUD = true;
                     waveHud.Color = Color.DarkGray;
@@ -98,9 +96,6 @@ namespace Game.Systems
                     ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
 
                 var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
-
-
-
 
                 // Looping through the next zombie wave and then
                 // adding them if their position is outside of the
@@ -154,35 +149,39 @@ namespace Game.Systems
                         }
                     }
                 }
-
             }
-
         }
 
         // Spawing the zombies outside of the players view.
-        private Vector2 GetSpawnPosition(WorldComponent world, Dictionary<uint, IComponent> cameraComponents, Random random)
+        private Vector2 GetSpawnPosition(WorldComponent world, Dictionary<uint, IComponent> cameraComponents,
+            Random random)
         {
             if (cameraComponents == null) return default(Vector2);
             int x = 0, y = 0;
+            var worldCenter = new Point(world.WorldWidth / 2, world.WorldHeight / 2);
             bool isInside = true;
             while (isInside)
             {
-                x = random.Next(0, 50000);
-                y = random.Next(0, 50000);
+                x = random.Next(0, world.WorldWidth);
+                y = random.Next(0, world.WorldHeight);
                 foreach (var cameraComponent in cameraComponents)
                 {
-
                     var camera = cameraComponent.Value as CameraViewComponent;
+                    var cameraDimensions = camera.View.Bounds.Size;
+                    var bounds = new Rectangle(
+                        new Point(
+                            (int) (worldCenter.X - cameraDimensions.X * 0.5), 
+                            (int) (worldCenter.Y - cameraDimensions.Y * 0.5)),
+                        cameraDimensions);
                     if (world.WorldData == null)
                     {
-                        if (!camera.View.TitleSafeArea.Contains(x, y))
+                        if (!bounds.Contains(x, y))
                         {
                             isInside = false;
                         }
                     }
                     else
                     {
-
                         Color color = world.WorldData[y, x];
                         if (color.Equals(Color.Yellow))
                         {
@@ -242,13 +241,13 @@ namespace Game.Systems
             }
             ComponentManager.Instance.AddComponentToEntity(pickupComponent, entity);
             return entity;
-
         }
 
         // Creates the enemy to be spawned.
         public void CreateEnemy(Vector2 position, SpriteComponent sprite)
         {
-            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = new Dictionary<SoundComponent.SoundBank, SoundEffectInstance>(1);
+            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList =
+                new Dictionary<SoundComponent.SoundBank, SoundEffectInstance>(1);
 
             soundList.Add(SoundComponent.SoundBank.Death, OutlivedGame.Instance()
                 .Content.Load<SoundEffect>("Sound/Splash")
@@ -313,9 +312,9 @@ namespace Game.Systems
             var worldComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(WorldComponent)).First();
             var world = worldComponent.Value as WorldComponent;
 
-            var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(playerEntity);
+            var positionComponent =
+                ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(playerEntity);
             positionComponent.Position = GetSpawnPositionBasedOnColorData(world, _random, Color.Red);
-
         }
     }
 }
