@@ -115,6 +115,7 @@ namespace Game.Menu.States
 
         public void BeforeHide()
         {
+            GameManager.Logger.PrintAverages();
             ComponentManager.Instance.Clear();
         }
     }

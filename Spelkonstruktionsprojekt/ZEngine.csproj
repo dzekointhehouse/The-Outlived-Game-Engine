@@ -45,10 +45,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\ShapeRendering2D\IShapeRenderer2D.cs" />
-    <Compile Include="..\ShapeRendering2D\Properties\AssemblyInfo.cs" />
-    <Compile Include="..\ShapeRendering2D\Shape.cs" />
-    <Compile Include="..\ShapeRendering2D\ShapeRenderer2D.cs" />
     <Compile Include="Astar.cs" />
     <Compile Include="ZEngine\Components\BarrelFlashComponent.cs" />
     <Compile Include="ZEngine\Components\DefaultViewport.cs" />
@@ -69,6 +65,10 @@
     <Compile Include="ZEngine\Components\WallComponent.cs" />
     <Compile Include="ZEngine\Components\WorldComponent.cs" />
     <Compile Include="ZEngine\Constants\GamePadStandardLayout.cs" />
+    <Compile Include="ZEngine\Diagnostics\FileFactory.cs" />
+    <Compile Include="ZEngine\Diagnostics\SystemExecutionTicks.cs" />
+    <Compile Include="ZEngine\Diagnostics\SystemExecutionTime.cs" />
+    <Compile Include="ZEngine\Diagnostics\ZEngineLogger.cs" />
     <Compile Include="ZEngine\GameObjects\LampFactory.cs" />
     <Compile Include="ZEngine\GameTest\TestGame.cs" />
     <Compile Include="ZEngine\Helpers\ComponentFactory.cs" />
@@ -192,8 +192,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\ShapeRendering2D\app.manifest" />
-    <Content Include="..\ShapeRendering2D\ShapeRendering2D.csproj" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +202,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <ProjectReference Include="..\ZLogger\ZLogger.csproj">
+      <Project>{a4c2f96f-ea84-4962-b387-f46900d12b11}</Project>
+      <Name>ZLogger</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

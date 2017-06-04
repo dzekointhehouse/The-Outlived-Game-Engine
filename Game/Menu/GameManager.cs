@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Spelkonstruktionsprojekt.ZEngine.Diagnostics;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using ZEngine.Systems;
 using ZEngine.Wrappers;
@@ -27,7 +28,8 @@ namespace Game
         public static float Scale { get; set; } = 1.0f;
         public static bool MoveHigher { get; set; } = true;
         public static bool MoveRight { get; set; } = true;
-
+        public static ZEngineLogger Logger { get; } = new ZEngineLogger();
+        
         public MenuContent MenuContent { get; }
 
         // Here we just say that the first state is the Intro
@@ -90,6 +92,7 @@ namespace Game
         public GameManager(FullSystemBundle gameBundle)
         {
             Engine = gameBundle;
+            Engine.Logger = Logger;
             Viewport = Engine.Dependencies.Game.GraphicsDevice.Viewport;
             MenuContent = new MenuContent(gameBundle.Dependencies.Game);
             gameConfig = new GameConfig();
@@ -156,7 +159,8 @@ namespace Game
                 {GameState.PlayDeathMatch, deathMatch},
                 {GameState.PlayExtinction, extinction},
                 {GameState.MultiplayerMenu, (ILifecycle) multiplayerMenu},
-                {GameState.CharacterMenu, (ILifecycle) characterMenu}
+                {GameState.CharacterMenu, (ILifecycle) characterMenu},
+                {GameState.GameOver, (ILifecycle) gameOver}
             };
 
             MenuNavigator.GameStateMenuMap = GameStateMenuMap;

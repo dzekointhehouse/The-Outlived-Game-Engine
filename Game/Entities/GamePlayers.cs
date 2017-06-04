@@ -20,7 +20,6 @@ using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
 using static Game.Menu.States.CharacterMenu;
-using Game = Microsoft.Xna.Framework.Game;
 
 namespace Game.Entities
 {
@@ -306,7 +305,7 @@ namespace Game.Entities
                     weaponComponent.Damage = 15;
                     weaponComponent.ClipSize = 64;
                     weaponComponent.WeaponType = WeaponComponent.WeaponTypes.Rifle;
-                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 8);
+                    playerEntity.SetAmmo(weaponComponent.ClipSize, weaponComponent.ClipSize * 80);
                     break;
                 case CharacterType.Ward:
                     weaponComponent.Damage = 75;

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Penumbra;
+using Spelkonstruktionsprojekt.ZEngine.Diagnostics;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
@@ -33,6 +34,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public GameDependencies Dependencies = GameDependencies.Instance;
 
+        public ZEngineLogger Logger { get; set; }
+        
         public void InitializeSystems(Game game)
         {
             Dependencies.GameContent = game.Content;
@@ -64,10 +67,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             //manager.Get<LoadContentSystem>().LoadContent(this.Dependencies.Game.Content);
             // Want to initialize penumbra after loading all the game content.
             penumbraComponent = manager.Get<FlashlightSystem>().LoadPenumbra(Dependencies);
-
         }
 
-        private const bool PROFILING = false;
+        private void Log(string label, long ticks)
+        {
+            Logger.LogSystemTicks("CoreSystems", label, ticks);
+        }
+        
+        private const bool PROFILING = true;
         public async void Update(GameTime gameTime)
         {
             Stopwatch timer;
@@ -82,67 +89,67 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<GamePadMovementSystem>().WalkForwards(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("INPUT SYSTEMS" + timer.ElapsedTicks);
+                Log("Input systems", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<CollisionResolveSystem>().ResolveCollisions(ZEngineCollisionEventPresets.StandardCollisionEvents, gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("Collision RESOLVE SYSTEM" + timer.ElapsedTicks);
+                Log("CollisionResolveSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<EventZoneSystem>().Handle(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("EventZone" + timer.ElapsedTicks);
+                Log("EventZoneSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<CameraSceneSystem>().Update(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("INPUT SYSTEMS" + timer.ElapsedTicks);
+                Log("CameraSceneSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<MoveSystem>().Move(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("INPUT SYSTEMS" + timer.ElapsedTicks);
+                Log("MoveSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<AISystem>().Update(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("AI SYSTEM" + timer.ElapsedTicks);
+                Log("AISystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             await manager.Get<CollisionSystem>().DetectCollisions();
             if (PROFILING)
             {
-                Debug.WriteLine("Collision Systems" + timer.ElapsedTicks);
+                Log("CollisionSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<AnimationSystem>().UpdateAnimations(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("Animation System" + timer.ElapsedTicks);
+                Log("AnimationSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<SpriteAnimationSystem>().Update(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("SpriteAnimation" + timer.ElapsedTicks);
+                Log("SpriteAnimationSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<FlashlightSystem>().Update(gameTime, viewportDimensions);
             if (PROFILING)
             {
-                Debug.WriteLine("Flashlight System" + timer.ElapsedTicks);
+                Log("FlashlightSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<FlickeringLightSystem>().Update(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("Flickering Light" + timer.ElapsedTicks);
+                Log("FlickeringLight", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<HealthSystem>().Update(gameTime);
@@ -151,13 +158,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<ScoreSystem>().Update(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("MISC." + timer.ElapsedTicks);
+                Log("Misc.", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
             manager.Get<EntityRemovalSystem>().Update(gameTime);
             if (PROFILING)
             {
-                Debug.WriteLine("ENTITY REMOVAL" + timer.ElapsedTicks);
+                Log("EntityRemovalSystem", timer.ElapsedTicks);
                 timer = Stopwatch.StartNew();
             }
         }

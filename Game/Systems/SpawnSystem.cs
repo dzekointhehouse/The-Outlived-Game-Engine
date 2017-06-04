@@ -37,7 +37,7 @@ namespace Game.Systems
         public void HandleWaves(GameTime gameTime)
         {
             _timer.UpdateTimer(gameTime);
-            Debug.WriteLine(_timer.Seconds);
+//            Debug.WriteLine(_timer.Seconds);
 
             //World
             var worldComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(WorldComponent)).First();
