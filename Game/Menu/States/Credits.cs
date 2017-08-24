@@ -17,7 +17,6 @@ namespace Game.Menu.States
         private readonly GameManager gameManager;
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
-        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
         private Viewport viewport;
 
         public Credits(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
@@ -25,18 +24,18 @@ namespace Game.Menu.States
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
-            viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            this.viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
 //            controls = new ControlsConfig(gameManager);
         }
 
         // Draws a simple background which contains
         // the credits. Woohoo.
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            spriteBatch.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            sb.Begin();
+            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
             sb.Draw(gameManager.MenuContent.CreditsBackground, viewport.Bounds, Color.White);
-            spriteBatch.End();
+            sb.End();
         }
 
         // The backspace button is added which makes

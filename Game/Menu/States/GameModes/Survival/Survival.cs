@@ -22,7 +22,7 @@ namespace Game.Menu.States.GameModes
     {
         private GameConfig GameConfig { get; }
         private Viewport Viewport { get; }
-        private FullSystemBundle SystemsBundle { get; }
+        private FullSystemBundle EngineGameSystems;
         private MenuNavigator MenuNavigator { get; }
         private VirtualGamePad MenuController { get; }
 
@@ -45,16 +45,15 @@ namespace Game.Menu.States.GameModes
         {
             GameConfig = dependencies.GameConfig;
             Viewport = dependencies.Viewport;
-            SystemsBundle = dependencies.SystemsBundle;
             MenuNavigator = dependencies.MenuNavigator;
             MenuController = dependencies.VirtualInputs.PlayerOne();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            SystemsBundle.Draw(gameTime);
-            StartTimer.Draw(spriteBatch);
-            DrawHUDs(spriteBatch);
+            EngineGameSystems.Draw(gameTime);
+            StartTimer.Draw(sb);
+            DrawHUDs(sb);
         }
 
         private void DrawHUDs(SpriteBatch spriteBatch)
@@ -98,12 +97,13 @@ namespace Game.Menu.States.GameModes
             
             BackgroundMusic.PlayMusic();
             SpawnSystem.HandleWaves(gameTime);
-            SystemsBundle.Update(gameTime);
+            EngineGameSystems.Update(gameTime);
             ProbabilitySystem.Generate();
 
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
                 GameOver = true;
+
                 MenuNavigator.GoTo(GameManager.GameState.GameOver);
             }
         }
@@ -114,14 +114,16 @@ namespace Game.Menu.States.GameModes
 
         public void BeforeShow()
         {
+            EngineGameSystems = new FullSystemBundle();
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
             SurvivalInitializer = new SurvivalInitializer(GameViewports, GameConfig);
             StartTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
 
+            EngineGameSystems.Initialize(OutlivedGame.Instance(), OutlivedGame.Instance().Fonts["ZEone"]);
             SurvivalInitializer.InitializeEntities();
-            SystemsBundle.LoadContent();
+            EngineGameSystems.LoadContent();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
 
@@ -133,22 +135,13 @@ namespace Game.Menu.States.GameModes
 
         public void BeforeHide()
         {
-
             SoundSystem.Stop();
             WeaponSystem.Stop();
             GameConfig.Reset();
-            SystemsBundle.ClearCaches();
-
-            //if (!GameOver)
-            //{
-                ComponentManager.Instance.Clear();
-            //}
-
-            //if (HealthSystem.CheckIfAllPlayersAreDead())
-            //{
-                BackgroundMusic.ClearList();
-                MediaPlayer.Stop();
-           // }
+            EngineGameSystems.ClearCaches();
+            ComponentManager.Instance.Clear();
+            BackgroundMusic.ClearList();
+            MediaPlayer.Stop();
         }
     }
 }

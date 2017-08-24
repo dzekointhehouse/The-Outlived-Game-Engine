@@ -24,7 +24,7 @@ namespace Game.Menu.States
         private Microsoft.Xna.Framework.Game game;
         private GameManager gameManager;
         private Viewport viewport;
-        private SpriteBatch spriteBatch = GameDependencies.Instance.SpriteBatch;
+        //private SpriteBatch sb;
         private SidewaysBackground fogBackground;
         private SidewaysBackground mainBackground;
 
@@ -50,8 +50,11 @@ namespace Game.Menu.States
             MenuNavigator = menuNavigator;
             MenuPosition = new GenericButtonNavigator<OptionsState>(Options);
             this.gameManager = gameManager;
-            game = this.gameManager.Engine.Dependencies.Game;
-            viewport = game.GraphicsDevice.Viewport;
+
+            game = gameManager.game;
+           // sb = gameManager.spriteBatch;
+            viewport = gameManager.viewport;
+
             mainBackground = new SidewaysBackground(gameManager.MenuContent.Background, new Vector2(10, 10), 1.5f);
             fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
         }
@@ -60,47 +63,47 @@ namespace Game.Menu.States
 
         // This method displays all the options
         // in an ordered fashion.
-        private void MainMenuDisplay()
+        private void MainMenuDisplay(SpriteBatch sb)
         {
             string textCredits = "CREDITS";
             string textContinue = "PLAY IF YOU DARE";
             string textAbout = "WHAT HAPPENED?";
             string textExit = "TAKE THE EASY WAY OUT";
 
-            spriteBatch.Draw(gameManager.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
-            fogBackground.Draw(spriteBatch);
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
+            sb.Draw(gameManager.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
+            fogBackground.Draw(sb);
+            sb.DrawString(gameManager.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
+            sb.DrawString(gameManager.MenuContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
 
             switch (MenuPosition.CurrentPosition)
             {
                 case Continue:
-                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.42f), Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.42f), Color.White);
                     break;
                 case About:
-                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.52f), Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.52f), Color.White);
                     break;
                 case OptionsState.Credits:
-                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.62f), Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.62f), Color.White);
                     break;
                 case Exit:
-                    spriteBatch.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.72f), Color.White);
+                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.72f), Color.White);
                     break;
 
             }
         }
 
         // Draws
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            spriteBatch.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0f);
-            mainBackground.Draw(spriteBatch);
+            sb.Begin();
+            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0f);
+            mainBackground.Draw(sb);
             
-            MainMenuDisplay();
-            spriteBatch.End();
+            MainMenuDisplay(sb);
+            sb.End();
         }
 
         // Updates. When the players clicks continue we go to

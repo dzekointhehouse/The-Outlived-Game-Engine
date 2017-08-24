@@ -24,9 +24,7 @@ namespace Game.Menu.States
 
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
-
         private readonly GameManager gameManager;
-        private SpriteBatch spriteBatch = GameDependencies.Instance.SpriteBatch;
 
         // enum so we can keep track on which option
         // we currently are at.
@@ -49,7 +47,7 @@ namespace Game.Menu.States
         {
             MenuNavigator = menuNavigator;
             this.gameManager = gameManager;
-            game = this.gameManager.Engine.Dependencies.Game;
+            game = OutlivedGame.Instance();
             VirtualInputCollection = virtualInputCollection;
             var playerOneChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
             var playerTwoChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
@@ -75,22 +73,22 @@ namespace Game.Menu.States
 
         // Draws the character names and the button at the option that
         // is the current option that we are positioned at.
-        private void DisplayPlayerChoice(TeamState playerChoice, float heightPercentage)
+        private void DisplayPlayerChoice(TeamState playerChoice, float heightPercentage, SpriteBatch sb)
         {
             var viewport = game.GraphicsDevice.Viewport;
-            spriteBatch.Draw(gameManager.MenuContent.TeamOptions, viewport.Bounds, Color.White);
+            sb.Draw(gameManager.MenuContent.TeamOptions, viewport.Bounds, Color.White);
             switch (playerChoice)
             {
                 case NoTeam:
-                    spriteBatch.Draw(gameManager.MenuContent.GamePadIcon,
+                    sb.Draw(gameManager.MenuContent.GamePadIcon,
                         new Vector2((float) (viewport.Width * 0.4), viewport.Height * heightPercentage), Color.White);
                     break;
                 case TeamOne:
-                    spriteBatch.Draw(gameManager.MenuContent.GamePadIconHighlight,
+                    sb.Draw(gameManager.MenuContent.GamePadIconHighlight,
                         new Vector2((float) (viewport.Width * 0.2), viewport.Height * heightPercentage), Color.White);
                     break;
                 case TeamTwo:
-                    spriteBatch.Draw(gameManager.MenuContent.GamePadIconHighlight,
+                    sb.Draw(gameManager.MenuContent.GamePadIconHighlight,
                         new Vector2((float) (viewport.Width * 0.6), viewport.Height * heightPercentage), Color.White);
                     break;
             }
@@ -99,19 +97,19 @@ namespace Game.Menu.States
         // Here is all the drawing called for this
         // class, so if some drawing isn't in here
         // then it won't be drawn.
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            spriteBatch.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            sb.Begin();
+            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
 
             var heightPercentage = 0.2f;
             foreach (var playerChoice in PlayerChoices)
             {
-                DisplayPlayerChoice(playerChoice.CurrentPosition, heightPercentage);
+                DisplayPlayerChoice(playerChoice.CurrentPosition, heightPercentage, sb);
                 heightPercentage += 0.2f;
             }
 
-            spriteBatch.End();
+            sb.End();
         }
 
         // The update method for this class

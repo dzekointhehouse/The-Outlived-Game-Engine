@@ -147,10 +147,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetArtificialIntelligence(float followingDistance = 250)
+        public EntityBuilder SetArtificialIntelligence(float chasingDistance = 250)
         {
             var component = ComponentFactory.NewComponent<AIComponent>();
-            component.FollowDistance = followingDistance;
+            component.FollowDistance = chasingDistance;
             components.Add(component);
             return this;
         }
@@ -227,11 +227,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         }
 
         public EntityBuilder SetSound(string soundName = null,
-            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = null, float volume = 1)
+            Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = null, float volume = 1, SoundEffect soundEffect = null)
         {
             var component = ComponentFactory.NewComponent<SoundComponent>();
             component.SoundList = soundList;
             component.SoundEffectName = soundName;
+            component.SoundEffect = soundEffect;
             component.Volume = volume;
             components.Add(component);
             return this;

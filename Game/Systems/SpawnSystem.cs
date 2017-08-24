@@ -220,7 +220,7 @@ namespace Game.Systems
         {
             var entity = new EntityBuilder()
                 .SetSound("pickup")
-                .SetPosition(new Vector2(40, 40), 100)
+                .SetPosition(new Vector2(_random.Next(0,3000), _random.Next(0, 3000)), 100)
                 .SetRendering(40, 40)
                 .SetLight(new PointLight())
                 .SetRectangleCollision()

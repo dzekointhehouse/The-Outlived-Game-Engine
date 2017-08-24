@@ -32,6 +32,8 @@ namespace Game.Systems
             EventBus.Subscribe<uint>(EventConstants.EmptyMagSound, PlayEmptyMagSound);
             EventBus.Subscribe<uint>(EventConstants.ReloadWeaponSound, ReloadSound);
             EventBus.Subscribe<uint>(EventConstants.Death, playDeathSound);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.AmmoPickup, PickupSounds);
+            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.HealthPickup, PickupSounds);
             EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.PickupCollision, PickupSounds);
             return this;
         }

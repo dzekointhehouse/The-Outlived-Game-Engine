@@ -23,18 +23,17 @@ namespace Game.Menu.States
         public PlayerVirtualInputCollection VirtualInputs { get; }
         private readonly GameManager gameManager;
         private Viewport viewport;
-        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
         public PausedMenu(GameManager gameManager, MenuNavigator menuNavigator, PlayerVirtualInputCollection VirtualInputs)
         {
             MenuNavigator = menuNavigator;
             this.VirtualInputs = VirtualInputs;
             this.gameManager = gameManager;
-            viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
         }
 
         // drawing the menu background.
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
             sb.Draw(gameManager.MenuContent.PauseBackground, viewport.Bounds, Color.White);

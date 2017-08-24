@@ -26,6 +26,7 @@ namespace Game.Entities
             var healthSpriteComponent = ComponentManager.Instance.ComponentFactory.NewComponent<FlyweightPickupComponent>();
             var soundComponent = ComponentManager.Instance.ComponentFactory.NewComponent<SoundComponent>();
             soundComponent.SoundEffectName = "pickup";
+
             ComponentManager.Instance.AddComponentToEntity(soundComponent, entity);
             ComponentManager.Instance.AddComponentToEntity(HealthpickupSprite, entity);
             ComponentManager.Instance.AddComponentToEntity(healthSpriteComponent, entity);

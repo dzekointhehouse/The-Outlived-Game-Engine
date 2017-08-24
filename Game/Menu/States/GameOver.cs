@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using System.Linq;
+using System.Threading.Tasks;
 using ZEngine.Wrappers;
 using Game.Services;
 using Microsoft.Xna.Framework.Audio;
@@ -19,7 +20,7 @@ namespace Game.Menu.States
         public MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
         private GameManager gameManager;
-        private GraphicsDevice graphicsDevice = GameDependencies.Instance.GraphicsDeviceManager.GraphicsDevice;
+        private GraphicsDevice graphicsDevice = OutlivedGame.Instance().GraphicsDevice;
         public bool WasNotPlayed { get; set; } = true;
 
         public GameOver(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
@@ -29,13 +30,13 @@ namespace Game.Menu.States
             this.gameManager = gameManager;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             graphicsDevice.Clear(Color.Black);
 
-            //spriteBatch.Begin();
-            //spriteBatch.Draw(gameManager.MenuContent.GameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
-            //spriteBatch.End();
+            //sb.Begin();
+            //sb.Draw(gameManager.MenuContent.GameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
+            //sb.End();
 
             //var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
             //if (GameScoreList.Count <= 0) return;
@@ -44,24 +45,24 @@ namespace Game.Menu.States
             //string yourScore = "Total score: " + GameScore.TotalGameScore;
             //string exit = "(Press ESCAPE to exit)";
 
-            //spriteBatch.Begin();
-            //spriteBatch.DrawString(gameManager.MenuContent.MenuFont, yourScore, new Vector2(50, 100), Color.Red);
-            //spriteBatch.DrawString(gameManager.MenuContent.MenuFont, exit, new Vector2(50, 200), Color.Red);
-            //spriteBatch.End();
+            //sb.Begin();
+            //sb.DrawString(gameManager.MenuContent.MenuFont, yourScore, new Vector2(50, 100), Color.Red);
+            //sb.DrawString(gameManager.MenuContent.MenuFont, exit, new Vector2(50, 200), Color.Red);
+            //sb.End();
 
-            spriteBatch.Begin();
+            sb.Begin();
 
-            //ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
-            spriteBatch.Draw(gameManager.MenuContent.GameOver, new Rectangle(0, 0, 1900, 1100), Color.White);
-            spriteBatch.End();
+            //ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
+            sb.Draw(gameManager.MenuContent.GameOver, new Rectangle(0, 0, 1900, 1100), Color.White);
+            sb.End();
 
             string totalScoreText = "Total score: ";
             string exitText = "(ESC -> main menu)";
 
-            spriteBatch.Begin();
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, totalScoreText, new Vector2(50, 40), Color.Red);
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, exitText, new Vector2(30, 90), Color.Red);
-            spriteBatch.End();
+            sb.Begin();
+            sb.DrawString(gameManager.MenuContent.MenuFont, totalScoreText, new Vector2(50, 40), Color.Red);
+            sb.DrawString(gameManager.MenuContent.MenuFont, exitText, new Vector2(30, 90), Color.Red);
+            sb.End();
 
             var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
             if (GameScoreList.Count <= 0) return;
@@ -69,9 +70,9 @@ namespace Game.Menu.States
 
             string totalScore = GameScore.TotalGameScore.ToString();
 
-            spriteBatch.Begin();
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, totalScore, new Vector2(380, 40), Color.Red);
-            spriteBatch.End();
+            sb.Begin();
+            sb.DrawString(gameManager.MenuContent.MenuFont, totalScore, new Vector2(380, 40), Color.Red);
+            sb.End();
 
 
             var HighScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HighScoreComponent));
@@ -81,9 +82,9 @@ namespace Game.Menu.States
             string[] score = HighScore.score;
             string record = "Record: " + score[0];
 
-            spriteBatch.Begin();
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, record, new Vector2(50, 200), Color.Red);
-            spriteBatch.End();
+            sb.Begin();
+            sb.DrawString(gameManager.MenuContent.MenuFont, record, new Vector2(50, 200), Color.Red);
+            sb.End();
 
 
         }
@@ -115,8 +116,7 @@ namespace Game.Menu.States
 
         public void BeforeHide()
         {
-            GameManager.Logger.PrintAverages();
-            ComponentManager.Instance.Clear();
+         //   GameManager.Logger.PrintAverages();
         }
     }
 }

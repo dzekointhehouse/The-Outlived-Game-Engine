@@ -25,46 +25,52 @@ namespace ZEngine.Managers
         // We immediately put instances of systems in this
         // dictionary, now they can easily be accessed with it's
         // type used as the key.
-        private readonly Dictionary<Type, ISystem> _systems = new Dictionary<Type, ISystem>
-        {
-            { typeof(RenderSystem), new RenderSystem() },
-            { typeof(LoadContentSystem), new LoadContentSystem() },
-            { typeof(InputHandler), new InputHandler() },
-            { typeof(MoveSystem), new MoveSystem() },
-            { typeof(TankMovementSystem), new TankMovementSystem() },
-            { typeof(RenderHUDSystem), new RenderHUDSystem()},
-            { typeof(FlashlightSystem), new FlashlightSystem()},
-            { typeof(CollisionSystem), new CollisionSystem() },
-            { typeof(CollisionResolveSystem), new CollisionResolveSystem() },
-            { typeof(WallCollisionSystem), new WallCollisionSystem() },
-            { typeof(EnemyCollisionSystem), new EnemyCollisionSystem() },
-            { typeof(CameraSceneSystem), new CameraSceneSystem() },
-            { typeof(AISystem), new AISystem() },
-            { typeof(AnimationSystem), new AnimationSystem() },
-            { typeof(BulletCollisionSystem), new BulletCollisionSystem() },
-            { typeof(HealthSystem), new HealthSystem() },
-            { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
-            { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
-            { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
-            { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
-            { typeof(LightAbilitySystem), new LightAbilitySystem() },
-            { typeof(PickupCollisionSystem), new PickupCollisionSystem() },
-            { typeof(SprintAbilitySystem), new SprintAbilitySystem() },
-            { typeof(QuickTurnAbilitySystem), new QuickTurnAbilitySystem() },
-            { typeof(GamePadMovementSystem), new GamePadMovementSystem() },
-            { typeof(ReloadSystem), new ReloadSystem() },
-            { typeof(ScoreSystem), new ScoreSystem() },
-            { typeof(HighScoreSystem), new HighScoreSystem() },
-            { typeof(AiWallCollisionSystem), new AiWallCollisionSystem() },
-            { typeof(FlickeringLightSystem), new FlickeringLightSystem() },
-            { typeof(KillSwitchEventFactory), new KillSwitchEventFactory() },
-            { typeof(KillSwitchSystem), new KillSwitchSystem() },
-            { typeof(PickupSpawnSystem), new PickupSpawnSystem() },
-            { typeof(TextSystem), new TextSystem() },
-            { typeof(EventZoneSystem), new EventZoneSystem() }
-        };
+        private Dictionary<Type, ISystem> _systems;
 
         // _____________________________________________________________________________________________________________________ //
+
+
+        public void InstantiateAllSystems()
+        {     
+            _systems = new Dictionary<Type, ISystem>
+            {
+                { typeof(RenderSystem), new RenderSystem() },
+                { typeof(LoadContentSystem), new LoadContentSystem() },
+                { typeof(InputHandler), new InputHandler() },
+                { typeof(MoveSystem), new MoveSystem() },
+                { typeof(TankMovementSystem), new TankMovementSystem() },
+                { typeof(RenderHUDSystem), new RenderHUDSystem()},
+                { typeof(FlashlightSystem), new FlashlightSystem()},
+                { typeof(CollisionSystem), new CollisionSystem() },
+                { typeof(CollisionResolveSystem), new CollisionResolveSystem() },
+                { typeof(WallCollisionSystem), new WallCollisionSystem() },
+                { typeof(EnemyCollisionSystem), new EnemyCollisionSystem() },
+                { typeof(CameraSceneSystem), new CameraSceneSystem() },
+                { typeof(AISystem), new AISystem() },
+                { typeof(AnimationSystem), new AnimationSystem() },
+                { typeof(BulletCollisionSystem), new BulletCollisionSystem() },
+                { typeof(HealthSystem), new HealthSystem() },
+                { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
+                { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
+                { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
+                { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
+                { typeof(LightAbilitySystem), new LightAbilitySystem() },
+                { typeof(PickupCollisionSystem), new PickupCollisionSystem() },
+                { typeof(SprintAbilitySystem), new SprintAbilitySystem() },
+                { typeof(QuickTurnAbilitySystem), new QuickTurnAbilitySystem() },
+                { typeof(GamePadMovementSystem), new GamePadMovementSystem() },
+                { typeof(ReloadSystem), new ReloadSystem() },
+                { typeof(ScoreSystem), new ScoreSystem() },
+                { typeof(HighScoreSystem), new HighScoreSystem() },
+                { typeof(AiWallCollisionSystem), new AiWallCollisionSystem() },
+                { typeof(FlickeringLightSystem), new FlickeringLightSystem() },
+                { typeof(KillSwitchEventFactory), new KillSwitchEventFactory() },
+                { typeof(KillSwitchSystem), new KillSwitchSystem() },
+                { typeof(PickupSpawnSystem), new PickupSpawnSystem() },
+                { typeof(TextSystem), new TextSystem() },
+                { typeof(EventZoneSystem), new EventZoneSystem() }
+            };
+        }
 
         // Gets the instance of system that is specified
         // as a type parameter. The method checks by using ContainsSystem

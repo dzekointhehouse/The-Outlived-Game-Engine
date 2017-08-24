@@ -42,11 +42,10 @@ namespace Game
         public VirtualGamePad Controller { get; set; }
         public MenuNavigator MenuNavigator { get; set; }
 
-        protected internal FullSystemBundle Engine;
-        protected internal Viewport Viewport;
-
-        protected internal SpriteBatch spriteBatch = GameDependencies.Instance.SpriteBatch;
-
+        //protected internal FullSystemBundle Engine;
+        protected internal Viewport viewport;
+        protected internal SpriteBatch spriteBatch;
+        protected internal Microsoft.Xna.Framework.Game game;
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
 
@@ -89,12 +88,16 @@ namespace Game
             CurrentGameState = state;
         }
 
-        public GameManager(FullSystemBundle gameBundle)
+        public GameManager()
         {
-            Engine = gameBundle;
-            Engine.Logger = Logger;
-            Viewport = Engine.Dependencies.Game.GraphicsDevice.Viewport;
-            MenuContent = new MenuContent(gameBundle.Dependencies.Game);
+       //     Engine = OutlivedGame.Instance();
+       //     Engine.Logger = Logger;
+
+            spriteBatch = OutlivedGame.Instance().spriteBatch;
+            game = OutlivedGame.Instance();
+            viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
+
+            MenuContent = new MenuContent(game);
             gameConfig = new GameConfig();
 
             virtualInputCollection = new PlayerVirtualInputCollection(new[]
@@ -111,8 +114,8 @@ namespace Game
             {
                 GameConfig = gameConfig,
                 MenuNavigator = MenuNavigator,
-                SystemsBundle = Engine,
-                Viewport = Viewport,
+               // GameSystems = Engine,
+                Viewport = viewport,
                 VirtualInputs = virtualInputCollection
             };
             
@@ -164,7 +167,7 @@ namespace Game
             };
 
             MenuNavigator.GameStateMenuMap = GameStateMenuMap;
-            MenuNavigator.LifecycleStates = lifecycleStates;
+            MenuNavigator.MenuStates = lifecycleStates;
         }
 
         // Draw method consists of a switch case with all
@@ -174,12 +177,12 @@ namespace Game
         {
             if (CurrentGameState == GameState.Paused)
             {
-                Engine.Dependencies.Game.GraphicsDevice.Viewport = Viewport;
+                OutlivedGame.Instance().GraphicsDevice.Viewport = viewport;
             }
 
             if (CurrentGameState == GameState.Quit)
             {
-                Engine.Dependencies.Game.Exit();
+                OutlivedGame.Instance().Exit();
             }
             else if (GameStateMenuMap.ContainsKey(CurrentGameState))
             {
@@ -198,12 +201,12 @@ namespace Game
 
             if (CurrentGameState == GameState.Paused)
             {
-                Engine.Dependencies.Game.GraphicsDevice.Viewport = Viewport;
+                OutlivedGame.Instance().GraphicsDevice.Viewport = viewport;
             }
 
             if (CurrentGameState == GameState.Quit)
             {
-                Engine.Dependencies.Game.Exit();
+                OutlivedGame.Instance().Exit();
             }
             else if (GameStateMenuMap.ContainsKey(CurrentGameState))
             {

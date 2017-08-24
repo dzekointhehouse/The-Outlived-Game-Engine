@@ -8,10 +8,10 @@ namespace Game.Services
 {
     public class MenuNavigator
     {
-        public Dictionary<GameState, ILifecycle> LifecycleStates { get; set; }
+        public Dictionary<GameState, ILifecycle> MenuStates { get; set; }
         public Dictionary<GameState, IMenu> GameStateMenuMap { get; set; }
         private GameManager GameManager { get; }
-        private Stack<GameState> History { get; } = new Stack<GameState>();
+        private Stack<GameState> OldStates { get; } = new Stack<GameState>(10);
 
         public MenuNavigator(GameManager gameManager)
         {
@@ -20,22 +20,23 @@ namespace Game.Services
         
         public void GoBack()
         {
-            GameManager.CurrentGameState = History.Pop();
+            GameManager.MenuContent.ClickSound.Play();
+            GameManager.CurrentGameState = OldStates.Pop();
         }
 
         public void GoTo(GameState newState)
         {
             var currentGameState = GameManager.CurrentGameState;
-            if (LifecycleStates.ContainsKey(currentGameState))
+            if (MenuStates.ContainsKey(currentGameState))
             {
-                LifecycleStates[currentGameState].BeforeHide();
+                MenuStates[currentGameState].BeforeHide();
             }
-            if (LifecycleStates.ContainsKey(newState))
+            if (MenuStates.ContainsKey(newState))
             {
-                LifecycleStates[newState].BeforeShow();
+                MenuStates[newState].BeforeShow();
             }
 
-            History.Push(currentGameState);
+            OldStates.Push(currentGameState);
             GameManager.SetCurrentState(newState);
         }
 
@@ -43,13 +44,14 @@ namespace Game.Services
         {
             if (GameManager.CurrentGameState == GameState.Paused)
             {
-                GameManager.SetCurrentState(History.Pop());
+                GameManager.SetCurrentState(OldStates.Pop());
             }
             else
             {
-                History.Push(GameManager.CurrentGameState);
+                OldStates.Push(GameManager.CurrentGameState);
                 GameManager.SetCurrentState(GameState.Paused);
             }
         }
+
     }
 }

@@ -29,7 +29,7 @@ namespace ZEngine.Systems
 
         public static string SystemName = "Render";
         private ComponentManager ComponentManager = ComponentManager.Instance;
-        private GraphicsDevice graphicsDevice;
+        //private GraphicsDevice graphicsDevice;
 
         private RenderComponent renderComponent;
 
@@ -79,29 +79,30 @@ namespace ZEngine.Systems
         // Render just gets the graphicsdevice and the spritebatch
         // so we can render the entities that are drawn in RenderEntities
         // method.
-        public void Render(GameDependencies gameDependencies, GameTime gameTime)
+        public void Render(SpriteBatch sb, GameTime gameTime)
         {
-            graphicsDevice = gameDependencies.GraphicsDeviceManager.GraphicsDevice;
-            graphicsDevice.Clear(Color.Black); // Maybe done outside
+
+            sb.GraphicsDevice.Clear(Color.Black); // Maybe done outside
           //  var timer = Stopwatch.StartNew();
+
             var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
             foreach (var cameraComponent in cameraComponents)
             {
                 var camera = cameraComponent.Value as CameraViewComponent;
-                graphicsDevice.Viewport = camera.View;
+                sb.GraphicsDevice.Viewport = camera.View;
 
                // penumbra.GraphicsDevice.Viewport = camera.View;
                 //penumbra.Transform = camera.Transform;
                 //gameDependencies.GraphicsDeviceManager.ApplyChanges();
                 //penumbra.BeginDraw();
 
-                gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null,
+                sb.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null,
                     camera.Transform);
                 //var border = GameDependencies.Instance.Game.Content.Load<Texture2D>("border");
                 //gameDependencies.SpriteBatch.Draw(border, Vector2.Zero, Color.White);
-                DrawEntities(gameDependencies.SpriteBatch);
-                gameDependencies.SpriteBatch.End();
+                DrawEntities(sb);
+                sb.End();
 
                // penumbra.Draw(gameTime);
 

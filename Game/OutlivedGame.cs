@@ -34,7 +34,8 @@ namespace Game
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
         private Vector2 viewportDimensions = new Vector2(1920, 1080); // HD baby!
         public SpriteBatch spriteBatch;
-        private readonly FullSystemBundle gameBundle;
+        // private readonly FullSystemBundle gameBundle;
+        public GraphicsDeviceManager graphicsDeviceManager;
         private GameManager _gameManager;
         private static OutlivedGame _outlived;
         
@@ -43,16 +44,17 @@ namespace Game
         public OutlivedGame()
         {
             _outlived = this;
-            gameBundle = new FullSystemBundle();
+           // gameBundle = new FullSystemBundle();
 
-            gameBundle.Dependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            graphicsDeviceManager = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = (int)viewportDimensions.X,
                 PreferredBackBufferHeight = (int)viewportDimensions.Y,
                 GraphicsProfile = GraphicsProfile.HiDef
 
             };
-            gameBundle.Dependencies.GraphicsDeviceManager.IsFullScreen = true;
+            graphicsDeviceManager.IsFullScreen = false;
+
             Content.RootDirectory = "Content";
         }
 
@@ -61,8 +63,9 @@ namespace Game
         protected override void Initialize()
         {
             //Init systems that require initialization
-            gameBundle.InitializeSystems(this);
-            _gameManager = new GameManager(gameBundle);
+            //gameBundle.Initialize(this);
+            spriteBatch = new SpriteBatch(this.GraphicsDevice);
+            _gameManager = new GameManager();
             
             //TODO move and make use of method LoadContent in this class
             Fonts["ZEone"] = Content.Load<SpriteFont>("ZEOne");

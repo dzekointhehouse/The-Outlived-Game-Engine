@@ -31,21 +31,22 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         private KeyboardState _oldKeyboardState = Keyboard.GetState();
         private Vector2 viewportDimensions = new Vector2(1800, 1300);
         private PenumbraComponent penumbraComponent;
-
-        public GameDependencies Dependencies = GameDependencies.Instance;
+        private Game game;
+        private SpriteBatch sb;
 
         public ZEngineLogger Logger { get; set; }
         
-        public void InitializeSystems(Game game)
+        public void Initialize(Game game, SpriteFont font)
         {
-            Dependencies.GameContent = game.Content;
-            Dependencies.SpriteBatch = new SpriteBatch(game.GraphicsDevice);
-            Dependencies.Game = game;
+            sb = new SpriteBatch(game.GraphicsDevice);
+
+            this.game = game;
+            manager.InstantiateAllSystems();
 
             //Init systems that require initialization
             manager.Get<TankMovementSystem>().Start();
-            manager.Get<WallCollisionSystem>().Start();
-            manager.Get<EnemyCollisionSystem>().Start();
+           // manager.Get<WallCollisionSystem>().Start();
+           // manager.Get<EnemyCollisionSystem>().Start();
             manager.Get<BulletCollisionSystem>().Start();
             manager.Get<LightAbilitySystem>().Start();
             manager.Get<SpriteAnimationSystem>().Start();
@@ -55,18 +56,18 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             manager.Get<PickupCollisionSystem>().Start();
             manager.Get<ReloadSystem>().Start();
             manager.Get<EntityRemovalSystem>().Start();
-//            manager.Get<PickupSpawnSystem>().Start();
+            manager.Get<PickupSpawnSystem>().Start();
             manager.Get<KillSwitchSystem>().Start();
             manager.Get<KillSwitchEventFactory>().Start();
-            manager.Get<AiWallCollisionSystem>().Start();
-            manager.Get<RenderHUDSystem>().Start();
+           // manager.Get<AiWallCollisionSystem>().Start();
+            manager.Get<RenderHUDSystem>().Start(font);
         }
 
         public void LoadContent()
         {
             //manager.Get<LoadContentSystem>().LoadContent(this.Dependencies.Game.Content);
             // Want to initialize penumbra after loading all the game content.
-            penumbraComponent = manager.Get<FlashlightSystem>().LoadPenumbra(Dependencies);
+            penumbraComponent = manager.Get<FlashlightSystem>().LoadPenumbra(game);
         }
 
         private void Log(string label, long ticks)
@@ -74,7 +75,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             Logger.LogSystemTicks("CoreSystems", label, ticks);
         }
         
-        private const bool PROFILING = true;
+        private const bool PROFILING = false;
         public async void Update(GameTime gameTime)
         {
             Stopwatch timer;
@@ -172,16 +173,16 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         public void Draw(GameTime gameTime)
         {
             manager.Get<FlashlightSystem>().BeginDraw(penumbraComponent);
-            manager.Get<RenderSystem>().Render(Dependencies, gameTime); // lowers FPS by half (2000)
+            manager.Get<RenderSystem>().Render(sb, gameTime); // lowers FPS by half (2000)
             manager.Get<FlashlightSystem>().EndDraw(penumbraComponent, gameTime);
-            manager.Get<TextSystem>().Draw(Dependencies.SpriteBatch);
-            manager.Get<RenderHUDSystem>().Draw(Dependencies); // not noticable
+            manager.Get<TextSystem>().Draw(sb);
+            manager.Get<RenderHUDSystem>().Draw(sb); // not noticable
         }
 
         public void ClearCaches()
         {
             manager.Get<RenderSystem>().ClearCache();
-            manager.Get<CollisionSystem>().ClearCache();
+            //manager.Get<CollisionSystem>().ClearCache();
         }
     }
 }

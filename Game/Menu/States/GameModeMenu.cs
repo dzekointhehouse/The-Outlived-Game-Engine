@@ -14,7 +14,7 @@ namespace Game.Menu.States
     public class GameModeMenu : IMenu
     {
         private SidewaysBackground fogBackground;
-        private readonly Microsoft.Xna.Framework.Game game;
+        private Viewport viewport;
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
         private GenericButtonNavigator<GameModes> MenuPosition;
@@ -40,15 +40,13 @@ namespace Game.Menu.States
             VirtualGamePad = virtualGamePad;
             MenuPosition = new GenericButtonNavigator<GameModes>(MenuElements);
             this.gameManager = gameManager;
-            game = this.gameManager.Engine.Dependencies.Game;
+            this.viewport = gameManager.viewport;
             fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
         }
 
-        private void MainMenuDisplay()
+        private void MainMenuDisplay(SpriteBatch sb)
         {
-            SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
-
-            var viewport = game.GraphicsDevice.Viewport;
+            
 
             switch (MenuPosition.CurrentPosition)
             {
@@ -56,6 +54,7 @@ namespace Game.Menu.States
                     sb.Draw(gameManager.MenuContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
                     break;
                 case Extinction:
+
                     sb.Draw(gameManager.MenuContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
                     break;
                 case Blockworld:
@@ -65,18 +64,18 @@ namespace Game.Menu.States
 
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            spriteBatch.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
-            fogBackground.Draw(spriteBatch);
-            MainMenuDisplay();
-            spriteBatch.End();
+            sb.Begin();
+            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
+            fogBackground.Draw(sb);
+            MainMenuDisplay(sb);
+            sb.End();
         }
 
         public void Update(GameTime gameTime)
         {
-            fogBackground.Update(gameTime, new Vector2(1, 0), gameManager.Viewport);
+            fogBackground.Update(gameTime, new Vector2(1, 0), gameManager.viewport);
             if (VirtualGamePad.Is(Cancel, Pressed))
             {
                 MenuNavigator.GoBack();

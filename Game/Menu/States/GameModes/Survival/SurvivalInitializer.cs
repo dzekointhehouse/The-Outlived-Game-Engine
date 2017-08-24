@@ -69,7 +69,6 @@ namespace Game.Menu.States.GameModes
             CreateGlobalBulletSpriteEntity();
             SetupGameScoreEntity();
             SetupHighScoreEntity();
-            // SetupTempPlayerDeadSpriteFlyweight();
         }
 
         private void SetupGameScoreEntity()
@@ -145,6 +144,7 @@ namespace Game.Menu.States.GameModes
             var spawnSpriteSprite = ComponentFactory.NewComponent<SpriteComponent>();
             spawnSpriteSprite.SpriteName = "zombie1";
             var SpawnSpriteComponent = ComponentFactory.NewComponent<SpawnFlyweightComponent>();
+
             ComponentManager.Instance.AddComponentToEntity(spawnSpriteSprite, spawnSprite);
             ComponentManager.Instance.AddComponentToEntity(SpawnSpriteComponent, spawnSprite);
         }

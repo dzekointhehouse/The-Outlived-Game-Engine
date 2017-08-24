@@ -52,11 +52,11 @@ namespace Game.Menu.States.GameModes.Extinction
             MenuController = dependencies.VirtualInputs.PlayerOne();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             SystemsBundle.Draw(gameTime);
-            StartTimer.Draw(spriteBatch);
-            DrawCameras(spriteBatch);
+            StartTimer.Draw(sb);
+            DrawCameras(sb);
         }
 
         private void DrawCameras(SpriteBatch spriteBatch)

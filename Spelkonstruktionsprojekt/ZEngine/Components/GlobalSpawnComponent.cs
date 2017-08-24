@@ -22,9 +22,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public IComponent Reset()
         {
-            WaveSize = 500;
+            WaveSize = 3;
             EnemiesDead = true;
-            WaveSizeIncreaseConstant = 10;
+            WaveSizeIncreaseConstant = 5;
             return this;
         }
     }

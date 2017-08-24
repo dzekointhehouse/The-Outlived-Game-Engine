@@ -35,13 +35,13 @@ namespace Game.Menu.States
 //        private int playerIndex = 0;
 
         private GameManager GameManager { get; }
-        
 
         private int CurrentPlayerIndex;
         private VirtualGamePad Player { get; set; }
         public PlayerVirtualInputCollection VirtualInputs { get; }
         public MenuNavigator MenuNavigator { get; set; }
         public GameConfig GameConfig { get; }
+        private Viewport viewport;
 
         // enum so we can keep track on which option
         // we currently are at.
@@ -67,36 +67,39 @@ namespace Game.Menu.States
             Player = VirtualInputs.PlayerOne();
             MenuNavigator = gameManager.MenuNavigator;
             GameConfig = gameManager.gameConfig;
-            
-            game = gameManager.Engine.Dependencies.Game;
+
+
+            viewport = GameManager.viewport;
+            //game = gameManager.game;
+            //sb = gameManager.spriteBatch;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            spriteBatch.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, GameManager.MenuContent, 0.0001f);
+            sb.Begin();
+            ScalingBackground.DrawBackgroundWithScaling(sb, GameManager.MenuContent, 0.0001f);
             
-            var viewport = game.GraphicsDevice.Viewport;
-            DrawCharacterNames(spriteBatch, viewport);
-            DrawSelectedOptionText(spriteBatch, viewport);
-            spriteBatch.End();
+            
+            DrawCharacterNames(sb, viewport);
+            DrawSelectedOptionText(sb, viewport);
+            sb.End();
         }
 
-        private void DrawCharacterNames(SpriteBatch spriteBatch, Viewport viewport)
+        private void DrawCharacterNames(SpriteBatch sb, Viewport viewport)
         {
             switch (CurrentSelectedCharacter)
             {
                 case Bob:
-                    spriteBatch.Draw(GameManager.MenuContent.HighlightFirst, viewport.Bounds, Color.White);
+                    sb.Draw(GameManager.MenuContent.HighlightFirst, viewport.Bounds, Color.White);
                     break;
                 case Edgar:
-                    spriteBatch.Draw(GameManager.MenuContent.HighlightSecond, viewport.Bounds, Color.White);
+                    sb.Draw(GameManager.MenuContent.HighlightSecond, viewport.Bounds, Color.White);
                     break;
                 case Ward:
-                    spriteBatch.Draw(GameManager.MenuContent.HighlightThird, viewport.Bounds, Color.White);
+                    sb.Draw(GameManager.MenuContent.HighlightThird, viewport.Bounds, Color.White);
                     break;
                 case Jimmy:
-                    spriteBatch.Draw(GameManager.MenuContent.HighlightFourth, viewport.Bounds, Color.White);
+                    sb.Draw(GameManager.MenuContent.HighlightFourth, viewport.Bounds, Color.White);
                     break;
             }
         }

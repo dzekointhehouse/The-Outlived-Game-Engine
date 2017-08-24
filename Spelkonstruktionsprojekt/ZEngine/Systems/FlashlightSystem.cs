@@ -25,9 +25,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         // This method is used to initialize the penumbra instance, and add
         // all the entities that have an associated instance of light component.
-        public PenumbraComponent LoadPenumbra(GameDependencies gameDependencies)
+        public PenumbraComponent LoadPenumbra(Game game)
         {
-            var penumbra = new PenumbraComponent(gameDependencies.Game)
+            var penumbra = new PenumbraComponent(game)
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.

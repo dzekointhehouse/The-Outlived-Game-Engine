@@ -24,47 +24,46 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
     class RenderHUDSystem : ISystem
     {
         public static string SystemName = "RenderHUDSystem";
-        private GameDependencies _gameDependencies;
         private EventBus EventBus = EventBus.Instance;
 
         private StringBuilder gameHUD = new StringBuilder(0, 50);
         private StringBuilder scoreGameHUD = new StringBuilder(0, 50);
         private StringBuilder ammoGameHUD = new StringBuilder(0, 50);
         private StringBuilder playerGameHUD = new StringBuilder(0, 50);
+        private SpriteFont spriteFont;
 
 
-        public void Start()
+        public void Start(SpriteFont spriteFont)
         {
             EventBus.Subscribe<uint>(EventConstants.PlayerDeath, UpdateTeamKills);
+            this.spriteFont = spriteFont;
         }
         // This draw method is used to start the system process.
         // it uses DrawTitlesafeStrings to draw the components.
-        public void Draw(GameDependencies gameDependencies)
+        public void Draw(SpriteBatch sb)
         {
-            this._gameDependencies = gameDependencies;
-            GraphicsDevice graphicsDevice = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
             var viewportComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(DefaultViewport)).First().Value as DefaultViewport;
 
-            graphicsDevice.Viewport = viewportComponent.Viewport;
+            sb.GraphicsDevice.Viewport = viewportComponent.Viewport;
 
-            _gameDependencies.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
-            DrawTitlesafeStrings();
-            DrawTitlesafeTextures();
-            _gameDependencies.SpriteBatch.End();
+            sb.Begin(SpriteSortMode.FrontToBack);
+            DrawTitlesafeStrings(sb);
+            DrawTitlesafeTextures(sb);
+            sb.End();
         }
 
 
         // DrwaTitleSafe gets all the components and draws them in a
         // correct format, so the data will sortet so that each entity will
         // have it's own row, and each component will be sorted by column.
-        private void DrawTitlesafeStrings()
+        private void DrawTitlesafeStrings(SpriteBatch sb)
         {
-            GraphicsDevice graphicsDevice = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
+            GraphicsDevice graphicsDevice = sb.GraphicsDevice;
             Rectangle titlesafearea = graphicsDevice.Viewport.TitleSafeArea;
 
             Dictionary<uint, IComponent> HUDComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderHUDComponent));
 
-            SpriteFont spriteFont = default(SpriteFont);
+            //SpriteFont spriteFont = default(SpriteFont);
             // We save the previous text height so we can stack
             // them (the text for every player) on top of eachother.
 
@@ -73,7 +72,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             float ammoSpacing = 0.33f;
             float playerSpacing = 0.33f;
 
-            ContentManager contentManager = _gameDependencies.GameContent as ContentManager;
+           // ContentManager contentManager = _gameDependencies.GameContent as ContentManager;
 
             foreach (var instance in HUDComponents)
             {
@@ -84,7 +83,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                 var HUD = instance.Value as RenderHUDComponent;
 
-                spriteFont = contentManager.Load<SpriteFont>(HUD.SpriteFont);
+               // spriteFont = contentManager.Load<SpriteFont>(HUD.SpriteFont);
                 Vector2 position = Vector2.Zero;
 
                 gameHUD.AppendLine();
@@ -132,7 +131,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             healthSpacing += 0.06f;
 
                             position = new Vector2(xPosition, yPosition);
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, gameHUD, position, HUD.Color);
+                            sb.DrawString(spriteFont, gameHUD, position, HUD.Color);
 
                         }
 
@@ -150,7 +149,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             Vector2 scorePosition = new Vector2(playerXPosition, playerYPosition);
 
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, playerGameHUD, scorePosition, HUD.Color);
+                            sb.DrawString(spriteFont, playerGameHUD, scorePosition, HUD.Color);
                         }
 
                         // adding score
@@ -168,7 +167,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             Vector2 scorePosition = new Vector2(scoreXPosition, scoreYPosition);
 
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, scoreGameHUD, scorePosition, HUD.Color);
+                            sb.DrawString(spriteFont, scoreGameHUD, scorePosition, HUD.Color);
                         }
 
                         // adding ammo here the same way.
@@ -200,7 +199,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                             Vector2 ammoPosition = new Vector2(ammoXPosition, ammoYPosition);
 
-                            _gameDependencies.SpriteBatch.DrawString(spriteFont, ammoGameHUD, ammoPosition, HUD.Color);
+                            sb.DrawString(spriteFont, ammoGameHUD, ammoPosition, HUD.Color);
 
                         }
                     }
@@ -212,7 +211,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                 {
                     var pos =
                         ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(instance.Key);
-                    _gameDependencies.SpriteBatch.DrawString(
+                    sb.DrawString(
                         spriteFont,
                         gameHUD,
                         new Vector2(titlesafearea.X + pos.Position.X, titlesafearea.Y + pos.Position.Y),
@@ -232,7 +231,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                 string scoreTextTeamOne = "Team 1: " + gamescore.KillsTeamOne;
 
-                _gameDependencies.SpriteBatch.DrawString(
+                sb.DrawString(
                     spriteFont,
                     scoreTextTeamOne,
                     new Vector2(titlesafearea.Width * 0.5f - (spriteFont.MeasureString(scoreTextTeamOne).X + 50),
@@ -241,7 +240,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
 
                 string scoreTextTeamTwo = "Team 2: " + gamescore.KillsTeamTwo;
 
-                _gameDependencies.SpriteBatch.DrawString(
+                sb.DrawString(
                     spriteFont,
                     scoreTextTeamTwo,
                     new Vector2(titlesafearea.Width * 0.5f + 50, titlesafearea.Y + 50),
@@ -249,10 +248,9 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
             }
         }
 
-        private void DrawTitlesafeTextures()
+        private void DrawTitlesafeTextures(SpriteBatch sb)
         {
-            GraphicsDevice graphics = _gameDependencies.GraphicsDeviceManager.GraphicsDevice;
-            Rectangle titlesafearea = graphics.Viewport.TitleSafeArea;
+            Rectangle titlesafearea = sb.GraphicsDevice.Viewport.TitleSafeArea;
 
             Dictionary<uint, IComponent> HUDComponents = ComponentManager.Instance.GetEntitiesWithComponent(typeof(RenderHUDComponent));
 
@@ -278,7 +276,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             (int)(sprite.Sprite.Height * sprite.Scale)
                         );
 
-                    _gameDependencies.SpriteBatch.Draw(
+                    sb.Draw(
                         texture: sprite.Sprite,
                         destinationRectangle: destinationRectangle,
                         sourceRectangle: null,

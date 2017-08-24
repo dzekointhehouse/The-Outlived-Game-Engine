@@ -23,21 +23,20 @@ namespace Game.Menu.States
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
         private Viewport viewport;
-        private SpriteBatch sb = GameDependencies.Instance.SpriteBatch;
 
         public AboutMenu(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
-            viewport = this.gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
         }
 
         // drawing the menu background.
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
+            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
             sb.Draw(gameManager.MenuContent.AboutBackground, viewport.Bounds, Color.White);
             sb.End();
         }

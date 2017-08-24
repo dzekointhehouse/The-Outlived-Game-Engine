@@ -79,7 +79,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _titleSafeHudSystem.Draw(gameDependencies);
+            _titleSafeHudSystem.Draw(spriteBatch);
            // lightSystems.BeginDraw(penumbraComponent);
 
 

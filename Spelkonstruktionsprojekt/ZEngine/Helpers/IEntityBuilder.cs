@@ -50,10 +50,10 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// This component is added if the entity is intended
         /// to behave as an AI.
         /// </summary>
-        /// <param name="followingDistance"> distance for when the AI will start follow players </param>
+        /// <param name="chasingDistance"> distance for when the AI will start follow players </param>
         /// <param name="isWandering"> if the AI is wandering or standing still </param>
         /// <returns></returns>
-        EntityBuilder SetArtificialIntelligence(float followingDistance = 250);
+        EntityBuilder SetArtificialIntelligence(float chasingDistance = 250);
 
         /// <summary>
         /// This call will add the collision component, this will make the entity
@@ -118,10 +118,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// An entity with this sound component is able to make different
         /// in-game sounds, eg. movement, death or other sounds.
         /// </summary>
+        /// <param name="soundName"></param>
         /// <param name="soundList"></param>
         /// <param name="volume"> playing volume </param>
+        /// <param name="soundEffect"></param>
         /// <returns></returns>
-        EntityBuilder SetSound(string soundName = null, Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = null, float volume = 1);
+        EntityBuilder SetSound(string soundName = null, Dictionary<SoundComponent.SoundBank, SoundEffectInstance> soundList = null, float volume = 1, SoundEffect soundEffect = null);
 
         /// <summary>
         /// Makes the entity visible on screen.

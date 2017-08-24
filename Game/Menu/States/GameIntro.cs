@@ -16,9 +16,7 @@ namespace Game.Menu.States
     {
         private GameManager gameManager;
 
-        // private SpriteBatch sb;
         private Viewport viewport;
-
         private readonly VideoPlayer videoPlayer;
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
@@ -26,7 +24,7 @@ namespace Game.Menu.States
         public GameIntro(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
             this.gameManager = gameManager;
-            viewport = gameManager.Engine.Dependencies.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
             videoPlayer = new VideoPlayer();
@@ -34,9 +32,9 @@ namespace Game.Menu.States
         }
 
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            spriteBatch.Begin();
+            sb.Begin();
             Texture2D videoTexture = null;
 
             if (videoPlayer.State != MediaState.Stopped)
@@ -44,13 +42,13 @@ namespace Game.Menu.States
 
             if (videoTexture != null)
             {
-                // spriteBatch.Begin();
+                // sb.Begin();
                 // use viewport
-                spriteBatch.Draw(videoTexture, new Rectangle(0, 0, 1920, 1080), Color.White);
-                //spriteBatch.End();
+                sb.Draw(videoTexture, new Rectangle(0, 0, 1920, 1080), Color.White);
+                //sb.End();
             }
             else gameManager.CurrentGameState = GameManager.GameState.MainMenu;
-            spriteBatch.End();
+            sb.End();
         }
 
         public void Update(GameTime gameTime)

@@ -21,7 +21,7 @@ namespace Game.Menu.States
         public MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
         private GameManager gameManager;
-        private GraphicsDevice gd = GameDependencies.Instance.GraphicsDeviceManager.GraphicsDevice;
+        private GraphicsDevice gd = OutlivedGame.Instance().GraphicsDevice;
         public bool WasNotPlayed { get; set; } = true;
 
         public GameOverCredits(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
@@ -31,22 +31,22 @@ namespace Game.Menu.States
             this.gameManager = gameManager;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             gd.Clear(Color.Black);
 
-            spriteBatch.Begin();
+            sb.Begin();
 
-            //ScalingBackground.DrawBackgroundWithScaling(spriteBatch, gameManager.MenuContent, 0.0001f);
-            spriteBatch.Draw(gameManager.MenuContent.Background, new Rectangle(0, 0, 1900, 1100), Color.White);
-            spriteBatch.End();
+            //ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
+            sb.Draw(gameManager.MenuContent.Background, new Rectangle(0, 0, 1900, 1100), Color.White);
+            sb.End();
 
 
             string totalScore = "Thanks for playing!";
 
-            spriteBatch.Begin();
-            spriteBatch.DrawString(gameManager.MenuContent.MenuFont, totalScore, new Vector2(380, 40), Color.Red);
-            spriteBatch.End();
+            sb.Begin();
+            sb.DrawString(gameManager.MenuContent.MenuFont, totalScore, new Vector2(380, 40), Color.Red);
+            sb.End();
         }
 
         public void Update(GameTime gameTime)

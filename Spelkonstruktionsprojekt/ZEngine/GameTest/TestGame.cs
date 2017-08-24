@@ -77,11 +77,11 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             gameBundle = new FullSystemBundle();
 
-            gameBundle.Dependencies.GraphicsDeviceManager = new GraphicsDeviceManager(this)
-            {
-                PreferredBackBufferWidth = (int) viewportDimensions.X,
-                PreferredBackBufferHeight = (int) viewportDimensions.Y
-            };
+            //this.GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            //{
+            //    PreferredBackBufferWidth = (int) viewportDimensions.X,
+            //    PreferredBackBufferHeight = (int) viewportDimensions.Y
+            //};
             Content.RootDirectory = "Content";
 
             // Create an instance of the FPS GameComponent
@@ -94,7 +94,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
 
             IsFixedTimeStep = false;
-            gameBundle.Dependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
+            //gameBundle.Dependencies.GraphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
 
 
         }
@@ -102,7 +102,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         protected override void Initialize()
         {
             //Init systems that require initialization
-            gameBundle.InitializeSystems(this);
+     //       gameBundle.Initialize(this);
             spriteBatch = new SpriteBatch(this.GraphicsDevice);
             defaultView = GraphicsDevice.Viewport;
             leftView = defaultView;

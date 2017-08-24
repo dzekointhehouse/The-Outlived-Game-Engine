@@ -74,9 +74,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                     {
                         positionComponent.ZIndex = 2;
                     }
-
-                    StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
                     EventBus.Instance.Publish(EventConstants.Death, entityId);
+                    StateManager.TryAddState(entityId, State.Dead, gameTime.TotalGameTime.TotalMilliseconds);
                 }
             }
         }

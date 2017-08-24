@@ -17,7 +17,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
     public class DeathMatch : IMenu, ILifecycle
     {
         public VirtualGamePad MenuController { get; set; }
-        public FullSystemBundle SystemsBundle { get; set; }
+        public FullSystemBundle GameSystems { get; set; }
         public MenuNavigator MenuNavigator { get; set; }
         public GameConfig GameConfig { get; set; }
         public Viewport Viewport { get; set; }
@@ -41,7 +41,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
         {
             GameConfig = dependencies.GameConfig;
             Viewport = dependencies.Viewport;
-            SystemsBundle = dependencies.SystemsBundle;
+            GameSystems = new FullSystemBundle();
             MenuNavigator = dependencies.MenuNavigator;
             MenuController = dependencies.VirtualInputs.PlayerOne();
             countdownTimer = new CountdownTimer(3);
@@ -49,11 +49,11 @@ namespace Game.Menu.States.GameModes.DeathMatch
             SpawnSystem.Start();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            SystemsBundle.Draw(gameTime);
-            StartTimer.Draw(spriteBatch);
-            DrawCameras(spriteBatch);
+            GameSystems.Draw(gameTime);
+            StartTimer.Draw(sb);
+            DrawCameras(sb);
         }
 
         private void DrawCameras(SpriteBatch spriteBatch)
@@ -109,7 +109,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             countdownTimer.UpdateTimer(gameTime);
             BackgroundMusic.PlayMusic();
 //            SpawnSystem.HandleWaves();
-            SystemsBundle.Update(gameTime);
+            GameSystems.Update(gameTime);
 
 
             if (countdownTimer.IsDone)
@@ -124,6 +124,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
 
         public void BeforeShow()
         {
+            GameSystems.Initialize(OutlivedGame.Instance(), OutlivedGame.Instance().Fonts["ZEone"]);
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
             DeathMatchInitializer = new DeathMatchInitializer(GameViewports, GameConfig);
@@ -132,7 +133,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
 
             // Loading this projects content to be used by the game engine.
             SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
-            SystemsBundle.LoadContent();
+            GameSystems.LoadContent();
             DeathMatchInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1");
             WeaponSystem.LoadBulletSpriteEntity();
@@ -151,8 +152,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             WeaponSystem.Stop();
             ComponentManager.Instance.Clear();
             GameConfig.Reset();
-            SystemsBundle.ClearCaches();
-
+            GameSystems.ClearCaches();
             BackgroundMusic.ClearList();
             MediaPlayer.Stop();
         }

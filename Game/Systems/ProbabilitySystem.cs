@@ -78,13 +78,13 @@ namespace Game.Systems
                     var playerComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(PlayerComponent)).First();
                     var player = playerComponent.Value as PlayerComponent;
                     var playerPosition = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(playerComponent.Key);
-
                     var zombiePosition = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(zombie.Key);
                     var distance = Vector2.Distance(playerPosition.Position, zombiePosition.Position);
 
 
                         var soundToPlay = zombieSounds.Dequeue();
 
+                        // The closer the monster is to the player the louder the monster moaning.
                         if (distance < 500)
                         {
                             //play at full volume
