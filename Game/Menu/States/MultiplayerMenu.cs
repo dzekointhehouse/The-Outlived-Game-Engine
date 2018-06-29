@@ -24,7 +24,7 @@ namespace Game.Menu.States
 
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
-        private readonly GameManager gameManager;
+        private readonly GameManager gm;
 
         // enum so we can keep track on which option
         // we currently are at.
@@ -46,7 +46,7 @@ namespace Game.Menu.States
             PlayerVirtualInputCollection virtualInputCollection)
         {
             MenuNavigator = menuNavigator;
-            this.gameManager = gameManager;
+            this.gm = gameManager;
             game = OutlivedGame.Instance();
             VirtualInputCollection = virtualInputCollection;
             var playerOneChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
@@ -76,19 +76,19 @@ namespace Game.Menu.States
         private void DisplayPlayerChoice(TeamState playerChoice, float heightPercentage, SpriteBatch sb)
         {
             var viewport = game.GraphicsDevice.Viewport;
-            sb.Draw(gameManager.MenuContent.TeamOptions, viewport.Bounds, Color.White);
+            sb.Draw(gm.MenuContent.TeamOptions, viewport.Bounds, Color.White);
             switch (playerChoice)
             {
                 case NoTeam:
-                    sb.Draw(gameManager.MenuContent.GamePadIcon,
+                    sb.Draw(gm.MenuContent.GamePadIcon,
                         new Vector2((float) (viewport.Width * 0.4), viewport.Height * heightPercentage), Color.White);
                     break;
                 case TeamOne:
-                    sb.Draw(gameManager.MenuContent.GamePadIconHighlight,
+                    sb.Draw(gm.MenuContent.GamePadIconHighlight,
                         new Vector2((float) (viewport.Width * 0.2), viewport.Height * heightPercentage), Color.White);
                     break;
                 case TeamTwo:
-                    sb.Draw(gameManager.MenuContent.GamePadIconHighlight,
+                    sb.Draw(gm.MenuContent.GamePadIconHighlight,
                         new Vector2((float) (viewport.Width * 0.6), viewport.Height * heightPercentage), Color.White);
                     break;
             }
@@ -100,7 +100,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
+            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
 
             var heightPercentage = 0.2f;
             foreach (var playerChoice in PlayerChoices)
@@ -132,7 +132,7 @@ namespace Game.Menu.States
                 var somePlayerHasTeam = PlayerChoices.Any(player => player.CurrentPosition != NoTeam);
                 if (somePlayerHasTeam)
                 {
-                    gameManager.MenuContent.ClickSound.Play();
+                    gm.MenuContent.ClickSound.Play();
                     UpdateGameConfigurations();
                     MenuNavigator.GoTo(GameManager.GameState.CharacterMenu);
                 }
@@ -150,11 +150,11 @@ namespace Game.Menu.States
         private void UpdateGameConfigurations()
         {
             // Clear before each game..
-            gameManager.gameConfig.Players.Clear();
+            gm.gameConfig.Players.Clear();
             for (var i = 0; i < PlayerChoices.Length; i++)
             {
                 if (PlayerChoices[i].CurrentPosition == NoTeam) continue;
-                gameManager.gameConfig.Players.Add(new Player
+                gm.gameConfig.Players.Add(new Player
                 {
                     Index = IntegerToPlayerIndex[i],
                     Team = PlayerChoices[i].CurrentPosition

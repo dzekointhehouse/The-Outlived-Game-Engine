@@ -18,7 +18,7 @@ namespace Game.Menu.States
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
         private GenericButtonNavigator<GameModes> MenuPosition;
-        private readonly GameManager gameManager;
+        private readonly GameManager gm;
 
         public enum GameModes
         {
@@ -39,7 +39,7 @@ namespace Game.Menu.States
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
             MenuPosition = new GenericButtonNavigator<GameModes>(MenuElements);
-            this.gameManager = gameManager;
+            this.gm = gameManager;
             this.viewport = gameManager.viewport;
             fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
         }
@@ -51,14 +51,14 @@ namespace Game.Menu.States
             switch (MenuPosition.CurrentPosition)
             {
                 case Survival:
-                    sb.Draw(gameManager.MenuContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
+                    sb.Draw(gm.MenuContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
                     break;
                 case Extinction:
 
-                    sb.Draw(gameManager.MenuContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
+                    sb.Draw(gm.MenuContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
                     break;
                 case Blockworld:
-                    sb.Draw(gameManager.MenuContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
+                    sb.Draw(gm.MenuContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
                     break;
             }
 
@@ -67,7 +67,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
+            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
             fogBackground.Draw(sb);
             MainMenuDisplay(sb);
             sb.End();
@@ -75,7 +75,7 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
-            fogBackground.Update(gameTime, new Vector2(1, 0), gameManager.viewport);
+            fogBackground.Update(gameTime, new Vector2(1, 0), gm.viewport);
             if (VirtualGamePad.Is(Cancel, Pressed))
             {
                 MenuNavigator.GoBack();
@@ -94,19 +94,19 @@ namespace Game.Menu.States
             switch (MenuPosition.CurrentPosition)
             {
                 case Survival:
-                    gameManager.MenuContent.ClickSound.Play();
-                    gameManager.gameConfig.GameMode = Survival;
+                    gm.MenuContent.ClickSound.Play();
+                    gm.gameConfig.GameMode = Survival;
                     break;
                 case Extinction:
-                    gameManager.MenuContent.ClickSound.Play();
-                    gameManager.gameConfig.GameMode = Extinction;
+                    gm.MenuContent.ClickSound.Play();
+                    gm.gameConfig.GameMode = Extinction;
                     break;
                 case Exit:
-                    gameManager.MenuContent.ClickSound.Play();
+                    gm.MenuContent.ClickSound.Play();
                     break;
                 case Blockworld:
-                    gameManager.MenuContent.ClickSound.Play();
-                    gameManager.gameConfig.GameMode = Blockworld;
+                    gm.MenuContent.ClickSound.Play();
+                    gm.gameConfig.GameMode = Blockworld;
                     break;
             }
 
@@ -115,7 +115,7 @@ namespace Game.Menu.States
 
         public void Reset()
         {
-            gameManager.gameConfig.Reset();
+            gm.gameConfig.Reset();
         }
     }
 }

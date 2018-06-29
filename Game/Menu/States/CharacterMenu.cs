@@ -34,7 +34,7 @@ namespace Game.Menu.States
 //        private Player currentPlayer;
 //        private int playerIndex = 0;
 
-        private GameManager GameManager { get; }
+        private GameManager gm { get; }
 
         private int CurrentPlayerIndex;
         private VirtualGamePad Player { get; set; }
@@ -62,14 +62,14 @@ namespace Game.Menu.States
 
         public CharacterMenu(GameManager gameManager, PlayerVirtualInputCollection virtualInputs)
         {
-            GameManager = gameManager;
+            gm = gameManager;
             VirtualInputs = virtualInputs;
             Player = VirtualInputs.PlayerOne();
             MenuNavigator = gameManager.MenuNavigator;
             GameConfig = gameManager.gameConfig;
 
 
-            viewport = GameManager.viewport;
+            viewport = gm.viewport;
             //game = gameManager.game;
             //sb = gameManager.spriteBatch;
         }
@@ -77,7 +77,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(sb, GameManager.MenuContent, 0.0001f);
+            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
             
             
             DrawCharacterNames(sb, viewport);
@@ -90,16 +90,16 @@ namespace Game.Menu.States
             switch (CurrentSelectedCharacter)
             {
                 case Bob:
-                    sb.Draw(GameManager.MenuContent.HighlightFirst, viewport.Bounds, Color.White);
+                    sb.Draw(gm.MenuContent.HighlightFirst, viewport.Bounds, Color.White);
                     break;
                 case Edgar:
-                    sb.Draw(GameManager.MenuContent.HighlightSecond, viewport.Bounds, Color.White);
+                    sb.Draw(gm.MenuContent.HighlightSecond, viewport.Bounds, Color.White);
                     break;
                 case Ward:
-                    sb.Draw(GameManager.MenuContent.HighlightThird, viewport.Bounds, Color.White);
+                    sb.Draw(gm.MenuContent.HighlightThird, viewport.Bounds, Color.White);
                     break;
                 case Jimmy:
-                    sb.Draw(GameManager.MenuContent.HighlightFourth, viewport.Bounds, Color.White);
+                    sb.Draw(gm.MenuContent.HighlightFourth, viewport.Bounds, Color.White);
                     break;
             }
         }
@@ -108,7 +108,7 @@ namespace Game.Menu.States
         {
             var message = ("Player " + (CurrentPlayerIndex + 1) + " Choose your character!");
 
-            spriteBatch.DrawString(GameManager.MenuContent.MenuFont, message,
+            spriteBatch.DrawString(gm.MenuContent.MenuFont, message,
                 new Vector2(viewport.Width * 0.1f, viewport.Height * 0.1f), Color.Black);
         }
 
@@ -201,7 +201,7 @@ namespace Game.Menu.States
             }
             else if (Player.Is(Accept, Pressed))
             {
-                GameManager.MenuContent.ClickSound.Play();
+                gm.MenuContent.ClickSound.Play();
                 CurrentPlayer().CharacterType = CurrentSelectedCharacter;
                 CurrentPlayer().SpriteName = GetCharacterSpriteName(CurrentSelectedCharacter);
                 NextPlayerOrStartGame();

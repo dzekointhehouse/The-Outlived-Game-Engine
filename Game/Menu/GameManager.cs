@@ -23,13 +23,8 @@ namespace Game
 {
     public class GameManager
     {
-        public const float MinScale = 1.0f;
-        public const float MaxScale = 2.0f;
-        public static float Scale { get; set; } = 1.0f;
-        public static bool MoveHigher { get; set; } = true;
         public static bool MoveRight { get; set; } = true;
-        public static ZEngineLogger Logger { get; } = new ZEngineLogger();
-        
+        //public static ZEngineLogger Logger { get; } = new ZEngineLogger();
         public MenuContent MenuContent { get; }
 
         // Here we just say that the first state is the Intro
@@ -45,6 +40,7 @@ namespace Game
         //protected internal FullSystemBundle Engine;
         protected internal Viewport viewport;
         protected internal SpriteBatch spriteBatch;
+        protected internal BackgroundEffects effects;
         protected internal Microsoft.Xna.Framework.Game game;
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
@@ -98,6 +94,7 @@ namespace Game
             viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
 
             MenuContent = new MenuContent(game);
+            effects = new BackgroundEffects(viewport);
             gameConfig = new GameConfig();
 
             virtualInputCollection = new PlayerVirtualInputCollection(new[]

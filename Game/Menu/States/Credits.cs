@@ -14,7 +14,7 @@ namespace Game.Menu.States
 {
     class Credits : IMenu
     {
-        private readonly GameManager gameManager;
+        private readonly GameManager gm;
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
         private Viewport viewport;
@@ -23,7 +23,7 @@ namespace Game.Menu.States
         {
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
-            this.gameManager = gameManager;
+            this.gm = gameManager;
             this.viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
 //            controls = new ControlsConfig(gameManager);
         }
@@ -33,8 +33,8 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
-            sb.Draw(gameManager.MenuContent.CreditsBackground, viewport.Bounds, Color.White);
+            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
+            sb.Draw(gm.MenuContent.CreditsBackground, viewport.Bounds, Color.White);
             sb.End();
         }
 

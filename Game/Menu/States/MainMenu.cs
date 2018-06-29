@@ -22,7 +22,7 @@ namespace Game.Menu.States
         public VirtualGamePad VirtualGamePad { get; }
         public MenuNavigator MenuNavigator { get; }
         private Microsoft.Xna.Framework.Game game;
-        private GameManager gameManager;
+        private GameManager gm;
         private Viewport viewport;
         //private SpriteBatch sb;
         private SidewaysBackground fogBackground;
@@ -49,7 +49,7 @@ namespace Game.Menu.States
             VirtualGamePad = virtualGamePad;
             MenuNavigator = menuNavigator;
             MenuPosition = new GenericButtonNavigator<OptionsState>(Options);
-            this.gameManager = gameManager;
+            this.gm = gameManager;
 
             game = gameManager.game;
            // sb = gameManager.spriteBatch;
@@ -70,26 +70,26 @@ namespace Game.Menu.States
             string textAbout = "WHAT HAPPENED?";
             string textExit = "TAKE THE EASY WAY OUT";
 
-            sb.Draw(gameManager.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
+            sb.Draw(gm.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
             fogBackground.Draw(sb);
-            sb.DrawString(gameManager.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
-            sb.DrawString(gameManager.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(gameManager.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
-            sb.DrawString(gameManager.MenuContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
+            sb.DrawString(gm.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
+            sb.DrawString(gm.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
+            sb.DrawString(gm.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
+            sb.DrawString(gm.MenuContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
 
             switch (MenuPosition.CurrentPosition)
             {
                 case Continue:
-                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.42f), Color.White);
+                    sb.Draw(gm.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.42f), Color.White);
                     break;
                 case About:
-                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.52f), Color.White);
+                    sb.Draw(gm.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.52f), Color.White);
                     break;
                 case OptionsState.Credits:
-                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.62f), Color.White);
+                    sb.Draw(gm.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.62f), Color.White);
                     break;
                 case Exit:
-                    sb.Draw(gameManager.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.72f), Color.White);
+                    sb.Draw(gm.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.72f), Color.White);
                     break;
 
             }
@@ -99,9 +99,8 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0f);
-            mainBackground.Draw(sb);
-            
+            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
+            //mainBackground.Draw(sb);       
             MainMenuDisplay(sb);
             sb.End();
         }
@@ -118,14 +117,14 @@ namespace Game.Menu.States
             {
                 MediaPlayer.Volume = 0.8f;
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Play(gameManager.MenuContent.BackgroundSong);
+                MediaPlayer.Play(gm.MenuContent.BackgroundSong);
             }
             
             MenuPosition.UpdatePosition(VirtualGamePad);
             
             if (VirtualGamePad.Is(VirtualGamePad.MenuKeys.Accept, VirtualGamePad.MenuKeyStates.Pressed))
             {
-                gameManager.MenuContent.ClickSound.Play();
+                gm.MenuContent.ClickSound.Play();
                 switch (MenuPosition.CurrentPosition)
                 {
                     case Continue:

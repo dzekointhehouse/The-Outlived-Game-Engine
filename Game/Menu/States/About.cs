@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Game.Services;
+﻿using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ZEngine.Wrappers;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
 
@@ -19,7 +12,7 @@ namespace Game.Menu.States
     /// </summary>
     class AboutMenu : IMenu
     {
-        private readonly GameManager gameManager;
+        private readonly GameManager gm;
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
         private Viewport viewport;
@@ -28,7 +21,7 @@ namespace Game.Menu.States
         {
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
-            this.gameManager = gameManager;
+            gm = gameManager;
             viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
         }
 
@@ -36,8 +29,8 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
-            sb.Draw(gameManager.MenuContent.AboutBackground, viewport.Bounds, Color.White);
+            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
+            sb.Draw(gm.MenuContent.AboutBackground, viewport.Bounds, Color.White);
             sb.End();
         }
         // A pause button that goes to the pause game state,
