@@ -8,16 +8,20 @@ using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Components;
 using ZEngine.Managers;
 
 namespace ZEngine.Systems
 {
-    class MoveSystem : ISystem
+    class MoveSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void Move(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(MoveComponent)))
@@ -104,7 +108,7 @@ namespace ZEngine.Systems
             return new Vector2(oldVector.X + x, oldVector.Y + y);
         }
 
-        public Vector2 Move(ref Vector2 oldVector, float direction, ref Vector2 acceleration, float deltaTime)
+        public Vector2 Update(ref Vector2 oldVector, float direction, ref Vector2 acceleration, float deltaTime)
         {
             var x1 = acceleration.X * Math.Cos(direction) * deltaTime;
             var y1 = acceleration.Y * Math.Sin(direction) * deltaTime;

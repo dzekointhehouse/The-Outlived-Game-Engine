@@ -57,7 +57,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             var cameraCageId = SetupCameraCage();
             SetupHUD();
 
-            if (GameConfig.GameMode == GameModeMenu.GameModes.Survival)
+            if (GameConfig.GameMode == OutlivedStates.GameState.SurvivalGame)
             {
                 CreateGlobalSpawnSpriteEntity();
                 CreateGlobalSpawnEntity();

@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using Game.Menu;
-using static Game.GameManager;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
+using static Game.Menu.OutlivedStates;
 
 namespace Game.Services
 {
@@ -10,17 +10,17 @@ namespace Game.Services
     {
         public Dictionary<GameState, ILifecycle> MenuStates { get; set; }
         public Dictionary<GameState, IMenu> GameStateMenuMap { get; set; }
-        private GameManager GameManager { get; }
+        private Menu.GameManager GameManager { get; }
         private Stack<GameState> OldStates { get; } = new Stack<GameState>(10);
 
-        public MenuNavigator(GameManager gameManager)
+        public MenuNavigator(Menu.GameManager gameManager)
         {
             GameManager = gameManager;
         }
         
         public void GoBack()
         {
-            GameManager.MenuContent.ClickSound.Play();
+            AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
             GameManager.CurrentGameState = OldStates.Pop();
         }
 

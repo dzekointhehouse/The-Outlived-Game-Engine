@@ -59,9 +59,9 @@ namespace Game.Menu.States.GameModes
         private void CreateGameEntities()
         {
             var cameraCageId = SetupCameraCage();
-            SetupHUD();
+            GameHUD.CreateSinglePlayerHUD();
 
-            if (GameConfig.GameMode == GameModeMenu.GameModes.Survival)
+            if (GameConfig.GameMode == OutlivedStates.GameState.SurvivalGame)
             {
                 CreateGlobalSpawnSpriteEntity();
                 CreateGlobalSpawnEntity();
@@ -84,27 +84,6 @@ namespace Game.Menu.States.GameModes
                 EntityManager.GetEntityManager().NewEntity());
         }
 
-        private void SetupHUD()
-        {
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(590, 900))
-                .SetSprite("health3_small")
-                .Build();
-
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(590, 950))
-                .SetSprite("medal")
-                .Build();
-
-            new EntityBuilder()
-                .SetHUD(true)
-                .SetPosition(new Vector2(550, 1000))
-                .SetSprite("ammo")
-                .Build();
-
-        }
 
         private static void CreateGlobalBulletSpriteEntity()
         {

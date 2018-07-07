@@ -7,6 +7,7 @@ using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Wrappers;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
@@ -29,14 +30,14 @@ namespace Game.Menu.States
             MenuNavigator = menuNavigator;
             this.VirtualInputs = VirtualInputs;
             this.gameManager = gameManager;
-            viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
+            viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
         }
 
         // drawing the menu background.
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            sb.Draw(gameManager.MenuContent.PauseBackground, viewport.Bounds, Color.White);
+            sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/paused"), viewport.Bounds, Color.White);
             sb.End();
         }
         // A pause button that goes to the pause game state,
@@ -53,7 +54,7 @@ namespace Game.Menu.States
                 else if(virtualInput.Is(Cancel, Pressed))
                 {
                     MenuNavigator.Pause();
-                    MenuNavigator.GoTo(GameManager.GameState.MainMenu);
+                    MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
                 }
             }
         }

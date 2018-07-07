@@ -21,22 +21,40 @@ using Vector3 = Microsoft.Xna.Framework.Vector3;
 using ZEngine.Helpers;
 using ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 
 namespace ZEngine.Systems
 {
-    class CollisionSystem : ISystem
+    class CollisionSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private Dictionary<Tuple<string, Point>, Color[]> cache = new Dictionary<Tuple<string, Point>, Color[]>();
-        private Dictionary<uint, bool> IsAI = new Dictionary<uint, bool>();
-        private Dictionary<uint, bool> IsBullet = new Dictionary<uint, bool>();
+        private Dictionary<Tuple<string, Point>, Color[]> cache;
+        private Dictionary<uint, bool> IsAI;
+        private Dictionary<uint, bool> IsBullet;
+        private Dictionary<uint, int> CallCount;
+        private QuadTree QuadTree;
 
-        private Dictionary<uint, int> CallCount = new Dictionary<uint, int>();
+        public CollisionSystem()
+        {
+            IsAI = new Dictionary<uint, bool>();
+            IsBullet = new Dictionary<uint, bool>();
+            CallCount = new Dictionary<uint, int>();
+            cache = new Dictionary<Tuple<string, Point>, Color[]>();
+            QuadTree = new QuadTree(ComponentManager.Instance);
+        }
+
+        public void Update(GameTime gt)
+        {
+        }
+
+
         
         private int cacheMisses = 0;
         
-        private QuadTree QuadTree { get; set; } = new QuadTree(ComponentManager.Instance);
         
         //TODO Should do this on game load
         public Color[] TextureCache(SpriteComponent spriteComponent, uint entityId)
@@ -99,7 +117,7 @@ namespace ZEngine.Systems
         private int detectCollision = 0;
         private int entitiesCollide = 0;
 
-        public async Task DetectCollisions()
+        public async Task Update()
         {
             Stopwatch timer;
             if (PROFILING_COLLISIONS)
@@ -530,10 +548,10 @@ namespace ZEngine.Systems
                             return true;
                         }
                     }
-                    // Move to the next pixel in the row
+                    // Update to the next pixel in the row
                     posInB += stepX;
                 }
-                // Move to the next row
+                // Update to the next row
                 yPosInB += stepY;
             }
             // No intersection found

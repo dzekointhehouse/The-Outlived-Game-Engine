@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -8,8 +9,14 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 {
-    public class SprintAbilitySystem : ISystem
+    public class SprintAbilitySystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
 
         private readonly EventBus EventBus = EventBus.Instance;
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;

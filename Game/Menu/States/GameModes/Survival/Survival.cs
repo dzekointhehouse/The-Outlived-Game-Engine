@@ -16,20 +16,20 @@ namespace Game.Menu.States.GameModes
 {
     public class Survival : IMenu, ILifecycle
     {
+
+        private GameEngine GameEngine;
         private GameConfig GameConfig { get; }
-        private Viewport Viewport { get; }
-        private FullSystemBundle EngineGameSystems;
+        private Viewport Viewport { get; }      
         private MenuNavigator MenuNavigator { get; }
         private VirtualGamePad MenuController { get; }
 
-        private SoundSystem SoundSystem { get; set; } = new SoundSystem();
+        private SoundSystem SoundSystem { get; set; }
+        private ProbabilitySystem ProbabilitySystem { get; set; }
+        private SpawnSystem SpawnSystem { get; set; }
+        private WeaponSystem WeaponSystem { get; set; }
+        private HealthSystem HealthSystem { get; set; }
 
-        private ProbabilitySystem ProbabilitySystem { get; set; } = new ProbabilitySystem();
-        private SpawnSystem SpawnSystem { get; set; } = new SpawnSystem();
-        private WeaponSystem WeaponSystem { get; set; } = new WeaponSystem();
-        private HealthSystem HealthSystem { get; set; } = new HealthSystem();
-
-        private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
+        private BackgroundMusic BackgroundMusic { get; set; }
         private StartTimer StartTimer { get; set; }
         private GameViewports GameViewports { get; set; }
 
@@ -47,7 +47,7 @@ namespace Game.Menu.States.GameModes
 
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            EngineGameSystems.Draw(gameTime);
+            GameEngine.Draw(sb, gameTime);
             StartTimer.Draw(sb);
             DrawHUDs(sb);
         }
@@ -92,15 +92,15 @@ namespace Game.Menu.States.GameModes
             }
             
             BackgroundMusic.PlayMusic();
-            SpawnSystem.HandleWaves(gameTime);
-            EngineGameSystems.Update(gameTime);
-            ProbabilitySystem.Generate();
+            //SpawnSystem.Update(gameTime);
+            GameEngine.Update(gameTime);
+            //ProbabilitySystem.Update(gameTime);
 
-            if (HealthSystem.CheckIfAllPlayersAreDead())
+            if (GameEngine.GetSystem<HealthSystem>().CheckIfAllPlayersAreDead())
             {
                 GameOver = true;
 
-                MenuNavigator.GoTo(GameManager.GameState.GameOver);
+                MenuNavigator.GoTo(OutlivedStates.GameState.GameOver);
             }
         }
 
@@ -110,32 +110,45 @@ namespace Game.Menu.States.GameModes
 
         public void BeforeShow()
         {
-            EngineGameSystems = new FullSystemBundle();
+
             GameViewports = new GameViewports(GameConfig, Viewport);
+            BackgroundMusic = new BackgroundMusic();
+
+            var SoundSystem = new SoundSystem();
+            var ProbabilitySystem = new ProbabilitySystem();
+            var SpawnSystem = new SpawnSystem();
+            var WeaponSystem = new WeaponSystem();
+            //var HealthSystem = new HealthSystem();
+
+            GameEngine = new GameEngine(OutlivedGame.Instance());
+            GameEngine.AddSystems(SoundSystem, SpawnSystem, WeaponSystem, ProbabilitySystem);
+            GameEngine.Initialize(AssetManager.Instance.Get<SpriteFont>("ZEone"));
+
+
             GameViewports.InitializeViewports();
             SurvivalInitializer = new SurvivalInitializer(GameViewports, GameConfig);
             StartTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
                 GameViewports.defaultView);
 
-            EngineGameSystems.Initialize(OutlivedGame.Instance(), OutlivedGame.Instance().Fonts["ZEone"]);
             SurvivalInitializer.InitializeEntities();
-            EngineGameSystems.LoadContent();
+            GameEngine.LoadContent();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
 
             SoundSystem.Start();
             WeaponSystem.Start();
             // Game stuff
-            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
 
         public void BeforeHide()
         {
-            SoundSystem.Stop();
-            WeaponSystem.Stop();
+            GameEngine = new GameEngine(OutlivedGame.Instance());
+
+            //SoundSystem.Stop();
+            //WeaponSystem.Stop();
             GameConfig.Reset();
-            EngineGameSystems.ClearCaches();
-            ComponentManager.Instance.Clear();
+            GameEngine.Reset();         
             BackgroundMusic.ClearList();
             MediaPlayer.Stop();
         }

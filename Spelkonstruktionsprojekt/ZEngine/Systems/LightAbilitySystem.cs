@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
@@ -14,9 +15,14 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class LightAbilitySystem : ISystem
+    class LightAbilitySystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
 
+        public void Update(GameTime gt)
+        {
+        }
         private readonly EventBus EventBus = EventBus.Instance;
 
         public ISystem Start()

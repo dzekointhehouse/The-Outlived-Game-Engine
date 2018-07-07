@@ -21,8 +21,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
 
         public List<int> Damage { get; set; } = new List<int>(30);
 
-        public bool Alive { get; set; }
-        public bool isHuman { get; set; }
+        public bool IsAlive { get; set; }
+        public bool IsHuman { get; set; }
 
         public HealthComponent()
         {
@@ -34,8 +34,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
             MaxHealth = 100;
             CurrentHealth = 100;
             Damage.Clear();
-            Alive = true;
-            isHuman = false;
+            IsAlive = true;
+            IsHuman = false;
             return this;
         }
     }

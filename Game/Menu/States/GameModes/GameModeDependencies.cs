@@ -8,7 +8,7 @@ namespace Game.Menu.States.GameModes
     {
         public GameConfig GameConfig { get; set; }
         public Viewport Viewport { get; set; }
-        public FullSystemBundle SystemsBundle { get; set; }
+        public GameEngine SystemsBundle { get; set; }
         public MenuNavigator MenuNavigator { get; set; }
         public PlayerVirtualInputCollection VirtualInputs { get; set; }
     }

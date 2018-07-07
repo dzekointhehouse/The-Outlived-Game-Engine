@@ -3,10 +3,12 @@ using System.Diagnostics;
 using System.Net;
 using Game.Services;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using ZEngine.Wrappers;
-using static Game.GameManager;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
+using static Game.Menu.GameManager;
+using static Game.Menu.OutlivedStates;
 using static Game.Menu.States.MainMenu.OptionsState;
 
 namespace Game.Menu.States
@@ -19,18 +21,18 @@ namespace Game.Menu.States
     /// </summary>
     class MainMenu : IMenu
     {
+        private const string textCredits = "CREDITS";
+        private const string textContinue = "PLAY IF YOU DARE";
+        private const string textAbout = "WHAT HAPPENED?";
+        private const string textExit = "TAKE THE EASY WAY OUT";
+
         public VirtualGamePad VirtualGamePad { get; }
         public MenuNavigator MenuNavigator { get; }
-        private Microsoft.Xna.Framework.Game game;
-        private GameManager gm;
-        private Viewport viewport;
-        //private SpriteBatch sb;
-        private SidewaysBackground fogBackground;
-        private SidewaysBackground mainBackground;
-
         public GenericButtonNavigator<OptionsState> MenuPosition { get; set; }
-        
-        // different menu options
+
+        private GameManager gm;
+        private SidewaysBackground fogBackground;
+
         internal enum OptionsState
         {
             Continue,
@@ -39,59 +41,39 @@ namespace Game.Menu.States
             Exit
         }
 
-        public OptionsState[] Options =
-        {
-            Continue, About, OptionsState.Credits, Exit
-        };
-        
         public MainMenu(GameManager gameManager, VirtualGamePad virtualGamePad, MenuNavigator menuNavigator)
         {
             VirtualGamePad = virtualGamePad;
             MenuNavigator = menuNavigator;
-            MenuPosition = new GenericButtonNavigator<OptionsState>(Options);
-            this.gm = gameManager;
+            gm = gameManager;
 
-            game = gameManager.game;
-           // sb = gameManager.spriteBatch;
-            viewport = gameManager.viewport;
-
-            mainBackground = new SidewaysBackground(gameManager.MenuContent.Background, new Vector2(10, 10), 1.5f);
-            fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
+            MenuPosition = new GenericButtonNavigator<OptionsState>(new[] { Continue, About, OptionsState.Credits, Exit });
+            fogBackground = new SidewaysBackground(AssetManager.Instance.Get<Texture2D>("Images/Menu/movingfog"), new Vector2(20, 20), 1f);
         }
 
-
-
-        // This method displays all the options
-        // in an ordered fashion.
-        private void MainMenuDisplay(SpriteBatch sb)
+        private void DisplayGameOptions(SpriteBatch sb)
         {
-            string textCredits = "CREDITS";
-            string textContinue = "PLAY IF YOU DARE";
-            string textAbout = "WHAT HAPPENED?";
-            string textExit = "TAKE THE EASY WAY OUT";
-
-            sb.Draw(gm.MenuContent.MainOptionsBackground, viewport.Bounds, Color.White);
+            sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/mainoptions"), gm.viewport.Bounds, Color.White);
             fogBackground.Draw(sb);
-            sb.DrawString(gm.MenuContent.MenuFont, textContinue, new Vector2(600, viewport.Height * 0.45f), Color.White);
-            sb.DrawString(gm.MenuContent.MenuFont, textAbout, new Vector2(600, viewport.Height * 0.55f), Color.White);
-            sb.DrawString(gm.MenuContent.MenuFont, textCredits, new Vector2(600, viewport.Height * 0.65f), Color.White);
-            sb.DrawString(gm.MenuContent.MenuFont, textExit, new Vector2(600, viewport.Height * 0.75f), Color.White);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), textContinue, new Vector2(600, gm.viewport.Height * 0.45f), Color.White);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), textAbout, new Vector2(600, gm.viewport.Height * 0.55f), Color.White);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), textCredits, new Vector2(600, gm.viewport.Height * 0.65f), Color.White);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), textExit, new Vector2(600, gm.viewport.Height * 0.75f), Color.White);
 
             switch (MenuPosition.CurrentPosition)
             {
                 case Continue:
-                    sb.Draw(gm.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.42f), Color.White);
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Keyboard/enter"), new Vector2(250, gm.viewport.Height * 0.42f), Color.White);
                     break;
                 case About:
-                    sb.Draw(gm.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.52f), Color.White);
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Keyboard/enter"), new Vector2(250, gm.viewport.Height * 0.52f), Color.White);
                     break;
                 case OptionsState.Credits:
-                    sb.Draw(gm.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.62f), Color.White);
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Keyboard/enter"), new Vector2(250, gm.viewport.Height * 0.62f), Color.White);
                     break;
                 case Exit:
-                    sb.Draw(gm.MenuContent.ButtonContinue, new Vector2(250, viewport.Height * 0.72f), Color.White);
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Keyboard/enter"), new Vector2(250, gm.viewport.Height * 0.72f), Color.White);
                     break;
-
             }
         }
 
@@ -99,32 +81,27 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
-            //mainBackground.Draw(sb);       
-            MainMenuDisplay(sb);
+            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
+            DisplayGameOptions(sb);
             sb.End();
         }
 
-        // Updates. When the players clicks continue we go to
-        // the next state that is specified in the switch case,
-        // depending on which option we currently are at.
         public void Update(GameTime gameTime)
         {
-            fogBackground.Update(gameTime, new Vector2(1,0),viewport);
-            //mainBackground.UpdateTimer(gameTime, new Vector2(1, 0), viewport);
-            // playing beatiful mainBackground music.
+            fogBackground.Update(gameTime, new Vector2(1, 0), gm.viewport);
+
             if (MediaPlayer.State == MediaState.Stopped)
             {
                 MediaPlayer.Volume = 0.8f;
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Play(gm.MenuContent.BackgroundSong);
+                MediaPlayer.Play(AssetManager.Instance.Get<Song>("Sound/bg_menumusic"));
             }
-            
+
             MenuPosition.UpdatePosition(VirtualGamePad);
-            
+
             if (VirtualGamePad.Is(VirtualGamePad.MenuKeys.Accept, VirtualGamePad.MenuKeyStates.Pressed))
             {
-                gm.MenuContent.ClickSound.Play();
+                AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
                 switch (MenuPosition.CurrentPosition)
                 {
                     case Continue:

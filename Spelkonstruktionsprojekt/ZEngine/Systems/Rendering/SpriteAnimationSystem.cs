@@ -20,8 +20,11 @@ using Debug = System.Diagnostics.Debug;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class SpriteAnimationSystem : ISystem
+    class SpriteAnimationSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void Start()
@@ -233,7 +236,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
                 if (currentFrame.X != (sheetSize.X - 1) && currentFrame.Y != sheetSize.Y)
                 {
-                    if (!health.Alive)
+                    if (!health.IsAlive)
                     {
                         animationComponent.TimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Wrappers;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
@@ -24,7 +25,7 @@ namespace Game.Menu.States
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
             this.gm = gameManager;
-            this.viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
+            this.viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
 //            controls = new ControlsConfig(gameManager);
         }
 
@@ -33,8 +34,8 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
-            sb.Draw(gm.MenuContent.CreditsBackground, viewport.Bounds, Color.White);
+            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
+            sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/credits"), viewport.Bounds, Color.White);
             sb.End();
         }
 

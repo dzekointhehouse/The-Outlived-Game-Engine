@@ -136,6 +136,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Managers
                 type.Value.Clear();
             }
             _components.Clear();
+            _components = new Dictionary<Type, Dictionary<uint, IComponent>>();
         }
 
         // Deletes the entity from a given component's dictionary.

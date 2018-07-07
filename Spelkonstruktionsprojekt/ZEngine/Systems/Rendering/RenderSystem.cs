@@ -11,6 +11,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.EventBus;
@@ -19,14 +20,18 @@ using IComponent = ZEngine.Components.IComponent;
 
 namespace ZEngine.Systems
 {
-    public class RenderSystem : ISystem
+    public class RenderSystem : ISystem, IDrawables
     {
         // _____________________________________________________________________________________________________________________ //
 
         // We have our singleton instance of the eventbus.
         // The name of the system.
         // The component manager singleton instance.
-
+        public bool Enabled { get; set; } = true;
+        public int DrawOrder { get; set; }
+        public void Draw()
+        {
+        }
         public static string SystemName = "Render";
         private ComponentManager ComponentManager = ComponentManager.Instance;
         //private GraphicsDevice graphicsDevice;

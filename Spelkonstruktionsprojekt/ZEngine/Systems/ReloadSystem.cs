@@ -8,14 +8,21 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Penumbra;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class ReloadSystem : ISystem
+    class ReloadSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
         private EventBus eventBus = EventBus.Instance;
         private int timeToReload = 200;
         public void Start()

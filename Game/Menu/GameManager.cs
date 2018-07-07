@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Game.Menu;
+﻿using System.Collections.Generic;
 using Game.Menu.States;
 using Game.Menu.States.GameModes;
 using Game.Menu.States.GameModes.DeathMatch;
@@ -12,20 +6,13 @@ using Game.Menu.States.GameModes.Extinction;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Spelkonstruktionsprojekt.ZEngine.Diagnostics;
-using Spelkonstruktionsprojekt.ZEngine.Helpers;
-using ZEngine.Systems;
-using ZEngine.Wrappers;
+using static Game.Menu.OutlivedStates;
 
-namespace Game
+namespace Game.Menu
 {
     public class GameManager
     {
-        public static bool MoveRight { get; set; } = true;
-        //public static ZEngineLogger Logger { get; } = new ZEngineLogger();
-        public MenuContent MenuContent { get; }
+        public OutlivedContent OutlivedContent { get; }
 
         // Here we just say that the first state is the Intro
         protected internal GameState CurrentGameState = GameState.Intro;
@@ -37,7 +24,7 @@ namespace Game
         public VirtualGamePad Controller { get; set; }
         public MenuNavigator MenuNavigator { get; set; }
 
-        //protected internal FullSystemBundle Engine;
+        //protected internal GameEngine Engine;
         protected internal Viewport viewport;
         protected internal SpriteBatch spriteBatch;
         protected internal BackgroundEffects effects;
@@ -57,25 +44,6 @@ namespace Game
         private IMenu gameOver;
         private IMenu gameOverCredits;
 
-        // Game states
-        public enum GameState
-        {
-            Intro,
-            MainMenu,
-            GameModesMenu,
-            CharacterMenu,
-            MultiplayerMenu,
-            PlaySurvivalGame,
-            PlayDeathMatch,
-            PlayExtinction,
-            Quit,
-            Credits,
-            Paused,
-            About,
-            GameOver,
-            GameOverCredits,
-        };
-
         public Dictionary<GameState, IMenu> GameStateMenuMap;
         private PlayerVirtualInputCollection virtualInputCollection;
 
@@ -91,9 +59,9 @@ namespace Game
 
             spriteBatch = OutlivedGame.Instance().spriteBatch;
             game = OutlivedGame.Instance();
-            viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
+            viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
 
-            MenuContent = new MenuContent(game);
+            
             effects = new BackgroundEffects(viewport);
             gameConfig = new GameConfig();
 
@@ -138,10 +106,10 @@ namespace Game
             {
                 {GameState.Intro, gameIntro},
                 {GameState.MainMenu, mainMenu},
-//                {GameState.PlaySurvivalGame, survivalGame},
-                {GameState.PlaySurvivalGame, gameModeSurvival},
-                {GameState.PlayDeathMatch, deathMatch},
-                {GameState.PlayExtinction, extinction},
+//                {GameState.SurvivalGame, survivalGame},
+                {GameState.SurvivalGame, gameModeSurvival},
+                {GameState.PlayDeathMatchGame, deathMatch},
+                {GameState.PlayExtinctionGame, extinction},
                 {GameState.Quit, mainMenu},
                 {GameState.GameModesMenu, gameModesMenu},
                 {GameState.CharacterMenu, characterMenu},
@@ -154,10 +122,9 @@ namespace Game
             };
             var lifecycleStates = new Dictionary<GameState, ILifecycle>
             {
-//                {GameState.PlaySurvivalGame, (ILifecycle) survivalGame},
-                {GameState.PlaySurvivalGame, gameModeSurvival},
-                {GameState.PlayDeathMatch, deathMatch},
-                {GameState.PlayExtinction, extinction},
+                {GameState.SurvivalGame, gameModeSurvival},
+                {GameState.PlayDeathMatchGame, deathMatch},
+                {GameState.PlayExtinctionGame, extinction},
                 {GameState.MultiplayerMenu, (ILifecycle) multiplayerMenu},
                 {GameState.CharacterMenu, (ILifecycle) characterMenu},
                 {GameState.GameOver, (ILifecycle) gameOver}

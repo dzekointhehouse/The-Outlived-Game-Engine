@@ -12,6 +12,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Components
         public int Damage;
         public uint ShooterEntityId;
 
+
+
         public IComponent Reset()
         {
             Damage = 0;

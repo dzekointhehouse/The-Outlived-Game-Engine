@@ -1,13 +1,17 @@
 ﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Components;
 using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    public class BackwardsPenaltySystem : ISystem
+    public class BackwardsPenaltySystem : ISystem, IUpdateables
     {
-        public void Apply()
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gameTime)
         {
             foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(BackwardsPenaltyComponent)))
             {

@@ -21,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
     // be able to se the component data on the screen when playing.
     // This can be used to that the player always can see the status
     // of his player. (everything drawn here is and should be titlesafe) 
-    class RenderHUDSystem : ISystem
+    class RenderHUDSystem : ISystem, IDrawables
     {
         public static string SystemName = "RenderHUDSystem";
         private EventBus EventBus = EventBus.Instance;
@@ -176,7 +176,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                             gameHUD.Clear();
                             AmmoComponent ammo = ComponentManager.Instance.GetEntityComponentOrDefault<AmmoComponent>(instance.Key);
 
-                            if (health.Alive)
+                            if (health.IsAlive)
                             {
                                 // for formating and adding the amount to the HUD.
                                 ammoGameHUD.AppendLine();
@@ -301,6 +301,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
                 var gamescore = gameScoreComponent.Value as GameScoreComponent;
                 gamescore.KillsTeamOne++;
             }
+        }
+
+        public bool Enabled { get; set; } = true;
+        public int DrawOrder { get; set; }
+        public void Draw()
+        {
         }
     }
 }

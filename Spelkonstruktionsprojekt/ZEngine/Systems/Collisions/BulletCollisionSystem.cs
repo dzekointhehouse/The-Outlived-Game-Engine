@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -8,8 +9,14 @@ using ZEngine.Systems;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 {
-    internal class BulletCollisionSystem : ISystem
+    internal class BulletCollisionSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
         private readonly EventBus EventBus = EventBus.Instance;
 

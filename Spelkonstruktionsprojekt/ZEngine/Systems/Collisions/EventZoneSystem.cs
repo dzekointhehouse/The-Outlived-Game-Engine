@@ -13,7 +13,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void Handle(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(EventZoneComponent)))
             {

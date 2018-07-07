@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq.Expressions;
-using Game.Services;
+﻿using Game.Services;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using ZEngine.Wrappers;
-using static Game.GameManager.GameState;
-using static Game.Menu.States.GameModeMenu.GameModes;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
+using static Game.Menu.OutlivedStates;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
 
@@ -17,48 +15,34 @@ namespace Game.Menu.States
         private Viewport viewport;
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
-        private GenericButtonNavigator<GameModes> MenuPosition;
+        private GenericButtonNavigator<GameState> navigator;
         private readonly GameManager gm;
 
-        public enum GameModes
-        {
-            Extinction,
-            Survival,
-            Blockworld,
-            Exit
-        }
-
-        public GameModes[] MenuElements = {
-            Extinction,
-            Survival,
-            Blockworld
-        };
 
         public GameModeMenu(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
-            MenuPosition = new GenericButtonNavigator<GameModes>(MenuElements);
+            navigator = new GenericButtonNavigator<GameState>(new []{ GameState.PlayExtinctionGame, GameState.SurvivalGame, GameState.PlayDeathMatchGame });
             this.gm = gameManager;
             this.viewport = gameManager.viewport;
-            fogBackground = new SidewaysBackground(gameManager.MenuContent.BackgroundFog, new Vector2(20, 20), 1f);
+            fogBackground = new SidewaysBackground(AssetManager.Instance.Get<Texture2D>("Images/Menu/movingfog"), new Vector2(20, 20), 1f);
         }
 
         private void MainMenuDisplay(SpriteBatch sb)
         {
-            
 
-            switch (MenuPosition.CurrentPosition)
+
+            switch (navigator.CurrentPosition)
             {
-                case Survival:
-                    sb.Draw(gm.MenuContent.GameModeHiglightSurvival, viewport.Bounds, Color.White);
+                case GameState.SurvivalGame:
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/gamemodemenu_hs"), viewport.Bounds, Color.White);
                     break;
-                case Extinction:
-
-                    sb.Draw(gm.MenuContent.GameModeHiglightExtinction, viewport.Bounds, Color.White);
+                case GameState.PlayExtinctionGame:
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/gamemodemenu_he"), viewport.Bounds, Color.White);
                     break;
-                case Blockworld:
-                    sb.Draw(gm.MenuContent.GameModeHiglightBlockworld, viewport.Bounds, Color.White);
+                case GameState.PlayDeathMatchGame:
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/gamemodemenu_hb"), viewport.Bounds, Color.White);
                     break;
             }
 
@@ -67,7 +51,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
+            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
             fogBackground.Draw(sb);
             MainMenuDisplay(sb);
             sb.End();
@@ -81,7 +65,7 @@ namespace Game.Menu.States
                 MenuNavigator.GoBack();
             }
 
-            MenuPosition.UpdatePosition(VirtualGamePad);
+            navigator.UpdatePosition(VirtualGamePad);
 
             if (VirtualGamePad.Is(Accept, Pressed))
             {
@@ -91,26 +75,26 @@ namespace Game.Menu.States
 
         public void HandleStartGameMode()
         {
-            switch (MenuPosition.CurrentPosition)
+            switch (navigator.CurrentPosition)
             {
-                case Survival:
-                    gm.MenuContent.ClickSound.Play();
-                    gm.gameConfig.GameMode = Survival;
+                case GameState.SurvivalGame:
+                    AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
+                    gm.gameConfig.GameMode = GameState.SurvivalGame;
                     break;
-                case Extinction:
-                    gm.MenuContent.ClickSound.Play();
-                    gm.gameConfig.GameMode = Extinction;
+                case GameState.PlayExtinctionGame:
+                    AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
+                    gm.gameConfig.GameMode = GameState.PlayExtinctionGame;
                     break;
-                case Exit:
-                    gm.MenuContent.ClickSound.Play();
+                case GameState.Quit:
+                    AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
                     break;
-                case Blockworld:
-                    gm.MenuContent.ClickSound.Play();
-                    gm.gameConfig.GameMode = Blockworld;
+                case GameState.PlayDeathMatchGame:
+                    AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
+                    gm.gameConfig.GameMode = GameState.PlayDeathMatchGame;
                     break;
             }
 
-            MenuNavigator.GoTo(GameManager.GameState.MultiplayerMenu);
+            MenuNavigator.GoTo(GameState.MultiplayerMenu);
         }
 
         public void Reset()

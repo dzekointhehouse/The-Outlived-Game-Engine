@@ -20,8 +20,11 @@ using ZEngine.Managers;
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     // Optimus prime
-    class EntityRemovalSystem : ISystem
+    class EntityRemovalSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         public void Start()
         {
             EventBus.Instance.Subscribe<StateChangeEvent>("StateChanged", _DeadEntities);

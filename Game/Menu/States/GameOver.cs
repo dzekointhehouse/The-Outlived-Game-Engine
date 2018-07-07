@@ -35,7 +35,7 @@ namespace Game.Menu.States
             graphicsDevice.Clear(Color.Black);
 
             //sb.Begin();
-            //sb.Draw(gameManager.MenuContent.GameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
+            //sb.Draw(gameManager.OutlivedContent.GameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
             //sb.End();
 
             //var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
@@ -46,22 +46,22 @@ namespace Game.Menu.States
             //string exit = "(Press ESCAPE to exit)";
 
             //sb.Begin();
-            //sb.DrawString(gameManager.MenuContent.MenuFont, yourScore, new Vector2(50, 100), Color.Red);
-            //sb.DrawString(gameManager.MenuContent.MenuFont, exit, new Vector2(50, 200), Color.Red);
+            //sb.DrawString(gameManager.OutlivedContent.MenuFont, yourScore, new Vector2(50, 100), Color.Red);
+            //sb.DrawString(gameManager.OutlivedContent.MenuFont, exit, new Vector2(50, 200), Color.Red);
             //sb.End();
 
             sb.Begin();
 
-            //ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
-            sb.Draw(gameManager.MenuContent.GameOver, new Rectangle(0, 0, 1900, 1100), Color.White);
+            //ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.OutlivedContent, 0.0001f);
+            sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"), new Rectangle(0, 0, 1900, 1100), Color.White);
             sb.End();
 
             string totalScoreText = "Total score: ";
             string exitText = "(ESC -> main menu)";
 
             sb.Begin();
-            sb.DrawString(gameManager.MenuContent.MenuFont, totalScoreText, new Vector2(50, 40), Color.Red);
-            sb.DrawString(gameManager.MenuContent.MenuFont, exitText, new Vector2(30, 90), Color.Red);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), totalScoreText, new Vector2(50, 40), Color.Red);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), exitText, new Vector2(30, 90), Color.Red);
             sb.End();
 
             var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
@@ -71,7 +71,7 @@ namespace Game.Menu.States
             string totalScore = GameScore.TotalGameScore.ToString();
 
             sb.Begin();
-            sb.DrawString(gameManager.MenuContent.MenuFont, totalScore, new Vector2(380, 40), Color.Red);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), totalScore, new Vector2(380, 40), Color.Red);
             sb.End();
 
 
@@ -83,7 +83,7 @@ namespace Game.Menu.States
             string record = "Record: " + score[0];
 
             sb.Begin();
-            sb.DrawString(gameManager.MenuContent.MenuFont, record, new Vector2(50, 200), Color.Red);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), record, new Vector2(50, 200), Color.Red);
             sb.End();
 
 
@@ -101,7 +101,7 @@ namespace Game.Menu.States
             if (VirtualGamePad.Is(Cancel, Pressed))
             {
                 MediaPlayer.Stop();
-                MenuNavigator.GoTo(GameManager.GameState.MainMenu);
+                MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
             }
         }
 

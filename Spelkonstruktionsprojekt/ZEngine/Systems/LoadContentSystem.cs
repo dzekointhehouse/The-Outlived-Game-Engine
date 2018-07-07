@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,8 +18,14 @@ using ZEngine.Wrappers;
 
 namespace ZEngine.Systems
 {
-    public class LoadContentSystem : ISystem
+    public class LoadContentSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
         public void LoadContent(ContentManager contentManager)
         {
             var entities = ComponentManager.Instance

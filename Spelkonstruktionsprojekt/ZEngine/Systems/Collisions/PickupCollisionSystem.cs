@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -14,12 +15,16 @@ using ZEngine.Systems;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 {
-    internal class PickupCollisionSystem : ISystem
+    internal class PickupCollisionSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
         private readonly EventBus EventBus = EventBus.Instance;
-
-
         //Pickup Values, should be moved to components later
         //private int HealingAmount = 50;
         //private int AmmoAmount = 10;

@@ -11,8 +11,15 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    public class KillSwitchSystem : ISystem
+    public class KillSwitchSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
+
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 

@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using static Game.Menu.OutlivedStates;
 using static Game.Menu.States.CharacterMenu;
-using static Game.Menu.States.GameModeMenu;
 using static Game.Menu.States.MultiplayerMenu;
 
 namespace Game.Services
 {
     public class GameConfig
     {
-        public GameModes GameMode { get; set; } = GameModes.Exit;
+        public GameState GameMode { get; set; } = GameState.Quit;
 
         public List<Player> Players { get; set; } = new List<Player>();
 
@@ -16,7 +16,7 @@ namespace Game.Services
         {
             Players.Clear();
             Players = new List<Player>();
-            GameMode = GameModes.Exit;
+            GameMode = GameState.Quit;
         }
     }
 

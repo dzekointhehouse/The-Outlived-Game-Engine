@@ -10,8 +10,11 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    public class FlickeringLightSystem : ISystem
+    public class FlickeringLightSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         public void Update(GameTime gameTime)
         {
             foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(FlickeringLight)))

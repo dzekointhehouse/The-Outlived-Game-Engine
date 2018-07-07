@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Game.Menu;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,7 +29,7 @@ namespace Game.Entities
             var tileTypes = new Dictionary<int, string>();
             switch (config.GameMode)
             {
-                case GameModes.Survival:
+                case OutlivedStates.GameState.SurvivalGame:
                     tileTypes.Clear();
                     int[,] map = new int[40, 40];
                     tileTypes.Add(0, "grass");
@@ -39,7 +40,7 @@ namespace Game.Entities
                     spawnPositionThree = new Vector2(2300, 2300);
                     spawnPositionFour = new Vector2(2300, 2450);
                     break;
-                case GameModes.Extinction:
+                case OutlivedStates.GameState.PlayExtinctionGame:
                     //tileTypes.Clear();
                     //tileTypes.Add(2, "yellowwall64");
                     //tileTypes.Add(28, "grass");
@@ -87,7 +88,7 @@ namespace Game.Entities
 
 
                     break;
-                case GameModes.Blockworld:
+                case OutlivedStates.GameState.PlayDeathMatchGame:
                     tileTypes.Clear();
                     tileTypes.Add(4, "yellowwall64");
                     tileTypes.Add(2, "blue64");

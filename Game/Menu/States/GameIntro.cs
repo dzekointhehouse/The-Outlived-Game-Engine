@@ -7,7 +7,6 @@ using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using static Game.GameManager.GameState;
 using static Game.Services.VirtualGamePad;
 
 namespace Game.Menu.States
@@ -24,11 +23,11 @@ namespace Game.Menu.States
         public GameIntro(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
         {
             this.gameManager = gameManager;
-            viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
+            viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
             videoPlayer = new VideoPlayer();
-//            videoPlayer.Count(gameManager.MenuContent.IntroVideo);
+//            videoPlayer.Count(gameManager.OutlivedContent.IntroVideo);
         }
 
 
@@ -47,7 +46,7 @@ namespace Game.Menu.States
                 sb.Draw(videoTexture, new Rectangle(0, 0, 1920, 1080), Color.White);
                 //sb.End();
             }
-            else gameManager.CurrentGameState = GameManager.GameState.MainMenu;
+            else gameManager.CurrentGameState = OutlivedStates.GameState.MainMenu;
             sb.End();
         }
 
@@ -56,12 +55,12 @@ namespace Game.Menu.States
             // Skipping the intro.
             if (VirtualGamePad.Is(MenuKeys.Cancel, MenuKeyStates.Pressed))
             {
-                MenuNavigator.GoTo(GameManager.GameState.MainMenu);
+                MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
             }
 
             // We want to stop playing the video and dispose it if 
             // the game state has been set to main menu.
-            if (gameManager.CurrentGameState == GameManager.GameState.MainMenu)
+            if (gameManager.CurrentGameState == OutlivedStates.GameState.MainMenu)
             {
                 videoPlayer.Stop();
                 videoPlayer.Video.Dispose();

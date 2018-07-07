@@ -1,26 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using Game.Entities;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Penumbra;
-using Spelkonstruktionsprojekt.ZEngine.Components;
-using Spelkonstruktionsprojekt.ZEngine.Components.Input;
-using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
-using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
-using Spelkonstruktionsprojekt.ZEngine.Constants;
-using Spelkonstruktionsprojekt.ZEngine.GameTest;
-using Spelkonstruktionsprojekt.ZEngine.Helpers;
-using Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps;
-using Spelkonstruktionsprojekt.ZEngine.Managers;
-using Spelkonstruktionsprojekt.ZEngine.Systems;
-using ZEngine.Components;
-using ZEngine.Managers;
+using System.Collections.Generic;
+using Game.Menu;
 using ZEngine.Wrappers;
 
 namespace Game
@@ -30,30 +12,32 @@ namespace Game
     /// </summary>
     public class OutlivedGame : Microsoft.Xna.Framework.Game
     {
-        private readonly GameDependencies _gameDependencies = GameDependencies.Instance;
-        private KeyboardState _oldKeyboardState = Keyboard.GetState();
+
         private Vector2 viewportDimensions = new Vector2(1920, 1080); // HD baby!
         public SpriteBatch spriteBatch;
-        // private readonly FullSystemBundle gameBundle;
-        public GraphicsDeviceManager graphicsDeviceManager;
+        // private readonly GameEngine gameBundle;
+        public GraphicsDeviceManager graphics;
         private GameManager _gameManager;
+        private OutlivedContent _outlivedContent;
+
         private static OutlivedGame _outlived;
         
         public Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
 
+
         public OutlivedGame()
         {
             _outlived = this;
-           // gameBundle = new FullSystemBundle();
+           // gameBundle = new GameEngine();
 
-            graphicsDeviceManager = new GraphicsDeviceManager(this)
+            graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = (int)viewportDimensions.X,
                 PreferredBackBufferHeight = (int)viewportDimensions.Y,
                 GraphicsProfile = GraphicsProfile.HiDef
 
             };
-            graphicsDeviceManager.IsFullScreen = false;
+            graphics.IsFullScreen = false;
 
             Content.RootDirectory = "Content";
         }
@@ -64,12 +48,12 @@ namespace Game
         {
             //Init systems that require initialization
             //gameBundle.Initialize(this);
+            _outlivedContent = new OutlivedContent(this);
+            _outlivedContent.LoadContent();
             spriteBatch = new SpriteBatch(this.GraphicsDevice);
             _gameManager = new GameManager();
-            
-            //TODO move and make use of method LoadContent in this class
-            Fonts["ZEone"] = Content.Load<SpriteFont>("ZEOne");
-            Fonts["ZMenufont"] = Content.Load<SpriteFont>("Fonts/ZMenufont");
+
+
 
             base.Initialize();
         }

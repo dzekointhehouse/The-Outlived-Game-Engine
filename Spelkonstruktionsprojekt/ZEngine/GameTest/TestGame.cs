@@ -61,7 +61,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         private SpriteFont scoreFont;
         private Texture2D gameOver;
 
-        private readonly FullSystemBundle gameBundle;
+        private readonly GameEngine gameBundle;
 
         // Game states
         private enum GameState
@@ -75,7 +75,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 
         public TestGame()
         {
-            gameBundle = new FullSystemBundle();
+            //gameBundle = new GameEngine();
 
             //this.GraphicsDeviceManager = new GraphicsDeviceManager(this)
             //{
@@ -547,7 +547,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     //if (player.State == MediaState.Stopped)
                     //{
                     //BUNDLE
-                    gameBundle.Draw(gameTime);
+                    //gameBundle.Draw(gameTime);
                     fps.Draw(gameTime);
 
                     if (life.CheckIfAllPlayersAreDead())

@@ -1,26 +1,18 @@
-﻿using Spelkonstruktionsprojekt.ZEngine.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Spelkonstruktionsprojekt.ZEngine.Managers;
-using ZEngine.Managers;
-using ZEngine.EventBus;
-using System.Diagnostics;
+﻿using System.Linq;
+using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
-using ZEngine.EventBus;
-using ZEngine.Managers;
 using ZEngine.Systems;
-using Microsoft.Xna.Framework;
 
-namespace ZEngine.Systems
+namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    public class ScoreSystem : ISystem
+    public class ScoreSystem : ISystem, IUpdateables
     {
-        private readonly EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        private readonly global::ZEngine.EventBus.EventBus EventBus = global::ZEngine.EventBus.EventBus.Instance;
 
 
         public void Start()
@@ -80,7 +72,7 @@ namespace ZEngine.Systems
                 var scoreComponent = entity.Value as EntityScoreComponent;
                 var health = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
                 if (health == null) continue;
-                if (health.Alive)
+                if (health.IsAlive)
                 {
                     scoreComponent.score += GameScore.survivalScoreFactor * gameTime.ElapsedGameTime.TotalSeconds;
 

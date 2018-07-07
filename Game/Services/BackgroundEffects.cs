@@ -18,7 +18,7 @@ namespace Game.Services
             this.v = v;
         }
 
-        public void DrawExpandingEffect(SpriteBatch sb, Texture2D image, float speed = 0.01f)
+        public void DrawExpandingEffect(SpriteBatch sb, Texture2D image, float speed = 0.001f)
         {
             if (Scale <= MaxScale && Scale >= MinScale)
             {

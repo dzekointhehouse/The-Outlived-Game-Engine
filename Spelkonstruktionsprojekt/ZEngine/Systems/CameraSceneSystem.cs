@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Components;
 using ZEngine.Managers;
 
@@ -20,8 +21,11 @@ namespace ZEngine.Systems
     /// the entities that possess the player and position
     /// component.
     /// </summary>
-    class CameraSceneSystem : ISystem
+    class CameraSceneSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
         public void Update(GameTime gameTime)

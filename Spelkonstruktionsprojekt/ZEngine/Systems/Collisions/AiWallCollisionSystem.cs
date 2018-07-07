@@ -15,8 +15,15 @@ using ZEngine.Systems;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 {
-    class AiWallCollisionSystem : ISystem
+    class AiWallCollisionSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
+
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
         private readonly EventBus EventBus = EventBus.Instance;
 
@@ -28,7 +35,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         public void Start()
         {
-//            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.AiWallCollision, Handle);
+//            EventBus.Subscribe<SpecificCollisionEvent>(EventConstants.AiWallCollision, Update);
 //            EventBus.Subscribe<CloseEncounterEvent>(EventConstants.AiCloseEncounter, HandleCloseEncounter);
         }
 

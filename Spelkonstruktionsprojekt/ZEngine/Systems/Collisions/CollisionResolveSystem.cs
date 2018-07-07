@@ -10,67 +10,63 @@ using static ZEngine.Systems.CollisionEvents;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Debug = System.Diagnostics.Debug;
 
 namespace ZEngine.Systems
 {
-    class CollisionResolveSystem : ISystem
+    class CollisionResolveSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
 
-        private const bool PROFILING_COLLISIONS = false;
-
-        public void ResolveCollisions(Dictionary<CollisionRequirement, CollisionEvent> collisionEvents,
-            GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            Stopwatch timer;
-            if (PROFILING_COLLISIONS)
-            {
-                timer = Stopwatch.StartNew();
-            }
+            var collisionEvents = ZEngineCollisionEventPresets.StandardCollisionEvents;
             //For each collidable entity
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(CollisionComponent)))
             {
                 var collisionComponent = entity.Value as CollisionComponent;
-
                 //Check every occured collision
-                foreach (var collisionTarget in collisionComponent.Collisions)
+                if (collisionComponent != null)
                 {
-                    //If the collision matches any valid collision event
-                    foreach (var collisionEvent in collisionEvents)
+                    foreach (var collisionTarget in collisionComponent.Collisions)
                     {
-                        //Collision events are made up from requirement of each party
-                        //If both entities (parties) fulfil the component requirements
-                        //Then there is a match for a collision event
-                        uint movingEntityId = entity.Key;
-                        var collisionRequirements = collisionEvent.Key;
-                        var collisionEventType = collisionEvent.Value;
-                        
-                        if (MatchesCollisionEvent(collisionRequirements, movingEntityId, (uint) collisionTarget))
+                        //If the collision matches any valid collision event
+                        foreach (var collisionEvent in collisionEvents)
                         {
-                            //When there is a match for a collision-event, an event is published
-                            // for any system to pickup and resolve
-                            var collisionEventTypeName = FromCollisionEventType(collisionEventType);
-                            var collisionEventWrapper = new SpecificCollisionEvent()
+                            //Collision events are made up from requirement of each party
+                            //If both entities (parties) fulfil the component requirements
+                            //Then there is a match for a collision event
+                            uint movingEntityId = entity.Key;
+                            var collisionRequirements = collisionEvent.Key;
+                            var collisionEventType = collisionEvent.Value;
+
+                            if (MatchesCollisionEvent(collisionRequirements, movingEntityId, (uint) collisionTarget))
                             {
-                                Entity = (uint) movingEntityId,
-                                Target = collisionTarget,
-                                Event = collisionEventType,
-                                EventTime = gameTime.TotalGameTime.TotalMilliseconds
-                            };
-                            EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
+                                //When there is a match for a collision-event, an event is published
+                                // for any system to pickup and resolve
+                                var collisionEventTypeName = FromCollisionEventType(collisionEventType);
+                                var collisionEventWrapper = new SpecificCollisionEvent()
+                                {
+                                    Entity = (uint) movingEntityId,
+                                    Target = collisionTarget,
+                                    Event = collisionEventType,
+                                    EventTime = gameTime.TotalGameTime.TotalMilliseconds
+                                };
+                                EventBus.Publish(collisionEventTypeName, collisionEventWrapper);
+                            }
                         }
                     }
-                }
-                collisionComponent.Collisions.Clear();
-                StateManager.TryRemoveState(entity.Key, State.Collided, 0);
-            }
 
-            if (PROFILING_COLLISIONS)
-            {
-                Debug.WriteLine("COLLISION RESOLVE" + timer.ElapsedTicks);
+                    collisionComponent.Collisions.Clear();
+                }
+
+                StateManager.TryRemoveState(entity.Key, State.Collided, 0);
             }
         }
 

@@ -7,8 +7,13 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    public class TextSystem : ISystem
+    public class TextSystem : ISystem, IDrawables
     {
+        public bool Enabled { get; set; } = true;
+        public int DrawOrder { get; set; }
+        public void Draw()
+        {
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();

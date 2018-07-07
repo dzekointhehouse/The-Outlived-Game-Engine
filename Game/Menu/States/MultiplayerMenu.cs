@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using Game.Entities;
 using Game.Services;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using ZEngine.Wrappers;
 using static Game.Menu.States.MultiplayerMenu.TeamState;
 using static Game.Services.VirtualGamePad.MenuKeys;
@@ -35,7 +37,7 @@ namespace Game.Menu.States
             TeamTwo,
         }
 
-        private TeamState[] StateOrder =
+        private readonly TeamState[] _stateOrder =
         {
             TeamOne, NoTeam, TeamTwo
         };
@@ -49,10 +51,10 @@ namespace Game.Menu.States
             this.gm = gameManager;
             game = OutlivedGame.Instance();
             VirtualInputCollection = virtualInputCollection;
-            var playerOneChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
-            var playerTwoChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
-            var playerThreeChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
-            var playerFourChoice = new GenericButtonNavigator<TeamState>(StateOrder, horizontalNavigation: true);
+            var playerOneChoice = new GenericButtonNavigator<TeamState>(_stateOrder, horizontalNavigation: true);
+            var playerTwoChoice = new GenericButtonNavigator<TeamState>(_stateOrder, horizontalNavigation: true);
+            var playerThreeChoice = new GenericButtonNavigator<TeamState>(_stateOrder, horizontalNavigation: true);
+            var playerFourChoice = new GenericButtonNavigator<TeamState>(_stateOrder, horizontalNavigation: true);
             PlayerChoices = new[]
             {
                 playerOneChoice, playerTwoChoice, playerThreeChoice, playerFourChoice
@@ -63,32 +65,26 @@ namespace Game.Menu.States
                 PlayerChoices[i].ButtonNavigator.CurrentIndex = 1; // Set start position to second choice "NoTeam"
                 PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
             }
-
-            //KeyboardPosition =
-            //    new GenericButtonNavigator<GenericButtonNavigator<TeamState>>(PlayerChoices,
-            //        horizontalNavigation: true);
-
-            // Adding the options interval and gamemanager.
         }
 
-        // Draws the character names and the button at the option that
-        // is the current option that we are positioned at.
+
         private void DisplayPlayerChoice(TeamState playerChoice, float heightPercentage, SpriteBatch sb)
         {
             var viewport = game.GraphicsDevice.Viewport;
-            sb.Draw(gm.MenuContent.TeamOptions, viewport.Bounds, Color.White);
+            sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/teamoptions")
+                , viewport.Bounds, Color.White);
             switch (playerChoice)
             {
                 case NoTeam:
-                    sb.Draw(gm.MenuContent.GamePadIcon,
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Gamepad/gamepad"),
                         new Vector2((float) (viewport.Width * 0.4), viewport.Height * heightPercentage), Color.White);
                     break;
                 case TeamOne:
-                    sb.Draw(gm.MenuContent.GamePadIconHighlight,
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Gamepad/gamepad_h"),
                         new Vector2((float) (viewport.Width * 0.2), viewport.Height * heightPercentage), Color.White);
                     break;
                 case TeamTwo:
-                    sb.Draw(gm.MenuContent.GamePadIconHighlight,
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Gamepad/gamepad_h"),
                         new Vector2((float) (viewport.Width * 0.6), viewport.Height * heightPercentage), Color.White);
                     break;
             }
@@ -100,7 +96,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
+            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
 
             var heightPercentage = 0.2f;
             foreach (var playerChoice in PlayerChoices)
@@ -112,9 +108,6 @@ namespace Game.Menu.States
             sb.End();
         }
 
-        // The update method for this class
-        // that takes care of all the updates, that
-        // are to be done.
         public void Update(GameTime gameTime)
         {
             if (VirtualInputCollection.PlayerOne().Is(Cancel, Pressed))
@@ -132,9 +125,9 @@ namespace Game.Menu.States
                 var somePlayerHasTeam = PlayerChoices.Any(player => player.CurrentPosition != NoTeam);
                 if (somePlayerHasTeam)
                 {
-                    gm.MenuContent.ClickSound.Play();
+                    AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
                     UpdateGameConfigurations();
-                    MenuNavigator.GoTo(GameManager.GameState.CharacterMenu);
+                    MenuNavigator.GoTo(OutlivedStates.GameState.CharacterMenu);
                 }
             }
         }

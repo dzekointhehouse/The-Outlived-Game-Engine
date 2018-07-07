@@ -5,7 +5,7 @@
 //using System.Threading.Tasks;
 //using Game.Entities;
 //using Game.Services;
-//using Game.Systems;
+//using Game.UpdateableSystems;
 //using Microsoft.Xna.Framework;
 //using Microsoft.Xna.Framework.Audio;
 //using Microsoft.Xna.Framework.Graphics;
@@ -22,8 +22,8 @@
 //using ZEngine.Components;
 //using ZEngine.Managers;
 //using ZEngine.Wrappers;
-//using Spelkonstruktionsprojekt.ZEngine.Systems;
-//using ZEngine.Systems;
+//using Spelkonstruktionsprojekt.ZEngine.UpdateableSystems;
+//using ZEngine.UpdateableSystems;
 //using static Game.Services.VirtualGamePad.MenuKeys;
 //using static Game.Services.VirtualGamePad.MenuKeyStates;
 
@@ -49,7 +49,7 @@
 
 //        private PickupFactory pickups = new PickupFactory();
 
-//        // Systems
+//        // UpdateableSystems
 //        private SoundSystem soundSystem;
 
 //        private SpawnSystem spawnSystem;
@@ -131,7 +131,7 @@
 
 //            if (gameManager.gameConfig.GameMode == GameModeMenu.GameModes.Survival)
 //            {
-//                spawnSystem.HandleWaves(gameTime);
+//                spawnSystem.Update(gameTime);
 //            }
 
 

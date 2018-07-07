@@ -18,16 +18,22 @@ using ZEngine.Wrappers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
 {
-    class InputHandler : ISystem
+    class InputHandler : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         private readonly EventBus EventBus = EventBus.Instance;
-        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
+        private readonly ComponentManager _componentManager = ComponentManager.Instance;
+        private KeyboardState oldKeyboardState;
 
         private static Dictionary<uint, GamePadState> oldGamePadState = new Dictionary<uint, GamePadState>();
 
-        public void HandleGamePadInput(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(GamePadComponent)))
+            Update2(gameTime);
+
+            foreach (var entity in _componentManager.GetEntitiesWithComponent(typeof(GamePadComponent)))
             {
                 var gamePadComponent = entity.Value as GamePadComponent;
                 if (gamePadComponent == null || gamePadComponent.GamePadPlayerIndex < 0 ||
@@ -62,13 +68,14 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                 }
 
                 oldGamePadState[entity.Key] = gamePadState;
+
             }
         }
 
-        public void HandleInput(KeyboardState oldKeyboardState, GameTime gameTime)
+        private void Update2(GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
-            var entitiesWithActionBindings = ComponentManager.GetEntitiesWithComponent(typeof(ActionBindings));
+            var entitiesWithActionBindings = _componentManager.GetEntitiesWithComponent(typeof(ActionBindings));
 
             foreach (var entity in entitiesWithActionBindings)
             {
@@ -91,6 +98,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler
                         });
                 }
             }
+
+            oldKeyboardState = keyboardState;
         }
 
         public KeyEvent GetKeyEvent(Keys key, KeyboardState newState, KeyboardState oldState)

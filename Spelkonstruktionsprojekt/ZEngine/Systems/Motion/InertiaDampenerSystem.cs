@@ -8,9 +8,12 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    public class InertiaDampenerSystem : ISystem
+    public class InertiaDampenerSystem : ISystem, IUpdateables
     {
-        public void Apply(GameTime gameTime)
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gameTime)
         {
             var delta = gameTime.ElapsedGameTime.TotalSeconds;
             foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(typeof(MoveComponent)))

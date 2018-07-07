@@ -3,14 +3,21 @@ using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Components;
 using ZEngine.Managers;
 
 namespace ZEngine.Systems.InputHandler
 {
-    public class QuickTurnAbilitySystem : ISystem
+    public class QuickTurnAbilitySystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
         private readonly EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 

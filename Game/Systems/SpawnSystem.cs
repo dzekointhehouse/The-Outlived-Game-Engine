@@ -15,6 +15,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -22,19 +23,22 @@ using ZEngine.Wrappers;
 
 namespace Game.Systems
 {
-    public class SpawnSystem : ISystem
+    public class SpawnSystem : ISystem, IUpdateables
     {
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
         private EventBus Eventbus = EventBus.Instance;
         private readonly Random _random = new Random();
         private CountdownTimer _timer = new CountdownTimer(minutes: 0, seconds: 5);
 
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         public void Start()
         {
             Eventbus.Subscribe<uint>(EventConstants.PlayerDeath, SpawnPlayers);
         }
 
-        public void HandleWaves(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             _timer.UpdateTimer(gameTime);
 //            Debug.WriteLine(_timer.Seconds);
@@ -44,72 +48,72 @@ namespace Game.Systems
             var world = worldComponent.Value as WorldComponent;
 
             //GlobalSpawn
-            var GlobalSpawnEntities =
+            var globalSpawnEntities =
                 ComponentManager.GetEntitiesWithComponent(typeof(GlobalSpawnComponent));
-            if (GlobalSpawnEntities.Count <= 0) return;
+            if (globalSpawnEntities.Count <= 0) return;
 
-            var GlobalSpawnComponent =
-                ComponentManager.GetEntityComponentOrDefault<GlobalSpawnComponent>(GlobalSpawnEntities.First().Key);
+            var globalSpawnComponent =
+                ComponentManager.GetEntityComponentOrDefault<GlobalSpawnComponent>(globalSpawnEntities.First().Key);
 
-            GlobalSpawnComponent.EnemiesDead = true;
+            globalSpawnComponent.EnemiesDead = true;
 
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(SpawnComponent)))
             {
-                var HealthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
-                if (HealthComponent == null) continue;
+                var healthComponent = ComponentManager.GetEntityComponentOrDefault<HealthComponent>(entity.Key);
+                if (healthComponent == null) continue;
 
                 // if anyone is alive then we set EnemiesDead
                 // to false and break out of the loop.
-                if (HealthComponent.Alive)
+                if (healthComponent.IsAlive)
                 {
-                    GlobalSpawnComponent.EnemiesDead = false;
+                    globalSpawnComponent.EnemiesDead = false;
                     break;
                 }
                 _timer.StartCounter();
             }
 
             // If they are all dead
-            if (GlobalSpawnComponent.EnemiesDead && _timer.IsDone)
+            if (globalSpawnComponent.EnemiesDead && _timer.IsDone)
             {
                 // if all the enemies are dead, reset timer and count to next wave.
                 _timer.Reset();
 
                 var waveHud =
-                    ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(GlobalSpawnEntities
+                    ComponentManager.Instance.GetEntityComponentOrDefault<RenderHUDComponent>(globalSpawnEntities
                         .First().Key);
                 var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent))
                     .Count;
 
                 if (waveHud != null && nCameras == 1)
                 {
-                    waveHud.HUDtext = "Wave " + GlobalSpawnComponent.WaveLevel.ToString();
+                    waveHud.HUDtext = "Wave " + globalSpawnComponent.WaveLevel.ToString();
                     waveHud.IsOnlyHUD = true;
                     waveHud.Color = Color.DarkGray;
                 }
 
                 //SpawnSprite, the sprite for all monsters.
-                var SpawnSpriteEntities =
+                var spawnSpriteEntities =
                     ComponentManager.GetEntitiesWithComponent(typeof(SpawnFlyweightComponent));
 
-                if (SpawnSpriteEntities.Count <= 0) return;
-                var SpawnSpriteComponent =
-                    ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(SpawnSpriteEntities.First().Key);
+                if (spawnSpriteEntities.Count <= 0) return;
+                var spawnSpriteComponent =
+                    ComponentManager.GetEntityComponentOrDefault<SpriteComponent>(spawnSpriteEntities.First().Key);
 
                 var cameraComponents = ComponentManager.GetEntitiesWithComponent(typeof(CameraViewComponent));
 
                 // Looping through the next zombie wave and then
                 // adding them if their position is outside of the
                 // the players view bounds.
-                for (int i = 0; i < GlobalSpawnComponent.WaveSize; i++)
+                for (int i = 0; i < globalSpawnComponent.WaveSize; i++)
                 {
-                    CreateEnemy(GetSpawnPosition(world, cameraComponents, _random), SpawnSpriteComponent);
+                    CreateEnemy(GetSpawnPosition(world, cameraComponents, _random), spawnSpriteComponent);
                 }
                 // When done, increase the wave size...
-                if (GlobalSpawnComponent.WaveSize <= GlobalSpawnComponent.MaxLimitWaveSize)
-                    GlobalSpawnComponent.WaveSize += GlobalSpawnComponent.WaveSizeIncreaseConstant;
+                if (globalSpawnComponent.WaveSize <= globalSpawnComponent.MaxLimitWaveSize)
+                    globalSpawnComponent.WaveSize += globalSpawnComponent.WaveSizeIncreaseConstant;
 
                 // We increase the wave level, this is used to display progress.
-                GlobalSpawnComponent.WaveLevel++;
+                globalSpawnComponent.WaveLevel++;
 
                 var waveSound = OutlivedGame.Instance().Content.Load<SoundEffect>("Sound/NextWave")
                     .CreateInstance();

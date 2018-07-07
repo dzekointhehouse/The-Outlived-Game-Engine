@@ -56,8 +56,8 @@
     <Compile Include="Factory\EntityFactory.cs" />
     <Compile Include="BackgroundMusic.cs" />
     <Compile Include="Factory\EventZoneFactory.cs" />
-    <Compile Include="GameContent.cs" />
-    <Compile Include="MenuContent.cs" />
+    <Compile Include="OutlivedContent.cs" />
+    <Compile Include="Menu\GameState.cs" />
     <Compile Include="Menu\Lifecycle.cs" />
     <Compile Include="Menu\States\About.cs" />
     <Compile Include="Menu\States\GameModes\DeathMatch\DeathMatch.cs" />
@@ -70,7 +70,6 @@
     <Compile Include="Menu\States\GameModes\Survival\SurvivalInitializer.cs" />
     <Compile Include="Menu\States\GameOver.cs" />
     <Compile Include="Menu\States\GameOverCredits.cs" />
-    <Compile Include="Node.cs" />
     <Compile Include="Services\ButtonNavigator.cs" />
     <Compile Include="Services\ControlsConfig.cs" />
     <Compile Include="Services\CountdownTimer.cs" />

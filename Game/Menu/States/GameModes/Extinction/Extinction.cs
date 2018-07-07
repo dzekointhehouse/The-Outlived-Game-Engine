@@ -16,6 +16,7 @@ using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Components;
 using ZEngine.Managers;
 using ZEngine.Systems;
+using static Game.Menu.OutlivedStates;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
 
@@ -25,7 +26,7 @@ namespace Game.Menu.States.GameModes.Extinction
     {
         private GameConfig GameConfig { get; }
         private Viewport Viewport { get; }
-        private FullSystemBundle SystemsBundle { get; }
+        private GameEngine SystemsBundle { get; }
         private MenuNavigator MenuNavigator { get; }
         private VirtualGamePad MenuController { get; }
 
@@ -54,7 +55,7 @@ namespace Game.Menu.States.GameModes.Extinction
 
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            SystemsBundle.Draw(gameTime);
+            //SystemsBundle.Draw(gameTime);
             StartTimer.Draw(sb);
             DrawCameras(sb);
         }
@@ -105,7 +106,7 @@ namespace Game.Menu.States.GameModes.Extinction
             if (HealthSystem.CheckIfAllPlayersAreDead())
             {
                 BackgroundMusic.ClearList();
-                MenuNavigator.GoTo(GameManager.GameState.GameOverCredits);
+                MenuNavigator.GoTo(GameState.GameOverCredits);
             }
         }
 
@@ -123,7 +124,7 @@ namespace Game.Menu.States.GameModes.Extinction
             ExtinctionInitializer.InitializeEntities();
 
             // Loading this projects content to be used by the game engine.
-            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
@@ -134,7 +135,7 @@ namespace Game.Menu.States.GameModes.Extinction
             DowntownZone.Start();
             CarSystem.Start();
             // Game stuff
-            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
 
         public void BeforeHide()
@@ -150,7 +151,7 @@ namespace Game.Menu.States.GameModes.Extinction
             //            }
             ComponentManager.Instance.Clear();
             GameConfig.Reset();
-            SystemsBundle.ClearCaches();
+            SystemsBundle.Reset();
 
             MediaPlayer.Stop();
 

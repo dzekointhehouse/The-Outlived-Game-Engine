@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
@@ -9,8 +10,15 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
-    public class KillSwitchEventFactory : ISystem
+    public class KillSwitchEventFactory : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
+
         private static EventBus EventBus = EventBus.Instance;
         private static ComponentManager ComponentManager = ComponentManager.Instance;
 

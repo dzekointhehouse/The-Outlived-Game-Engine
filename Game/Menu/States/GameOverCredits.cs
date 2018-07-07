@@ -37,15 +37,15 @@ namespace Game.Menu.States
 
             sb.Begin();
 
-            //ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.MenuContent, 0.0001f);
-            sb.Draw(gameManager.MenuContent.Background, new Rectangle(0, 0, 1900, 1100), Color.White);
+            //ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.OutlivedContent, 0.0001f);
+            sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"), new Rectangle(0, 0, 1900, 1100), Color.White);
             sb.End();
 
 
             string totalScore = "Thanks for playing!";
 
             sb.Begin();
-            sb.DrawString(gameManager.MenuContent.MenuFont, totalScore, new Vector2(380, 40), Color.Red);
+            sb.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), totalScore, new Vector2(380, 40), Color.Red);
             sb.End();
         }
 
@@ -54,7 +54,7 @@ namespace Game.Menu.States
 
             if (VirtualGamePad.Is(Cancel, Pressed))
             {
-                MenuNavigator.GoTo(GameManager.GameState.MainMenu);
+                MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
             }
         }
 

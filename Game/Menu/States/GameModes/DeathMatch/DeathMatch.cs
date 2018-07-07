@@ -17,7 +17,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
     public class DeathMatch : IMenu, ILifecycle
     {
         public VirtualGamePad MenuController { get; set; }
-        public FullSystemBundle GameSystems { get; set; }
+        public GameEngine GameSystems { get; set; }
         public MenuNavigator MenuNavigator { get; set; }
         public GameConfig GameConfig { get; set; }
         public Viewport Viewport { get; set; }
@@ -41,7 +41,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
         {
             GameConfig = dependencies.GameConfig;
             Viewport = dependencies.Viewport;
-            GameSystems = new FullSystemBundle();
+            //GameSystems = new GameEngine();
             MenuNavigator = dependencies.MenuNavigator;
             MenuController = dependencies.VirtualInputs.PlayerOne();
             countdownTimer = new CountdownTimer(3);
@@ -51,7 +51,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
 
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            GameSystems.Draw(gameTime);
+            //GameSystems.Draw(gameTime);
             StartTimer.Draw(sb);
             DrawCameras(sb);
         }
@@ -108,13 +108,13 @@ namespace Game.Menu.States.GameModes.DeathMatch
             countdownTimer.StartCounter();
             countdownTimer.UpdateTimer(gameTime);
             BackgroundMusic.PlayMusic();
-//            SpawnSystem.HandleWaves();
+//            SpawnSystem.Update();
             GameSystems.Update(gameTime);
 
 
             if (countdownTimer.IsDone)
             {
-                MenuNavigator.GoTo(GameManager.GameState.GameOver);
+                MenuNavigator.GoTo(OutlivedStates.GameState.GameOver);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
 
         public void BeforeShow()
         {
-            GameSystems.Initialize(OutlivedGame.Instance(), OutlivedGame.Instance().Fonts["ZEone"]);
+            GameSystems.Initialize(OutlivedGame.Instance().Fonts["ZEone"]);
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
             DeathMatchInitializer = new DeathMatchInitializer(GameViewports, GameConfig);
@@ -132,7 +132,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
                 GameViewports.defaultView);
 
             // Loading this projects content to be used by the game engine.
-            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
             GameSystems.LoadContent();
             DeathMatchInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1");
@@ -143,7 +143,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             WeaponSystem.Start();
 
             // Load content from this game
-            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
 
         public void BeforeHide()
@@ -152,7 +152,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             WeaponSystem.Stop();
             ComponentManager.Instance.Clear();
             GameConfig.Reset();
-            GameSystems.ClearCaches();
+            GameSystems.Reset();
             BackgroundMusic.ClearList();
             MediaPlayer.Stop();
         }

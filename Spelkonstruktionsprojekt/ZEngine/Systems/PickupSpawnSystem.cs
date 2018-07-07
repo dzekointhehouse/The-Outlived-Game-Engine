@@ -7,14 +7,22 @@ using System;
 using System.Linq;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Components;
 using ZEngine.EventBus;
 using ZEngine.Managers;
 
 namespace ZEngine.Systems
 {
-    public class PickupSpawnSystem : ISystem
+    public class PickupSpawnSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
+
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
         private Random rand;

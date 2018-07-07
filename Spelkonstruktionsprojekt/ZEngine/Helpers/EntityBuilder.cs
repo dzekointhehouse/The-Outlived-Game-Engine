@@ -184,7 +184,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         public EntityBuilder SetHealth(int maxhealth = 100, int currentHealth = 100, bool alive = true)
         {
             var component = ComponentFactory.NewComponent<HealthComponent>();
-            component.Alive = alive;
+            component.IsAlive = alive;
             component.CurrentHealth = currentHealth;
             component.MaxHealth = maxhealth;
             components.Add(component);

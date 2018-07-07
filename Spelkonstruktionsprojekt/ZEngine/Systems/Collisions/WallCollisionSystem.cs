@@ -15,7 +15,7 @@ using ZEngine.Systems;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 {
-    class WallCollisionSystem : ISystem
+    class WallCollisionSystem : ISystem, IUpdateables
     {
         private EventBus EventBus = EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
@@ -68,6 +68,12 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
             if (sourceBulletComponent != null) return true;
 
             return false;
+        }
+
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+        public void Update(GameTime gt)
+        {
         }
     }
 }

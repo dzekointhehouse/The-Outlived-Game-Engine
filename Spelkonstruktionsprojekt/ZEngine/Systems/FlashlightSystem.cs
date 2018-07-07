@@ -19,10 +19,16 @@ using Vector3 = Microsoft.Xna.Framework.Vector3;
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     // Optimus prime
-    public class FlashlightSystem : ISystem
+    public class FlashlightSystem : ISystem, IDrawables, IUpdateables
     {
         public static string SystemName = "FlashlightSystem";
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+        public int DrawOrder { get; set; }
 
+        public void Draw()
+        {
+        }
         // This method is used to initialize the penumbra instance, and add
         // all the entities that have an associated instance of light component.
         public PenumbraComponent LoadPenumbra(Game game)
@@ -63,7 +69,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
 
         // This update call will be used to update the lights position if it is
         // attached to an moving entity.
-        public void Update(GameTime gameTime, Vector2 gameDimensions)
+        public void Update(GameTime gameTime)
         {
             var cameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent));
             // Return if there is not only one camera, because

@@ -21,13 +21,18 @@ using ZEngine.Managers;
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
     // Weapons system will be handling weapons stuff.
-    class WeaponSystem : ISystem
+    class WeaponSystem : ISystem, IUpdateables
     {
         private BulletFactory BulletFactory { get; set; } = new BulletFactory();
         private PistolAbilitySystem PistolAbilitySystem { get; set; } = new PistolAbilitySystem();
         private ShotgunAbilitySystem ShotgunAbilitySystem { get; set; } = new ShotgunAbilitySystem();
         private RifleAbilitySystem RifleAbilitySystem { get; set; } = new RifleAbilitySystem();
 
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+        public void Update(GameTime gt)
+        {
+        }
         // On start we subsribe to the events that
         // will be necessary for this system.
         public ISystem Start()

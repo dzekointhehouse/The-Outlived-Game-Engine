@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Game.Services;
+﻿using Game.Services;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using ZEngine.Components;
-using ZEngine.Wrappers;
-using static Game.GameManager.GameState;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using static Game.Menu.States.CharacterMenu.CharacterType;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
-using System.Diagnostics;
 
 namespace Game.Menu.States
 {
@@ -25,14 +17,13 @@ namespace Game.Menu.States
     /// </summary>
     public class CharacterMenu : IMenu, ILifecycle
     {
-        // Dependencies
-        private readonly Microsoft.Xna.Framework.Game game;
-
-//        private readonly GameManager gameManager;
-//        private readonly ControlsConfig controls;
-//        private CharacterType characterType = CharacterType.Bob;
-//        private Player currentPlayer;
-//        private int playerIndex = 0;
+        public enum CharacterType
+        {
+            Bob,
+            Edgar,
+            Ward,
+            Jimmy
+        }
 
         private GameManager gm { get; }
 
@@ -43,22 +34,9 @@ namespace Game.Menu.States
         public GameConfig GameConfig { get; }
         private Viewport viewport;
 
-        // enum so we can keep track on which option
-        // we currently are at.
-        public enum CharacterType
-        {
-            Bob,
-            Edgar,
-            Ward,
-            Jimmy
-        }
-
         private CharacterType CurrentSelectedCharacter = Bob;
         private int CurrentSelectedCharacterIndex = 0;
-        private CharacterType[] Characters = new[]
-        {
-            Bob, Edgar, Ward, Jimmy
-        };
+        private CharacterType[] Characters;
 
         public CharacterMenu(GameManager gameManager, PlayerVirtualInputCollection virtualInputs)
         {
@@ -67,19 +45,17 @@ namespace Game.Menu.States
             Player = VirtualInputs.PlayerOne();
             MenuNavigator = gameManager.MenuNavigator;
             GameConfig = gameManager.gameConfig;
-
-
             viewport = gm.viewport;
-            //game = gameManager.game;
-            //sb = gameManager.spriteBatch;
+
+            Characters = new[] { Bob, Edgar, Ward, Jimmy };
         }
 
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
-            
-            
+            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
+
+
             DrawCharacterNames(sb, viewport);
             DrawSelectedOptionText(sb, viewport);
             sb.End();
@@ -90,25 +66,25 @@ namespace Game.Menu.States
             switch (CurrentSelectedCharacter)
             {
                 case Bob:
-                    sb.Draw(gm.MenuContent.HighlightFirst, viewport.Bounds, Color.White);
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Characters/character_hb"), viewport.Bounds, Color.White);
                     break;
                 case Edgar:
-                    sb.Draw(gm.MenuContent.HighlightSecond, viewport.Bounds, Color.White);
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Characters/character_he"), viewport.Bounds, Color.White);
                     break;
                 case Ward:
-                    sb.Draw(gm.MenuContent.HighlightThird, viewport.Bounds, Color.White);
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Characters/character_hw"), viewport.Bounds, Color.White);
                     break;
                 case Jimmy:
-                    sb.Draw(gm.MenuContent.HighlightFourth, viewport.Bounds, Color.White);
+                    sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Characters/character_hj"), viewport.Bounds, Color.White);
                     break;
             }
         }
 
         private void DrawSelectedOptionText(SpriteBatch spriteBatch, Viewport viewport)
         {
-            var message = ("Player " + (CurrentPlayerIndex + 1) + " Choose your character!");
+            var message = $"Player {CurrentPlayerIndex + 1} choose your character!";
 
-            spriteBatch.DrawString(gm.MenuContent.MenuFont, message,
+            spriteBatch.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), message,
                 new Vector2(viewport.Width * 0.1f, viewport.Height * 0.1f), Color.Black);
         }
 
@@ -121,7 +97,7 @@ namespace Game.Menu.States
             }
             else
             {
-                Player = VirtualInputs.VirtualGamePads[CurrentPlayerIndex]; 
+                Player = VirtualInputs.VirtualGamePads[CurrentPlayerIndex];
             }
             ResetCharacterSelection();
         }
@@ -135,7 +111,7 @@ namespace Game.Menu.States
             }
             else
             {
-                Player = VirtualInputs.VirtualGamePads[CurrentPlayerIndex]; 
+                Player = VirtualInputs.VirtualGamePads[CurrentPlayerIndex];
             }
             ResetCharacterSelection();
         }
@@ -149,7 +125,7 @@ namespace Game.Menu.States
             }
             CurrentSelectedCharacter = Characters[CurrentSelectedCharacterIndex];
         }
-        
+
         private void SelectPreviousCharacter()
         {
             CurrentSelectedCharacterIndex--;
@@ -160,8 +136,9 @@ namespace Game.Menu.States
             CurrentSelectedCharacter = Characters[CurrentSelectedCharacterIndex];
         }
 
-        private void ResetCharacterSelection(){
-        
+        private void ResetCharacterSelection()
+        {
+
             CurrentSelectedCharacterIndex = 0;
             CurrentSelectedCharacter = Characters[CurrentSelectedCharacterIndex];
         }
@@ -170,22 +147,22 @@ namespace Game.Menu.States
         {
             return GameConfig.Players[CurrentPlayerIndex];
         }
-        
+
         private void StartGame()
         {
             if (MediaPlayer.State != MediaState.Stopped)
                 MediaPlayer.Stop();
-            
+
             //In the future game mode enum should ignored over using just GameManager states instaed
-            var states = new Dictionary<GameModeMenu.GameModes, GameManager.GameState>()
-            {
-                {GameModeMenu.GameModes.Blockworld, PlayDeathMatch},
-                {GameModeMenu.GameModes.Survival, PlaySurvivalGame},
-                {GameModeMenu.GameModes.Extinction, PlayExtinction},
-            };
-            MenuNavigator.GoTo(states[GameConfig.GameMode]);
+            //var states = new Dictionary<GameModeMenu.GameModes, GameManager.GameState>()
+            //{
+            //    {GameModeMenu.GameModes.Blockworld, PlayDeathMatch},
+            //    {GameModeMenu.GameModes.Survival, SurvivalGame},
+            //    {GameModeMenu.GameModes.Extinction, PlayExtinction},
+            //};
+            MenuNavigator.GoTo(GameConfig.GameMode);
         }
-        
+
         // The update method for this class
         // that takes care of all the updates, that
         // are to be done.
@@ -201,7 +178,7 @@ namespace Game.Menu.States
             }
             else if (Player.Is(Accept, Pressed))
             {
-                gm.MenuContent.ClickSound.Play();
+                AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
                 CurrentPlayer().CharacterType = CurrentSelectedCharacter;
                 CurrentPlayer().SpriteName = GetCharacterSpriteName(CurrentSelectedCharacter);
                 NextPlayerOrStartGame();

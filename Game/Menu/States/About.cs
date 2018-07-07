@@ -1,6 +1,7 @@
 ﻿using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
 
@@ -22,15 +23,15 @@ namespace Game.Menu.States
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
             gm = gameManager;
-            viewport = OutlivedGame.Instance().graphicsDeviceManager.GraphicsDevice.Viewport;
+            viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
         }
 
         // drawing the menu background.
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, gm.MenuContent.Background);
-            sb.Draw(gm.MenuContent.AboutBackground, viewport.Bounds, Color.White);
+            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
+            sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/about"), viewport.Bounds, Color.White);
             sb.End();
         }
         // A pause button that goes to the pause game state,

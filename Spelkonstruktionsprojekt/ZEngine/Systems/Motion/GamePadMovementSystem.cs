@@ -13,12 +13,15 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems.Motion
 {
-    public class GamePadMovementSystem : ISystem
+    public class GamePadMovementSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         private readonly EventBus EventBus = EventBus.Instance;
         private readonly ComponentManager ComponentManager = ComponentManager.Instance;
 
-        public void WalkForwards(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             foreach (var entity in ComponentManager.GetEntitiesWithComponent(typeof(GamePadComponent)))
             {

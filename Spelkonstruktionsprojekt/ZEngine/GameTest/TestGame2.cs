@@ -37,8 +37,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
 
             // TODO: Add your initialization logic here
-            lightSystems = SystemManager.Instance.GetSystem<FlashlightSystem>();
-            _titleSafeHudSystem = SystemManager.Instance.GetSystem<RenderHUDSystem>();
+            lightSystems = SystemManager.Instance.Get<FlashlightSystem>();
+            _titleSafeHudSystem = SystemManager.Instance.Get<RenderHUDSystem>();
 
             base.Initialize();
         }

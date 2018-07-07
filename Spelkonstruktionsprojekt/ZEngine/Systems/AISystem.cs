@@ -15,8 +15,11 @@ using System.Timers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class AISystem : ISystem
+    class AISystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         private ComponentManager ComponentManager = ComponentManager.Instance;
         private Random Random = new Random();
 
@@ -128,14 +131,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             var Y = Math.Floor((position.Y / world.WorldHeight) * 10);
 
             return new Vector2((float) X,(float) Y);
-        }
-
-        public Vector2 GetScreenCoordinates(Node position, WorldComponent world)
-        {
-            var X = position.X * 10;
-            var Y = position.Y * 10;
-
-            return new Vector2((float)X, (float)Y);
         }
 
         public void BeginWander(uint entityId, double startTime)

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using ZEngine.Components;
 using ZEngine.EventBus;
@@ -16,8 +17,15 @@ using ZEngine.Managers;
 
 namespace ZEngine.Systems.Collisions
 {
-    class EnemyCollisionSystem : ISystem
+    class EnemyCollisionSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
+        public void Update(GameTime gt)
+        {
+        }
+
         private EventBus.EventBus EventBus = ZEngine.EventBus.EventBus.Instance;
         private ComponentManager ComponentManager = ComponentManager.Instance;
         public GameTime GameTime { get; set; }
@@ -35,7 +43,7 @@ namespace ZEngine.Systems.Collisions
             {
                 healthComponent.Damage.Add(1000);
             }
-//            Debug.WriteLine("Handle enemy collision");
+//            Debug.WriteLine("Update enemy collision");
 //            GameEnder.Score = GameTime.TotalGameTime.TotalSeconds;
         }
     }

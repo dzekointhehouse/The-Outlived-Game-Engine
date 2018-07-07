@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MoreLinq;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Motion;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
+using ZEngine.Managers;
 using ZEngine.Systems;
 using ZEngine.Systems.Collisions;
 using ZEngine.Systems.InputHandler;
 
-namespace ZEngine.Managers
+namespace Spelkonstruktionsprojekt.ZEngine.Managers
 {
     public class SystemManager
     {
@@ -25,86 +29,67 @@ namespace ZEngine.Managers
         // We immediately put instances of systems in this
         // dictionary, now they can easily be accessed with it's
         // type used as the key.
-        private Dictionary<Type, ISystem> _systems;
+        public Dictionary<Type, IUpdateables> UpdateableSystems { get; set; }
+        public Dictionary<Type, IDrawables> DrawableSystems { get; set; }
 
         // _____________________________________________________________________________________________________________________ //
 
-
-        public void InstantiateAllSystems()
-        {     
-            _systems = new Dictionary<Type, ISystem>
-            {
-                { typeof(RenderSystem), new RenderSystem() },
-                { typeof(LoadContentSystem), new LoadContentSystem() },
-                { typeof(InputHandler), new InputHandler() },
-                { typeof(MoveSystem), new MoveSystem() },
-                { typeof(TankMovementSystem), new TankMovementSystem() },
-                { typeof(RenderHUDSystem), new RenderHUDSystem()},
-                { typeof(FlashlightSystem), new FlashlightSystem()},
-                { typeof(CollisionSystem), new CollisionSystem() },
-                { typeof(CollisionResolveSystem), new CollisionResolveSystem() },
-                { typeof(WallCollisionSystem), new WallCollisionSystem() },
-                { typeof(EnemyCollisionSystem), new EnemyCollisionSystem() },
-                { typeof(CameraSceneSystem), new CameraSceneSystem() },
-                { typeof(AISystem), new AISystem() },
-                { typeof(AnimationSystem), new AnimationSystem() },
-                { typeof(BulletCollisionSystem), new BulletCollisionSystem() },
-                { typeof(HealthSystem), new HealthSystem() },
-                { typeof(SpriteAnimationSystem), new SpriteAnimationSystem() },
-                { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
-                { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
-                { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
-                { typeof(LightAbilitySystem), new LightAbilitySystem() },
-                { typeof(PickupCollisionSystem), new PickupCollisionSystem() },
-                { typeof(SprintAbilitySystem), new SprintAbilitySystem() },
-                { typeof(QuickTurnAbilitySystem), new QuickTurnAbilitySystem() },
-                { typeof(GamePadMovementSystem), new GamePadMovementSystem() },
-                { typeof(ReloadSystem), new ReloadSystem() },
-                { typeof(ScoreSystem), new ScoreSystem() },
-                { typeof(HighScoreSystem), new HighScoreSystem() },
-                { typeof(AiWallCollisionSystem), new AiWallCollisionSystem() },
-                { typeof(FlickeringLightSystem), new FlickeringLightSystem() },
-                { typeof(KillSwitchEventFactory), new KillSwitchEventFactory() },
-                { typeof(KillSwitchSystem), new KillSwitchSystem() },
-                { typeof(PickupSpawnSystem), new PickupSpawnSystem() },
-                { typeof(TextSystem), new TextSystem() },
-                { typeof(EventZoneSystem), new EventZoneSystem() }
-            };
-        }
-
-        // Gets the instance of system that is specified
-        // as a type parameter. The method checks by using ContainsSystem
-        // if the systemtype is a valid system and then returns the 
-        // instance from the dictionary above. https://msdn.microsoft.com/en-us/library/d5x73970.aspx  
-        public T GetSystem<T>() where T : class, ISystem
-        {
-            if (ContainsSystem<T>())
-            {
-                return _systems[typeof(T)] as T;
-            }
-            throw new Exception("No such system exist.");
-        }
-
-        public ISystem GetSystem(Type systemType)
-        {
-            if (_systems.ContainsKey(systemType))
-            {
-                return _systems[systemType];
-            }
-            throw new Exception("No such system exist.");
-        }
 
         // Checks the systems dictionary if it contains the 
         // system that is specified as (T) type parameter when
         // this method is called, No big deal.
         private bool ContainsSystem<T>()
         {
-            return _systems.Count(system => system.Value.GetType() == typeof(T)) == 1;
+            return UpdateableSystems.Count(system => system.Value.GetType() == typeof(T)) == 1;
         }
 
+        // Gets the instance of system that is specified
+        // as a type parameter. The method checks by using ContainsSystem
+        // if the systemtype is a valid system and then returns the 
+        // instance from the dictionary above. https://msdn.microsoft.com/en-us/library/d5x73970.aspx  
         public T Get<T>() where T : class, ISystem
         {
-            return SystemManager.Instance.GetSystem(typeof(T)) as T;
+            //return Instance.GetSystem(typeof(T)) as T;
+            if (UpdateableSystems.ContainsKey(typeof(T)))
+            {
+                return UpdateableSystems[typeof(T)] as T;
+            }
+            else if (DrawableSystems.ContainsKey(typeof(T)))
+            {
+                return DrawableSystems[typeof(T)] as T;
+            }
+            throw new Exception("No such system exist.");
+        }
+
+
+        public async void Update(GameTime gt)
+        {
+            UpdateableSystems.ForEach(async system =>
+            {
+
+                if (system.GetType() == typeof(CollisionSystem))
+                {
+                    await Instance.Get<CollisionSystem>().Update();
+                }
+                else
+                {
+                    system.Value.Update(gt);
+                }
+
+            });
+            await Instance.Get<CollisionSystem>().Update();
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+
+        }
+
+
+        public void Reset()
+        {
+            UpdateableSystems.Clear();
+            DrawableSystems.Clear();
         }
     }
 }

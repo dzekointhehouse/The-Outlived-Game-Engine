@@ -7,6 +7,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using ZEngine.Components;
 using ZEngine.EventBus;
@@ -17,7 +18,7 @@ using static ZEngine.Components.SoundComponent;
 namespace Game.Systems
 {
     // Optimus prime
-    public class SoundSystem : ISystem
+    public class SoundSystem : ISystem, IUpdateables
     {
         private readonly EventBus EventBus = EventBus.Instance;
         private AudioEmitter emitter = new AudioEmitter();
@@ -255,6 +256,12 @@ namespace Game.Systems
                     animation.IsDone = true;
                 }
             };
+        }
+
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+        public void Update(GameTime gt)
+        {
         }
     }
 }

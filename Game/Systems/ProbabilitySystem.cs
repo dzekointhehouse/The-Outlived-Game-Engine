@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Audio;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Systems;
 using ZEngine.Components;
 using ZEngine.EventBus;
 
@@ -16,11 +17,13 @@ namespace Game.Systems
     /// <summary>
     /// Plays Random zombie sounds.
     /// </summary>
-    class ProbabilitySystem
+    class ProbabilitySystem : ISystem, IUpdateables
     {
         private Random random;
         private EventBus EventBus = EventBus.Instance;
         private Queue<SoundEffectInstance> zombieSounds;
+
+
 
         public ProbabilitySystem()
         {
@@ -46,7 +49,7 @@ namespace Game.Systems
             
         }
 
-        public void Generate()
+        public void Update(GameTime gt)
         {
             MediumProbabilityEvent();
         }
@@ -109,5 +112,8 @@ namespace Game.Systems
             }
 
         }
+
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
     }
 }

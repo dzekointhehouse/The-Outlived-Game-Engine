@@ -16,8 +16,11 @@ using ZEngine.Managers;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    public class HealthSystem : ISystem
+    public class HealthSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         public void Update(GameTime gameTime)
         {
             var healthEntities = ComponentManager.Instance.GetEntitiesWithComponent(typeof(HealthComponent));
@@ -46,17 +49,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 var healthComponent = ComponentManager.Instance.GetEntityComponentOrDefault<HealthComponent>(soldier.Key);
 
-                if (healthComponent.Alive) return false;
+                if (healthComponent.IsAlive) return false;
             }
             return true;
         }
 
         private void CheckIfDead(uint entityId, HealthComponent healthComponent, GameTime gameTime)
         {
-            if (healthComponent.CurrentHealth <= 0 && healthComponent.Alive)
+            if (healthComponent.CurrentHealth <= 0 && healthComponent.IsAlive)
             {
                 healthComponent.CurrentHealth = 0;
-                healthComponent.Alive = false;
+                healthComponent.IsAlive = false;
                 var positionComponent = ComponentManager.Instance.GetEntityComponentOrDefault<PositionComponent>(entityId);
 
                 var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
@@ -65,7 +68,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                 if (nCameras > 1 && ComponentManager.Instance.EntityHasComponent(typeof(PlayerComponent), entityId))
                 {
                     EventBus.Instance.Publish(EventConstants.PlayerDeath, entityId);
-                    healthComponent.Alive = true;
+                    healthComponent.IsAlive = true;
                     healthComponent.CurrentHealth = healthComponent.MaxHealth;
                 }
                 else

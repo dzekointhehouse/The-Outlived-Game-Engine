@@ -12,8 +12,11 @@ using ZEngine.Components;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Systems
 {
-    class AnimationSystem : ISystem
+    class AnimationSystem : ISystem, IUpdateables
     {
+        public bool Enabled { get; set; } = true;
+        public int UpdateOrder { get; set; }
+
         // FPS higher if kept outside.
         private List<int> doneAnimations = new List<int>(5);
         private List<string> usedUniqueAnimationTypes = new List<string>(5);
@@ -21,7 +24,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         // Will be updatin the animations that unfortunately
         // other systems use, which makes them dependent on this
         // system. But that's a design choice that we live by.
-        public void UpdateAnimations(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             var animations = ComponentManager.Instance.GetEntitiesWithComponent(typeof(AnimationComponent));
             foreach (var entity in animations)
