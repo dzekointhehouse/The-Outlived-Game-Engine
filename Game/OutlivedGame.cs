@@ -47,7 +47,7 @@ namespace Game
         protected override void Initialize()
         {
             //Init systems that require initialization
-            //gameBundle.Initialize(this);
+            //gameBundle.Start(this);
             _outlivedContent = new OutlivedContent(this);
             _outlivedContent.LoadContent();
             spriteBatch = new SpriteBatch(this.GraphicsDevice);

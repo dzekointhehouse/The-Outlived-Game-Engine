@@ -37,7 +37,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
             {
                 // Ambient color will determine how dark everything else
                 // except for the light will be.
-                AmbientColor = new Color(new Vector3(0.03f)) // should be an entity?
+                AmbientColor = new Color(new Vector3(0.5f)) // should be an entity? // 0.03f
             };
 
             foreach (var barrelFlash in ComponentManager.Instance.GetEntitiesWithComponent(typeof(BarrelFlashComponent)))

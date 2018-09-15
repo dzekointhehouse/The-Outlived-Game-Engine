@@ -7,6 +7,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
+using ZEngine.EventBus;
 using ZEngine.Managers;
 using ZEngine.Systems;
 using static Game.Services.VirtualGamePad.MenuKeys;
@@ -122,7 +123,7 @@ namespace Game.Menu.States.GameModes
 
             GameEngine = new GameEngine(OutlivedGame.Instance());
             GameEngine.AddSystems(SoundSystem, SpawnSystem, WeaponSystem, ProbabilitySystem);
-            GameEngine.Initialize(AssetManager.Instance.Get<SpriteFont>("ZEone"));
+            GameEngine.Start(AssetManager.Instance.Get<SpriteFont>("ZEone"));
 
 
             GameViewports.InitializeViewports();
@@ -137,18 +138,17 @@ namespace Game.Menu.States.GameModes
 
             SoundSystem.Start();
             WeaponSystem.Start();
-            // Game stuff
+
+
             SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
 
         public void BeforeHide()
         {
-            GameEngine = new GameEngine(OutlivedGame.Instance());
-
             //SoundSystem.Stop();
             //WeaponSystem.Stop();
+            GameEngine.Reset();
             GameConfig.Reset();
-            GameEngine.Reset();         
             BackgroundMusic.ClearList();
             MediaPlayer.Stop();
         }

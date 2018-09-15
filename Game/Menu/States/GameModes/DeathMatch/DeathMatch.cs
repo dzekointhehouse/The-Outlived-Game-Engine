@@ -124,7 +124,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
 
         public void BeforeShow()
         {
-            GameSystems.Initialize(OutlivedGame.Instance().Fonts["ZEone"]);
+            GameSystems.Start(OutlivedGame.Instance().Fonts["ZEone"]);
             GameViewports = new GameViewports(GameConfig, Viewport);
             GameViewports.InitializeViewports();
             DeathMatchInitializer = new DeathMatchInitializer(GameViewports, GameConfig);

@@ -81,7 +81,7 @@
 //        {
 //            if (!isInitialized)
 //            {
-//                Initialize();
+//                Start();
 //                gameManager.Engine.LoadContent();
 //                backgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
 //                weaponSystem.Start();
@@ -144,7 +144,7 @@
 
 //        // To initialize game content when navigating
 //        // to this state.
-//        public void Initialize()
+//        public void Start()
 //        {
 //            // Loading this projects content to be used by the game engine.
 //            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);

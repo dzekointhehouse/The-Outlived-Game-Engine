@@ -6,8 +6,13 @@ namespace ZEngine.EventBus
 {
     public class ParameterlessEventBus
     {
-        private readonly Dictionary<string, ICollection<Action>> _actions = new Dictionary<string, ICollection<Action>>();
-        
+        private readonly Dictionary<string, ICollection<Action>> _actions;
+
+        public ParameterlessEventBus()
+        {
+            _actions = new Dictionary<string, ICollection<Action>>();
+        }
+
         /**
          *  When publishing a message and a value of certain type it
          *  will initiate an Action stored in "_actions" that corresponds

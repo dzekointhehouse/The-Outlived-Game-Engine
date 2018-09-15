@@ -16,6 +16,7 @@ using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
 using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Motion;
 using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
+using ZEngine.EventBus;
 using ZEngine.Managers;
 
 using ZEngine.Systems;
@@ -42,7 +43,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
 
 
-        public void Initialize(SpriteFont font)
+        public void Start(SpriteFont font)
         {
 
             //Init systems that require initialization
@@ -88,8 +89,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 
         public void Reset()
         {
+            EventBus.Instance.Clear();
             manager.Get<RenderSystem>().ClearCache();
-            manager.Get<CollisionSystem>().ClearCache();
             ComponentManager.Instance.Clear();
         }
 

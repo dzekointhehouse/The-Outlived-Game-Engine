@@ -10,8 +10,13 @@ namespace ZEngine.EventBus
 {
     public class TypedEventBus
     {
-        private readonly Dictionary<Type, Dictionary<string, ICollection<object>>> _actions =
-            new Dictionary<Type, Dictionary<string, ICollection<object>>>();
+        private readonly Dictionary<Type, Dictionary<string, ICollection<object>>> _actions;
+
+        public TypedEventBus()
+        {
+            _actions =
+                new Dictionary<Type, Dictionary<string, ICollection<object>>>();
+        }
 
         /**
          *  When publishing a message and a value of certain type

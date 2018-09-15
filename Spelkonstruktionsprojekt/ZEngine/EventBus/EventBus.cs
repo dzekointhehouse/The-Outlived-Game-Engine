@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ZEngine.EventBus
@@ -40,6 +41,12 @@ namespace ZEngine.EventBus
         public void Unsubscribe<T>(string message, Action<T> callback)
         {
             LocalTypedEventBus.Unsubscribe<T>(message, callback);
+        }
+
+        public void Clear()
+        {
+            LocalEventBus = new ParameterlessEventBus();
+            LocalTypedEventBus = new TypedEventBus();
         }
     }
 }

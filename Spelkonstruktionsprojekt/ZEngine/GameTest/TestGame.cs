@@ -102,7 +102,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         protected override void Initialize()
         {
             //Init systems that require initialization
-     //       gameBundle.Initialize(this);
+     //       gameBundle.Start(this);
             spriteBatch = new SpriteBatch(this.GraphicsDevice);
             defaultView = GraphicsDevice.Viewport;
             leftView = defaultView;
