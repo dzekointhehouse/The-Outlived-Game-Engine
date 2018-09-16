@@ -16,42 +16,51 @@ namespace Game.Menu.States.GameModes.DeathMatch
 {
     public class DeathMatch : IMenu, ILifecycle
     {
-        public VirtualGamePad MenuController { get; set; }
-        public GameEngine GameSystems { get; set; }
-        public MenuNavigator MenuNavigator { get; set; }
-        public GameConfig GameConfig { get; set; }
-        public Viewport Viewport { get; set; }
-        
-        private SoundSystem SoundSystem { get; set; } = new SoundSystem();
+        private GameEngine GameEngine { get; set; }
+        private GameConfig GameConfig { get; }
+        private Viewport Viewport { get; }
+        private MenuNavigator MenuNavigator { get; }
+        private VirtualGamePad MenuController { get; }
 
-        private WeaponSystem WeaponSystem { get; set; } = new WeaponSystem();
-        private HealthSystem HealthSystem { get; set; } = new HealthSystem();
-
-        private SpawnSystem SpawnSystem { get; set; } = new SpawnSystem();
+        private SoundSystem SoundSystem { get; set; }
+        private SpawnSystem SpawnSystem { get; set; }
+        private WeaponSystem WeaponSystem { get; set; }
+        private HealthSystem HealthSystem { get; set; }
+        private ProbabilitySystem ProbabilitySystem { get; set; }
 
         private BackgroundMusic BackgroundMusic { get; set; } = new BackgroundMusic();
         private StartTimer StartTimer { get; set; }
+        private CountdownTimer CountdownTimer { get; set; }
+
         private GameViewports GameViewports { get; set; }
         
         private DeathMatchInitializer DeathMatchInitializer { get; set; }
 
-        private CountdownTimer countdownTimer;
         
         public DeathMatch(GameModeDependencies dependencies)
         {
             GameConfig = dependencies.GameConfig;
             Viewport = dependencies.Viewport;
-            //GameSystems = new GameEngine();
             MenuNavigator = dependencies.MenuNavigator;
             MenuController = dependencies.VirtualInputs.PlayerOne();
-            countdownTimer = new CountdownTimer(3);
+            CountdownTimer = new CountdownTimer(3);
+            CountdownTimer.StartCounter();
 
-            SpawnSystem.Start();
+            SoundSystem = new SoundSystem();
+            ProbabilitySystem = new ProbabilitySystem();
+            SpawnSystem = new SpawnSystem();
+            WeaponSystem = new WeaponSystem();
+            //var HealthSystem = new HealthSystem();
+
+            GameEngine = new GameEngine(OutlivedGame.Instance());
+            GameEngine.AddSystems(SoundSystem, SpawnSystem, WeaponSystem, ProbabilitySystem);
+            GameEngine.Start(AssetManager.Instance.Get<SpriteFont>("ZEone"));
+
         }
 
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
-            //GameSystems.Draw(gameTime);
+            GameEngine.Draw(sb, gameTime);
             StartTimer.Draw(sb);
             DrawCameras(sb);
         }
@@ -60,6 +69,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
         {
             // Clear to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
+
             if (StartTimer.IsCounting)
             {
                 return;
@@ -69,9 +79,9 @@ namespace Game.Menu.States.GameModes.DeathMatch
             var nCameras = ComponentManager.Instance.GetEntitiesWithComponent(typeof(CameraViewComponent)).Count;
 
 
-            spriteBatch.DrawString(OutlivedGame.Instance().Fonts["ZMenufont"], 
-                countdownTimer.GetFormatedTime(), 
-                new Vector2(((GameViewports.defaultView.Width - OutlivedGame.Instance().Fonts["ZMenufont"].MeasureString(countdownTimer.GetFormatedTime()).X) * 0.5f), GameViewports.defaultView.Y * 0.5f), 
+            spriteBatch.DrawString(AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont"), 
+                CountdownTimer.GetFormatedTime(), 
+                new Vector2(((GameViewports.defaultView.Width - AssetManager.Instance.Get<SpriteFont>("Fonts/ZMenufont").MeasureString(CountdownTimer.GetFormatedTime()).X) * 0.5f), GameViewports.defaultView.Y * 0.5f), 
                 Color.White);
 
             switch (nCameras)
@@ -105,15 +115,15 @@ namespace Game.Menu.States.GameModes.DeathMatch
                 return;
             }
 
-            countdownTimer.StartCounter();
-            countdownTimer.UpdateTimer(gameTime);
+            CountdownTimer.StartCounter();
+            CountdownTimer.UpdateTimer(gameTime);
             BackgroundMusic.PlayMusic();
-//            SpawnSystem.Update();
-            GameSystems.Update(gameTime);
+            GameEngine.Update(gameTime);
 
 
-            if (countdownTimer.IsDone)
+            if (CountdownTimer.IsDone || GameEngine.GetSystem<HealthSystem>().CheckIfAllPlayersAreDead())
             {
+                // TODO score state!!
                 MenuNavigator.GoTo(OutlivedStates.GameState.GameOver);
             }
         }
@@ -124,8 +134,19 @@ namespace Game.Menu.States.GameModes.DeathMatch
 
         public void BeforeShow()
         {
-            GameSystems.Start(OutlivedGame.Instance().Fonts["ZEone"]);
             GameViewports = new GameViewports(GameConfig, Viewport);
+            BackgroundMusic = new BackgroundMusic();
+
+            SoundSystem = new SoundSystem();
+            ProbabilitySystem = new ProbabilitySystem();
+            SpawnSystem = new SpawnSystem();
+            WeaponSystem = new WeaponSystem();
+            //var HealthSystem = new HealthSystem();
+
+            GameEngine = new GameEngine(OutlivedGame.Instance());
+            GameEngine.AddSystems(SoundSystem, SpawnSystem, WeaponSystem, ProbabilitySystem);
+            GameEngine.Start(AssetManager.Instance.Get<SpriteFont>("ZEone"));
+
             GameViewports.InitializeViewports();
             DeathMatchInitializer = new DeathMatchInitializer(GameViewports, GameConfig);
             StartTimer = new StartTimer(0, OutlivedGame.Instance().Get<SpriteFont>("Fonts/ZlargeFont"),
@@ -133,8 +154,9 @@ namespace Game.Menu.States.GameModes.DeathMatch
 
             // Loading this projects content to be used by the game engine.
             //SystemManager.Instance.Get<GameContent>().LoadContent(OutlivedGame.Instance().Content);
-            GameSystems.LoadContent();
             DeathMatchInitializer.InitializeEntities();
+            GameEngine.LoadContent();
+
             BackgroundMusic.LoadSongs("bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1");
             WeaponSystem.LoadBulletSpriteEntity();
 
@@ -143,7 +165,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             WeaponSystem.Start();
 
             // Load content from this game
-            //SystemManager.Instance.Get<GameContent>().LoadContent(OutlivedGame.Instance().Content);
+            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
         }
 
         public void BeforeHide()
@@ -152,7 +174,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             WeaponSystem.Stop();
             ComponentManager.Instance.Clear();
             GameConfig.Reset();
-            GameSystems.Reset();
+            GameEngine.Reset(); ;
             BackgroundMusic.ClearList();
             MediaPlayer.Stop();
         }

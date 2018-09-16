@@ -45,8 +45,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         private void StopMovement(PositionComponent positionComponent, MoveComponent moveComponent)
         {
-            positionComponent.Position = moveComponent.PreviousPosition;
-            moveComponent.Direction = moveComponent.PreviousDirection;
+            positionComponent.Position = moveComponent.PreviousPosition<<;
+            //moveComponent.Direction = moveComponent.PreviousDirection;
         }
 
         private static bool IsBulletCollisionAndNotRelevant(SpecificCollisionEvent collisionEvent)

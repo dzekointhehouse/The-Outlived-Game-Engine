@@ -25,18 +25,20 @@ namespace Game.Menu.States.GameModes.DeathMatch
         public DeathMatchInitializer(GameViewports gameViewports, GameConfig gameConfig)
         {          
             GameConfig = gameConfig;
-            GameViewports = gameViewports;  
+            GameViewports = gameViewports;
+
+            GamePlayers = new GamePlayers(GameConfig, GameViewports);
+            PickupFactory = new PickupFactory();
         }
         
         public void InitializeEntities()
         {
-            GamePlayers = new GamePlayers(GameConfig, GameViewports);
             GameMaps.SetupMap(GameConfig);
             GamePlayers.CreatePlayers(GameMaps);
             CreateGlobalBulletSpriteEntity();
             CreateGlobalSpawnSpriteEntity();
             CreateGlobalSpawnEntity();
-            // PickupFactory.CreatePickups();
+            PickupFactory.CreatePickups();
             CreateGameEntities();
             CreateDefaultViewport();
         }

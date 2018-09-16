@@ -138,7 +138,7 @@ namespace ZEngine.Systems
                         MovingEntityRequirements = new List<Type>(),
                         TargetEntityRequirements = new List<Type>
                         {
-                            typeof(WallCollisionSystem)
+                            typeof(WallComponent)
                         }
                     },
                     CollisionEvent.Wall

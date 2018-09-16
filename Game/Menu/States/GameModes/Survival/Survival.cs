@@ -44,6 +44,15 @@ namespace Game.Menu.States.GameModes
             Viewport = dependencies.Viewport;
             MenuNavigator = dependencies.MenuNavigator;
             MenuController = dependencies.VirtualInputs.PlayerOne();
+
+            SoundSystem = new SoundSystem();
+            ProbabilitySystem = new ProbabilitySystem();
+            SpawnSystem = new SpawnSystem();
+            WeaponSystem = new WeaponSystem();
+
+            GameEngine = new GameEngine(OutlivedGame.Instance());
+            GameEngine.AddSystems(SoundSystem, SpawnSystem, WeaponSystem, ProbabilitySystem);
+            GameEngine.Start(AssetManager.Instance.Get<SpriteFont>("ZEone"));
         }
 
         public void Draw(GameTime gameTime, SpriteBatch sb)
@@ -115,15 +124,6 @@ namespace Game.Menu.States.GameModes
             GameViewports = new GameViewports(GameConfig, Viewport);
             BackgroundMusic = new BackgroundMusic();
 
-            var SoundSystem = new SoundSystem();
-            var ProbabilitySystem = new ProbabilitySystem();
-            var SpawnSystem = new SpawnSystem();
-            var WeaponSystem = new WeaponSystem();
-            //var HealthSystem = new HealthSystem();
-
-            GameEngine = new GameEngine(OutlivedGame.Instance());
-            GameEngine.AddSystems(SoundSystem, SpawnSystem, WeaponSystem, ProbabilitySystem);
-            GameEngine.Start(AssetManager.Instance.Get<SpriteFont>("ZEone"));
 
 
             GameViewports.InitializeViewports();
