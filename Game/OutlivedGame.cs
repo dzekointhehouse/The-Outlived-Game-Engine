@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Game.Menu;
+using Microsoft.Xna.Framework.Content;
 using ZEngine.Wrappers;
 
 namespace Game
@@ -48,10 +49,12 @@ namespace Game
         {
             //Init systems that require initialization
             //gameBundle.Start(this);
+            
             _outlivedContent = new OutlivedContent(this);
             _outlivedContent.LoadContent();
             spriteBatch = new SpriteBatch(this.GraphicsDevice);
             _gameManager = new GameManager();
+
 
 
 

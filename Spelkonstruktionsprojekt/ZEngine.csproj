@@ -147,7 +147,7 @@
     <Compile Include="ZEngine\Systems\FlashlightSystem.cs" />
     <Compile Include="ZEngine\Systems\KillSwitchSystem.cs" />
     <Compile Include="ZEngine\Systems\LightAbilitySystem.cs" />
-    <Compile Include="ZEngine\Systems\LoadContentSystem.cs" />
+    <Compile Include="ZEngine\Systems\GameContent.cs" />
     <Compile Include="ZEngine\Systems\InputHandler\TankMovementSystem.cs" />
     <Compile Include="ZEngine\Systems\Motion\BackwardsPenaltySystem.cs" />
     <Compile Include="ZEngine\Systems\Motion\GamePadMovementSystem.cs" />

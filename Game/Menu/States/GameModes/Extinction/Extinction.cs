@@ -62,7 +62,7 @@ namespace Game.Menu.States.GameModes.Extinction
 
         private void DrawCameras(SpriteBatch spriteBatch)
         {
-            // Reset to default view
+            // Clear to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
 
             // Should move to HUD which should render defaultview
@@ -124,7 +124,7 @@ namespace Game.Menu.States.GameModes.Extinction
             ExtinctionInitializer.InitializeEntities();
 
             // Loading this projects content to be used by the game engine.
-            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            //SystemManager.Instance.Get<GameContent>().LoadContent(OutlivedGame.Instance().Content);
             SystemsBundle.LoadContent();
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
@@ -135,7 +135,7 @@ namespace Game.Menu.States.GameModes.Extinction
             DowntownZone.Start();
             CarSystem.Start();
             // Game stuff
-            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            //ystemManager.Instance.Get<GameContent>().LoadContent(OutlivedGame.Instance().Content);
         }
 
         public void BeforeHide()

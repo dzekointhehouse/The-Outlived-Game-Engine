@@ -45,6 +45,7 @@ namespace ZEngine.EventBus
 
         public void Clear()
         {
+            LocalTypedEventBus = new TypedEventBus();
             LocalEventBus = new ParameterlessEventBus();
             LocalTypedEventBus = new TypedEventBus();
         }

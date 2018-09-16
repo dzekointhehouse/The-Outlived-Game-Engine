@@ -91,7 +91,7 @@
 //            gameManager.Engine.Draw(gameTime);
 //            _startTimer.Draw(spriteBatch);
 
-//            // Reset to default view
+//            // Clear to default view
 //            OutlivedGame.Instance().GraphicsDevice.viewport = gameViewports.defaultView;
 
 //            // Should move to HUD which should render defaultview
@@ -147,7 +147,7 @@
 //        public void Start()
 //        {
 //            // Loading this projects content to be used by the game engine.
-//            SystemManager.Instance.GetSystem<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+//            SystemManager.Instance.GetSystem<GameContent>().LoadContent(OutlivedGame.Instance().Content);
 
 //            gameViewports.InitializeViewports();
 //            soundSystem.Start();
@@ -273,7 +273,7 @@
 //            ComponentManager.Instance.AddComponentToEntity(spawncomponent, global.GetEntityKey());
 //        }
 
-//        public void Reset()
+//        public void Clear()
 //        {
 //        }
 
@@ -287,7 +287,7 @@
 //            {
 //                ComponentManager.Instance.DeleteEntity(entity);
 //            }
-//            gameManager.gameConfig.Reset();
+//            gameManager.gameConfig.Clear();
 //        }
 //    }
 //}

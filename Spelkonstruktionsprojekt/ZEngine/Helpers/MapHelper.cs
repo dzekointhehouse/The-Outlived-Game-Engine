@@ -17,8 +17,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
     public class MapHelper
     {
         public Dictionary<int, string> TileTypes { get; set; }
-        public List<int> Collisions { get; set; } = new List<int>(10);
-        public  List<int> HullList { get; set; } = new List<int>(10);
+        public List<int> Collisions;
+        public  List<int> HullList;
 
         private static ComponentFactory ComponentFactory = ComponentManager.Instance.ComponentFactory;
 
@@ -28,6 +28,8 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         public MapHelper(Dictionary<int, string> tileTypes)
         {
             this.TileTypes = tileTypes;
+            Collisions = new List<int>(10);
+            HullList = new List<int>(10);
         }
 
 

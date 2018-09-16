@@ -20,15 +20,13 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
         public bool Enabled { get; set; } = true;
         public int UpdateOrder { get; set; }
 
+        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
+        private readonly EventBus EventBus = EventBus.Instance;
+
+
         public void Update(GameTime gt)
         {
         }
-        private readonly ComponentManager ComponentManager = ComponentManager.Instance;
-        private readonly EventBus EventBus = EventBus.Instance;
-        //Pickup Values, should be moved to components later
-        //private int HealingAmount = 50;
-        //private int AmmoAmount = 10;
-
 
         public void Start()
         {

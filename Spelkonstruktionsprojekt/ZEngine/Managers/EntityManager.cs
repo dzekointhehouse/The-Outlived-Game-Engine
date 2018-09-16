@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 
@@ -18,6 +19,7 @@ namespace ZEngine.Managers
         private static EntityManager _entityManager;
         private uint _nextEntityId;
         private List<uint> _existingEntities;
+        public List<uint> EntitiesToDestroy = new List<uint>();
 
         // _____________________________________________________________________________________________________________________ //
 
@@ -43,7 +45,7 @@ namespace ZEngine.Managers
                 return _entityManager;
             }
             _entityManager = new EntityManager();
-            _entityManager.CreateEntityDestructionComponent();
+            //_entityManager.CreateEntityDestructionComponent();
             return _entityManager;
         }
 
@@ -86,11 +88,13 @@ namespace ZEngine.Managers
         
         public static void AddEntityToDestructionList(uint entityId)
         {
-            var destructionComponents =
-                ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityDestructionComponent));
-            if(destructionComponents.Count < 1) return;
-            var destructionComponent = destructionComponents.First().Value as EntityDestructionComponent;
-            destructionComponent.EntitiesToDestroy.Add(entityId);
+            //var destructionComponents =
+            //    ComponentManager.Instance.GetEntitiesWithComponent(typeof(EntityDestructionComponent));
+            //if(destructionComponents.Count < 1) return;
+            //var destructionComponent = destructionComponents.First().Value as EntityDestructionComponent;
+            //destructionComponent.EntitiesToDestroy.Add(entityId);
+
+            GetEntityManager().EntitiesToDestroy.Add(entityId);
 
             var tagComponent = ComponentManager.Instance.GetEntityComponentOrDefault<TagComponent>(entityId);
             if (tagComponent != null)
@@ -99,11 +103,16 @@ namespace ZEngine.Managers
             }
         }
 
-        private void CreateEntityDestructionComponent()
+        //private void CreateEntityDestructionComponent()
+        //{
+        //    var entity = NewEntity();
+        //    var destructionComponent = new EntityDestructionComponent();
+        //    ComponentManager.Instance.AddComponentToEntity(destructionComponent, entity);
+        //}
+
+        public void Clear()
         {
-            var entity = NewEntity();
-            var destructionComponent = new EntityDestructionComponent();
-            ComponentManager.Instance.AddComponentToEntity(destructionComponent, entity);
+            _existingEntities.Clear();
         }
     }
 }

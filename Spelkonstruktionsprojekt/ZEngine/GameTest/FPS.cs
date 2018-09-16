@@ -65,7 +65,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                     // (this is "frames per second" if updateInterval = 1)
                     fps = frameCount / timeSinceLastUpdate;
 
-                    // Reset the frame counter
+                    // Clear the frame counter
                     frameCount = 0;
 
                     // Adjust the time elapsed since the last FPS update

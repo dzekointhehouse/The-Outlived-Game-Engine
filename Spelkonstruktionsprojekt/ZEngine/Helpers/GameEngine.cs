@@ -92,6 +92,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             EventBus.Instance.Clear();
             manager.Get<RenderSystem>().ClearCache();
             ComponentManager.Instance.Clear();
+            EntityManager.GetEntityManager().Clear();
         }
 
         public void AddSystems(params IUpdateables[] systems)

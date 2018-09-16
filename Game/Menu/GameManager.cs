@@ -6,6 +6,8 @@ using Game.Menu.States.GameModes.Extinction;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
+using ZEngine.Systems;
 using static Game.Menu.OutlivedStates;
 
 namespace Game.Menu
@@ -83,7 +85,8 @@ namespace Game.Menu
                 Viewport = viewport,
                 VirtualInputs = virtualInputCollection
             };
-            
+
+
             // initializing the states, remember:
             // all the states need to exist in the 
             // manager.

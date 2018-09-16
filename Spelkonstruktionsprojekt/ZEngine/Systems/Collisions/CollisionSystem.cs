@@ -63,7 +63,6 @@ namespace ZEngine.Systems
                 new Rectangle(0, 0, 50000, 50000)
             );
 
-
             var tasks = new List<Task>();
             foreach (var movingEntity in QuadTree.Entities())
             {

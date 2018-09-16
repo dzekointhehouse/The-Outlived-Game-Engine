@@ -33,26 +33,21 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
         public void Update(GameTime gameTime)
         {
             ImmediateRemoval();
-        } 
+        }
 
         private void ImmediateRemoval()
         {
-            foreach (var entity in ComponentManager.Instance.GetEntitiesWithComponent(
-                typeof(EntityDestructionComponent)))
+            foreach (var id in EntityManager.GetEntityManager().EntitiesToDestroy)
             {
-                var destructionComponent = entity.Value as EntityDestructionComponent;
-                foreach (var id in destructionComponent.EntitiesToDestroy)
+                var lightComponent = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(id);
+                if (lightComponent != null)
                 {
-                    var lightComponent = ComponentManager.Instance.GetEntityComponentOrDefault<LightComponent>(id);
-                    if (lightComponent != null)
-                    {
-                        lightComponent.Light.Enabled = false;
-                    };
+                    lightComponent.Light.Enabled = false;
+                };
 
-                    EntityManager.GetEntityManager().DeleteEntity(id);
-                }
-                destructionComponent.EntitiesToDestroy.Clear();
+                EntityManager.GetEntityManager().DeleteEntity(id);
             }
+            EntityManager.GetEntityManager().EntitiesToDestroy.Clear();
         }
 
         private void _DeadEntities(StateChangeEvent stateChangeEvent)
@@ -137,11 +132,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems
                         sprite.Alpha -= 0.0001f;
                         return;
                     }
-
-
-//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteAnimationComponent), entityKey);
-//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(HealthComponent), entityKey);
-//                    ComponentManager.Instance.RemoveComponentFromEntity(typeof(SpriteComponent), entityKey);
 
                     animation.IsDone = true;
                 }

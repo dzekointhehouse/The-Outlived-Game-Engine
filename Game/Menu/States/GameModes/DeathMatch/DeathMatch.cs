@@ -58,7 +58,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
 
         private void DrawCameras(SpriteBatch spriteBatch)
         {
-            // Reset to default view
+            // Clear to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
             if (StartTimer.IsCounting)
             {
@@ -132,7 +132,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
                 GameViewports.defaultView);
 
             // Loading this projects content to be used by the game engine.
-            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            //SystemManager.Instance.Get<GameContent>().LoadContent(OutlivedGame.Instance().Content);
             GameSystems.LoadContent();
             DeathMatchInitializer.InitializeEntities();
             BackgroundMusic.LoadSongs("bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1", "bg_actionmusic1");
@@ -143,7 +143,7 @@ namespace Game.Menu.States.GameModes.DeathMatch
             WeaponSystem.Start();
 
             // Load content from this game
-            SystemManager.Instance.Get<LoadContentSystem>().LoadContent(OutlivedGame.Instance().Content);
+            //SystemManager.Instance.Get<GameContent>().LoadContent(OutlivedGame.Instance().Content);
         }
 
         public void BeforeHide()

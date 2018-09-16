@@ -55,7 +55,7 @@ namespace Game.Menu.States.GameModes
 
         private void DrawHUDs(SpriteBatch spriteBatch)
         {
-            // Reset to default view
+            // Clear to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
 
             // Should move to HUD which should render defaultview
@@ -133,6 +133,8 @@ namespace Game.Menu.States.GameModes
 
             SurvivalInitializer.InitializeEntities();
             GameEngine.LoadContent();
+
+
             BackgroundMusic.LoadSongs("bg_music1", "bg_music3", "bg_music3", "bg_music4");
             WeaponSystem.LoadBulletSpriteEntity();
 
