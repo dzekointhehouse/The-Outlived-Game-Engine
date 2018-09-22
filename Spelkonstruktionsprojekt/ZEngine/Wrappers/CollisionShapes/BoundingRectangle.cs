@@ -16,30 +16,36 @@ namespace Spelkonstruktionsprojekt.ZEngine.Wrappers.CollisionShapes
         {
             base.Type = VolumeType.Rectangle;
             base.BoundingRectangle = new BoundingBox();
+            base.CollisionTexture = null;
         }
 
 
-        public override Texture2D GetCollisionBorderTexture(GraphicsDevice graphics, int width, int height)
+        public override void GetCollisionBorderTexture(GraphicsDevice graphics, int width, int height)
         {
-            var colours = new List<Color>();
-
-            for (int y = 0; y < height; y++)
+            if(CollisionTexture == null)
             {
-                for (int x = 0; x < width; x++)
+                var colours = new List<Color>();
+
+                for (int y = 0; y < height; y++)
                 {
-                    if(x == 0 || y == 0 || x == width - 1 || y == height - 1)
+                    for (int x = 0; x < width; x++)
                     {
-                        colours.Add(new Color(255, 255, 255, 255));
-                    } else
-                    {
-                        colours.Add(new Color(0, 0, 0, 0));
+                        if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
+                        {
+                            colours.Add(new Color(255, 255, 255, 255));
+                        }
+                        else
+                        {
+                            colours.Add(new Color(0, 0, 0, 0));
+                        }
                     }
                 }
+
+                var texture = new Texture2D(graphics, width, height);
+                texture.SetData<Color>(colours.ToArray());
+                CollisionTexture = texture;
             }
 
-            var texture = new Texture2D(graphics, width, height);
-            texture.SetData<Color>(colours.ToArray());
-            return texture;
         }
 
         public override bool Intersects(CollisionShape shape)

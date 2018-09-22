@@ -167,16 +167,22 @@ namespace ZEngine.Systems
                 );
 
                 if (collision != null)
+                {
+                    collision.BoundingShape.GetCollisionBorderTexture(spriteBatch.GraphicsDevice, destinationRectangle.Width, destinationRectangle.Height);
+                    var collisionBounds = collision.BoundingShape.CollisionTexture.Bounds;
+
                     spriteBatch.Draw(
-    collision.BoundingShape.GetCollisionBorderTexture(spriteBatch.GraphicsDevice, destinationRectangle.Width, destinationRectangle.Height),
-    destinationRectangle: destinationRectangle,
-    sourceRectangle: collision.BoundingShape.GetCollisionBorderTexture(spriteBatch.GraphicsDevice, destinationRectangle.Width, destinationRectangle.Height).Bounds,
-    color: Color.Turquoise,
-    rotation: 0f,
-    origin: new Vector2(x: (float)(components.Item3.TileWidth * 0.5), y: (float)(components.Item3.TileHeight * 0.5)),
-    effects: SpriteEffects.None,
-    layerDepth: (float)zIndex / SystemConstants.LayerDepthMaxLimit
-);
+                        collision.BoundingShape.CollisionTexture,
+                        destinationRectangle: destinationRectangle,
+                        sourceRectangle: collisionBounds,
+                        color: Color.Red,
+                        rotation: 0f,
+                        origin: new Vector2((float)(collisionBounds.Width * 0.5), (float)(collisionBounds.Height * 0.5)),
+                        effects: SpriteEffects.None,
+                        layerDepth: (float)zIndex / SystemConstants.LayerDepthMaxLimit
+                        );
+                }
+
                 //spriteBatch.Draw(collision.BoundingShape.GetCollisionBorderTexture(spriteBatch.GraphicsDevice, destinationRectangle.Width, destinationRectangle.Height), new Vector2(destinationRectangle.X, destinationRectangle.Y), Color.Turquoise);
             }
         }

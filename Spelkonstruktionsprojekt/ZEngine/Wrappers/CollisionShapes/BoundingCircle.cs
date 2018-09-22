@@ -14,37 +14,43 @@ namespace Spelkonstruktionsprojekt.ZEngine.Wrappers.CollisionShapes
     {
         public BoundingCircle()
         {
+            base.CollisionTexture = null;
             base.Type = VolumeType.Circle;
             base.BoundingCircle = new BoundingSphere();
         }
 
-        public override Texture2D GetCollisionBorderTexture(GraphicsDevice graphics, int width, int height)
+        public override void GetCollisionBorderTexture(GraphicsDevice graphics, int width, int height)
         {
-            var colours = new List<Color>();
-            var center = new Vector2((width - 1) / 2, (height - 1) / 2);
-            var radius = width / 2;
-
-            for (int y = 0; y < height; y++)
+            if(base.CollisionTexture == null)
             {
-                for (int x = 0; x < width; x++)
-                {
-                    var pos = new Vector2(x, y);
-                    var dist = Vector2.Distance(pos, center);
+                var colours = new List<Color>();
+                var center = new Vector2((width - 1) / 2, (height - 1) / 2);
+                var radius = width / 2;
 
-                    if (dist == radius)
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
                     {
-                        colours.Add(new Color(255, 255, 255, 255));
-                    }
-                    else
-                    {
-                        colours.Add(new Color(0, 0, 0, 0));
+                        var pos = new Vector2(x, y);
+                        var dist = Vector2.Distance(pos, center);
+
+                        if ((dist + 1) == radius || dist == radius || (dist - 1) == radius)
+                        {
+                            colours.Add(new Color(255, 255, 255, 255));
+                        }
+                        else
+                        {
+                            colours.Add(new Color(0, 0, 0, 0));
+                        }
                     }
                 }
+                var texture = new Texture2D(graphics, width, height);
+                texture.SetData<Color>(colours.ToArray());
+                base.CollisionTexture = texture;
             }
 
-            var texture = new Texture2D(graphics, width, height);
-            texture.SetData<Color>(colours.ToArray());
-            return texture;
+
+
         }
 
         public override bool Intersects(CollisionShape shape)

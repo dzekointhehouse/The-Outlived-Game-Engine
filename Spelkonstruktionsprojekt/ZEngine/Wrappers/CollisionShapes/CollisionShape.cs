@@ -19,14 +19,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Wrappers
         public BoundingBox BoundingRectangle { get; set; }
         public BoundingSphere BoundingCircle { get; set; }
         public VolumeType Type { get; protected set; }
+        public Texture2D CollisionTexture { get; internal set; }
 
-       // public abstract void UpdateVolume(Rectangle rectangle);
+        // public abstract void UpdateVolume(Rectangle rectangle);
         public abstract void UpdateVolume(uint id); 
         public abstract bool Intersects(CollisionShape shape);
         /// <summary>
         /// for debugging
         /// </summary>
         /// <returns></returns>
-        public abstract Texture2D GetCollisionBorderTexture(GraphicsDevice graphics, int width, int height);
+        public abstract void GetCollisionBorderTexture(GraphicsDevice graphics, int width, int height);
     }
 }
