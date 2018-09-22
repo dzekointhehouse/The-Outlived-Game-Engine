@@ -143,6 +143,12 @@ namespace ZEngine.Systems
                         (int) (components.Item2.Height * components.Item3.Scale)
                     );
 
+                var collision = ComponentManager.GetEntityComponentOrDefault<CollisionComponent>(entity.Key);
+                if (collision != null)
+                    collision.BoundingShape.UpdateVolume(entity.Key);
+
+
+
                 var spriteCrop = new Rectangle(
                     components.Item3.Position,
                     new Point(components.Item3.TileWidth, components.Item3.TileHeight)
@@ -159,6 +165,19 @@ namespace ZEngine.Systems
                     layerDepth: (float) zIndex / SystemConstants.LayerDepthMaxLimit
                     //layerDepth is a float between 0-1, as a result ZIndex will have a dividend (i.e. limit)
                 );
+
+                if (collision != null)
+                    spriteBatch.Draw(
+    collision.BoundingShape.GetCollisionBorderTexture(spriteBatch.GraphicsDevice, destinationRectangle.Width, destinationRectangle.Height),
+    destinationRectangle: destinationRectangle,
+    sourceRectangle: collision.BoundingShape.GetCollisionBorderTexture(spriteBatch.GraphicsDevice, destinationRectangle.Width, destinationRectangle.Height).Bounds,
+    color: Color.Turquoise,
+    rotation: 0f,
+    origin: new Vector2(x: (float)(components.Item3.TileWidth * 0.5), y: (float)(components.Item3.TileHeight * 0.5)),
+    effects: SpriteEffects.None,
+    layerDepth: (float)zIndex / SystemConstants.LayerDepthMaxLimit
+);
+                //spriteBatch.Draw(collision.BoundingShape.GetCollisionBorderTexture(spriteBatch.GraphicsDevice, destinationRectangle.Width, destinationRectangle.Height), new Vector2(destinationRectangle.X, destinationRectangle.Y), Color.Turquoise);
             }
         }
 

@@ -7,6 +7,8 @@ namespace ZEngine.Components
         public Vector2 PreviousPosition { get; set; }
         public float PreviousDirection { get; set; }
         public float Direction { get; set; }
+        public Vector2 GrandPreviousPosition { get; internal set; }
+
         public float Speed;
         public double CurrentAcceleration;
         public double AccelerationSpeed = 10;

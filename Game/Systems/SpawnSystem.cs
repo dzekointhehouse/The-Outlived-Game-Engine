@@ -227,7 +227,7 @@ namespace Game.Systems
                 .SetPosition(new Vector2(_random.Next(0,3000), _random.Next(0, 3000)), 100)
                 .SetRendering(40, 40)
                 .SetLight(new PointLight())
-                .SetRectangleCollision()
+                .SetCollision()
                 .BuildAndReturnId();
             if (type == 1)
             {
@@ -265,7 +265,7 @@ namespace Game.Systems
                 .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetSpawn()
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetHealth()
                 .BuildAndReturnId();
 

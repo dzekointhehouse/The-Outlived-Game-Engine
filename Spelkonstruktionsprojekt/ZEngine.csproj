@@ -160,6 +160,9 @@
     <Compile Include="ZEngine\Systems\Rendering\RenderHUDSystem.cs" />
     <Compile Include="ZEngine\GameTest\FPS.cs" />
     <Compile Include="ZEngine\Systems\TextSystem.cs" />
+    <Compile Include="ZEngine\Wrappers\CollisionShapes\BoundingCircle.cs" />
+    <Compile Include="ZEngine\Wrappers\CollisionShapes\CollisionShape.cs" />
+    <Compile Include="ZEngine\Wrappers\CollisionShapes\BoundingRectangle.cs" />
     <Compile Include="ZEngine\Wrappers\GameDependencies.cs" />
     <Compile Include="ZEngine\Systems\Rendering\RenderSystem.cs" />
     <Compile Include="ZEngine\Managers\SystemManager.cs" />

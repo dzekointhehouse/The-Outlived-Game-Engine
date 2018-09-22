@@ -135,7 +135,6 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                 { typeof(InputHandler), new InputHandler() },
                 { typeof(GamePadMovementSystem), new GamePadMovementSystem() },
                 // { typeof(EventZoneSystem), new EventZoneSystem() }
-                { typeof(CameraSceneSystem), new CameraSceneSystem() },
                 { typeof(MoveSystem), new MoveSystem() },
                 { typeof(AISystem), new AISystem() },
                 { typeof(CollisionSystem), new CollisionSystem() },
@@ -146,6 +145,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
                 { typeof(HealthSystem), new HealthSystem() },
                 { typeof(InertiaDampenerSystem), new InertiaDampenerSystem() },
                 { typeof(BackwardsPenaltySystem), new BackwardsPenaltySystem() },
+                { typeof(CameraSceneSystem), new CameraSceneSystem() },
                 { typeof(ScoreSystem), new ScoreSystem() },
                 { typeof(EntityRemovalSystem), new EntityRemovalSystem() },
 

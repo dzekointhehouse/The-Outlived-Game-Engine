@@ -26,7 +26,7 @@ namespace Game.Entities
         {
             var entity = new EntityBuilder()
                 .SetRendering(40, 40)
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetPosition(position, 500)
                 .SetSprite(spritename)
                 .SetLight(new PointLight())

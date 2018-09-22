@@ -9,7 +9,7 @@ namespace Game.Factory
         public static uint EventZone(Rectangle zone, params string[] events)
         {
             return new EntityBuilder()
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetPosition(new Vector2(zone.X, zone.Y), 0)
                 .SetDimensions(zone.Width, zone.Height)
                 .SetZone(events)

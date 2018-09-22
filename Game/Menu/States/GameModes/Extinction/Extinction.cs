@@ -176,7 +176,7 @@ namespace Game.Menu.States.GameModes.Extinction
                 .SetMovement(50, 5, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetSpawn()
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetHealth()
                 .BuildAndReturnId();
 

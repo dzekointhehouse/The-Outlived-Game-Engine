@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ConcurrentCollections;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers.CollisionShapes;
 
 namespace ZEngine.Components
 {
@@ -8,9 +9,11 @@ namespace ZEngine.Components
     {
         public bool Disabled { get; set; } = false;
         public bool IsCage;
+        public CollisionShape BoundingShape { get; set; } = new BoundingRectangle();
+
 
         //each int is an entityId
-//        public HashSet<uint> Collisions { get; set; } = new HashSet<uint>();
+        //        public HashSet<uint> Collisions { get; set; } = new HashSet<uint>();
         public ConcurrentHashSet<uint> Collisions { get; set; } = new ConcurrentHashSet<uint>();
         //each int is a zone
         public HashSet<uint> Zones { get; set; }= new HashSet<uint>();

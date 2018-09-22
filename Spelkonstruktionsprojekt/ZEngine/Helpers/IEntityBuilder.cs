@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Penumbra;
 using ZEngine.Components;
+using static Spelkonstruktionsprojekt.ZEngine.Wrappers.CollisionShape;
 
 namespace Spelkonstruktionsprojekt.ZEngine.Helpers
 {
@@ -62,7 +63,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
         /// <param name="boundingRectangle"></param>
         /// <param name="isCage"></param>
         /// <returns></returns>
-        EntityBuilder SetRectangleCollision(bool isCage = false);
+        EntityBuilder SetCollision(bool isCage = false, VolumeType volumeType = VolumeType.Rectangle);
 
         /// <summary>
         /// A special case method for the user who decides to

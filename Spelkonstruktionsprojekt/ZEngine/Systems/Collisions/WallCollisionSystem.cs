@@ -45,8 +45,30 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Collisions
 
         private void StopMovement(PositionComponent positionComponent, MoveComponent moveComponent)
         {
-            positionComponent.Position = moveComponent.PreviousPosition<<;
-            //moveComponent.Direction = moveComponent.PreviousDirection;
+            moveComponent.Direction = moveComponent.PreviousDirection;
+            positionComponent.Position = moveComponent.GrandPreviousPosition + (moveComponent.GrandPreviousPosition - moveComponent.PreviousPosition);
+        }
+
+        private Vector2 Magnify(Vector2 coordinate, float amount)
+        {
+            float x, y;
+            if (coordinate.X < 0)
+            {
+                x = -amount;
+            }
+            else
+            {
+                x = amount;
+            }
+            if (coordinate.Y < 0)
+            {
+                y = -amount;
+            }
+            else
+            {
+                y = amount;
+            }
+            return new Vector2(x, y);
         }
 
         private static bool IsBulletCollisionAndNotRelevant(SpecificCollisionEvent collisionEvent)

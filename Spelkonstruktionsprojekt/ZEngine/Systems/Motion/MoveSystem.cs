@@ -54,17 +54,10 @@ namespace ZEngine.Systems
                 // Play position with current velocity.
                 var valuePosition = positionComponent.Position;
 
+                moveComponent.GrandPreviousPosition = moveComponent.PreviousPosition;
                 moveComponent.PreviousPosition = positionComponent.Position;
                 positionComponent.Position = MoveVector(ref valuePosition, ref velocity, delta);
-//
-//                System.Diagnostics.Debug.WriteLine(
-//                    "moment " + moveComponent.RotationMomentum
-//                    + " direction " + moveComponent.Direction
-//                    + " delta " + delta
-//                    + "  maxVelocity " + moveComponent.MaxVelocitySpeed.ToString()
-//                    + "  velocitySpeed " + moveComponent.Speed
-//                    + "  position " + positionComponent.Position
-//                );
+
             }
             // Future implementation
 

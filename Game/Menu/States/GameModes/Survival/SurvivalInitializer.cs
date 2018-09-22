@@ -103,7 +103,7 @@ namespace Game.Menu.States.GameModes
         {
             var cameraCage = new EntityBuilder()
                 .SetRendering((int)(GameViewports.defaultView.X * 0.8), (int)(GameViewports.defaultView.Y * 0.8), isFixed: true)
-                .SetRectangleCollision(isCage: true)
+                .SetCollision(isCage: true)
                 .SetPosition(Vector2.Zero, 2)
                 .Build()
                 .GetEntityKey();

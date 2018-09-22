@@ -148,7 +148,7 @@ namespace Game.Menu.States.GameModes.Extinction
         {
             var cameraCage = new EntityBuilder()
                 .SetRendering((int) (viewportDimensions.X * 0.8), (int) (viewportDimensions.Y * 0.8), isFixed: true)
-                .SetRectangleCollision(isCage: true)
+                .SetCollision(isCage: true)
                 .SetPosition(Vector2.Zero, 2)
                 .Build()
                 .GetEntityKey();

@@ -28,7 +28,7 @@ namespace Game.Entities
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetSpawn()
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetHealth()
                 //.SetHUD("hello")
                 .BuildAndReturnId();
@@ -99,7 +99,7 @@ namespace Game.Entities
                 .SetMovement(50, 50, 0.5f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetSpawn()
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetHealth()
                 .BuildAndReturnId();
 

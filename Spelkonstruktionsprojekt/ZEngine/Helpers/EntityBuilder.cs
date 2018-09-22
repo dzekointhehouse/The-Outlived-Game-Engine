@@ -9,8 +9,10 @@ using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using Spelkonstruktionsprojekt.ZEngine.Wrappers.CollisionShapes;
 using ZEngine.Components;
 using ZEngine.Managers;
+using static Spelkonstruktionsprojekt.ZEngine.Wrappers.CollisionShape;
 using Light = Penumbra.Light;
 using Texture2D = Microsoft.Xna.Framework.Graphics.Texture2D;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -173,10 +175,15 @@ namespace Spelkonstruktionsprojekt.ZEngine.Helpers
             return this;
         }
 
-        public EntityBuilder SetRectangleCollision(bool isCage = false)
+        public EntityBuilder SetCollision(bool isCage = false, VolumeType volumeType = VolumeType.Rectangle)
         {
             var component = ComponentFactory.NewComponent<CollisionComponent>();
             component.IsCage = isCage;
+            if (volumeType == VolumeType.Rectangle)
+            {
+                component.BoundingShape = new BoundingRectangle();
+            }
+            else { component.BoundingShape = new BoundingCircle(); }
             components.Add(component);
             return this;
         }

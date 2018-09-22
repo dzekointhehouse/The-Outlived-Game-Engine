@@ -220,7 +220,7 @@ namespace Game.Entities
                 .SetLight(light)
                 .SetSound(soundList: CreateSound(characterType))
                 .SetMovement(200, 380, 2f, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10) // Random direction
-                .SetRectangleCollision()
+                .SetCollision(volumeType: Spelkonstruktionsprojekt.ZEngine.Wrappers.CollisionShape.VolumeType.Circle)
                 .SetCameraFollow(cageId)
                 .SetPlayer(sprite)
                 .SetTeam(cageId)

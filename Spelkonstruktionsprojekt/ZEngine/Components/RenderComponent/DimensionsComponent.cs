@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel;
+using static Spelkonstruktionsprojekt.ZEngine.Wrappers.CollisionShape;
 
 namespace ZEngine.Components
 {
@@ -7,7 +8,7 @@ namespace ZEngine.Components
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        
+
         public IComponent Reset()
         {
             Width = 0;

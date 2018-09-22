@@ -1,34 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Penumbra;
 using Spelkonstruktionsprojekt.ZEngine.Components;
+using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 using Spelkonstruktionsprojekt.ZEngine.Components.RenderComponent;
 using Spelkonstruktionsprojekt.ZEngine.Components.SpriteAnimation;
 using Spelkonstruktionsprojekt.ZEngine.Constants;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps;
-using Spelkonstruktionsprojekt.ZEngine.Helpers;
+using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
-using Spelkonstruktionsprojekt.ZEngine.Systems.Collisions;
-using Spelkonstruktionsprojekt.ZEngine.Systems.InputHandler;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using ZEngine.Components;
 using ZEngine.Managers;
-using ZEngine.Systems;
-using ZEngine.Systems.Collisions;
-using ZEngine.Systems.InputHandler;
-using ZEngine.Wrappers;
-using static Spelkonstruktionsprojekt.ZEngine.Components.ActionBindings;
-using Spelkonstruktionsprojekt.ZEngine.Managers;
-using Spelkonstruktionsprojekt.ZEngine.Components.PickupComponents;
 
 namespace Spelkonstruktionsprojekt.ZEngine.GameTest
 {
@@ -146,7 +134,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetPosition(new Vector2(40, 40), 100)
                 .SetRendering(40, 40)
                 .SetLight(new PointLight())
-                .SetRectangleCollision()
+                .SetCollision()
                 .BuildAndReturnId();
 
             ComponentManager.Instance.AddComponentToEntity(
@@ -257,7 +245,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
         {
             var cameraCage = new EntityBuilder()
                 .SetRendering((int) (viewportDimensions.X * 0.8), (int) (viewportDimensions.Y * 0.8))
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetPosition(Vector2.Zero, 2)
                 .BuildAndReturnId();
 
@@ -313,7 +301,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetMovement(205, 5, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
                 .SetArtificialIntelligence()
                 .SetSpawn()
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetHealth()
                 //.SetHUD("hello")
                 .BuildAndReturnId();
@@ -437,7 +425,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.GameTest
                 .SetLight(light)
                 .SetSound("walking")
                 .SetMovement(200, 380, 4, new Random(DateTime.Now.Millisecond).Next(0, 40) / 10)
-                .SetRectangleCollision()
+                .SetCollision()
                 .SetCameraFollow((int) cageId)
                 .SetPlayer(name)
                 .SetHealth()

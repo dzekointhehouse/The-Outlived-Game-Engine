@@ -133,7 +133,7 @@ namespace ZEngine.Systems
                     scale: pickupSprite.Scale,
                     startPosition: pickupSprite.Position)
                 .SetLight(new PointLight())
-                .SetRectangleCollision()
+                .SetCollision()
                 .BuildAndReturnId();
 
             if (pickupSprite.SpriteName == "healthpickup")
