@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
+using System.Linq;
 using static Game.Menu.States.CharacterMenu.CharacterType;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
@@ -41,7 +42,7 @@ namespace Game.Menu.States
             this.gameManager = gameManager;
             GameConfig = gameManager.gameConfig;
             viewport = this.gameManager.viewport;
-
+            Player = gameManager.playerControllers.Controllers[0];
             Characters = new[] { Bob, Edgar, Ward, Jimmy };
         }
 
@@ -157,22 +158,22 @@ namespace Game.Menu.States
             {
                 gameManager.MenuNavigator.GoBack();
             }
-            else if (Player.Is(Cancel, Pressed))
+            else if (gameManager.playerControllers.Controllers.Any(c => c.Is(Cancel, Pressed)))
             {
                 PreviousPlayerOrGoBack();
             }
-            else if (Player.Is(Accept, Pressed))
+            else if (gameManager.playerControllers.Controllers.Any(c => c.Is(Accept, Pressed)))
             {
                 AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
                 CurrentPlayer().CharacterType = CurrentSelectedCharacter;
                 CurrentPlayer().SpriteName = GetCharacterSpriteName(CurrentSelectedCharacter);
                 NextPlayerOrStartGame();
             }
-            else if (Player.Is(Right, Pressed))
+            else if (gameManager.playerControllers.Controllers.Any(c => c.Is(Right, Pressed)))
             {
                 SelectNextCharacter();
             }
-            else if (Player.Is(Left, Pressed))
+            else if (gameManager.playerControllers.Controllers.Any(c => c.Is(Left, Pressed)))
             {
                 SelectPreviousCharacter();
             }

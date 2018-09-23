@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Game.Menu;
 using Microsoft.Xna.Framework.Content;
 using ZEngine.Wrappers;
+using System.Diagnostics;
 
 namespace Game
 {
@@ -73,6 +74,8 @@ namespace Game
 
         protected override void Update(GameTime gameTime)
         {
+            if (GamePad.GetState(PlayerIndex.One).IsConnected)
+                Debug.WriteLine($"Is Connected");
             _gameManager.Update(gameTime);
             base.Update(gameTime);
         }

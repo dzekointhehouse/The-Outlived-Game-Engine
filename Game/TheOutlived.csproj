@@ -146,14 +146,9 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.config" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Spelkonstruktionsprojekt\ZEngine.csproj">
-      <Project>{1ff3be01-61f2-4404-a9ca-6f9350d8a09a}</Project>
-      <Name>ZEngine</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Builders\" />
@@ -164,6 +159,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZGameEngine\ZGameEngine.csproj">
+      <Project>{c3de0ad1-e55a-450c-9c4b-749aad23304f}</Project>
+      <Name>ZGameEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
