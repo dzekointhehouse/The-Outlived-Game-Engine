@@ -1,29 +1,30 @@
 using System;
+using System.Collections.Generic;
 
 namespace Game.Services
 {
-    public class PlayerVirtualInputCollection
+    public class PlayerControllers
     {
         public const int MAX_PLAYERS = 4;
-        public VirtualGamePad[] VirtualGamePads;
+        public List<VirtualGamePad> Controllers;
 
-        public PlayerVirtualInputCollection(VirtualGamePad[] virtualGamePads)
+        public PlayerControllers(VirtualGamePad[] controllers)
         {
-            if (virtualGamePads.Length > MAX_PLAYERS)
+            if (controllers.Length > MAX_PLAYERS)
             {
                 throw new Exception("So much players are not supported at this time.");
             }
-            if (virtualGamePads.Length < 1)
+            if (controllers.Length < 1)
             {
                 throw new Exception("At least one player is needed [PlayerVirtualInputCollection]");
             }
 
-            VirtualGamePads = virtualGamePads;
+            Controllers = new List<VirtualGamePad>(controllers);
         }
 
         public VirtualGamePad PlayerOne()
         {
-            return VirtualGamePads[0];
+            return Controllers[0];
         }
     }
 }

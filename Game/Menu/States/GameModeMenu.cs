@@ -15,7 +15,7 @@ namespace Game.Menu.States
         private Viewport viewport;
         private MenuNavigator MenuNavigator { get; }
         public VirtualGamePad VirtualGamePad { get; }
-        private GenericButtonNavigator<GameState> navigator;
+        private OptionNavigator<GameState> navigator;
         private readonly GameManager gm;
 
 
@@ -23,7 +23,7 @@ namespace Game.Menu.States
         {
             MenuNavigator = menuNavigator;
             VirtualGamePad = virtualGamePad;
-            navigator = new GenericButtonNavigator<GameState>(new []{ GameState.PlayExtinctionGame, GameState.SurvivalGame, GameState.PlayDeathMatchGame });
+            navigator = new OptionNavigator<GameState>(new []{ GameState.PlayExtinctionGame, GameState.SurvivalGame, GameState.PlayDeathMatchGame });
             this.gm = gameManager;
             this.viewport = gameManager.viewport;
             fogBackground = new SidewaysBackground(AssetManager.Instance.Get<Texture2D>("Images/Menu/movingfog"), new Vector2(20, 20), 1f);

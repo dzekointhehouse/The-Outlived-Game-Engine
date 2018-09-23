@@ -29,7 +29,7 @@ namespace Game.Menu.States
 
         private int CurrentPlayerIndex;
         private VirtualGamePad Player { get; set; }
-        public PlayerVirtualInputCollection VirtualInputs { get; }
+        public PlayerControllers VirtualInputs { get; }
         public MenuNavigator MenuNavigator { get; set; }
         public GameConfig GameConfig { get; }
         private Viewport viewport;
@@ -38,7 +38,7 @@ namespace Game.Menu.States
         private int CurrentSelectedCharacterIndex = 0;
         private CharacterType[] Characters;
 
-        public CharacterMenu(GameManager gameManager, PlayerVirtualInputCollection virtualInputs)
+        public CharacterMenu(GameManager gameManager, PlayerControllers virtualInputs)
         {
             gm = gameManager;
             VirtualInputs = virtualInputs;
@@ -97,7 +97,7 @@ namespace Game.Menu.States
             }
             else
             {
-                Player = VirtualInputs.VirtualGamePads[CurrentPlayerIndex];
+                Player = VirtualInputs.Controllers[CurrentPlayerIndex];
             }
             ResetCharacterSelection();
         }
@@ -111,7 +111,7 @@ namespace Game.Menu.States
             }
             else
             {
-                Player = VirtualInputs.VirtualGamePads[CurrentPlayerIndex];
+                Player = VirtualInputs.Controllers[CurrentPlayerIndex];
             }
             ResetCharacterSelection();
         }

@@ -28,7 +28,7 @@ namespace Game.Menu.States
 
         public VirtualGamePad VirtualGamePad { get; }
         public MenuNavigator MenuNavigator { get; }
-        public GenericButtonNavigator<OptionsState> MenuPosition { get; set; }
+        public OptionNavigator<OptionsState> MenuPosition { get; set; }
 
         private GameManager gm;
         private SidewaysBackground fogBackground;
@@ -47,7 +47,7 @@ namespace Game.Menu.States
             MenuNavigator = menuNavigator;
             gm = gameManager;
 
-            MenuPosition = new GenericButtonNavigator<OptionsState>(new[] { Continue, About, OptionsState.Credits, Exit });
+            MenuPosition = new OptionNavigator<OptionsState>(new[] { Continue, About, OptionsState.Credits, Exit });
             fogBackground = new SidewaysBackground(AssetManager.Instance.Get<Texture2D>("Images/Menu/movingfog"), new Vector2(20, 20), 1f);
         }
 

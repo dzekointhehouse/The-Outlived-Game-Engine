@@ -47,7 +47,7 @@ namespace Game.Menu
         private IMenu gameOverCredits;
 
         public Dictionary<GameState, IMenu> GameStateMenuMap;
-        private PlayerVirtualInputCollection virtualInputCollection;
+        private PlayerControllers virtualInputCollection;
 
         public void SetCurrentState(GameState state)
         {
@@ -67,7 +67,7 @@ namespace Game.Menu
             effects = new BackgroundEffects(viewport);
             gameConfig = new GameConfig();
 
-            virtualInputCollection = new PlayerVirtualInputCollection(new[]
+            virtualInputCollection = new PlayerControllers(new[]
             {
                 new VirtualGamePad(0, isKeyboardControlled: true),
                 new VirtualGamePad(1),
@@ -161,7 +161,7 @@ namespace Game.Menu
         // we execute is the one of the current state.
         public void Update(GameTime gameTime)
         {
-            foreach (var virtualGamePad in virtualInputCollection.VirtualGamePads)
+            foreach (var virtualGamePad in virtualInputCollection.Controllers)
             {
                 virtualGamePad.UpdateKeyboardState();
             }
@@ -180,7 +180,7 @@ namespace Game.Menu
                 GameStateMenuMap[CurrentGameState].Update(gameTime);
             }
 
-            foreach (var virtualGamePad in virtualInputCollection.VirtualGamePads)
+            foreach (var virtualGamePad in virtualInputCollection.Controllers)
             {
                 virtualGamePad.MoveCurrentStatesToOld();
             }

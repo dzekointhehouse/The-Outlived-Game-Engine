@@ -21,11 +21,11 @@ namespace Game.Menu.States
     class PausedMenu : IMenu
     {
         public MenuNavigator MenuNavigator { get; }
-        public PlayerVirtualInputCollection VirtualInputs { get; }
+        public PlayerControllers VirtualInputs { get; }
         private readonly GameManager gameManager;
         private Viewport viewport;
 
-        public PausedMenu(GameManager gameManager, MenuNavigator menuNavigator, PlayerVirtualInputCollection VirtualInputs)
+        public PausedMenu(GameManager gameManager, MenuNavigator menuNavigator, PlayerControllers VirtualInputs)
         {
             MenuNavigator = menuNavigator;
             this.VirtualInputs = VirtualInputs;
@@ -45,7 +45,7 @@ namespace Game.Menu.States
         // then we go back to the previous state.
         public void Update(GameTime gameTime)
         {
-            foreach (var virtualInput in VirtualInputs.VirtualGamePads)
+            foreach (var virtualInput in VirtualInputs.Controllers)
             {
                 if (virtualInput.Is(Pause, Pressed))
                 {

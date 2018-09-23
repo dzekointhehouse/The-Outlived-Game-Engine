@@ -22,7 +22,7 @@ namespace Game.Menu.States
     public class MultiplayerMenu : IMenu, ILifecycle
     {
         public MenuNavigator MenuNavigator { get; }
-        public PlayerVirtualInputCollection VirtualInputCollection { get; }
+        public PlayerControllers PlayerInputCollection { get; }
 
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
@@ -37,43 +37,41 @@ namespace Game.Menu.States
             TeamTwo,
         }
 
-        private readonly TeamState[] _stateOrder =
-        {
-            TeamOne, NoTeam, TeamTwo
-        };
-
-        private GenericButtonNavigator<TeamState>[] PlayerChoices;
+        private readonly TeamState[] _optionStates = { TeamOne, NoTeam, TeamTwo };
+        private readonly OptionNavigator<TeamState>[] _playerChoices;
 
         public MultiplayerMenu(GameManager gameManager, MenuNavigator menuNavigator,
-            PlayerVirtualInputCollection virtualInputCollection)
+            PlayerControllers playerInputCollection)
         {
             MenuNavigator = menuNavigator;
             this.gm = gameManager;
             game = OutlivedGame.Instance();
-            VirtualInputCollection = virtualInputCollection;
-            var playerOneChoice = new GenericButtonNavigator<TeamState>(_stateOrder, horizontalNavigation: true);
-            var playerTwoChoice = new GenericButtonNavigator<TeamState>(_stateOrder, horizontalNavigation: true);
-            var playerThreeChoice = new GenericButtonNavigator<TeamState>(_stateOrder, horizontalNavigation: true);
-            var playerFourChoice = new GenericButtonNavigator<TeamState>(_stateOrder, horizontalNavigation: true);
-            PlayerChoices = new[]
+            PlayerInputCollection = playerInputCollection;
+
+            var playerOneChoice = new OptionNavigator<TeamState>(_optionStates, horizontalNavigation: true);
+            var playerTwoChoice = new OptionNavigator<TeamState>(_optionStates, horizontalNavigation: true);
+            var playerThreeChoice = new OptionNavigator<TeamState>(_optionStates, horizontalNavigation: true);
+            var playerFourChoice = new OptionNavigator<TeamState>(_optionStates, horizontalNavigation: true);
+
+            _playerChoices = new[]
             {
                 playerOneChoice, playerTwoChoice, playerThreeChoice, playerFourChoice
             };
 
-            for (var i = 0; i < PlayerChoices.Length; i++)
+            for (var i = 0; i < _playerChoices.Length; i++)
             {
-                PlayerChoices[i].ButtonNavigator.CurrentIndex = 1; // Set start position to second choice "NoTeam"
-                PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
+                _playerChoices[i].CurrentIndex = 1; // Set start position to second choice "NoTeam"
+                _playerChoices[i].UpdatePosition(PlayerInputCollection.Controllers[i]);
             }
         }
 
 
-        private void DisplayPlayerChoice(TeamState playerChoice, float heightPercentage, SpriteBatch sb)
+        private void DisplayCurrentOption(TeamState choice, float heightPercentage, SpriteBatch sb)
         {
             var viewport = game.GraphicsDevice.Viewport;
             sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/teamoptions")
                 , viewport.Bounds, Color.White);
-            switch (playerChoice)
+            switch (choice)
             {
                 case NoTeam:
                     sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Gamepad/gamepad"),
@@ -99,9 +97,9 @@ namespace Game.Menu.States
             gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
 
             var heightPercentage = 0.2f;
-            foreach (var playerChoice in PlayerChoices)
+            foreach (var playerChoice in _playerChoices)
             {
-                DisplayPlayerChoice(playerChoice.CurrentPosition, heightPercentage, sb);
+                DisplayCurrentOption(playerChoice.CurrentPosition, heightPercentage, sb);
                 heightPercentage += 0.2f;
             }
 
@@ -110,19 +108,19 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
-            if (VirtualInputCollection.PlayerOne().Is(Cancel, Pressed))
+            if (PlayerInputCollection.Controllers.Any(c => c.Is(Cancel, Pressed)))
             {
                      MenuNavigator.GoBack();
             }
 
-            for (var i = 0; i < PlayerChoices.Length; i++)
+            for (var i = 0; i < _playerChoices.Length; i++)
             {
-                PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
+                _playerChoices[i].UpdatePosition(PlayerInputCollection.Controllers[i]);
             }
 
-            if (VirtualInputCollection.PlayerOne().Is(Accept, Pressed))
+            if (PlayerInputCollection.PlayerOne().Is(Accept, Pressed))
             {
-                var somePlayerHasTeam = PlayerChoices.Any(player => player.CurrentPosition != NoTeam);
+                var somePlayerHasTeam = _playerChoices.Any(player => player.CurrentPosition != NoTeam);
                 if (somePlayerHasTeam)
                 {
                     AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
@@ -144,22 +142,22 @@ namespace Game.Menu.States
         {
             // Clear before each game..
             gm.gameConfig.Players.Clear();
-            for (var i = 0; i < PlayerChoices.Length; i++)
+            for (var i = 0; i < _playerChoices.Length; i++)
             {
-                if (PlayerChoices[i].CurrentPosition == NoTeam) continue;
+                if (_playerChoices[i].CurrentPosition == NoTeam) continue;
                 gm.gameConfig.Players.Add(new Player
                 {
                     Index = IntegerToPlayerIndex[i],
-                    Team = PlayerChoices[i].CurrentPosition
+                    Team = _playerChoices[i].CurrentPosition
                 });
             }
         }
 
         public void ResetPlayerChoicesState()
         {
-            foreach (var playerChoice in PlayerChoices)
+            foreach (var playerChoice in _playerChoices)
             {
-                playerChoice.CurrentPosition = playerChoice.Positions[0];
+                playerChoice.CurrentPosition = playerChoice.Options[0];
             }
         }
 
@@ -171,10 +169,10 @@ namespace Game.Menu.States
         {
             ResetPlayerChoicesState();
             
-            for (var i = 0; i < PlayerChoices.Length; i++)
+            for (var i = 0; i < _playerChoices.Length; i++)
             {
-                PlayerChoices[i].ButtonNavigator.CurrentIndex = 1; // Set start position to second choice "NoTeam"
-                PlayerChoices[i].UpdatePosition(VirtualInputCollection.VirtualGamePads[i]);
+                _playerChoices[i].CurrentIndex = 1; // Set start position to second choice "NoTeam"
+                _playerChoices[i].UpdatePosition(PlayerInputCollection.Controllers[i]);
             }
         }
 
