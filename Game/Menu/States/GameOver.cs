@@ -30,22 +30,6 @@ namespace Game.Menu.States
         {
             graphicsDevice.Clear(Color.Black);
 
-            //sb.Begin();
-            //sb.Draw(gameManager.OutlivedContent.GameOver, new Rectangle(0, 0, 1800, 1500), Color.White);
-            //sb.End();
-
-            //var GameScoreList = ComponentManager.Instance.GetEntitiesWithComponent(typeof(GameScoreComponent));
-            //if (GameScoreList.Count <= 0) return;
-            //var GameScore = (GameScoreComponent)GameScoreList.First().Value;
-
-            //string yourScore = "Total score: " + GameScore.TotalGameScore;
-            //string exit = "(Press ESCAPE to exit)";
-
-            //sb.Begin();
-            //sb.DrawString(gameManager.OutlivedContent.MenuFont, yourScore, new Vector2(50, 100), Color.Red);
-            //sb.DrawString(gameManager.OutlivedContent.MenuFont, exit, new Vector2(50, 200), Color.Red);
-            //sb.End();
-
             sb.Begin();
 
             //ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.OutlivedContent, 0.0001f);

@@ -66,10 +66,10 @@ namespace Game.Menu
 
             playerControllers = new PlayerControllers(new[]
             {
-                new VirtualGamePad(0, isKeyboardControlled: true),
-                new VirtualGamePad(1),
-                new VirtualGamePad(2),
-                new VirtualGamePad(3)
+                new VirtualGamePad(PlayerIndex.One, isKeyboardControlled: true),
+                new VirtualGamePad(PlayerIndex.Two),
+                new VirtualGamePad(PlayerIndex.Three),
+                new VirtualGamePad(PlayerIndex.Four)
             });
             
             MenuNavigator = new MenuNavigator(this);
@@ -160,6 +160,7 @@ namespace Game.Menu
         {
             foreach (var virtualGamePad in playerControllers.Controllers)
             {
+                virtualGamePad.UpdateControllerStatus();
                 virtualGamePad.UpdateKeyboardState();
             }
 

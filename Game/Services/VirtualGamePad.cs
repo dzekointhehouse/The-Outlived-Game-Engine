@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Game.Services
@@ -13,30 +14,40 @@ namespace Game.Services
         private KeyboardState oldKeyboardState;
         private KeyboardState currentKeyboardState;
 
-        private GamePadState[] oldGamePadState = new GamePadState[4];
-        private GamePadState[] currentGamePadState = new GamePadState[4];
+        private GamePadState oldGamePadState = new GamePadState();
+        private GamePadState currentGamePadState = new GamePadState();
 
         //When true allows keyboard to control input
         public bool IsKeyboardControlled { get; set; } = true;
         public bool IsGamePadControlled { get; set; } = true;
-
+        public PlayerIndex PlayerIndex { get; private set; }
+            
         //Index of current gamepad in control
         public int GamePadPlayerIndex { get; set; } = 0;
 
-        public VirtualGamePad(int gamePadPlayerIndex, bool isKeyboardControlled = false)
+        public VirtualGamePad(PlayerIndex playerIndex, bool isKeyboardControlled = false)
         {
             IsKeyboardControlled = isKeyboardControlled;
-            GamePadPlayerIndex = gamePadPlayerIndex;
+            GamePadPlayerIndex = (int)playerIndex;
+            PlayerIndex = playerIndex;
+        }
+
+        public void UpdateControllerStatus()
+        {
+            if (GamePad.GetState(PlayerIndex).IsConnected)
+                Debug.WriteLine($"Controller {PlayerIndex} connected!");
+            else
+                Debug.WriteLine($"Controller {PlayerIndex} disconnected!");
         }
 
         public void UpdateKeyboardState()
         {
             currentKeyboardState = Keyboard.GetState();
-            UpdateGameStates(currentGamePadState);
+            UpdateGameState(currentGamePadState);
             if (!Initialized)
             {
                 oldKeyboardState = Keyboard.GetState();
-                UpdateGameStates(oldGamePadState);
+                UpdateGameState(oldGamePadState);
                 Initialized = true;
             }
         }
@@ -44,18 +55,12 @@ namespace Game.Services
         public void MoveCurrentStatesToOld()
         {
             oldKeyboardState = currentKeyboardState;
-            for (var i = 0; i < currentGamePadState.Length; i++)
-            {
-                oldGamePadState[i] = currentGamePadState[i];
-            }
+                oldGamePadState = currentGamePadState;
         }
 
-        private void UpdateGameStates(GamePadState[] gamePadState)
+        private void UpdateGameState(GamePadState gamePadState)
         {
-            for (var i = 0; i < gamePadState.Length; i++)
-            {
-                gamePadState[i] = GamePad.GetState(i); 
-            }
+                gamePadState = GamePad.GetState(PlayerIndex); 
         }
 
         public bool Is(MenuKeys key, MenuKeyStates state)
@@ -88,11 +93,11 @@ namespace Game.Services
 
         public MenuKeyStates GetGamePadButtonState(MenuKeys key)
         {
-            if (IsGamePadPress(key, currentGamePadState[GamePadPlayerIndex], oldGamePadState[GamePadPlayerIndex]))
+            if (IsGamePadPress(key, currentGamePadState, oldGamePadState))
             {
                 return MenuKeyStates.Pressed;
             }
-            if (IsGamePadRelease(key, currentGamePadState[GamePadPlayerIndex], oldGamePadState[GamePadPlayerIndex]))
+            if (IsGamePadRelease(key, currentGamePadState, oldGamePadState))
             {
                 return MenuKeyStates.Released;
             }
