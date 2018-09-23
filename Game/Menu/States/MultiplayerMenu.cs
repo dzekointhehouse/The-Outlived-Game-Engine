@@ -21,12 +21,9 @@ namespace Game.Menu.States
 {
     public class MultiplayerMenu : IMenu, ILifecycle
     {
-        public MenuNavigator MenuNavigator { get; }
-        public PlayerControllers PlayerInputCollection { get; }
-
         // Dependencies
         private readonly Microsoft.Xna.Framework.Game game;
-        private readonly GameManager gm;
+        private readonly GameManager gameManager;
 
         // enum so we can keep track on which option
         // we currently are at.
@@ -40,13 +37,10 @@ namespace Game.Menu.States
         private readonly TeamState[] _optionStates = { TeamOne, NoTeam, TeamTwo };
         private readonly OptionNavigator<TeamState>[] _playerChoices;
 
-        public MultiplayerMenu(GameManager gameManager, MenuNavigator menuNavigator,
-            PlayerControllers playerInputCollection)
+        public MultiplayerMenu(GameManager gameManager)
         {
-            MenuNavigator = menuNavigator;
-            this.gm = gameManager;
+            this.gameManager = gameManager;
             game = OutlivedGame.Instance();
-            PlayerInputCollection = playerInputCollection;
 
             var playerOneChoice = new OptionNavigator<TeamState>(_optionStates, horizontalNavigation: true);
             var playerTwoChoice = new OptionNavigator<TeamState>(_optionStates, horizontalNavigation: true);
@@ -61,7 +55,7 @@ namespace Game.Menu.States
             for (var i = 0; i < _playerChoices.Length; i++)
             {
                 _playerChoices[i].CurrentIndex = 1; // Set start position to second choice "NoTeam"
-                _playerChoices[i].UpdatePosition(PlayerInputCollection.Controllers[i]);
+                _playerChoices[i].UpdatePosition(gameManager.playerControllers.Controllers[i]);
             }
         }
 
@@ -94,7 +88,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
+            gameManager.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
 
             var heightPercentage = 0.2f;
             foreach (var playerChoice in _playerChoices)
@@ -108,24 +102,24 @@ namespace Game.Menu.States
 
         public void Update(GameTime gameTime)
         {
-            if (PlayerInputCollection.Controllers.Any(c => c.Is(Cancel, Pressed)))
+            if (gameManager.playerControllers.Controllers.Any(c => c.Is(Cancel, Pressed)))
             {
-                     MenuNavigator.GoBack();
+                     gameManager.MenuNavigator.GoBack();
             }
 
             for (var i = 0; i < _playerChoices.Length; i++)
             {
-                _playerChoices[i].UpdatePosition(PlayerInputCollection.Controllers[i]);
+                _playerChoices[i].UpdatePosition(gameManager.playerControllers.Controllers[i]);
             }
 
-            if (PlayerInputCollection.PlayerOne().Is(Accept, Pressed))
+            if (gameManager.playerControllers.PlayerOne().Is(Accept, Pressed))
             {
                 var somePlayerHasTeam = _playerChoices.Any(player => player.CurrentPosition != NoTeam);
                 if (somePlayerHasTeam)
                 {
                     AssetManager.Instance.Get<SoundEffect>("sound/click2").Play();
                     UpdateGameConfigurations();
-                    MenuNavigator.GoTo(OutlivedStates.GameState.CharacterMenu);
+                    gameManager.MenuNavigator.GoTo(OutlivedStates.GameState.CharacterMenu);
                 }
             }
         }
@@ -141,11 +135,11 @@ namespace Game.Menu.States
         private void UpdateGameConfigurations()
         {
             // Clear before each game..
-            gm.gameConfig.Players.Clear();
+            gameManager.gameConfig.Players.Clear();
             for (var i = 0; i < _playerChoices.Length; i++)
             {
                 if (_playerChoices[i].CurrentPosition == NoTeam) continue;
-                gm.gameConfig.Players.Add(new Player
+                gameManager.gameConfig.Players.Add(new Player
                 {
                     Index = IntegerToPlayerIndex[i],
                     Team = _playerChoices[i].CurrentPosition
@@ -172,7 +166,7 @@ namespace Game.Menu.States
             for (var i = 0; i < _playerChoices.Length; i++)
             {
                 _playerChoices[i].CurrentIndex = 1; // Set start position to second choice "NoTeam"
-                _playerChoices[i].UpdatePosition(PlayerInputCollection.Controllers[i]);
+                _playerChoices[i].UpdatePosition(gameManager.playerControllers.Controllers[i]);
             }
         }
 

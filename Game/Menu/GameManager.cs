@@ -24,13 +24,15 @@ namespace Game.Menu
         //        protected internal GamePadState OldGamepadState;
 
         public VirtualGamePad Controller { get; set; }
-        public MenuNavigator MenuNavigator { get; set; }
+        protected internal MenuNavigator MenuNavigator { get; set; }
 
         //protected internal GameEngine Engine;
         protected internal Viewport viewport;
         protected internal SpriteBatch spriteBatch;
         protected internal BackgroundEffects effects;
         protected internal Microsoft.Xna.Framework.Game game;
+        protected internal PlayerControllers playerControllers;
+
         // To keep track of the game configurations made
         protected internal GameConfig gameConfig;
 
@@ -47,7 +49,6 @@ namespace Game.Menu
         private IMenu gameOverCredits;
 
         public Dictionary<GameState, IMenu> GameStateMenuMap;
-        private PlayerControllers virtualInputCollection;
 
         public void SetCurrentState(GameState state)
         {
@@ -56,18 +57,14 @@ namespace Game.Menu
 
         public GameManager()
         {
-       //     Engine = OutlivedGame.Instance();
-       //     Engine.Logger = Logger;
-
             spriteBatch = OutlivedGame.Instance().spriteBatch;
             game = OutlivedGame.Instance();
             viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
-
             
             effects = new BackgroundEffects(viewport);
             gameConfig = new GameConfig();
 
-            virtualInputCollection = new PlayerControllers(new[]
+            playerControllers = new PlayerControllers(new[]
             {
                 new VirtualGamePad(0, isKeyboardControlled: true),
                 new VirtualGamePad(1),
@@ -83,23 +80,23 @@ namespace Game.Menu
                 MenuNavigator = MenuNavigator,
                // GameSystems = Engine,
                 Viewport = viewport,
-                VirtualInputs = virtualInputCollection
+                VirtualInputs = playerControllers
             };
 
 
             // initializing the states, remember:
             // all the states need to exist in the 
             // manager.
-            mainMenu = new MainMenu(this, virtualInputCollection.PlayerOne(), MenuNavigator);
-            gameModesMenu = new GameModeMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
-            characterMenu = new CharacterMenu(this, virtualInputCollection);
-            credits = new Credits(this, MenuNavigator, virtualInputCollection.PlayerOne());
-            gameIntro = new GameIntro(this, MenuNavigator, virtualInputCollection.PlayerOne());
-            pausedMenu = new PausedMenu(this, MenuNavigator, virtualInputCollection);
-            multiplayerMenu = new MultiplayerMenu(this, MenuNavigator, virtualInputCollection);
-            aboutMenu = new AboutMenu(this, MenuNavigator, virtualInputCollection.PlayerOne());
-            gameOver = new GameOver(this, MenuNavigator, virtualInputCollection.PlayerOne());
-            gameOverCredits = new GameOverCredits(this, MenuNavigator, virtualInputCollection.PlayerOne());
+            mainMenu = new MainMenu(this);
+            gameModesMenu = new GameModeMenu(this);
+            characterMenu = new CharacterMenu(this);
+            credits = new Credits(this);
+            gameIntro = new GameIntro(this);
+            pausedMenu = new PausedMenu(this);
+            multiplayerMenu = new MultiplayerMenu(this);
+            aboutMenu = new AboutMenu(this);
+            gameOver = new GameOver(this);
+            gameOverCredits = new GameOverCredits(this);
 
             var gameModeSurvival = new Survival(gameModeDependencies);
             var deathMatch = new DeathMatch(gameModeDependencies);
@@ -161,7 +158,7 @@ namespace Game.Menu
         // we execute is the one of the current state.
         public void Update(GameTime gameTime)
         {
-            foreach (var virtualGamePad in virtualInputCollection.Controllers)
+            foreach (var virtualGamePad in playerControllers.Controllers)
             {
                 virtualGamePad.UpdateKeyboardState();
             }
@@ -180,7 +177,7 @@ namespace Game.Menu
                 GameStateMenuMap[CurrentGameState].Update(gameTime);
             }
 
-            foreach (var virtualGamePad in virtualInputCollection.Controllers)
+            foreach (var virtualGamePad in playerControllers.Controllers)
             {
                 virtualGamePad.MoveCurrentStatesToOld();
             }

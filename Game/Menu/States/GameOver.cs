@@ -17,16 +17,12 @@ namespace Game.Menu.States
 {
     class GameOver : IMenu, ILifecycle
     {
-        public MenuNavigator MenuNavigator { get; }
-        public VirtualGamePad VirtualGamePad { get; }
         private GameManager gameManager;
         private GraphicsDevice graphicsDevice = OutlivedGame.Instance().GraphicsDevice;
         public bool WasNotPlayed { get; set; } = true;
 
-        public GameOver(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
+        public GameOver(GameManager gameManager)
         {
-            MenuNavigator = menuNavigator;
-            VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
         }
 
@@ -98,10 +94,10 @@ namespace Game.Menu.States
                 WasNotPlayed = false;
             }
 
-            if (VirtualGamePad.Is(Cancel, Pressed))
+            if (gameManager.playerControllers.Controllers.Any(c => c.Is(Cancel, Pressed)))
             {
                 MediaPlayer.Stop();
-                MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
+                gameManager.MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
             }
         }
 
@@ -116,7 +112,6 @@ namespace Game.Menu.States
 
         public void BeforeHide()
         {
-         //   GameManager.Logger.PrintAverages();
         }
     }
 }

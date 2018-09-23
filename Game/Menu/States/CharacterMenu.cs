@@ -25,27 +25,22 @@ namespace Game.Menu.States
             Jimmy
         }
 
-        private GameManager gm { get; }
+        private GameManager gameManager { get; }
 
         private int CurrentPlayerIndex;
-        private VirtualGamePad Player { get; set; }
-        public PlayerControllers VirtualInputs { get; }
-        public MenuNavigator MenuNavigator { get; set; }
         public GameConfig GameConfig { get; }
         private Viewport viewport;
+        private VirtualGamePad Player;  
 
         private CharacterType CurrentSelectedCharacter = Bob;
         private int CurrentSelectedCharacterIndex = 0;
         private CharacterType[] Characters;
 
-        public CharacterMenu(GameManager gameManager, PlayerControllers virtualInputs)
+        public CharacterMenu(GameManager gameManager)
         {
-            gm = gameManager;
-            VirtualInputs = virtualInputs;
-            Player = VirtualInputs.PlayerOne();
-            MenuNavigator = gameManager.MenuNavigator;
+            this.gameManager = gameManager;
             GameConfig = gameManager.gameConfig;
-            viewport = gm.viewport;
+            viewport = this.gameManager.viewport;
 
             Characters = new[] { Bob, Edgar, Ward, Jimmy };
         }
@@ -53,7 +48,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
+            gameManager.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
 
 
             DrawCharacterNames(sb, viewport);
@@ -97,7 +92,7 @@ namespace Game.Menu.States
             }
             else
             {
-                Player = VirtualInputs.Controllers[CurrentPlayerIndex];
+                Player = gameManager.playerControllers.Controllers[CurrentPlayerIndex];
             }
             ResetCharacterSelection();
         }
@@ -107,11 +102,11 @@ namespace Game.Menu.States
             CurrentPlayerIndex--;
             if (CurrentPlayerIndex < 0)
             {
-                MenuNavigator.GoBack();
+                gameManager.MenuNavigator.GoBack();
             }
             else
             {
-                Player = VirtualInputs.Controllers[CurrentPlayerIndex];
+                Player = gameManager.playerControllers.Controllers[CurrentPlayerIndex];
             }
             ResetCharacterSelection();
         }
@@ -153,24 +148,14 @@ namespace Game.Menu.States
             if (MediaPlayer.State != MediaState.Stopped)
                 MediaPlayer.Stop();
 
-            //In the future game mode enum should ignored over using just GameManager states instaed
-            //var states = new Dictionary<GameModeMenu.GameModes, GameManager.GameState>()
-            //{
-            //    {GameModeMenu.GameModes.Blockworld, PlayDeathMatch},
-            //    {GameModeMenu.GameModes.Survival, SurvivalGame},
-            //    {GameModeMenu.GameModes.Extinction, PlayExtinction},
-            //};
-            MenuNavigator.GoTo(GameConfig.GameMode);
+            gameManager.MenuNavigator.GoTo(GameConfig.GameMode);
         }
 
-        // The update method for this class
-        // that takes care of all the updates, that
-        // are to be done.
         public void Update(GameTime gameTime)
         {
             if (GameConfig.Players.Count == 0)
             {
-                MenuNavigator.GoBack();
+                gameManager.MenuNavigator.GoBack();
             }
             else if (Player.Is(Cancel, Pressed))
             {

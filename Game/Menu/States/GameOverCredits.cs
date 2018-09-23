@@ -18,16 +18,12 @@ namespace Game.Menu.States
 {
     class GameOverCredits : IMenu
     {
-        public MenuNavigator MenuNavigator { get; }
-        public VirtualGamePad VirtualGamePad { get; }
         private GameManager gameManager;
         private GraphicsDevice gd = OutlivedGame.Instance().GraphicsDevice;
         public bool WasNotPlayed { get; set; } = true;
 
-        public GameOverCredits(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
+        public GameOverCredits(GameManager gameManager)
         {
-            MenuNavigator = menuNavigator;
-            VirtualGamePad = virtualGamePad;
             this.gameManager = gameManager;
         }
 
@@ -36,11 +32,9 @@ namespace Game.Menu.States
             gd.Clear(Color.Black);
 
             sb.Begin();
-
             //ScalingBackground.DrawBackgroundWithScaling(sb, gameManager.OutlivedContent, 0.0001f);
             sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"), new Rectangle(0, 0, 1900, 1100), Color.White);
             sb.End();
-
 
             string totalScore = "Thanks for playing!";
 
@@ -52,9 +46,9 @@ namespace Game.Menu.States
         public void Update(GameTime gameTime)
         {
 
-            if (VirtualGamePad.Is(Cancel, Pressed))
+            if (gameManager.playerControllers.Controllers.Any(c => c.Is(Cancel, Pressed)))
             {
-                MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
+                gameManager.MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
             }
         }
 

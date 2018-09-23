@@ -17,15 +17,11 @@ namespace Game.Menu.States
 
         private Viewport viewport;
         private readonly VideoPlayer videoPlayer;
-        private MenuNavigator MenuNavigator { get; }
-        public VirtualGamePad VirtualGamePad { get; }
 
-        public GameIntro(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
+        public GameIntro(GameManager gameManager)
         {
             this.gameManager = gameManager;
             viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
-            MenuNavigator = menuNavigator;
-            VirtualGamePad = virtualGamePad;
             videoPlayer = new VideoPlayer();
 //            videoPlayer.Count(gameManager.OutlivedContent.IntroVideo);
         }
@@ -41,21 +37,21 @@ namespace Game.Menu.States
 
             if (videoTexture != null)
             {
-                // sb.Begin();
-                // use viewport
                 sb.Draw(videoTexture, new Rectangle(0, 0, 1920, 1080), Color.White);
-                //sb.End();
             }
-            else gameManager.CurrentGameState = OutlivedStates.GameState.MainMenu;
+            else
+            {
+                gameManager.CurrentGameState = OutlivedStates.GameState.MainMenu;
+            }
             sb.End();
         }
 
         public void Update(GameTime gameTime)
         {
             // Skipping the intro.
-            if (VirtualGamePad.Is(MenuKeys.Cancel, MenuKeyStates.Pressed))
+            if (gameManager.playerControllers.Controllers.Any(c => c.Is(MenuKeys.Cancel, MenuKeyStates.Pressed)))
             {
-                MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
+                gameManager.MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
             }
 
             // We want to stop playing the video and dispose it if 

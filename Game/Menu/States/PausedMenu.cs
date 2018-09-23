@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Game.Services;
+﻿using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
-using ZEngine.Wrappers;
 using static Game.Services.VirtualGamePad.MenuKeys;
 using static Game.Services.VirtualGamePad.MenuKeyStates;
 
@@ -20,15 +13,11 @@ namespace Game.Menu.States
     /// </summary>
     class PausedMenu : IMenu
     {
-        public MenuNavigator MenuNavigator { get; }
-        public PlayerControllers VirtualInputs { get; }
         private readonly GameManager gameManager;
         private Viewport viewport;
 
-        public PausedMenu(GameManager gameManager, MenuNavigator menuNavigator, PlayerControllers VirtualInputs)
+        public PausedMenu(GameManager gameManager)
         {
-            MenuNavigator = menuNavigator;
-            this.VirtualInputs = VirtualInputs;
             this.gameManager = gameManager;
             viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
         }
@@ -40,21 +29,22 @@ namespace Game.Menu.States
             sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/paused"), viewport.Bounds, Color.White);
             sb.End();
         }
+
         // A pause button that goes to the pause game state,
         // but if the current game state is the pause state
         // then we go back to the previous state.
         public void Update(GameTime gameTime)
         {
-            foreach (var virtualInput in VirtualInputs.Controllers)
+            foreach (var virtualInput in gameManager.playerControllers.Controllers)
             {
                 if (virtualInput.Is(Pause, Pressed))
                 {
-                    MenuNavigator.Pause();
+                    gameManager.MenuNavigator.Pause();
                 }
                 else if(virtualInput.Is(Cancel, Pressed))
                 {
-                    MenuNavigator.Pause();
-                    MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
+                    gameManager.MenuNavigator.Pause();
+                    gameManager.MenuNavigator.GoTo(OutlivedStates.GameState.MainMenu);
                 }
             }
         }

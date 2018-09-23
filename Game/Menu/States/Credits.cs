@@ -15,18 +15,13 @@ namespace Game.Menu.States
 {
     class Credits : IMenu
     {
-        private readonly GameManager gm;
-        private MenuNavigator MenuNavigator { get; }
-        public VirtualGamePad VirtualGamePad { get; }
+        private readonly GameManager gameManager;
         private Viewport viewport;
 
-        public Credits(GameManager gameManager, MenuNavigator menuNavigator, VirtualGamePad virtualGamePad)
+        public Credits(GameManager gameManager)
         {
-            MenuNavigator = menuNavigator;
-            VirtualGamePad = virtualGamePad;
-            this.gm = gameManager;
+            this.gameManager = gameManager;
             this.viewport = OutlivedGame.Instance().graphics.GraphicsDevice.Viewport;
-//            controls = new ControlsConfig(gameManager);
         }
 
         // Draws a simple background which contains
@@ -34,7 +29,7 @@ namespace Game.Menu.States
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             sb.Begin();
-            gm.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
+            gameManager.effects.DrawExpandingEffect(sb, AssetManager.Instance.Get<Texture2D>("Images/Menu/background3"));
             sb.Draw(AssetManager.Instance.Get<Texture2D>("Images/Menu/credits"), viewport.Bounds, Color.White);
             sb.End();
         }
@@ -44,9 +39,9 @@ namespace Game.Menu.States
         // state.
         public void Update(GameTime gameTime)
         {
-            if (VirtualGamePad.Is(Cancel, Pressed))
+            if (gameManager.playerControllers.Controllers.Any(c => c.Is(Cancel, Pressed)))
             {
-                MenuNavigator.GoBack();
+                gameManager.MenuNavigator.GoBack();
             }
         }
 
