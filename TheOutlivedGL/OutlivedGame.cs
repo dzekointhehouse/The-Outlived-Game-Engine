@@ -23,7 +23,6 @@ namespace TheOutlivedGL
 
         public Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
 
-
         public OutlivedGame()
         {
             _outlived = this;
