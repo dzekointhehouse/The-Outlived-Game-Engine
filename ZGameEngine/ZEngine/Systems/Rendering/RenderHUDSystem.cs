@@ -21,7 +21,7 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
     // be able to se the component data on the screen when playing.
     // This can be used to that the player always can see the status
     // of his player. (everything drawn here is and should be titlesafe) 
-    class RenderHUDSystem : ISystem, IDrawables
+    public class RenderHUDSystem : ISystem, IDrawables
     {
         public static string SystemName = "RenderHUDSystem";
         private EventBus EventBus = EventBus.Instance;
@@ -42,14 +42,17 @@ namespace Spelkonstruktionsprojekt.ZEngine.Systems.Rendering
         // it uses DrawTitlesafeStrings to draw the components.
         public void Draw(SpriteBatch sb)
         {
-            var viewportComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(DefaultViewport)).First().Value as DefaultViewport;
+            if (Enabled)
+            {
+                var viewportComponent = ComponentManager.Instance.GetEntitiesWithComponent(typeof(DefaultViewport)).First().Value as DefaultViewport;
 
-            sb.GraphicsDevice.Viewport = viewportComponent.Viewport;
+                sb.GraphicsDevice.Viewport = viewportComponent.Viewport;
 
-            sb.Begin(SpriteSortMode.FrontToBack);
-            DrawTitlesafeStrings(sb);
-            DrawTitlesafeTextures(sb);
-            sb.End();
+                sb.Begin(SpriteSortMode.FrontToBack);
+                DrawTitlesafeStrings(sb);
+                DrawTitlesafeTextures(sb);
+                sb.End();
+            }
         }
 
 

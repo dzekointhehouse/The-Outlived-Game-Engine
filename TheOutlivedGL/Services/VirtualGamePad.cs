@@ -18,16 +18,16 @@ namespace Game.Services
         private GamePadState currentGamePadState = new GamePadState();
 
         //When true allows keyboard to control input
-        public bool IsKeyboardControlled { get; set; } = true;
-        public bool IsGamePadControlled { get; set; } = true;
+        //public bool IsKeyboardControlled { get; set; } = true;
+        //public bool IsGamePadControlled { get; set; } = true;
         public PlayerIndex PlayerIndex { get; private set; }
             
         //Index of current gamepad in control
         public int GamePadPlayerIndex { get; set; } = 0;
 
-        public VirtualGamePad(PlayerIndex playerIndex, bool isKeyboardControlled = false)
+        public VirtualGamePad(PlayerIndex playerIndex)
         {
-            IsKeyboardControlled = isKeyboardControlled;
+            //IsKeyboardControlled = isKeyboardControlled;
             GamePadPlayerIndex = (int)playerIndex;
             PlayerIndex = playerIndex;
         }
@@ -58,16 +58,17 @@ namespace Game.Services
 
         public bool Is(MenuKeys key, MenuKeyStates state)
         {
-            if (IsKeyboardControlled)
-            {
-                if (GetKeyboardKeyState(key) == state)
-                    return true;
-            }
-            if (IsGamePadControlled)
+            if (currentGamePadState.IsConnected)
             {
                 if (GetGamePadButtonState(key) == state)
                     return true;
             }
+            else
+            {
+                if (GetKeyboardKeyState(key) == state && PlayerIndex == PlayerIndex.One)
+                    return true;
+            }
+
             return false;
         }
 

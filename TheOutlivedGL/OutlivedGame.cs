@@ -35,8 +35,12 @@ namespace TheOutlivedGL
                 GraphicsProfile = GraphicsProfile.HiDef
 
             };
-            graphics.IsFullScreen = false;
 
+#if (DEBUG == true)
+            graphics.IsFullScreen = false;
+#else
+            graphics.IsFullScreen = true;
+#endif
             Content.RootDirectory = "Content";
         }
 

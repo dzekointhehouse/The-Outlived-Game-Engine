@@ -7,6 +7,7 @@ using Spelkonstruktionsprojekt.ZEngine.Components;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Managers;
 using Spelkonstruktionsprojekt.ZEngine.Systems;
+using Spelkonstruktionsprojekt.ZEngine.Systems.Rendering;
 using TheOutlivedGL;
 using ZEngine.EventBus;
 using ZEngine.Managers;
@@ -59,11 +60,11 @@ namespace Game.Menu.States.GameModes
         public void Draw(GameTime gameTime, SpriteBatch sb)
         {
             GameEngine.Draw(sb, gameTime);
+            DrawSplitscreen(sb);
             StartTimer.Draw(sb);
-            DrawHUDs(sb);
         }
 
-        private void DrawHUDs(SpriteBatch spriteBatch)
+        private void DrawSplitscreen(SpriteBatch spriteBatch)
         {
             // Clear to default view
             OutlivedGame.Instance().GraphicsDevice.Viewport = GameViewports.defaultView;
@@ -132,6 +133,7 @@ namespace Game.Menu.States.GameModes
             GameEngine = new GameEngine(OutlivedGame.Instance());
             GameEngine.AddSystems(SoundSystem, SpawnSystem, WeaponSystem, ProbabilitySystem);
             GameEngine.Start(AssetManager.Instance.Get<SpriteFont>("ZEone"));
+            //GameEngine.GetSystem<RenderHUDSystem>().Enabled = false;
 
             GameViewports.InitializeViewports();
             SurvivalInitializer = new SurvivalInitializer(GameViewports, GameConfig);

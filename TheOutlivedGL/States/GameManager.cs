@@ -67,7 +67,7 @@ namespace Game.Menu
 
             playerControllers = new PlayerControllers(new[]
             {
-                new VirtualGamePad(PlayerIndex.One, isKeyboardControlled: false),
+                new VirtualGamePad(PlayerIndex.One),
                 new VirtualGamePad(PlayerIndex.Two),
                 new VirtualGamePad(PlayerIndex.Three),
                 new VirtualGamePad(PlayerIndex.Four)
