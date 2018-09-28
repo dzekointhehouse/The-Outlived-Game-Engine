@@ -19,7 +19,7 @@ namespace Game.Menu.States
 
         public GameModeMenu(GameManager gameManager)
         {
-            navigator = new OptionNavigator<GameState>(new []{ GameState.PlayExtinctionGame, GameState.SurvivalGame, GameState.PlayDeathMatchGame });
+            navigator = new OptionNavigator<GameState>(new []{ GameState.SurvivalGame, GameState.PlayDeathMatchGame });
             this.gameManager = gameManager;
             this.viewport = gameManager.viewport;
             fogBackground = new SidewaysBackground(AssetManager.Instance.Get<Texture2D>("Images/Menu/movingfog"), new Vector2(20, 20), 1f);

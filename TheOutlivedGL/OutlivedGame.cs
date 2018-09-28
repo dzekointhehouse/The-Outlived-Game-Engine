@@ -13,14 +13,12 @@ namespace TheOutlivedGL
     /// </summary>
     public class OutlivedGame : Microsoft.Xna.Framework.Game
     {
+        public SpriteBatch spriteBatch;
+        public GraphicsDeviceManager graphics;
 
         private Vector2 viewportDimensions = new Vector2(1920, 1080); // HD baby!
-        public SpriteBatch spriteBatch;
-        // private readonly GameEngine gameBundle;
-        public GraphicsDeviceManager graphics;
         private GameManager _gameManager;
         private OutlivedContent _outlivedContent;
-
         private static OutlivedGame _outlived;
 
         public Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
@@ -29,7 +27,6 @@ namespace TheOutlivedGL
         public OutlivedGame()
         {
             _outlived = this;
-            // gameBundle = new GameEngine();
 
             graphics = new GraphicsDeviceManager(this)
             {
@@ -43,20 +40,12 @@ namespace TheOutlivedGL
             Content.RootDirectory = "Content";
         }
 
-
-
         protected override void Initialize()
         {
-            //Init systems that require initialization
-            //gameBundle.Start(this);
-
             _outlivedContent = new OutlivedContent(this);
             _outlivedContent.LoadContent();
             spriteBatch = new SpriteBatch(this.GraphicsDevice);
             _gameManager = new GameManager();
-
-
-
 
             base.Initialize();
         }
