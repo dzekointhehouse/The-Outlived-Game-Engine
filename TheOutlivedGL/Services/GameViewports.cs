@@ -77,9 +77,9 @@ namespace Game.Services
             
             foreach (var player in config.Players)
             {
-                if (player.Team == MultiplayerMenu.TeamState.TeamOne)
+                if (player.Team == MultiplayerMenu.TeamStates.TeamOne)
                     IsTeamOne = true;
-                if (player.Team == MultiplayerMenu.TeamState.TeamTwo)
+                if (player.Team == MultiplayerMenu.TeamStates.TeamTwo)
                     IsTeamTwo = true;
             }
 

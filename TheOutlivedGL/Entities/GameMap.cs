@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Game.Menu;
+﻿using Game.Menu;
 using Game.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Spelkonstruktionsprojekt.ZEngine.Helpers;
 using Spelkonstruktionsprojekt.ZEngine.Helpers.DefaultMaps;
+using System.Collections.Generic;
 using TheOutlivedGL;
-using static Game.Menu.States.GameModeMenu;
-using static Game.Services.GameConfig;
 
 namespace Game.Entities
 {

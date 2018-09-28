@@ -22,7 +22,7 @@ namespace Game.Services
 
     public class Player
     {
-        public TeamState Team { get; set; }
+        public TeamStates Team { get; set; }
         public PlayerIndex Index { get; set; }
         public string SpriteName { get; set; }
         public CharacterType CharacterType { get; set; }

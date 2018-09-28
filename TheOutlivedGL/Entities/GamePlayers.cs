@@ -44,7 +44,7 @@ namespace Game.Entities
             this.maps = maps;
             foreach (var player in config.Players)
             {
-                if (player.Team == MultiplayerMenu.TeamState.TeamOne)
+                if (player.Team == MultiplayerMenu.TeamStates.TeamOne)
                 {
                     switch (player.Index)
                     {
@@ -62,7 +62,7 @@ namespace Game.Entities
                             break;
                     }
                 }
-                if (player.Team == MultiplayerMenu.TeamState.TeamTwo)
+                if (player.Team == MultiplayerMenu.TeamStates.TeamTwo)
                 {
                     switch (player.Index)
                     {
