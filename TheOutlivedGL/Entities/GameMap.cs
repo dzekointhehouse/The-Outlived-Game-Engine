@@ -26,14 +26,16 @@ namespace Game.Entities
             {
                 case OutlivedStates.GameState.SurvivalGame:
                     tileTypes.Clear();
-                    int[,] map = new int[40, 40];
-                    tileTypes.Add(0, "grass");
+                    //int[,] map = new int[40, 40];
+                    tileTypes.Add(4, "grass");
+                    tileTypes.Add(2, "grass");
                     mapHelper = new MapHelper(tileTypes);
-                    mapHelper.CreateMap(map, 128);
-                    spawnPositionOne = new Vector2(2500, 2400);
-                    spawnPositionTwo = new Vector2(2450, 2520);
-                    spawnPositionThree = new Vector2(2300, 2300);
-                    spawnPositionFour = new Vector2(2300, 2450);
+                    mapHelper.AddNumberToCollisionList(2);
+                    mapHelper.CreateMap(MapPack.PlainMap, 128);
+                    spawnPositionOne = new Vector2(1900, 1900);
+                    spawnPositionTwo = new Vector2(2100, 2100);
+                    spawnPositionThree = new Vector2(2100, 1900);
+                    spawnPositionFour = new Vector2(1900, 2100);
                     break;
                 case OutlivedStates.GameState.PlayExtinctionGame:
                     //tileTypes.Clear();
